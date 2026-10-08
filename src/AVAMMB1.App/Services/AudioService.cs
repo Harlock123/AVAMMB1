@@ -1,5 +1,7 @@
 using Avalonia.Platform;
+using System.Runtime.InteropServices;
 using NVorbis;
+using Silk.NET.Core.Contexts;
 using Silk.NET.OpenAL;
 
 namespace AVAMMB1.App.Services;
@@ -97,15 +99,20 @@ public sealed unsafe class OpenAlAudioService : IAudioService
     public bool IsAvailable => true;
 
     /// <inheritdoc />
-    public string Status => "OpenAL Soft";
+    public string Status => LibraryDetail;
 
     /// <summary>Tries to open the default audio device, falling back to <see cref="NullAudioService"/>.</summary>
     public static IAudioService Create()
     {
         try
         {
-            var alc = ALContext.GetApi(true);
-            var al = AL.GetApi(true);
+            if (!TryLoadLibrary(out var handle, out var detail))
+            {
+                return new NullAudioService(detail);
+            }
+            var native = new LamdaNativeContext(name => NativeLibrary.TryGetExport(handle, name, out var p) ? p : 0);
+            var alc = new ALContext(native);
+            var al = new AL(native);
             var device = alc.OpenDevice("");
             if (device == null)
             {
@@ -114,12 +121,51 @@ public sealed unsafe class OpenAlAudioService : IAudioService
             var context = alc.CreateContext(device, null);
             alc.MakeContextCurrent(context);
             al.GetError();
-            return new OpenAlAudioService(alc, al, device, context);
+            return new OpenAlAudioService(alc, al, device, context) { LibraryDetail = detail };
         }
         catch (Exception ex)
         {
             return new NullAudioService(ex.GetType().Name + ": " + ex.Message);
         }
+    }
+
+    /// <summary>Which OpenAL library was loaded (for diagnostics).</summary>
+    public string LibraryDetail { get; private init; } = "";
+
+    /// <summary>
+    /// Loads the OpenAL Soft library bundled with the game. .NET's own native-library probing is used
+    /// because it knows where single-file builds extract their native libraries; a system-wide OpenAL
+    /// is only used as a fallback.
+    /// </summary>
+    /// <param name="handle">Library handle.</param>
+    /// <param name="detail">Which library was loaded, or why none was.</param>
+    public static bool TryLoadLibrary(out nint handle, out string detail)
+    {
+        string[] bundled = OperatingSystem.IsWindows() ? ["soft_oal.dll"]
+            : OperatingSystem.IsMacOS() ? ["libopenal.dylib"]
+            : ["libopenal.so"];
+        string[] system = OperatingSystem.IsWindows() ? ["OpenAL32.dll"]
+            : OperatingSystem.IsMacOS() ? ["/System/Library/Frameworks/OpenAL.framework/OpenAL"]
+            : ["libopenal.so.1"];
+        foreach (var name in bundled)
+        {
+            if (NativeLibrary.TryLoad(name, typeof(OpenAlAudioService).Assembly, DllImportSearchPath.AssemblyDirectory, out handle))
+            {
+                detail = "bundled OpenAL Soft (" + name + ")";
+                return true;
+            }
+        }
+        foreach (var name in system)
+        {
+            if (NativeLibrary.TryLoad(name, out handle))
+            {
+                detail = "system OpenAL (" + name + ")";
+                return true;
+            }
+        }
+        handle = 0;
+        detail = "OpenAL library not found";
+        return false;
     }
 
     private static Stream OpenAsset(string path) => AssetLoader.Open(new Uri($"avares://AVAMMB1/Assets/Audio/{path}"));

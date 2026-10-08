@@ -46,9 +46,15 @@ public static class HeadlessRunner
             if (options.SmokeTest)
             {
                 SmokeTest(vm);
+                // The bundled OpenAL must load (a missing library is a packaging bug); having no
+                // sound device (CI machines) is fine.
+                if (!OpenAlAudioService.TryLoadLibrary(out _, out var lib) || !lib.StartsWith("bundled", StringComparison.Ordinal))
+                {
+                    throw new InvalidOperationException("Bundled OpenAL library was not loaded: " + lib);
+                }
                 using (var audio = OpenAlAudioService.Create())
                 {
-                    var detail = audio is OpenAlAudioService al ? $"OpenAL ok, test buffer {al.Preload("ui")}" : audio.Status;
+                    var detail = audio is OpenAlAudioService al ? $"{al.Status}, device open, test buffer {al.Preload("ui")}" : $"{lib} loaded; {audio.Status}";
                     Console.WriteLine("Audio: " + detail);
                 }
                 Console.WriteLine("SMOKE TEST OK");
