@@ -162,6 +162,19 @@ public sealed class GameMap
         return Terrain(x, y)?.Solid == true;
     }
 
+    /// <summary>Whether a cell blocks sight (solid blocks, unless the terrain says otherwise). Out-of-bounds cells are opaque.</summary>
+    /// <param name="x">Cell X.</param>
+    /// <param name="y">Cell Y.</param>
+    public bool IsOpaque(int x, int y)
+    {
+        if (!InBounds(x, y))
+        {
+            return true;
+        }
+        var t = Terrain(x, y);
+        return t?.Opaque ?? IsSolid(x, y);
+    }
+
     /// <summary>Texture key used to draw a solid cell.</summary>
     /// <param name="x">Cell X.</param>
     /// <param name="y">Cell Y.</param>

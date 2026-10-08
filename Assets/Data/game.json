@@ -1,0 +1,110 @@
+{
+ "title": "AVAM&M",
+ "intro": "For an age, the seasons of the Greenvale have turned like clockwork. But winters now come early and stay late, and old Archivist Pell of Brindlemoor believes the answer lies behind the sealed door of the Inner Vault. Gather your companions, arm yourselves, and uncover the secret of the Inner Vault.",
+ "startMap": "brindlemoor",
+ "startX": 7,
+ "startY": 14,
+ "startFacing": "North",
+ "startingGoldPerMember": 120,
+ "startingFood": 10,
+ "maxFood": 40,
+ "victoryText": "The Lodestone of Seasons beats strong once more. Bards in Brindlemoor and Saltreach will sing of your party for generations. Thank you for playing AVAM&M!",
+ "premades": [
+  {
+   "name": "Brannoc",
+   "race": "human",
+   "class": "knight",
+   "sex": "male",
+   "alignment": "good",
+   "stats": {
+    "might": 17,
+    "intellect": 9,
+    "personality": 10,
+    "endurance": 15,
+    "speed": 12,
+    "accuracy": 13,
+    "luck": 10
+   }
+  },
+  {
+   "name": "Dorgun",
+   "race": "dwarf",
+   "class": "paladin",
+   "sex": "male",
+   "alignment": "good",
+   "stats": {
+    "might": 15,
+    "intellect": 9,
+    "personality": 14,
+    "endurance": 17,
+    "speed": 9,
+    "accuracy": 12,
+    "luck": 10
+   }
+  },
+  {
+   "name": "Seris",
+   "race": "elf",
+   "class": "archer",
+   "sex": "female",
+   "alignment": "neutral",
+   "stats": {
+    "might": 11,
+    "intellect": 15,
+    "personality": 10,
+    "endurance": 11,
+    "speed": 14,
+    "accuracy": 16,
+    "luck": 11
+   }
+  },
+  {
+   "name": "Mirela",
+   "race": "human",
+   "class": "cleric",
+   "sex": "female",
+   "alignment": "good",
+   "stats": {
+    "might": 11,
+    "intellect": 12,
+    "personality": 17,
+    "endurance": 13,
+    "speed": 11,
+    "accuracy": 11,
+    "luck": 12
+   }
+  },
+  {
+   "name": "Fenwick",
+   "race": "gnome",
+   "class": "robber",
+   "sex": "male",
+   "alignment": "neutral",
+   "stats": {
+    "might": 10,
+    "intellect": 12,
+    "personality": 10,
+    "endurance": 12,
+    "speed": 15,
+    "accuracy": 14,
+    "luck": 17
+   }
+  },
+  {
+   "name": "Ysolde",
+   "race": "elf",
+   "class": "sorcerer",
+   "sex": "female",
+   "alignment": "neutral",
+   "stats": {
+    "might": 8,
+    "intellect": 18,
+    "personality": 11,
+    "endurance": 10,
+    "speed": 13,
+    "accuracy": 12,
+    "luck": 10
+   }
+  }
+ ]
+}

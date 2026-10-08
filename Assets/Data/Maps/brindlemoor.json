@@ -1,0 +1,196 @@
+{
+ "id": "brindlemoor",
+ "name": "Brindlemoor",
+ "kind": "town",
+ "format": "blocks",
+ "width": 16,
+ "height": 16,
+ "grid": [
+  "################",
+  "#......#.......#",
+  "#.BBB..#..###..#",
+  "#.BBB.....###..#",
+  "#.....T........#",
+  "#.###.....BBB..#",
+  "#.###..~~.BBB..#",
+  "#......~~......#",
+  "#.BBB.....###..#",
+  "#.BBB...T.###..#",
+  "#..............#",
+  "#.###.....BBBB.#",
+  "#.###.T...BBBB.#",
+  "#..............#",
+  "#..............#",
+  "#######.########"
+ ],
+ "terrain": {
+  "#": {
+   "solid": true,
+   "texture": "wall_town",
+   "name": "Building",
+   "mapColor": "#8a5a3a"
+  },
+  "B": {
+   "solid": true,
+   "texture": "wall_town2",
+   "name": "Building",
+   "mapColor": "#7a6a4a"
+  },
+  "T": {
+   "solid": true,
+   "opaque": false,
+   "feature": "tree",
+   "name": "Tree",
+   "mapColor": "#2f6b2f"
+  },
+  "~": {
+   "solid": true,
+   "opaque": false,
+   "floor": "water",
+   "name": "Water",
+   "mapColor": "#2a5aa8"
+  }
+ },
+ "wallTexture": "wall_town",
+ "floorTexture": "floor_cobble",
+ "skyColor": "#4a7fc9",
+ "music": "town",
+ "encounterChance": 0,
+ "events": [
+  {
+   "x": 3,
+   "y": 4,
+   "type": "inn",
+   "name": "The Sleeping Griffin Inn",
+   "feature": "shop_general",
+   "priceFactor": 1.0
+  },
+  {
+   "x": 11,
+   "y": 4,
+   "type": "temple",
+   "name": "Temple of the Dawn",
+   "feature": "altar",
+   "priceFactor": 1.0
+  },
+  {
+   "x": 3,
+   "y": 7,
+   "type": "tavern",
+   "name": "The Rusty Tankard",
+   "feature": "shop_food",
+   "priceFactor": 1.0,
+   "rumors": [
+    "Kobolds have been stealing from the cellars beneath the old well house.",
+    "Old Archivist Pell lives in the study in the southwest. He's been asking for adventurers.",
+    "Folk say the Hollow Crypt in the southeast of the wilds is sealed with an iron lock.",
+    "Saltreach, on the coast to the northeast, has the best armory around.",
+    "Never camp in the wilds without full packs of food. Hungry adventurers don't heal.",
+    "Dark places stay dark. Bring torches, or a cleric who knows Holy Light.",
+    "Robbers have a knack for spotting traps before they spring."
+   ]
+  },
+  {
+   "x": 11,
+   "y": 7,
+   "type": "shop",
+   "name": "Hammer & Tongs Smithy",
+   "shop": "brindle_smithy",
+   "feature": "shop_weapon"
+  },
+  {
+   "x": 3,
+   "y": 10,
+   "type": "training",
+   "name": "Brindlemoor Training Grounds",
+   "feature": "shop_armor",
+   "priceFactor": 1.0
+  },
+  {
+   "x": 11,
+   "y": 10,
+   "type": "shop",
+   "name": "Mother Weld's Apothecary",
+   "shop": "brindle_apothecary",
+   "feature": "shop_potions"
+  },
+  {
+   "x": 7,
+   "y": 10,
+   "type": "fountain",
+   "name": "Town Fountain",
+   "feature": "fountain",
+   "heal": true,
+   "text": "Cool water bubbles from a stone griffin. Drinking deeply, the party feels its wounds close."
+  },
+  {
+   "x": 8,
+   "y": 13,
+   "type": "message",
+   "name": "Notice Board",
+   "feature": "column",
+   "text": "NOTICE: Brave souls wanted! Kobolds infest the cellars beneath the old well house (east). See Archivist Pell (southwest study) for details."
+  },
+  {
+   "x": 3,
+   "y": 13,
+   "type": "quest",
+   "id": "pell_intro",
+   "once": true,
+   "name": "Archivist Pell's Study",
+   "feature": "shop_books",
+   "requiresNotFlag": "pell_met",
+   "setFlag": "pell_met",
+   "text": "An old man peers over a mountain of scrolls. \"Adventurers! Listen well. Long ago the Sigil that opens the Inner Vault was broken in two. One half, the Ember Shard, was hidden in the cellars below this very town - and now the kobolds have it. Bring it to me, and I will tell you more.\""
+  },
+  {
+   "x": 3,
+   "y": 13,
+   "type": "quest",
+   "id": "pell_ember",
+   "once": true,
+   "name": "Archivist Pell's Study",
+   "requiresItem": "ember_shard",
+   "consumeItem": true,
+   "requiresFlag": "pell_met",
+   "setFlag": "ember_given",
+   "items": [
+    "crypt_key"
+   ],
+   "xp": 150,
+   "gold": "100",
+   "text": "Pell cradles the glowing shard. \"The Ember Shard! Now its twin, the Frost Shard, lies in the Hollow Crypt in the southeast of the wilds. Take this key - it opens the crypt. Bring the Frost Shard to Sage Orrin in Saltreach; only he can rejoin the Sigil.\""
+  },
+  {
+   "x": 3,
+   "y": 13,
+   "type": "message",
+   "name": "Archivist Pell's Study",
+   "requiresFlag": "ember_given",
+   "text": "Pell looks up from his scrolls. \"The Frost Shard waits in the Hollow Crypt. Sage Orrin in Saltreach can rejoin the Sigil.\""
+  },
+  {
+   "x": 12,
+   "y": 13,
+   "type": "teleport",
+   "name": "Old Well House",
+   "feature": "stairs_down",
+   "map": "cellars",
+   "toX": 1,
+   "toY": 14,
+   "facing": "North",
+   "text": "Rickety stairs lead down into the damp cellars."
+  },
+  {
+   "x": 7,
+   "y": 15,
+   "type": "teleport",
+   "name": "Town Gate",
+   "feature": "entrance",
+   "map": "wilds",
+   "toX": 5,
+   "toY": 16,
+   "facing": "South"
+  }
+ ]
+}

@@ -61,134 +61,136 @@ public enum MapEventKind
 public sealed class FixedMonsterDef
 {
     /// <summary>Monster id.</summary>
-    public string Monster { get; init; } = "";
+    public string Monster { get; set; } = "";
     /// <summary>How many.</summary>
-    public DiceExpression Count { get; init; } = new(0, 0, 1);
+    public DiceExpression Count { get; set; } = new(0, 0, 1);
 }
 
 /// <summary>A scripted event placed on a map cell.</summary>
 public sealed class MapEventDef
 {
     /// <summary>Optional unique id (used to remember one-shot events).</summary>
-    public string? Id { get; init; }
+    public string? Id { get; set; }
     /// <summary>Cell X.</summary>
-    public int X { get; init; }
+    public int X { get; set; }
     /// <summary>Cell Y.</summary>
-    public int Y { get; init; }
+    public int Y { get; set; }
     /// <summary>Event kind.</summary>
-    public MapEventKind Type { get; init; }
+    public MapEventKind Type { get; set; }
     /// <summary>Title / building name.</summary>
-    public string? Name { get; init; }
+    public string? Name { get; set; }
     /// <summary>Main text.</summary>
-    public string? Text { get; init; }
+    public string? Text { get; set; }
     /// <summary>Text shown when requirements are not met.</summary>
-    public string? FailText { get; init; }
+    public string? FailText { get; set; }
     /// <summary>Shop id for <see cref="MapEventKind.Shop"/>.</summary>
-    public string? Shop { get; init; }
+    public string? Shop { get; set; }
     /// <summary>Destination map for teleports.</summary>
-    public string? Map { get; init; }
+    public string? Map { get; set; }
     /// <summary>Destination X.</summary>
-    public int ToX { get; init; }
+    public int ToX { get; set; }
     /// <summary>Destination Y.</summary>
-    public int ToY { get; init; }
+    public int ToY { get; set; }
     /// <summary>Destination facing.</summary>
-    public Direction? Facing { get; init; }
+    public Direction? Facing { get; set; }
     /// <summary>Gold reward.</summary>
-    public DiceExpression Gold { get; init; }
+    public DiceExpression Gold { get; set; }
     /// <summary>Gem reward.</summary>
-    public int Gems { get; init; }
+    public int Gems { get; set; }
     /// <summary>Experience reward (per living member).</summary>
-    public int Xp { get; init; }
+    public int Xp { get; set; }
     /// <summary>Item rewards.</summary>
-    public List<string> Items { get; init; } = new();
+    public List<string> Items { get; set; } = new();
     /// <summary>Monsters for encounters.</summary>
-    public List<FixedMonsterDef> Monsters { get; init; } = new();
+    public List<FixedMonsterDef> Monsters { get; set; } = new();
     /// <summary>Trap damage per member.</summary>
-    public DiceExpression Damage { get; init; }
+    public DiceExpression Damage { get; set; }
     /// <summary>Condition inflicted by traps or cured by fountains.</summary>
-    public Condition Conditions { get; init; }
+    public Condition Conditions { get; set; }
     /// <summary>Flag that must be set for the event to fire.</summary>
-    public string? RequiresFlag { get; init; }
+    public string? RequiresFlag { get; set; }
     /// <summary>Flag that must NOT be set for the event to fire.</summary>
-    public string? RequiresNotFlag { get; init; }
+    public string? RequiresNotFlag { get; set; }
     /// <summary>Item that must be carried by someone in the party.</summary>
-    public string? RequiresItem { get; init; }
+    public string? RequiresItem { get; set; }
     /// <summary>Remove the required item when the event fires.</summary>
-    public bool ConsumeItem { get; init; }
+    public bool ConsumeItem { get; set; }
     /// <summary>Flag to set when the event fires.</summary>
-    public string? SetFlag { get; init; }
+    public string? SetFlag { get; set; }
     /// <summary>Fires only once per game.</summary>
-    public bool Once { get; init; }
+    public bool Once { get; set; }
     /// <summary>If true, the event blocks movement into the cell when requirements fail.</summary>
-    public bool Blocking { get; init; }
+    public bool Blocking { get; set; }
     /// <summary>Billboard sprite drawn in the 3D view (Graphics/Features).</summary>
-    public string? Feature { get; init; }
+    public string? Feature { get; set; }
     /// <summary>Price multiplier for services.</summary>
-    public double PriceFactor { get; init; } = 1.0;
+    public double PriceFactor { get; set; } = 1.0;
     /// <summary>Rumors offered by taverns.</summary>
-    public List<string> Rumors { get; init; } = new();
+    public List<string> Rumors { get; set; } = new();
     /// <summary>Whether a fountain heals hit points.</summary>
-    public bool Heal { get; init; }
+    public bool Heal { get; set; }
     /// <summary>Whether a fountain restores spell points.</summary>
-    public bool RestoreSp { get; init; }
+    public bool RestoreSp { get; set; }
 }
 
 /// <summary>Terrain legend entry used by the map grid.</summary>
 public sealed class TerrainDef
 {
-    /// <summary>Blocks movement and sight; drawn as a block.</summary>
-    public bool Solid { get; init; }
+    /// <summary>Blocks movement; drawn as a block unless <see cref="Opaque"/> is false.</summary>
+    public bool Solid { get; set; }
+    /// <summary>Whether the cell blocks sight (defaults to <see cref="Solid"/>). Non-opaque solid cells (trees, water) show their floor and feature instead.</summary>
+    public bool? Opaque { get; set; }
     /// <summary>Texture key for solid blocks.</summary>
-    public string? Texture { get; init; }
+    public string? Texture { get; set; }
     /// <summary>Optional floor texture override for walkable terrain.</summary>
-    public string? Floor { get; init; }
+    public string? Floor { get; set; }
     /// <summary>Optional billboard drawn in the cell.</summary>
-    public string? Feature { get; init; }
+    public string? Feature { get; set; }
     /// <summary>Name shown on the automap legend.</summary>
-    public string? Name { get; init; }
+    public string? Name { get; set; }
     /// <summary>Automap color hex (e.g. <c>#2a6</c>).</summary>
-    public string? MapColor { get; init; }
+    public string? MapColor { get; set; }
 }
 
 /// <summary>A map as stored in JSON (see docs/CONTENT_FORMAT.md).</summary>
 public sealed class MapDef
 {
     /// <summary>Unique id.</summary>
-    public string Id { get; init; } = "";
+    public string Id { get; set; } = "";
     /// <summary>Display name.</summary>
-    public string Name { get; init; } = "";
+    public string Name { get; set; } = "";
     /// <summary>Map kind.</summary>
-    public MapKind Kind { get; init; }
+    public MapKind Kind { get; set; }
     /// <summary>Grid encoding.</summary>
-    public MapFormat Format { get; init; }
+    public MapFormat Format { get; set; }
     /// <summary>Width in cells.</summary>
-    public int Width { get; init; }
+    public int Width { get; set; }
     /// <summary>Height in cells.</summary>
-    public int Height { get; init; }
+    public int Height { get; set; }
     /// <summary>The grid rows (see <see cref="MapFormat"/>).</summary>
-    public List<string> Grid { get; init; } = new();
+    public List<string> Grid { get; set; } = new();
     /// <summary>Terrain legend keyed by single character.</summary>
-    public Dictionary<string, TerrainDef> Terrain { get; init; } = new();
+    public Dictionary<string, TerrainDef> Terrain { get; set; } = new();
     /// <summary>Default wall texture.</summary>
-    public string WallTexture { get; init; } = "wall_dungeon";
+    public string WallTexture { get; set; } = "wall_dungeon";
     /// <summary>Default floor texture.</summary>
-    public string FloorTexture { get; init; } = "floor_dirt";
+    public string FloorTexture { get; set; } = "floor_dirt";
     /// <summary>Ceiling texture; <c>null</c> draws a sky gradient.</summary>
-    public string? CeilingTexture { get; init; }
+    public string? CeilingTexture { get; set; }
     /// <summary>Sky top color (outdoor/town).</summary>
-    public string SkyColor { get; init; } = "#3b6fb6";
+    public string SkyColor { get; set; } = "#3b6fb6";
     /// <summary>Whether the map is dark without a light source.</summary>
-    public bool Dark { get; init; }
+    public bool Dark { get; set; }
     /// <summary>Music track key.</summary>
-    public string Music { get; init; } = "dungeon";
+    public string Music { get; set; } = "dungeon";
     /// <summary>Chance per step of a random encounter (percent).</summary>
-    public int EncounterChance { get; init; }
+    public int EncounterChance { get; set; }
     /// <summary>Random encounter table.</summary>
-    public List<EncounterEntryDef> Encounters { get; init; } = new();
+    public List<EncounterEntryDef> Encounters { get; set; } = new();
     /// <summary>Item id that opens locked doors on this map.</summary>
-    public string? LockedDoorKey { get; init; }
+    public string? LockedDoorKey { get; set; }
     /// <summary>Flag that opens locked doors on this map.</summary>
-    public string? LockedDoorFlag { get; init; }
+    public string? LockedDoorFlag { get; set; }
     /// <summary>Scripted events.</summary>
-    public List<MapEventDef> Events { get; init; } = new();
+    public List<MapEventDef> Events { get; set; } = new();
 }

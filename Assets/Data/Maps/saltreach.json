@@ -1,0 +1,170 @@
+{
+ "id": "saltreach",
+ "name": "Saltreach",
+ "kind": "town",
+ "format": "blocks",
+ "width": 16,
+ "height": 16,
+ "grid": [
+  "################",
+  "#.....#....~~~~#",
+  "#.BBB.#.##.~~~~#",
+  "#.BBB...##..~~~#",
+  "#..............#",
+  "#.###..T..###..#",
+  "#.###.....###.~#",
+  "#............~~#",
+  "...BBBB.T....~~#",
+  "#..BBBB......~~#",
+  "#.........###.~#",
+  "#.###..~..###..#",
+  "#.###.~~~......#",
+  "#......~...BBB.#",
+  "#..........BBB.#",
+  "################"
+ ],
+ "terrain": {
+  "#": {
+   "solid": true,
+   "texture": "wall_town",
+   "name": "Building",
+   "mapColor": "#8a5a3a"
+  },
+  "B": {
+   "solid": true,
+   "texture": "wall_town2",
+   "name": "Building",
+   "mapColor": "#7a6a4a"
+  },
+  "T": {
+   "solid": true,
+   "opaque": false,
+   "feature": "tree",
+   "name": "Tree",
+   "mapColor": "#2f6b2f"
+  },
+  "~": {
+   "solid": true,
+   "opaque": false,
+   "floor": "water",
+   "name": "Water",
+   "mapColor": "#2a5aa8"
+  }
+ },
+ "wallTexture": "wall_town2",
+ "floorTexture": "floor_cobble",
+ "skyColor": "#6a9ad9",
+ "music": "town",
+ "encounterChance": 0,
+ "events": [
+  {
+   "x": 0,
+   "y": 8,
+   "type": "teleport",
+   "name": "West Gate",
+   "feature": "entrance",
+   "map": "wilds",
+   "toX": 15,
+   "toY": 5,
+   "facing": "South"
+  },
+  {
+   "x": 3,
+   "y": 4,
+   "type": "inn",
+   "name": "The Gull's Rest",
+   "feature": "shop_general",
+   "priceFactor": 1.5
+  },
+  {
+   "x": 11,
+   "y": 4,
+   "type": "temple",
+   "name": "Shrine of the Tides",
+   "feature": "altar",
+   "priceFactor": 1.2
+  },
+  {
+   "x": 4,
+   "y": 7,
+   "type": "tavern",
+   "name": "The Drowned Anchor",
+   "feature": "shop_food",
+   "priceFactor": 1.3,
+   "rumors": [
+    "Sage Orrin lives by the docks in the south-east. Knows more about old magic than anyone alive.",
+    "The Hollow Crypt is full of the restless dead. Holy magic works wonders there.",
+    "A lich rules the crypt. They say it cannot be put to sleep - the dead never sleep.",
+    "The crystal door in the northern mountains has been sealed for a thousand years.",
+    "Trolls heal their wounds unless you burn them.",
+    "Our armory sells plate mail, if you've the coin."
+   ]
+  },
+  {
+   "x": 11,
+   "y": 7,
+   "type": "shop",
+   "name": "Saltreach Armory",
+   "shop": "salt_armory",
+   "feature": "shop_weapon"
+  },
+  {
+   "x": 3,
+   "y": 10,
+   "type": "training",
+   "name": "Saltreach Fencing Academy",
+   "feature": "shop_armor",
+   "priceFactor": 1.2
+  },
+  {
+   "x": 11,
+   "y": 12,
+   "type": "shop",
+   "name": "Tidewater Arcana",
+   "shop": "salt_arcana",
+   "feature": "shop_potions"
+  },
+  {
+   "x": 12,
+   "y": 12,
+   "type": "quest",
+   "id": "orrin_fuse",
+   "once": true,
+   "name": "Sage Orrin's House",
+   "feature": "shop_books",
+   "requiresItem": "frost_shard",
+   "requiresFlag": "ember_given",
+   "consumeItem": true,
+   "setFlag": "sigil_forged",
+   "items": [
+    "vault_sigil"
+   ],
+   "xp": 500,
+   "text": "Sage Orrin presses the Frost Shard against a red glow only he can see - Pell's working, sent by letter. With a crack of thunder the halves fuse. \"The Vault Sigil, whole again! The Inner Vault lies in the northern mountains of the wilds. Beware its Warden.\""
+  },
+  {
+   "x": 12,
+   "y": 12,
+   "type": "message",
+   "name": "Sage Orrin's House",
+   "requiresNotFlag": "sigil_forged",
+   "text": "Sage Orrin squints at you. \"Shards? Bring me the Frost Shard from the Hollow Crypt, once Archivist Pell has sent word of the Ember Shard.\""
+  },
+  {
+   "x": 12,
+   "y": 12,
+   "type": "message",
+   "name": "Sage Orrin's House",
+   "requiresFlag": "sigil_forged",
+   "text": "\"The Inner Vault waits in the northern mountains. Go with courage.\""
+  },
+  {
+   "x": 9,
+   "y": 4,
+   "type": "message",
+   "name": "Harbor",
+   "feature": "column",
+   "text": "Fishing boats bob at their moorings. A sailor mutters about storms that come earlier every year."
+  }
+ ]
+}

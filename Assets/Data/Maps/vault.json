@@ -1,0 +1,164 @@
+{
+ "id": "vault",
+ "name": "The Inner Vault",
+ "kind": "dungeon",
+ "format": "edges",
+ "width": 12,
+ "height": 12,
+ "grid": [
+  "+-+-+-+-+-+-+-+-+-+-+-+-+",
+  "|. . .|.|. . . .|. . . .|",
+  "+ + + + + + + + + + + + +",
+  "|.|. .|.|. . . .|. .|. .|",
+  "+ + +-+ + + + + + + +-+ +",
+  "|.|. . .|. . . .|. .|. .|",
+  "+ +-+ +-+ + + + +-+ + +-+",
+  "|.|. .|.|. . . .|.|. . .|",
+  "+ + + + +-+D+-+-+ + +-+ +",
+  "|.|.|. . . .|. .|. .|. .|",
+  "+ +-+ +-+-+-+ +-+ +-+ +-+",
+  "|. .|. . .|. .|. .|. .|.|",
+  "+ + +-+-+ + + + + + +-+ +",
+  "|.|. . . . .|. . .|. . .|",
+  "+-+-+-+ + +-+-+ + +-+-+ +",
+  "|. . .|.|.|. .|. . .|. .|",
+  "+ +-+ + + + + +-+ + + +-+",
+  "|. .|.|.|.|.|. .|.|.|.|.|",
+  "+ + + + +-+ +-+ + + + + +",
+  "|.|.|. . . . .|. . .|. .|",
+  "+-+ + + + +-+ + + + +-+ +",
+  "|. .|.|. .|. .|.|. . .|.|",
+  "+ +-+ + + +-+-+ + +-+ + +",
+  "|. . . .|. . . .|. . . .|",
+  "+-+-+-+-+-+-+-+-+-+-+-+-+"
+ ],
+ "wallTexture": "wall_vault",
+ "floorTexture": "floor_marble",
+ "ceilingTexture": "wall_vault",
+ "dark": false,
+ "music": "dungeon",
+ "encounterChance": 8,
+ "encounters": [
+  {
+   "monster": "minotaur",
+   "count": "1d2",
+   "weight": 20
+  },
+  {
+   "monster": "troll",
+   "count": "1d2",
+   "weight": 20
+  },
+  {
+   "monster": "basilisk",
+   "count": "1",
+   "weight": 12
+  },
+  {
+   "monster": "manticore",
+   "count": "1d2",
+   "weight": 15
+  },
+  {
+   "monster": "wraith",
+   "count": "1d3",
+   "weight": 15
+  },
+  {
+   "monster": "necromancer",
+   "count": "1",
+   "weight": 8
+  }
+ ],
+ "events": [
+  {
+   "x": 5,
+   "y": 11,
+   "type": "teleport",
+   "name": "Crystal Door",
+   "feature": "portal",
+   "map": "wilds",
+   "toX": 4,
+   "toY": 3,
+   "facing": "East",
+   "text": "You step back out into the mountain air."
+  },
+  {
+   "x": 5,
+   "y": 10,
+   "type": "message",
+   "id": "vault_hint",
+   "once": true,
+   "name": "Humming Walls",
+   "text": "The crystal walls hum with a slow, failing rhythm, like a heart. Somewhere north, something is feeding on it."
+  },
+  {
+   "x": 5,
+   "y": 4,
+   "type": "fountain",
+   "name": "Wellspring",
+   "feature": "fountain",
+   "heal": true,
+   "restoreSp": true,
+   "text": "A pool of liquid light. The party bathes in it and is made whole."
+  },
+  {
+   "x": 5,
+   "y": 3,
+   "type": "encounter",
+   "id": "warden_fight",
+   "once": true,
+   "name": "The Heart of the Vault",
+   "setFlag": "warden_dead",
+   "text": "A towering construct of brass and crystal unfolds from the wall, its single eye blazing. THE WARDEN WAKES.",
+   "monsters": [
+    {
+     "monster": "vault_warden",
+     "count": "1"
+    }
+   ]
+  },
+  {
+   "x": 6,
+   "y": 1,
+   "type": "victory",
+   "id": "lodestone",
+   "once": true,
+   "name": "The Lodestone of Seasons",
+   "requiresFlag": "warden_dead",
+   "blocking": true,
+   "feature": "altar",
+   "failText": "A great stone pulses weakly on a dais. The Warden's chains still bind it.",
+   "xp": 2000,
+   "text": "With the Warden destroyed, the chains fall from the Lodestone of Seasons. Its light swells, warm and golden, and the hum in the walls steadies into a strong, slow beat. This is the secret of the Inner Vault: the endless round of the seasons was never natural. It was kept, and for an age the keeper has been starving it. Spring will come to the Greenvale again."
+  },
+  {
+   "x": 3,
+   "y": 0,
+   "type": "treasure",
+   "id": "vault_chest_a",
+   "once": true,
+   "feature": "chest",
+   "name": "Crystal Coffer",
+   "gold": "10d20",
+   "items": [
+    "potion_vigor"
+   ],
+   "text": "A coffer grown from crystal."
+  },
+  {
+   "x": 3,
+   "y": 3,
+   "type": "treasure",
+   "id": "vault_chest_b",
+   "once": true,
+   "feature": "chest",
+   "name": "Crystal Coffer",
+   "gold": "10d20",
+   "items": [
+    "ember_blade"
+   ],
+   "text": "Inside, a blade glowing like a coal."
+  }
+ ]
+}

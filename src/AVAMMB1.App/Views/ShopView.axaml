@@ -1,0 +1,63 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:AVAMMB1.App.ViewModels"
+             xmlns:c="using:AVAMMB1.App.Controls"
+             x:Class="AVAMMB1.App.Views.ShopView" x:DataType="vm:ShopViewModel">
+  <Border Classes="dialog" Width="1000" Height="540">
+    <Grid RowDefinitions="Auto,Auto,*,Auto" ColumnDefinitions="*,16,*">
+      <TextBlock Grid.ColumnSpan="3" Classes="title" Text="{Binding Title}" />
+      <StackPanel Grid.Row="1" Grid.ColumnSpan="3" Orientation="Horizontal" Spacing="10" Margin="0,6">
+        <TextBlock Text="Shopping for:" VerticalAlignment="Center" Classes="dim" />
+        <ComboBox ItemsSource="{Binding Members}" SelectedItem="{Binding SelectedMember}" MinWidth="200">
+          <ComboBox.ItemTemplate>
+            <DataTemplate x:DataType="vm:PartyMemberViewModel">
+              <TextBlock><Run Text="{Binding Name}" /><Run Text=" - " /><Run Text="{Binding ClassLevel}" /></TextBlock>
+            </DataTemplate>
+          </ComboBox.ItemTemplate>
+        </ComboBox>
+        <TextBlock Text="{Binding GoldText}" Foreground="{StaticResource Gold}" VerticalAlignment="Center" FontWeight="Bold" />
+      </StackPanel>
+      <DockPanel Grid.Row="2">
+        <TextBlock DockPanel.Dock="Top" Classes="h2" Text="For Sale" />
+        <ScrollViewer>
+          <ItemsControl ItemsSource="{Binding Stock}" Margin="0,0,16,0">
+            <ItemsControl.ItemTemplate>
+              <DataTemplate x:DataType="vm:ShopItemViewModel">
+                <Grid ColumnDefinitions="40,*,70,Auto" Margin="0,1">
+                  <c:PixelImage Source="{Binding Icon}" Width="32" Height="32" />
+                  <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                    <TextBlock Text="{Binding Name}" FontWeight="SemiBold" />
+                    <TextBlock Text="{Binding Summary}" FontSize="11" Classes="dim" />
+                  </StackPanel>
+                  <TextBlock Grid.Column="2" Text="{Binding Price, StringFormat='{}{0} gp'}" VerticalAlignment="Center" Foreground="{StaticResource Gold}" />
+                  <Button Grid.Column="3" Classes="chip" Content="Buy" Command="{Binding $parent[UserControl].((vm:ShopViewModel)DataContext).BuyCommand}" CommandParameter="{Binding}" />
+                </Grid>
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
+        </ScrollViewer>
+      </DockPanel>
+      <DockPanel Grid.Row="2" Grid.Column="2">
+        <TextBlock DockPanel.Dock="Top" Classes="h2" Text="Sell from backpack (half price)" />
+        <ScrollViewer>
+          <ItemsControl ItemsSource="{Binding Sellable}" Margin="0,0,16,0">
+            <ItemsControl.ItemTemplate>
+              <DataTemplate x:DataType="vm:ShopItemViewModel">
+                <Grid ColumnDefinitions="40,*,70,Auto" Margin="0,1">
+                  <c:PixelImage Source="{Binding Icon}" Width="32" Height="32" />
+                  <TextBlock Grid.Column="1" Text="{Binding Name}" VerticalAlignment="Center" />
+                  <TextBlock Grid.Column="2" Text="{Binding Price, StringFormat='{}{0} gp'}" VerticalAlignment="Center" Foreground="{StaticResource Gold}" />
+                  <Button Grid.Column="3" Classes="chip" Content="Sell" Command="{Binding $parent[UserControl].((vm:ShopViewModel)DataContext).SellCommand}" CommandParameter="{Binding}" />
+                </Grid>
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
+        </ScrollViewer>
+      </DockPanel>
+      <Grid Grid.Row="3" Grid.ColumnSpan="3" ColumnDefinitions="*,Auto" Margin="0,8,0,0">
+        <TextBlock Text="{Binding Feedback}" TextWrapping="Wrap" Foreground="#9fd0ff" />
+        <Button Grid.Column="1" Content="Leave (Esc)" Command="{Binding LeaveCommand}" />
+      </Grid>
+    </Grid>
+  </Border>
+</UserControl>

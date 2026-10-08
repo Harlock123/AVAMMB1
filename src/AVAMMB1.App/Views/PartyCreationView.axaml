@@ -1,0 +1,133 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:AVAMMB1.App.ViewModels"
+             xmlns:c="using:AVAMMB1.App.Controls"
+             xmlns:ch="using:AVAMMB1.Core.Characters"
+             x:Class="AVAMMB1.App.Views.PartyCreationView"
+             x:DataType="vm:PartyCreationViewModel">
+  <Grid Margin="16" ColumnDefinitions="*,16,360" RowDefinitions="Auto,*,Auto">
+    <TextBlock Grid.ColumnSpan="3" Classes="title" Text="{Binding Title}" Margin="0,0,0,10" />
+
+    <Border Grid.Row="1" Classes="panel">
+      <Grid ColumnDefinitions="300,20,*" RowDefinitions="Auto,*">
+        <!-- Attributes -->
+        <StackPanel Spacing="4">
+          <TextBlock Classes="h2" Text="Attributes" />
+          <Grid ColumnDefinitions="110,50,40,50">
+            <TextBlock Text="Attribute" Classes="dim" />
+            <TextBlock Grid.Column="1" Text="Roll" Classes="dim" />
+            <TextBlock Grid.Column="2" Text="Race" Classes="dim" />
+            <TextBlock Grid.Column="3" Text="Final" Classes="dim" />
+          </Grid>
+          <ItemsControl ItemsSource="{Binding StatRows}">
+            <ItemsControl.ItemTemplate>
+              <DataTemplate x:DataType="vm:StatRow">
+                <Grid ColumnDefinitions="110,50,40,50" Margin="0,2">
+                  <TextBlock Text="{Binding Name}" />
+                  <TextBlock Grid.Column="1" Text="{Binding Raw}" />
+                  <TextBlock Grid.Column="2" Text="{Binding Modifier}" Foreground="#8fe08f" />
+                  <TextBlock Grid.Column="3" Text="{Binding Final}" FontWeight="Bold" Foreground="{StaticResource Gold}" />
+                </Grid>
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
+          <Button Content="Reroll Attributes" Command="{Binding RollCommand}" HorizontalAlignment="Left" Margin="0,8,0,0" />
+          <StackPanel Orientation="Horizontal" Spacing="12" Margin="0,16,0,0">
+            <Border BorderBrush="{StaticResource PanelBorder}" BorderThickness="1" Background="#0b0a10" Padding="4">
+              <c:PixelImage Source="{Binding Portrait}" Width="96" Height="96" />
+            </Border>
+            <StackPanel VerticalAlignment="Center" Spacing="6">
+              <TextBlock Text="Name" Classes="dim" />
+              <TextBox Text="{Binding Name}" Width="170" MaxLength="16" Watermark="Enter a name" />
+            </StackPanel>
+          </StackPanel>
+        </StackPanel>
+
+        <!-- Choices -->
+        <StackPanel Grid.Column="2" Spacing="4">
+          <TextBlock Classes="h2" Text="Race" />
+          <ListBox ItemsSource="{Binding Races}" SelectedItem="{Binding SelectedRace}" Background="Transparent">
+            <ListBox.ItemsPanel><ItemsPanelTemplate><WrapPanel /></ItemsPanelTemplate></ListBox.ItemsPanel>
+            <ListBox.ItemTemplate>
+              <DataTemplate x:DataType="vm:ChoiceViewModel">
+                <TextBlock Text="{Binding Name}" ToolTip.Tip="{Binding Description}" Margin="4,0" />
+              </DataTemplate>
+            </ListBox.ItemTemplate>
+          </ListBox>
+          <StackPanel Orientation="Horizontal" Spacing="30">
+            <StackPanel>
+              <TextBlock Classes="h2" Text="Sex" />
+              <ListBox ItemsSource="{Binding Sexes}" SelectedItem="{Binding SelectedSex}" Background="Transparent">
+                <ListBox.ItemsPanel><ItemsPanelTemplate><StackPanel Orientation="Horizontal" /></ItemsPanelTemplate></ListBox.ItemsPanel>
+                <ListBox.ItemTemplate>
+                  <DataTemplate x:DataType="vm:ChoiceViewModel"><TextBlock Text="{Binding Name}" Margin="4,0" /></DataTemplate>
+                </ListBox.ItemTemplate>
+              </ListBox>
+            </StackPanel>
+            <StackPanel>
+              <TextBlock Classes="h2" Text="Alignment" />
+              <ListBox ItemsSource="{Binding Alignments}" SelectedItem="{Binding SelectedAlignment}" Background="Transparent">
+                <ListBox.ItemsPanel><ItemsPanelTemplate><StackPanel Orientation="Horizontal" /></ItemsPanelTemplate></ListBox.ItemsPanel>
+                <ListBox.ItemTemplate>
+                  <DataTemplate x:DataType="vm:ChoiceViewModel"><TextBlock Text="{Binding Name}" Margin="4,0" /></DataTemplate>
+                </ListBox.ItemTemplate>
+              </ListBox>
+            </StackPanel>
+          </StackPanel>
+          <TextBlock Classes="h2" Text="Class (greyed out classes need better attributes)" />
+          <ItemsControl ItemsSource="{Binding Classes}">
+            <ItemsControl.ItemsPanel><ItemsPanelTemplate><WrapPanel /></ItemsPanelTemplate></ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+              <DataTemplate x:DataType="vm:ChoiceViewModel">
+                <Button Content="{Binding Name}" IsEnabled="{Binding IsEnabled}" ToolTip.Tip="{Binding Description}" MinWidth="110"
+                        Command="{Binding $parent[UserControl].((vm:PartyCreationViewModel)DataContext).PickClassCommand}" CommandParameter="{Binding}" />
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
+          <TextBlock Margin="0,6,0,0" TextWrapping="Wrap">
+            <Run Text="Selected: " Foreground="{StaticResource Dim}" />
+            <Run Text="{Binding SelectedClass.Name, FallbackValue=none}" FontWeight="Bold" Foreground="{StaticResource Gold}" />
+          </TextBlock>
+          <TextBlock Text="{Binding SelectedClass.Description, FallbackValue=''}" TextWrapping="Wrap" Classes="dim" />
+          <TextBlock Text="{Binding Preview}" Margin="0,4,0,0" />
+          <Button Content="Add Adventurer" Command="{Binding AddCharacterCommand}" HorizontalAlignment="Left" Margin="0,12,0,0" FontWeight="Bold" />
+          <TextBlock Text="{Binding Status}" Foreground="#8fe08f" TextWrapping="Wrap" />
+        </StackPanel>
+      </Grid>
+    </Border>
+
+    <!-- Party list -->
+    <Border Grid.Row="1" Grid.Column="2" Classes="panel">
+      <DockPanel>
+        <StackPanel DockPanel.Dock="Top" Spacing="4">
+          <TextBlock Classes="h2" Text="Your Party" />
+          <TextBlock Text="{Binding PartySummary}" Classes="dim" />
+          <Button Content="Quick Party (6 premade heroes)" Command="{Binding QuickPartyCommand}" IsVisible="{Binding !RecruitMode}" />
+        </StackPanel>
+        <ItemsControl ItemsSource="{Binding Created}" Margin="0,8,0,0">
+          <ItemsControl.ItemTemplate>
+            <DataTemplate x:DataType="ch:Character">
+              <Border Background="#201c2c" CornerRadius="3" Padding="8,4" Margin="0,2">
+                <Grid ColumnDefinitions="*,Auto">
+                  <StackPanel>
+                    <TextBlock Text="{Binding Name}" FontWeight="Bold" />
+                    <TextBlock Classes="dim" FontSize="12">
+                      <Run Text="{Binding Race}" /><Run Text=" " /><Run Text="{Binding Class}" /><Run Text="  HP " /><Run Text="{Binding MaxHp}" /><Run Text="  SP " /><Run Text="{Binding MaxSp}" />
+                    </TextBlock>
+                  </StackPanel>
+                  <Button Grid.Column="1" Classes="chip" Content="Remove"
+                          Command="{Binding $parent[UserControl].((vm:PartyCreationViewModel)DataContext).RemoveCommand}" CommandParameter="{Binding}" />
+                </Grid>
+              </Border>
+            </DataTemplate>
+          </ItemsControl.ItemTemplate>
+        </ItemsControl>
+      </DockPanel>
+    </Border>
+
+    <StackPanel Grid.Row="2" Grid.ColumnSpan="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0" Spacing="8">
+      <Button Content="Back (Esc)" Command="{Binding BackCommand}" />
+      <Button Content="Begin the Adventure" Command="{Binding BeginCommand}" FontWeight="Bold" IsVisible="{Binding !RecruitMode}" />
+    </StackPanel>
+  </Grid>
+</UserControl>

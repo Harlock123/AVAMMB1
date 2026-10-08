@@ -1,0 +1,84 @@
+using AVAMMB1.Core.Content;
+using AVAMMB1.Core.Rules;
+using AVAMMB1.Core.World;
+
+namespace AVAMMB1.Tests;
+
+public class ContentTests
+{
+    [Fact]
+    public void EmbeddedContent_LoadsAndValidates()
+    {
+        var db = TestContent.Content;
+        Assert.Empty(db.FindProblems());
+        Assert.Equal(5, db.Races.Count);
+        Assert.Equal(6, db.Classes.Count);
+        Assert.True(db.Monsters.Count >= 20);
+        Assert.True(db.Items.Count >= 40);
+        Assert.True(db.Maps.Count >= 6);
+    }
+
+    [Fact]
+    public void EnumsAndFlags_ParseCaseInsensitively()
+    {
+        var db = TestContent.Content;
+        Assert.Equal(2, db.Race("elf").StatModifiers[Stat.Intellect]);
+        Assert.Equal(Condition.Poisoned, db.Monster("giant_spider").Attacks[0].Inflicts);
+        var cure = db.Spell("c_cure").Conditions;
+        Assert.True(cure.HasFlag(Condition.Paralyzed) && cure.HasFlag(Condition.Asleep));
+        Assert.Equal(SpellSchool.Sorcerer, db.Spell("s_fireball").School);
+    }
+
+    [Fact]
+    public void AllEvents_AreReachableFromEachMapEntrance()
+    {
+        var db = TestContent.Content;
+        foreach (var map in db.Maps.Values)
+        {
+            // Every map has at least one teleport/stairs; use the first as the entrance.
+            var entry = map.AllEvents.First(e => e.Type == MapEventKind.Teleport);
+            var reachable = map.Reachable(entry.X, entry.Y);
+            foreach (var ev in map.AllEvents)
+            {
+                Assert.True(reachable.Contains((ev.X, ev.Y)), $"{map.Id}: event at ({ev.X},{ev.Y}) unreachable");
+            }
+        }
+    }
+
+    [Fact]
+    public void Teleports_LeadToWalkableCells()
+    {
+        var db = TestContent.Content;
+        foreach (var map in db.Maps.Values)
+        {
+            foreach (var ev in map.AllEvents.Where(e => e.Type == MapEventKind.Teleport))
+            {
+                var dest = db.Map(ev.Map!);
+                Assert.False(dest.IsSolid(ev.ToX, ev.ToY), $"{map.Id} -> {dest.Id}");
+            }
+        }
+    }
+
+    [Fact]
+    public void EdgeMap_ParsesWallsAndDoors()
+    {
+        var def = new MapDef
+        {
+            Id = "t", Width = 2, Height = 1, Format = MapFormat.Edges,
+            Grid = ["+-+-+", "|.D.|", "+-+-+"],
+        };
+        var map = GameMap.Parse(def);
+        Assert.Equal(WallKind.Wall, map.GetWall(0, 0, Direction.West));
+        Assert.Equal(WallKind.Door, map.GetWall(0, 0, Direction.East));
+        Assert.Equal(WallKind.Door, map.GetWall(1, 0, Direction.West));
+        Assert.Equal(WallKind.Wall, map.GetWall(1, 0, Direction.North));
+        Assert.Equal(2, map.Reachable(0, 0).Count);
+    }
+
+    [Fact]
+    public void BadMapDimensions_Throw()
+    {
+        var def = new MapDef { Id = "bad", Width = 3, Height = 2, Format = MapFormat.Blocks, Grid = ["...", ".."] };
+        Assert.Throws<InvalidDataException>(() => GameMap.Parse(def));
+    }
+}

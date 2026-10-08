@@ -1,0 +1,14 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:AVAMMB1.App.ViewModels"
+             x:Class="AVAMMB1.App.Views.CreditsView" x:DataType="vm:CreditsViewModel">
+  <Grid Margin="20" RowDefinitions="Auto,*,Auto">
+    <TextBlock Classes="title" Text="Credits &amp; Licenses" />
+    <Border Grid.Row="1" Classes="panel" Margin="0,10">
+      <ScrollViewer>
+        <SelectableTextBlock Text="{Binding Text}" TextWrapping="Wrap" FontSize="14" />
+      </ScrollViewer>
+    </Border>
+    <Button Grid.Row="2" Content="Back (Esc)" Command="{Binding BackCommand}" HorizontalAlignment="Right" />
+  </Grid>
+</UserControl>

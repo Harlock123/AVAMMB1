@@ -1,0 +1,48 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:AVAMMB1.App.ViewModels"
+             xmlns:ch="using:AVAMMB1.Core.Characters"
+             x:Class="AVAMMB1.App.Views.InnView" x:DataType="vm:InnViewModel">
+  <Border Classes="dialog" Width="820">
+    <StackPanel Spacing="8">
+      <TextBlock Classes="title" Text="{Binding Title}" />
+      <TextBlock Text="{Binding GoldText}" Foreground="{StaticResource Gold}" />
+      <StackPanel Orientation="Horizontal">
+        <Button Content="{Binding StayLabel}" Command="{Binding StayCommand}" FontWeight="Bold" />
+        <Button Content="Save Game" Command="{Binding SaveGameCommand}" />
+        <Button Content="Create a New Adventurer" Command="{Binding RecruitCommand}" />
+      </StackPanel>
+      <Grid ColumnDefinitions="*,16,*">
+        <StackPanel>
+          <TextBlock Classes="h2" Text="Party (marching order)" />
+          <ItemsControl ItemsSource="{Binding Members}">
+            <ItemsControl.ItemTemplate>
+              <DataTemplate x:DataType="vm:PartyMemberViewModel">
+                <Grid ColumnDefinitions="*,Auto,Auto" Margin="0,1">
+                  <TextBlock VerticalAlignment="Center"><Run Text="{Binding Slot}" /><Run Text=". " /><Run Text="{Binding Name}" FontWeight="SemiBold" /><Run Text="  " /><Run Text="{Binding ClassLevel}" Foreground="{StaticResource Dim}" /></TextBlock>
+                  <Button Grid.Column="1" Classes="chip" Content="Up" Command="{Binding $parent[UserControl].((vm:InnViewModel)DataContext).MoveUpCommand}" CommandParameter="{Binding}" />
+                  <Button Grid.Column="2" Classes="chip" Content="Stay here" Command="{Binding $parent[UserControl].((vm:InnViewModel)DataContext).LeaveMemberCommand}" CommandParameter="{Binding}" />
+                </Grid>
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
+        </StackPanel>
+        <StackPanel Grid.Column="2">
+          <TextBlock Classes="h2" Text="Waiting at the inn" />
+          <ItemsControl ItemsSource="{Binding Roster}">
+            <ItemsControl.ItemTemplate>
+              <DataTemplate x:DataType="ch:Character">
+                <Grid ColumnDefinitions="*,Auto" Margin="0,1">
+                  <TextBlock VerticalAlignment="Center"><Run Text="{Binding Name}" FontWeight="SemiBold" /><Run Text="  L" /><Run Text="{Binding Level}" /><Run Text=" " /><Run Text="{Binding Class}" Foreground="{StaticResource Dim}" /></TextBlock>
+                  <Button Grid.Column="1" Classes="chip" Content="Join" Command="{Binding $parent[UserControl].((vm:InnViewModel)DataContext).JoinCommand}" CommandParameter="{Binding}" />
+                </Grid>
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
+        </StackPanel>
+      </Grid>
+      <TextBlock Text="{Binding Feedback}" TextWrapping="Wrap" Foreground="#9fd0ff" />
+      <Button Content="Leave (Esc)" Command="{Binding LeaveCommand}" HorizontalAlignment="Right" />
+    </StackPanel>
+  </Border>
+</UserControl>

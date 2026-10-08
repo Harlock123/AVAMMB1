@@ -1,0 +1,217 @@
+{
+ "id": "cellars",
+ "name": "Brindlemoor Cellars",
+ "kind": "dungeon",
+ "format": "edges",
+ "width": 16,
+ "height": 16,
+ "grid": [
+  "+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+",
+  "|. . . .|. . . . . . .|.|. . . .|",
+  "+-+-+-+ + + + + +-+-+ + + + + + +",
+  "|. . .|. .|. . . . .|.|.D. . . .|",
+  "+ +-+ + +-+ +-+-+ + + +-+ + + + +",
+  "|.|. . . .|. . .|.|.|. .|. . . .|",
+  "+ +-+-+-+ + +-+-+ + +-+-+ + + + +",
+  "|. . .|. .|.|. .|.|. .|.|. . . .|",
+  "+ +-+ +-+ +-+ + + + +-+ +-+D+-+-+",
+  "|.|.|. .|. .|.|. .|. . .|. .|.|.|",
+  "+ + +-+ +-+ + +-+-+ +-+-+ + + + +",
+  "|. . .|.|.|.|.|. . . . . .|.|. .|",
+  "+-+-+ + + + +-+D+-+-+ + + +-+-+ +",
+  "|. .|.|.|. .|. . . .|.|.|.|. . .|",
+  "+ + + + + +-+ + + + + +-+ + +-+-+",
+  "|.|. .|.|. .D. . . .|.|. .|.|. .|",
+  "+ +-+-+ + + + + + + + + +-+ +-+ +",
+  "|. .|. .|.|.|. . . .D.|. .|. .|.|",
+  "+-+ + +-+ +-+ + + + + +-+ +-+ + +",
+  "|. . .|. .|.|. . . .|. .|. .|. .|",
+  "+ +-+ + +-+ +-+-+D+-+-+ +-+ +-+ +",
+  "|.|. .|. . .|. .|. . . .|.|. .|.|",
+  "+ + +-+ +-+-+ +-+-+-+-+-+ +-+ + +",
+  "|.|. . . .|.|. .|. . . . . .|. .|",
+  "+ +-+-+-+ + +-+ + +-+-+ + +-+-+-+",
+  "|. . . .|. . .|.|. . .|.|.|. . .|",
+  "+-+D+-+ + +-+ + +-+-+ + +-+ + + +",
+  "|. . .|.|.|. . . .|. .|.|. .|.|.|",
+  "+ + + +-+ + +-+-+ +-+-+ + +-+ + +",
+  "|. . .D. .|. .|. .|. .|. .|. .|.|",
+  "+ + + + +-+ + + +-+ + +-+-+ +-+ +",
+  "|. . .|.|. .|. . . .|. . . .|. .|",
+  "+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+"
+ ],
+ "wallTexture": "wall_cellar",
+ "floorTexture": "floor_dirt",
+ "ceilingTexture": "wall_dungeon",
+ "dark": true,
+ "music": "dungeon",
+ "encounterChance": 7,
+ "encounters": [
+  {
+   "monster": "cellar_rat",
+   "count": "2d3",
+   "weight": 30
+  },
+  {
+   "monster": "cave_bat",
+   "count": "1d4",
+   "weight": 15
+  },
+  {
+   "monster": "kobold",
+   "count": "1d4+1",
+   "weight": 30
+  },
+  {
+   "monster": "green_slime",
+   "count": "1d2",
+   "weight": 10
+  },
+  {
+   "monster": "giant_spider",
+   "count": "1d2",
+   "weight": 10
+  }
+ ],
+ "events": [
+  {
+   "x": 1,
+   "y": 14,
+   "type": "teleport",
+   "name": "Stairs Up",
+   "feature": "stairs_up",
+   "map": "brindlemoor",
+   "toX": 12,
+   "toY": 13,
+   "facing": "South",
+   "text": "You climb back up into the well house."
+  },
+  {
+   "x": 1,
+   "y": 13,
+   "type": "message",
+   "id": "cellar_hint",
+   "once": true,
+   "name": "Scratched Warning",
+   "text": "Scratched into the wall: 'KOBOLD KING IN THE NORTH-EAST HALL. TURN BACK.' Someone has added: 'bring a light.'"
+  },
+  {
+   "x": 7,
+   "y": 7,
+   "type": "fountain",
+   "name": "Bubbling Spring",
+   "feature": "fountain",
+   "heal": true,
+   "restoreSp": true,
+   "conditions": "poisoned",
+   "text": "A clear spring bubbles up through the flagstones. The party drinks and feels restored."
+  },
+  {
+   "x": 13,
+   "y": 3,
+   "type": "encounter",
+   "id": "chieftain_fight",
+   "once": true,
+   "name": "Chieftain's Hall",
+   "setFlag": "chieftain_dead",
+   "text": "A huge kobold in a stolen helmet bellows a challenge from atop a pile of loot!",
+   "monsters": [
+    {
+     "monster": "kobold_chief",
+     "count": "1"
+    },
+    {
+     "monster": "kobold",
+     "count": "4"
+    }
+   ]
+  },
+  {
+   "x": 14,
+   "y": 1,
+   "type": "treasure",
+   "id": "ember_cache",
+   "once": true,
+   "name": "Kobold Hoard",
+   "requiresFlag": "chieftain_dead",
+   "feature": "chest",
+   "failText": "A pile of loot, guarded by the chieftain's lingering stench. Defeat the chieftain first.",
+   "blocking": true,
+   "text": "Among the kobolds' stolen junk, something glows a deep red: the Ember Shard!",
+   "items": [
+    "ember_shard"
+   ],
+   "gold": "3d20+20",
+   "gems": 1
+  },
+  {
+   "x": 0,
+   "y": 0,
+   "type": "treasure",
+   "id": "cellar_chest_a",
+   "once": true,
+   "feature": "chest",
+   "name": "Old Crate",
+   "gold": "2d10",
+   "items": [
+    "torch",
+    "potion_healing"
+   ],
+   "text": "A forgotten supply crate."
+  },
+  {
+   "x": 11,
+   "y": 0,
+   "type": "trap",
+   "id": "cellar_trap_a",
+   "once": true,
+   "damage": "1d6",
+   "conditions": "poisoned",
+   "text": "A rusty needle trap jabs the party!"
+  },
+  {
+   "x": 1,
+   "y": 2,
+   "type": "treasure",
+   "id": "cellar_chest_b",
+   "once": true,
+   "feature": "chest",
+   "name": "Wine Rack",
+   "gold": "3d10",
+   "items": [
+    "scroll_light"
+   ],
+   "text": "Behind a rotten wine rack you find a hidden stash."
+  },
+  {
+   "x": 7,
+   "y": 2,
+   "type": "encounter",
+   "id": "cellar_spiders",
+   "once": true,
+   "name": "Webbed Alcove",
+   "text": "Thick webs fill this alcove... and something large moves within!",
+   "monsters": [
+    {
+     "monster": "giant_spider",
+     "count": "3"
+    }
+   ]
+  },
+  {
+   "x": 11,
+   "y": 2,
+   "type": "treasure",
+   "id": "cellar_chest_c",
+   "once": true,
+   "feature": "chest",
+   "name": "Dusty Chest",
+   "gold": "4d10",
+   "items": [
+    "old_journal"
+   ],
+   "xp": 40,
+   "text": "An old chest holds coins and a journal. One page reads: 'The Lodestone of Seasons sleeps in the Inner Vault. Should it die, so does spring.'"
+  }
+ ]
+}

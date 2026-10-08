@@ -1,0 +1,13 @@
+[
+  { "id": "brindle_smithy", "name": "Hammer & Tongs Smithy", "greeting": "Steel for the brave, at honest prices!",
+    "stock": [ "dagger", "club", "staff", "short_sword", "hand_axe", "mace", "spear", "long_sword", "flail", "sling", "short_bow", "crossbow",
+               "padded_armor", "leather_armor", "ring_mail", "chain_mail", "small_shield", "large_shield", "helmet", "boots" ] },
+  { "id": "brindle_apothecary", "name": "Mother Weld's Apothecary", "greeting": "Potions, poultices, and provisions, dearies.",
+    "stock": [ "potion_healing", "potion_cure", "scroll_light", "torch", "ration" ] },
+  { "id": "salt_armory", "name": "Saltreach Armory", "greeting": "Finest arms on the coast. Mind the salt spray.", "priceFactor": 1.1,
+    "stock": [ "long_sword", "broad_sword", "morning_star", "war_hammer", "battle_axe", "halberd", "great_sword", "crossbow", "long_bow",
+               "chain_mail", "banded_mail", "plate_mail", "large_shield", "helmet", "gauntlets", "boots" ] },
+  { "id": "salt_arcana", "name": "Tidewater Arcana", "greeting": "Magic, bottled and bound. Touch nothing that hums.", "priceFactor": 1.0,
+    "stock": [ "potion_healing", "potion_cure", "potion_mana", "potion_vigor", "scroll_fire", "scroll_light", "scroll_recall", "wand_lightning",
+               "ring_protection", "amulet_insight", "torch", "ration" ] }
+]

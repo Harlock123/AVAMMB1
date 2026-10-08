@@ -1,0 +1,26 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:AVAMMB1.App.ViewModels"
+             x:Class="AVAMMB1.App.Views.SaveLoadView" x:DataType="vm:SaveLoadViewModel">
+  <Border Classes="dialog" Width="760" HorizontalAlignment="Center" VerticalAlignment="Center">
+    <StackPanel Spacing="6">
+      <TextBlock Classes="title" Text="{Binding Title}" />
+      <ItemsControl ItemsSource="{Binding Slots}">
+        <ItemsControl.ItemTemplate>
+          <DataTemplate x:DataType="vm:SlotRow">
+            <Button HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" Margin="0,1"
+                    Command="{Binding $parent[UserControl].((vm:SaveLoadViewModel)DataContext).PickCommand}" CommandParameter="{Binding}">
+              <Grid ColumnDefinitions="70,*">
+                <TextBlock Text="{Binding Label}" FontWeight="Bold" Foreground="{StaticResource Gold}" />
+                <TextBlock Grid.Column="1" Text="{Binding Description}" TextTrimming="CharacterEllipsis" />
+              </Grid>
+            </Button>
+          </DataTemplate>
+        </ItemsControl.ItemTemplate>
+      </ItemsControl>
+      <TextBlock Text="{Binding Feedback}" Foreground="#9fd0ff" />
+      <TextBlock Text="{Binding Location, StringFormat='Saves are stored in: {0}'}" Classes="dim" FontSize="11" TextWrapping="Wrap" />
+      <Button Content="Back (Esc)" Command="{Binding BackCommand}" HorizontalAlignment="Right" />
+    </StackPanel>
+  </Border>
+</UserControl>

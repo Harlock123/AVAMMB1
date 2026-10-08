@@ -1,0 +1,235 @@
+{
+ "id": "wilds",
+ "name": "The Greenvale Wilds",
+ "kind": "outdoor",
+ "format": "blocks",
+ "width": 20,
+ "height": 20,
+ "grid": [
+  "^^^^^^^^^^^^^^^^^^^^",
+  "^^^^^...TTTT....~~~^",
+  "^^^..:..TTTT.....~~^",
+  "^^.V::...TT.......~^",
+  "^^^^.:........:S..~^",
+  "^^...:::::::::::..~^",
+  "^TT.....:..TT.....~^",
+  "^TTT....:..TTT.^^.~^",
+  "^TT.....:...T..^^..^",
+  "^.......:.......^..^",
+  "^..~~...:..........^",
+  "^.~~~~..:...TTT....^",
+  "^..~~...:..TTTTT...^",
+  "^.......:...TTT....^",
+  "^...TT..::::::.....^",
+  "^...:B.......::..^^^",
+  "^..TT.........:..^^^",
+  "^^...TT.......:.C^^^",
+  "^^^^...TT.........^^",
+  "^^^^^^^^^^^^^^^^^^^^"
+ ],
+ "terrain": {
+  "^": {
+   "solid": true,
+   "texture": "wall_mountain",
+   "name": "Mountains",
+   "mapColor": "#6b6b6b"
+  },
+  "T": {
+   "solid": true,
+   "opaque": false,
+   "feature": "tree",
+   "name": "Forest",
+   "mapColor": "#2f6b2f"
+  },
+  "~": {
+   "solid": true,
+   "opaque": false,
+   "floor": "water",
+   "name": "Lake",
+   "mapColor": "#2a5aa8"
+  },
+  ":": {
+   "floor": "floor_pebble",
+   "name": "Road",
+   "mapColor": "#9a7b55"
+  },
+  "B": {
+   "floor": "floor_cobble",
+   "name": "Brindlemoor",
+   "mapColor": "#c9a050"
+  },
+  "S": {
+   "floor": "floor_cobble",
+   "name": "Saltreach",
+   "mapColor": "#c9a050"
+  },
+  "C": {
+   "floor": "floor_tomb",
+   "name": "Hollow Crypt",
+   "mapColor": "#a050c9"
+  },
+  "V": {
+   "floor": "floor_marble",
+   "name": "Inner Vault",
+   "mapColor": "#50c9c9"
+  }
+ },
+ "wallTexture": "wall_mountain",
+ "floorTexture": "floor_grass",
+ "skyColor": "#5b8fd9",
+ "music": "title",
+ "encounterChance": 6,
+ "encounters": [
+  {
+   "monster": "wild_dog",
+   "count": "1d4+1",
+   "weight": 25
+  },
+  {
+   "monster": "goblin",
+   "count": "2d3",
+   "weight": 25
+  },
+  {
+   "monster": "bandit",
+   "count": "1d4",
+   "weight": 15
+  },
+  {
+   "monster": "pit_viper",
+   "count": "1d3",
+   "weight": 10
+  },
+  {
+   "monster": "orc_raider",
+   "count": "1d4",
+   "weight": 12
+  },
+  {
+   "monster": "dire_wolf",
+   "count": "1d3",
+   "weight": 8
+  },
+  {
+   "monster": "harpy",
+   "count": "1d2",
+   "weight": 5
+  },
+  {
+   "monster": "ogre",
+   "count": "1",
+   "weight": 3
+  }
+ ],
+ "events": [
+  {
+   "x": 5,
+   "y": 15,
+   "type": "teleport",
+   "name": "Brindlemoor",
+   "feature": "entrance",
+   "map": "brindlemoor",
+   "toX": 7,
+   "toY": 14,
+   "facing": "North",
+   "text": "The gates of Brindlemoor stand open."
+  },
+  {
+   "x": 15,
+   "y": 4,
+   "type": "teleport",
+   "name": "Saltreach",
+   "feature": "entrance",
+   "map": "saltreach",
+   "toX": 1,
+   "toY": 8,
+   "facing": "East",
+   "text": "Gulls cry over the harbor town of Saltreach."
+  },
+  {
+   "x": 16,
+   "y": 17,
+   "type": "teleport",
+   "name": "Hollow Crypt",
+   "feature": "entrance",
+   "map": "crypt",
+   "toX": 0,
+   "toY": 15,
+   "facing": "North",
+   "requiresItem": "crypt_key",
+   "blocking": true,
+   "failText": "An iron door carved with skulls bars the way into a hillside crypt. It has a large keyhole.",
+   "text": "The Crypt Key turns with a groan. Cold air spills out of the Hollow Crypt."
+  },
+  {
+   "x": 3,
+   "y": 3,
+   "type": "teleport",
+   "name": "The Inner Vault",
+   "feature": "portal",
+   "map": "vault",
+   "toX": 5,
+   "toY": 11,
+   "facing": "North",
+   "requiresItem": "vault_sigil",
+   "blocking": true,
+   "failText": "A great door of seamless crystal is set into the mountain. In its center is a circular recess, split by a crack.",
+   "text": "The Vault Sigil fits the recess perfectly. The crystal door dissolves into light..."
+  },
+  {
+   "x": 8,
+   "y": 9,
+   "type": "message",
+   "name": "Crossroads Signpost",
+   "feature": "column",
+   "text": "North: Inner Vault (sealed). North-east: Saltreach. South: Brindlemoor. South-east: Hollow Crypt."
+  },
+  {
+   "x": 2,
+   "y": 9,
+   "type": "treasure",
+   "id": "wilds_cache",
+   "once": true,
+   "feature": "chest",
+   "name": "Hunter's Cache",
+   "gold": "5d10",
+   "items": [
+    "ration",
+    "potion_healing"
+   ],
+   "text": "A hunter's cache hidden under a rock."
+  },
+  {
+   "x": 18,
+   "y": 9,
+   "type": "encounter",
+   "id": "wilds_ogre",
+   "once": true,
+   "name": "Ogre's Den",
+   "setFlag": "ogre_slain",
+   "text": "An ogre lumbers out of its den, roaring!",
+   "monsters": [
+    {
+     "monster": "ogre",
+     "count": "1"
+    }
+   ]
+  },
+  {
+   "x": 18,
+   "y": 10,
+   "type": "treasure",
+   "id": "ogre_hoard",
+   "once": true,
+   "feature": "chest",
+   "name": "Ogre's Hoard",
+   "gold": "6d20",
+   "items": [
+    "ring_protection"
+   ],
+   "requiresFlag": "ogre_slain",
+   "blocking": false,
+   "text": "Behind the ogre's den lies a pile of gnawed bones and a silver ring."
+  }
+ ]
+}

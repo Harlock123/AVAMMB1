@@ -205,7 +205,7 @@ public sealed class Rulebook(ContentDatabase db)
         var max = MaxSpellLevel(c);
         return school is null
             ? []
-            : db.Spells.Values.Where(s => s.School == school && s.Level <= max).OrderBy(s => s.Level).ThenBy(s => s.Name, StringComparer.Ordinal);
+            : db.Spells.Values.Where(s => s.Learnable && s.School == school && s.Level <= max).OrderBy(s => s.Level).ThenBy(s => s.Name, StringComparer.Ordinal);
     }
 
     /// <summary>Thievery skill percentage (trap disarming, lock picking).</summary>

@@ -1,0 +1,18 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:AVAMMB1.App.ViewModels"
+             x:Class="AVAMMB1.App.Views.TavernView" x:DataType="vm:TavernViewModel">
+  <Border Classes="dialog" Width="640">
+    <StackPanel Spacing="8">
+      <TextBlock Classes="title" Text="{Binding Title}" />
+      <TextBlock Text="{Binding GoldText}" Foreground="{StaticResource Gold}" />
+      <TextBlock Text="{Binding FoodStatus}" Classes="dim" TextWrapping="Wrap" />
+      <StackPanel Orientation="Horizontal">
+        <Button Content="{Binding FoodLabel}" Command="{Binding BuyFoodCommand}" />
+        <Button Content="Buy a round and listen for rumors" Command="{Binding BuyDrinksCommand}" />
+      </StackPanel>
+      <TextBlock Text="{Binding Feedback}" TextWrapping="Wrap" Foreground="#9fd0ff" FontSize="15" />
+      <Button Content="Leave (Esc)" Command="{Binding LeaveCommand}" HorizontalAlignment="Right" />
+    </StackPanel>
+  </Border>
+</UserControl>

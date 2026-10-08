@@ -1,0 +1,16 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:AVAMMB1.App.ViewModels"
+             x:Class="AVAMMB1.App.Views.EndingView" x:DataType="vm:EndingViewModel">
+  <Grid Background="#0b0a10">
+    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="14" MaxWidth="760">
+      <TextBlock Classes="title" Text="{Binding Title}" FontSize="48" HorizontalAlignment="Center" />
+      <TextBlock Text="{Binding Text}" TextWrapping="Wrap" FontSize="18" TextAlignment="Center" />
+      <TextBlock Text="{Binding Stats}" Classes="dim" TextWrapping="Wrap" TextAlignment="Center" />
+      <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+        <Button Content="Load last save" Command="{Binding LoadLastCommand}" IsVisible="{Binding CanLoad}" />
+        <Button Content="Return to title" Command="{Binding ToTitleCommand}" FontWeight="Bold" />
+      </StackPanel>
+    </StackPanel>
+  </Grid>
+</UserControl>

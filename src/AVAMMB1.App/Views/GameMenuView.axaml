@@ -1,0 +1,15 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:AVAMMB1.App.ViewModels"
+             x:Class="AVAMMB1.App.Views.GameMenuView" x:DataType="vm:GameMenuViewModel">
+  <Border Classes="dialog">
+    <StackPanel Spacing="4">
+      <TextBlock Classes="title" Text="Game Menu" HorizontalAlignment="Center" Margin="0,0,0,8" />
+      <Button Classes="big" Content="Resume" Command="{Binding ResumeCommand}" />
+      <Button Classes="big" Content="Save Game" Command="{Binding SaveCommand}" />
+      <Button Classes="big" Content="Load Game" Command="{Binding LoadCommand}" />
+      <Button Classes="big" Content="Settings" Command="{Binding SettingsCommand}" />
+      <Button Classes="big" Content="Quit to Title" Command="{Binding QuitToTitleCommand}" />
+    </StackPanel>
+  </Border>
+</UserControl>

@@ -1,0 +1,104 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:AVAMMB1.App.ViewModels"
+             xmlns:c="using:AVAMMB1.App.Controls"
+             x:Class="AVAMMB1.App.Views.CharacterSheetView" x:DataType="vm:CharacterSheetViewModel">
+  <Border Classes="dialog" Width="1100" Height="600" Padding="14">
+    <Grid ColumnDefinitions="260,14,*,14,*" RowDefinitions="Auto,*,Auto">
+      <Grid Grid.ColumnSpan="5" ColumnDefinitions="Auto,*,Auto">
+        <c:PixelImage Source="{Binding Member.Portrait}" Width="64" Height="64" Margin="0,0,10,0" />
+        <StackPanel Grid.Column="1" VerticalAlignment="Center">
+          <TextBlock Classes="title" Text="{Binding Header}" />
+          <TextBlock Text="Left/Right or 1-6 to switch characters" Classes="dim" FontSize="12" />
+        </StackPanel>
+        <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+          <Button Content="&lt; Prev" Command="{Binding PreviousCommand}" />
+          <Button Content="Next &gt;" Command="{Binding NextCommand}" />
+        </StackPanel>
+      </Grid>
+
+      <StackPanel Grid.Row="1" Margin="0,8,0,0" Spacing="2">
+        <TextBlock Classes="h2" Text="Attributes" />
+        <ItemsControl ItemsSource="{Binding Stats}">
+          <ItemsControl.ItemTemplate>
+            <DataTemplate x:DataType="x:String"><TextBlock Text="{Binding}" FontFamily="monospace" /></DataTemplate>
+          </ItemsControl.ItemTemplate>
+        </ItemsControl>
+        <TextBlock Text="{Binding Summary}" TextWrapping="Wrap" Margin="0,8,0,0" FontSize="13" LineHeight="20" />
+      </StackPanel>
+
+      <DockPanel Grid.Row="1" Grid.Column="2" Margin="0,8,0,0">
+        <TextBlock DockPanel.Dock="Top" Classes="h2" Text="Equipped" />
+        <ItemsControl ItemsSource="{Binding Equipment}">
+          <ItemsControl.ItemTemplate>
+            <DataTemplate x:DataType="vm:ItemRow">
+              <Button HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Padding="4,0" Margin="0,1" MinHeight="0"
+                      Command="{Binding $parent[UserControl].((vm:CharacterSheetViewModel)DataContext).SelectCommand}" CommandParameter="{Binding}">
+                <Grid ColumnDefinitions="70,30,*" Height="34">
+                  <TextBlock Text="{Binding SlotLabel}" Classes="dim" VerticalAlignment="Center" FontSize="12" />
+                  <Image Grid.Column="1" Classes="pixel" Source="{Binding Icon}" Width="24" Height="24" />
+                  <StackPanel Grid.Column="2" VerticalAlignment="Center">
+                    <TextBlock Text="{Binding Name}" />
+                    <TextBlock Text="{Binding Detail}" FontSize="11" Classes="dim" />
+                  </StackPanel>
+                </Grid>
+              </Button>
+            </DataTemplate>
+          </ItemsControl.ItemTemplate>
+        </ItemsControl>
+      </DockPanel>
+
+      <DockPanel Grid.Row="1" Grid.Column="4" Margin="0,8,0,0">
+        <TextBlock DockPanel.Dock="Top" Classes="h2" Text="Backpack" />
+        <ScrollViewer>
+          <StackPanel>
+            <ItemsControl ItemsSource="{Binding Backpack}">
+              <ItemsControl.ItemTemplate>
+                <DataTemplate x:DataType="vm:ItemRow">
+                  <Button HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Padding="4,2" Margin="0,1"
+                          Command="{Binding $parent[UserControl].((vm:CharacterSheetViewModel)DataContext).SelectCommand}" CommandParameter="{Binding}">
+                    <Grid ColumnDefinitions="36,*">
+                      <c:PixelImage Source="{Binding Icon}" Width="28" Height="28" />
+                      <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                        <TextBlock Text="{Binding Name}" />
+                        <TextBlock Text="{Binding Detail}" FontSize="11" Classes="dim" />
+                      </StackPanel>
+                    </Grid>
+                  </Button>
+                </DataTemplate>
+              </ItemsControl.ItemTemplate>
+            </ItemsControl>
+            <TextBlock Classes="h2" Text="Spells" IsVisible="{Binding Spells.Count}" />
+            <ItemsControl ItemsSource="{Binding Spells}">
+              <ItemsControl.ItemTemplate>
+                <DataTemplate x:DataType="x:String"><TextBlock Text="{Binding}" FontSize="12" TextWrapping="Wrap" /></DataTemplate>
+              </ItemsControl.ItemTemplate>
+            </ItemsControl>
+          </StackPanel>
+        </ScrollViewer>
+      </DockPanel>
+
+      <StackPanel Grid.Row="2" Grid.ColumnSpan="5" Spacing="4" Margin="0,8,0,0">
+        <TextBlock Text="{Binding SelectedDescription}" Foreground="{StaticResource Gold}" />
+        <StackPanel Orientation="Horizontal" IsEnabled="{Binding HasSelection}">
+          <Button Content="Equip / Remove" Command="{Binding EquipOrRemoveCommand}" />
+          <Button Content="Use" Command="{Binding UseCommand}" />
+          <Button Content="Drop" Command="{Binding DropCommand}" />
+          <TextBlock Text="  Give to:" VerticalAlignment="Center" Classes="dim" />
+          <ItemsControl ItemsSource="{Binding Party}">
+            <ItemsControl.ItemsPanel><ItemsPanelTemplate><StackPanel Orientation="Horizontal" /></ItemsPanelTemplate></ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+              <DataTemplate x:DataType="vm:PartyMemberViewModel">
+                <Button Classes="chip" Content="{Binding Name}" Command="{Binding $parent[UserControl].((vm:CharacterSheetViewModel)DataContext).GiveCommand}" CommandParameter="{Binding}" />
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
+        </StackPanel>
+        <Grid ColumnDefinitions="*,Auto">
+          <TextBlock Text="{Binding Feedback}" Foreground="#9fd0ff" VerticalAlignment="Center" />
+          <Button Grid.Column="1" Content="Close (Esc)" Command="{Binding CloseCommand}" />
+        </Grid>
+      </StackPanel>
+    </Grid>
+  </Border>
+</UserControl>

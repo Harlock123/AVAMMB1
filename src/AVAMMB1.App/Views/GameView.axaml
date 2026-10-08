@@ -1,0 +1,115 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:AVAMMB1.App.ViewModels"
+             xmlns:c="using:AVAMMB1.App.Controls"
+             x:Class="AVAMMB1.App.Views.GameView"
+             x:DataType="vm:GameViewModel">
+  <Grid RowDefinitions="*,Auto" ColumnDefinitions="*,380" Margin="8">
+    <!-- First-person view -->
+    <Border Classes="panel" Padding="4" Margin="0,0,8,8">
+      <Grid>
+        <c:SceneView Scene="{Binding Scene}" />
+        <Border VerticalAlignment="Top" HorizontalAlignment="Center" Background="#aa000000" CornerRadius="0,0,6,6" Padding="14,4">
+          <TextBlock Text="{Binding LocationText}" Foreground="{StaticResource Gold}" FontSize="18" FontWeight="Bold" />
+        </Border>
+        <Border VerticalAlignment="Bottom" HorizontalAlignment="Center" Background="#aa000000" CornerRadius="6,6,0,0" Padding="12,3">
+          <TextBlock Text="{Binding CompassText}" FontSize="14" />
+        </Border>
+      </Grid>
+    </Border>
+
+    <!-- Side panel -->
+    <Border Grid.Column="1" Classes="panel" Margin="0,0,0,8" Padding="8">
+      <DockPanel>
+        <StackPanel DockPanel.Dock="Top" Spacing="6">
+          <c:MapView MapInfo="{Binding MapInfo}" Radius="5" Height="200" IsVisible="{Binding ShowMinimap}" />
+          <Grid ColumnDefinitions="*,Auto">
+            <TextBlock Text="{Binding GoldText}" Foreground="{StaticResource Gold}" />
+            <TextBlock Grid.Column="1" Text="{Binding TimeText}" Classes="dim" />
+          </Grid>
+          <!-- Movement -->
+          <Grid ColumnDefinitions="Auto,Auto,Auto" RowDefinitions="Auto,Auto" HorizontalAlignment="Center">
+            <Button Classes="nav" Content="&#x21B6;" ToolTip.Tip="Turn left (Left / A)" Command="{Binding TurnLeftCommand}" />
+            <Button Grid.Column="1" Classes="nav" Content="&#x2191;" ToolTip.Tip="Forward (Up / W)" Command="{Binding ForwardCommand}" />
+            <Button Grid.Column="2" Classes="nav" Content="&#x21B7;" ToolTip.Tip="Turn right (Right / D)" Command="{Binding TurnRightCommand}" />
+            <Button Grid.Row="1" Classes="nav" Content="&#x2190;" ToolTip.Tip="Strafe left (Q)" Command="{Binding StrafeLeftCommand}" />
+            <Button Grid.Row="1" Grid.Column="1" Classes="nav" Content="&#x2193;" ToolTip.Tip="Back (Down / S)" Command="{Binding BackCommand}" />
+            <Button Grid.Row="1" Grid.Column="2" Classes="nav" Content="&#x2192;" ToolTip.Tip="Strafe right (E)" Command="{Binding StrafeRightCommand}" />
+          </Grid>
+          <UniformGrid Columns="3">
+            <Button Content="Use (Spc)" Command="{Binding InteractCommand}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" />
+            <Button Content="Rest (R)" Command="{Binding RestCommand}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" />
+            <Button Content="Cast (K)" Command="{Binding CastCommand}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" />
+            <Button Content="Party (I)" Command="{Binding CharactersCommand}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" />
+            <Button Content="Map (M)" Command="{Binding AutomapCommand}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" />
+            <Button Content="Menu (Esc)" Command="{Binding MenuCommand}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" />
+          </UniformGrid>
+          <TextBlock Classes="h2" Text="Journal" Margin="0,4,0,0" />
+        </StackPanel>
+        <ScrollViewer x:Name="LogScroller" Background="#0b0a10">
+          <ItemsControl ItemsSource="{Binding Messages}" Margin="6,4">
+            <ItemsControl.ItemTemplate>
+              <DataTemplate x:DataType="vm:MessageViewModel">
+                <TextBlock Text="{Binding Text}" Foreground="{Binding Brush}" TextWrapping="Wrap" FontSize="13" Margin="0,1" />
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
+        </ScrollViewer>
+      </DockPanel>
+    </Border>
+
+    <!-- Party roster -->
+    <ItemsControl Grid.Row="1" Grid.ColumnSpan="2" ItemsSource="{Binding Party}">
+      <ItemsControl.ItemsPanel>
+        <ItemsPanelTemplate><UniformGrid Columns="6" /></ItemsPanelTemplate>
+      </ItemsControl.ItemsPanel>
+      <ItemsControl.ItemTemplate>
+        <DataTemplate x:DataType="vm:PartyMemberViewModel">
+          <Button Padding="0" Margin="0,0,6,0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch"
+                  Background="Transparent" BorderThickness="0"
+                  Command="{Binding $parent[UserControl].((vm:GameViewModel)DataContext).OpenMemberCommand}" CommandParameter="{Binding}">
+            <Border Classes="panel" Padding="6" Classes.active="{Binding IsActive}">
+              <Border.Styles>
+                <Style Selector="Border.active">
+                  <Setter Property="BorderBrush" Value="#ffd75e" />
+                  <Setter Property="Background" Value="#2e2840" />
+                </Style>
+              </Border.Styles>
+              <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto">
+                <Border Grid.RowSpan="3" Background="#0b0a10" Margin="0,0,6,0" CornerRadius="2">
+                  <c:PixelImage Source="{Binding Portrait}" Width="48" Height="48" />
+                </Border>
+                <TextBlock Grid.Column="1" Text="{Binding Name}" FontWeight="Bold" />
+                <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding ClassLevel}" Classes="dim" FontSize="11" TextTrimming="CharacterEllipsis" />
+                <StackPanel Grid.Column="1" Grid.Row="2" Orientation="Horizontal" Spacing="8">
+                  <TextBlock FontSize="12"><Run Text="AC " Foreground="{StaticResource Dim}" /><Run Text="{Binding ArmorClass}" /></TextBlock>
+                  <TextBlock FontSize="12"><Run Text="Food " Foreground="{StaticResource Dim}" /><Run Text="{Binding Food}" /></TextBlock>
+                  <TextBlock FontSize="12" Text="LVL!" Foreground="#8fe08f" IsVisible="{Binding CanLevel}" FontWeight="Bold" />
+                </StackPanel>
+                <Grid Grid.Row="3" Grid.ColumnSpan="2" ColumnDefinitions="26,*,60" Margin="0,4,0,0">
+                  <TextBlock Text="HP" FontSize="11" Classes="dim" />
+                  <ProgressBar Grid.Column="1" Minimum="0" Maximum="1" Value="{Binding HpFraction}" Foreground="{StaticResource HpBrush}" VerticalAlignment="Center" />
+                  <TextBlock Grid.Column="2" Text="{Binding HpText}" FontSize="11" HorizontalAlignment="Right" />
+                </Grid>
+                <Grid Grid.Row="4" Grid.ColumnSpan="2" ColumnDefinitions="26,*,60">
+                  <TextBlock Text="SP" FontSize="11" Classes="dim" />
+                  <ProgressBar Grid.Column="1" Minimum="0" Maximum="1" Value="{Binding SpFraction}" Foreground="{StaticResource SpBrush}" VerticalAlignment="Center" />
+                  <TextBlock Grid.Column="2" Text="{Binding SpText}" FontSize="11" HorizontalAlignment="Right" />
+                </Grid>
+                <Border Grid.ColumnSpan="2" Grid.RowSpan="5" HorizontalAlignment="Right" VerticalAlignment="Top"
+                        Background="#aa7a2020" CornerRadius="3" Padding="4,0" IsVisible="{Binding !IsOk}">
+                  <TextBlock Text="{Binding Status}" FontSize="11" />
+                </Border>
+              </Grid>
+            </Border>
+          </Button>
+        </DataTemplate>
+      </ItemsControl.ItemTemplate>
+    </ItemsControl>
+
+    <!-- Overlay dialogs -->
+    <Border Grid.ColumnSpan="2" Background="#99000000" IsVisible="{Binding HasOverlay}" Margin="0,0,0,8">
+      <ContentControl Content="{Binding Overlay}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+    </Border>
+  </Grid>
+</UserControl>

@@ -1,0 +1,48 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:AVAMMB1.App.ViewModels"
+             xmlns:c="using:AVAMMB1.App.Controls"
+             xmlns:imaging="using:Avalonia.Media.Imaging"
+             x:Class="AVAMMB1.App.Views.TitleView"
+             x:DataType="vm:TitleViewModel">
+  <Grid>
+    <Grid.Background>
+      <RadialGradientBrush Center="50%,35%" GradientOrigin="50%,35%" RadiusX="70%" RadiusY="70%">
+        <GradientStop Color="#2b2140" Offset="0" />
+        <GradientStop Color="#0b0a10" Offset="1" />
+      </RadialGradientBrush>
+    </Grid.Background>
+    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="6">
+      <ItemsControl ItemsSource="{Binding Showcase}" HorizontalAlignment="Center" Margin="0,0,0,10">
+        <ItemsControl.ItemsPanel>
+          <ItemsPanelTemplate><StackPanel Orientation="Horizontal" Spacing="18" /></ItemsPanelTemplate>
+        </ItemsControl.ItemsPanel>
+        <ItemsControl.ItemTemplate>
+          <DataTemplate x:DataType="imaging:Bitmap">
+            <c:PixelImage Source="{Binding}" Width="96" Height="96" />
+          </DataTemplate>
+        </ItemsControl.ItemTemplate>
+      </ItemsControl>
+      <TextBlock Text="AVAM&amp;M" FontSize="96" FontWeight="Black" HorizontalAlignment="Center"
+                 Foreground="{StaticResource Gold}" LetterSpacing="6">
+        <TextBlock.Effect>
+          <DropShadowEffect Color="#ff7a2a" BlurRadius="24" OffsetX="0" OffsetY="0" Opacity="0.7" />
+        </TextBlock.Effect>
+      </TextBlock>
+      <TextBlock Text="Book One - Secrets of the Inner Vault" FontSize="22" HorizontalAlignment="Center" Foreground="#d8cfe8" />
+      <TextBlock Text="A first-person, turn-based fantasy role-playing adventure" FontSize="14" HorizontalAlignment="Center" Classes="dim" Margin="0,0,0,24" />
+      <Button Classes="big" HorizontalAlignment="Center" Content="New Game  (N)" Command="{Binding NewGameCommand}" />
+      <Button Classes="big" HorizontalAlignment="Center" Content="Continue  (C)" Command="{Binding ContinueCommand}" IsEnabled="{Binding CanContinue}" />
+      <Button Classes="big" HorizontalAlignment="Center" Content="Load Game  (L)" Command="{Binding LoadCommand}" />
+      <Button Classes="big" HorizontalAlignment="Center" Content="Settings  (S)" Command="{Binding SettingsCommand}" />
+      <Button Classes="big" HorizontalAlignment="Center" Content="Credits" Command="{Binding CreditsCommand}" />
+      <Button Classes="big" HorizontalAlignment="Center" Content="Quit" Command="{Binding QuitCommand}" />
+      <TextBlock Text="{Binding Error}" Foreground="#ff8a7a" HorizontalAlignment="Center" />
+    </StackPanel>
+    <StackPanel VerticalAlignment="Bottom" Margin="12" Spacing="2">
+      <TextBlock Text="{Binding Version}" Classes="dim" FontSize="12" />
+      <TextBlock Classes="dim" FontSize="12" TextWrapping="Wrap"
+                 Text="Unofficial fan re-implementation inspired by classic 1980s CRPG mechanics. Not affiliated with or endorsed by any rights holder. All content is original or openly licensed - see Credits." />
+    </StackPanel>
+  </Grid>
+</UserControl>

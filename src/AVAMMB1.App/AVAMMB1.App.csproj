@@ -1,0 +1,44 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <AssemblyName>AVAMMB1</AssemblyName>
+    <RootNamespace>AVAMMB1.App</RootNamespace>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <ApplicationIcon>$(RepoRoot)Assets/Icons/avammb1.ico</ApplicationIcon>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+    <BuiltInComInteropSupport>false</BuiltInComInteropSupport>
+    <!-- Publishing defaults (see build-all.sh). -->
+    <PublishSingleFile>true</PublishSingleFile>
+    <SelfContained>true</SelfContained>
+    <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+    <EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
+    <DebugType>embedded</DebugType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Avalonia" Version="$(AvaloniaVersion)" />
+    <PackageReference Include="Avalonia.Desktop" Version="$(AvaloniaVersion)" />
+    <PackageReference Include="Avalonia.Themes.Fluent" Version="$(AvaloniaVersion)" />
+    <PackageReference Include="Avalonia.Fonts.Inter" Version="$(AvaloniaVersion)" />
+    <PackageReference Include="Avalonia.Headless" Version="$(AvaloniaVersion)" />
+    <PackageReference Include="Avalonia.Diagnostics" Version="$(AvaloniaVersion)" Condition="'$(Configuration)' == 'Debug'" />
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.12" />
+    <PackageReference Include="NVorbis" Version="0.10.5" />
+    <PackageReference Include="Silk.NET.OpenAL" Version="2.23.0" />
+    <PackageReference Include="Silk.NET.OpenAL.Soft.Native" Version="1.23.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../AVAMMB1.Core/AVAMMB1.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Openly licensed graphics and audio (see ASSETS_LICENSES.md). -->
+    <AvaloniaResource Include="$(RepoRoot)Assets/Graphics/**/*.png" Link="Assets/Graphics/%(RecursiveDir)%(Filename)%(Extension)" />
+    <AvaloniaResource Include="$(RepoRoot)Assets/Audio/**/*.ogg" Link="Assets/Audio/%(RecursiveDir)%(Filename)%(Extension)" />
+    <AvaloniaResource Include="$(RepoRoot)Assets/Icons/*.png" Link="Assets/Icons/%(Filename)%(Extension)" />
+    <AvaloniaResource Include="$(RepoRoot)CREDITS.md" Link="Assets/Text/CREDITS.md" />
+  </ItemGroup>
+</Project>

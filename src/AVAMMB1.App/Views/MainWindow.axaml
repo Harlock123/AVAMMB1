@@ -1,0 +1,11 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:AVAMMB1.App.ViewModels"
+        x:Class="AVAMMB1.App.Views.MainWindow"
+        x:DataType="vm:MainViewModel"
+        Title="AVAM&amp;M"
+        Icon="avares://AVAMMB1/Assets/Icons/avammb1.png"
+        Width="1280" Height="800" MinWidth="1024" MinHeight="700"
+        WindowStartupLocation="CenterScreen">
+  <ContentControl Content="{Binding CurrentScreen}" />
+</Window>

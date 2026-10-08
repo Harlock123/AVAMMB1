@@ -1,0 +1,47 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:AVAMMB1.App.ViewModels"
+             x:Class="AVAMMB1.App.Views.SpellCastView" x:DataType="vm:SpellCastViewModel">
+  <Border Classes="dialog" Width="760" MaxHeight="560">
+    <DockPanel>
+      <StackPanel DockPanel.Dock="Top" Spacing="6">
+        <TextBlock Classes="title" Text="Cast a Spell" />
+        <ListBox ItemsSource="{Binding Casters}" SelectedItem="{Binding SelectedCaster}" Background="Transparent">
+          <ListBox.ItemsPanel><ItemsPanelTemplate><WrapPanel /></ItemsPanelTemplate></ListBox.ItemsPanel>
+          <ListBox.ItemTemplate>
+            <DataTemplate x:DataType="vm:CasterOption"><TextBlock Text="{Binding Label}" /></DataTemplate>
+          </ListBox.ItemTemplate>
+        </ListBox>
+      </StackPanel>
+      <StackPanel DockPanel.Dock="Bottom" Spacing="6" Margin="0,8,0,0">
+        <StackPanel Orientation="Horizontal" IsVisible="{Binding NeedsAlly}">
+          <TextBlock Text="Target: " VerticalAlignment="Center" />
+          <ItemsControl ItemsSource="{Binding Party}">
+            <ItemsControl.ItemsPanel><ItemsPanelTemplate><StackPanel Orientation="Horizontal" /></ItemsPanelTemplate></ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+              <DataTemplate x:DataType="vm:PartyMemberViewModel">
+                <Button Classes="chip" Command="{Binding $parent[UserControl].((vm:SpellCastViewModel)DataContext).TargetCommand}" CommandParameter="{Binding}">
+                  <TextBlock><Run Text="{Binding Name}" /><Run Text=" " /><Run Text="{Binding HpText}" /></TextBlock>
+                </Button>
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
+        </StackPanel>
+        <Grid ColumnDefinitions="*,Auto">
+          <TextBlock Text="{Binding Feedback}" TextWrapping="Wrap" Foreground="#9fd0ff" />
+          <Button Grid.Column="1" Content="Close (Esc)" Command="{Binding CloseCommand}" />
+        </Grid>
+      </StackPanel>
+      <ScrollViewer>
+        <ItemsControl ItemsSource="{Binding SpellList}">
+          <ItemsControl.ItemTemplate>
+            <DataTemplate x:DataType="vm:SpellOption">
+              <Button HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" Content="{Binding Label}" IsEnabled="{Binding Enabled}"
+                      Command="{Binding $parent[UserControl].((vm:SpellCastViewModel)DataContext).CastCommand}" CommandParameter="{Binding}" />
+            </DataTemplate>
+          </ItemsControl.ItemTemplate>
+        </ItemsControl>
+      </ScrollViewer>
+    </DockPanel>
+  </Border>
+</UserControl>

@@ -1,0 +1,21 @@
+[
+  { "id": "human", "name": "Human", "portrait": "human",
+    "description": "Adaptable and ambitious, humans have no great strengths or weaknesses.",
+    "statModifiers": {}, "resistances": {} },
+  { "id": "elf", "name": "Elf", "portrait": "elf",
+    "description": "Graceful and keen-eyed, elves are natural archers and mages but frail of body.",
+    "statModifiers": { "intellect": 2, "accuracy": 1, "might": -1, "endurance": -2 },
+    "resistances": { "magic": 10 } },
+  { "id": "dwarf", "name": "Dwarf", "portrait": "dwarf",
+    "description": "Stout mountain folk, dwarves are tough and strong but slow to move.",
+    "statModifiers": { "endurance": 2, "might": 1, "intellect": -1, "speed": -2 },
+    "resistances": { "poison": 25 } },
+  { "id": "gnome", "name": "Gnome", "portrait": "gnome",
+    "description": "Small, clever and uncommonly lucky.",
+    "statModifiers": { "luck": 2, "intellect": 1, "might": -2, "speed": -1 },
+    "resistances": { "magic": 15 } },
+  { "id": "halforc", "name": "Half-Orc", "portrait": "halforc",
+    "description": "Brawny and fierce, half-orcs make formidable warriors.",
+    "statModifiers": { "might": 2, "endurance": 1, "intellect": -2, "personality": -1 },
+    "resistances": { "cold": 10 } }
+]
