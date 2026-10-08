@@ -87,10 +87,16 @@ public static class HeadlessRunner
     private static void Capture(string dir, string name)
     {
         Pump();
-        var frame = _window.CaptureRenderedFrame() ?? throw new InvalidOperationException("No frame rendered.");
         Directory.CreateDirectory(dir);
         var path = Path.Combine(dir, name + ".png");
-        frame.Save(path);
+        // Render into a bitmap we own (the headless renderer's own frame buffer can be recycled
+        // underneath us, which crashed Skia's PNG encoder intermittently).
+        var size = new PixelSize((int)_window.ClientSize.Width, (int)_window.ClientSize.Height);
+        using (var rtb = new Avalonia.Media.Imaging.RenderTargetBitmap(size, new Vector(96, 96)))
+        {
+            rtb.Render(_window);
+            rtb.Save(path);
+        }
         Console.WriteLine("captured " + path);
     }
 
