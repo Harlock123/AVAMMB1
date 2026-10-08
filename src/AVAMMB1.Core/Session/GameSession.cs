@@ -394,7 +394,8 @@ public sealed class GameSession
                 continue;
             }
             RunEvent(map, ev, result);
-            if (result.MapChanged || result.CombatStarted || result.Victory)
+            // A quest step ends processing for this visit so follow-up texts don't stack up.
+            if (result.MapChanged || result.CombatStarted || result.Victory || ev.Type == MapEventKind.Quest)
             {
                 return;
             }

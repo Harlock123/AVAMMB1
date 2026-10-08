@@ -1,0 +1,111 @@
+name: build-and-release
+
+on:
+  push:
+    branches: [ main ]
+    tags: [ 'v*' ]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+env:
+  DOTNET_NOLOGO: true
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+      - name: Build (warnings are errors)
+        run: dotnet build AVAMMB1.sln -c Release
+      - name: Test
+        run: dotnet test AVAMMB1.sln -c Release --no-build --logger "trx;LogFileName=results.trx"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: test-results
+          path: '**/TestResults/*.trx'
+
+  publish:
+    needs: test
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { os: windows-latest, rid: win-x64,     smoke: true }
+          - { os: windows-latest, rid: win-arm64,   smoke: false }
+          - { os: ubuntu-latest,  rid: linux-x64,   smoke: true }
+          - { os: ubuntu-latest,  rid: linux-arm64, smoke: false }
+          - { os: macos-latest,   rid: osx-arm64,   smoke: true }
+          - { os: macos-latest,   rid: osx-x64,     smoke: false }
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Version from tag
+        shell: bash
+        run: |
+          if [[ "$GITHUB_REF" == refs/tags/v* ]]; then echo "VERSION=${GITHUB_REF#refs/tags/v}" >> "$GITHUB_ENV"; fi
+
+      - name: Publish (bash)
+        if: runner.os != 'Windows'
+        shell: bash
+        env:
+          RIDS: ${{ matrix.rid }}
+          SKIP_TESTS: '1'
+        run: ./build-all.sh
+
+      - name: Publish (PowerShell)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: ./build-all.ps1 -Rids ${{ matrix.rid }} -SkipTests
+
+      - name: Smoke test (Linux, headless)
+        if: matrix.smoke && runner.os == 'Linux'
+        run: ./dist/${{ matrix.rid }}/AVAMMB1 --smoke-test
+
+      - name: Smoke test (Windows)
+        if: matrix.smoke && runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          $p = Start-Process -FilePath "dist/${{ matrix.rid }}/AVAMMB1.exe" -ArgumentList '--smoke-test' -Wait -PassThru -NoNewWindow
+          if ($p.ExitCode -ne 0) { throw "smoke test failed: $($p.ExitCode)" }
+
+      - name: Smoke test (macOS)
+        if: matrix.smoke && runner.os == 'macOS'
+        run: ./dist/${{ matrix.rid }}/AVAMMB1.app/Contents/MacOS/AVAMMB1 --smoke-test
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: AVAMMB1-${{ matrix.rid }}
+          path: |
+            dist/*.zip
+            dist/*.tar.gz
+
+  release:
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: publish
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+          pattern: AVAMMB1-*
+          merge-multiple: true
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: artifacts/*
+          generate_release_notes: true
+          body: |
+            Single-file, self-contained builds of AVAM&M (unofficial fan re-implementation).
+            macOS builds are ad-hoc signed but not notarized: right-click -> Open on first launch,
+            or run `xattr -dr com.apple.quarantine AVAMMB1.app`.

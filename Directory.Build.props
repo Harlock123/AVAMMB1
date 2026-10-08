@@ -11,5 +11,6 @@
     <Copyright>Copyright (c) 2026 AVAM&amp;M contributors (MIT)</Copyright>
     <AvaloniaVersion>11.3.22</AvaloniaVersion>
     <RepoRoot>$(MSBuildThisFileDirectory)</RepoRoot>
+    <DebugType>embedded</DebugType>
   </PropertyGroup>
 </Project>

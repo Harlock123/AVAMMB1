@@ -166,6 +166,11 @@ public sealed partial class GameViewModel : ViewModelBase
     {
         AddMessages(r.Messages.Where(m => m.Kind != MessageKind.Story || r.StoryText is null));
         Refresh();
+        if (!r.CombatStarted && !Session.State.Party.Any(c => c.CanAct))
+        {
+            _main.ShowGameOver();
+            return;
+        }
         if (r.Victory)
         {
             Overlay = new StoryViewModel(this, r.StoryTitle ?? "Victory!", r.StoryText ?? "", _main.ShowVictory);

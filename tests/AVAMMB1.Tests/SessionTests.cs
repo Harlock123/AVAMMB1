@@ -81,8 +81,10 @@ public class SessionTests
         // Bring the shard.
         s.State.Party[0].Backpack.Add(new AVAMMB1.Core.Items.ItemInstance("ember_shard"));
         s.Move(MoveKind.Back);
-        s.Move(MoveKind.Forward);
+        var quest = s.Move(MoveKind.Forward);
         Assert.Contains("ember_given", s.State.Flags);
+        Assert.DoesNotContain("Frost Shard waits", quest.StoryText); // quest text is shown alone
+        Assert.Contains("Frost Shard waits", s.Interact().StoryText);
         Assert.True(AVAMMB1.Core.Items.Inventory.AnyoneHas(s.State.Party, "crypt_key"));
         Assert.False(AVAMMB1.Core.Items.Inventory.AnyoneHas(s.State.Party, "ember_shard"));
     }

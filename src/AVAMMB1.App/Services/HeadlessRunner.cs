@@ -46,6 +46,11 @@ public static class HeadlessRunner
             if (options.SmokeTest)
             {
                 SmokeTest(vm);
+                using (var audio = OpenAlAudioService.Create())
+                {
+                    var detail = audio is OpenAlAudioService al ? $"OpenAL ok, test buffer {al.Preload("ui")}" : audio.Status;
+                    Console.WriteLine("Audio: " + detail);
+                }
                 Console.WriteLine("SMOKE TEST OK");
                 return 0;
             }

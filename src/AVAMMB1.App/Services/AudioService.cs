@@ -162,6 +162,17 @@ public sealed unsafe class OpenAlAudioService : IAudioService
         return buffer;
     }
 
+    /// <summary>Decodes and uploads a sound without playing it (used by <c>--smoke-test</c>).</summary>
+    /// <param name="sfx">Effect key.</param>
+    /// <returns>OpenAL buffer id.</returns>
+    public uint Preload(string sfx)
+    {
+        lock (_lock)
+        {
+            return GetSfxBuffer(sfx);
+        }
+    }
+
     /// <inheritdoc />
     public void PlaySfx(string sfx)
     {
