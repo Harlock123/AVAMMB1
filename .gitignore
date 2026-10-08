@@ -1,0 +1,8 @@
+bin/
+obj/
+dist/
+*.user
+.idea/
+.vs/
+*.swp
+TestResults/

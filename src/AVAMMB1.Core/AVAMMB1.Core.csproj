@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <RootNamespace>AVAMMB1.Core</RootNamespace>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <IsAotCompatible>true</IsAotCompatible>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- Game content (monsters, items, spells, maps...) lives in /Assets/Data and is embedded as a fallback. -->
+    <EmbeddedResource Include="$(RepoRoot)Assets/Data/**/*.json" LogicalName="AVAMMB1.Data/%(RecursiveDir)%(Filename)%(Extension)" />
+  </ItemGroup>
+  <ItemGroup>
+    <InternalsVisibleTo Include="AVAMMB1.Tests" />
+  </ItemGroup>
+</Project>
