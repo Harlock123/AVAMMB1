@@ -66,7 +66,33 @@ public partial class App : Application
         {
             var audio = Options.Mute ? new NullAudioService("muted by --mute") : OpenAlAudioService.Create();
             BuildServices(Options, audio);
-            var vm = Services.GetRequiredService<MainViewModel>();
+            MainViewModel vm;
+            try
+            {
+                vm = Services.GetRequiredService<MainViewModel>();
+            }
+            catch (InvalidDataException ex)
+            {
+                // Broken (modded) content: explain instead of crashing silently.
+                desktop.MainWindow = new Avalonia.Controls.Window
+                {
+                    Title = "AVAM&M - content error",
+                    Width = 760,
+                    Height = 420,
+                    Content = new Avalonia.Controls.ScrollViewer
+                    {
+                        Content = new Avalonia.Controls.SelectableTextBlock
+                        {
+                            Text = "The game content could not be loaded:\n\n" + ex.Message,
+                            TextWrapping = Avalonia.Media.TextWrapping.Wrap,
+                            Margin = new Thickness(16),
+                        },
+                    },
+                };
+                audio.Dispose();
+                base.OnFrameworkInitializationCompleted();
+                return;
+            }
             var window = new MainWindow { DataContext = vm };
             vm.QuitRequested += (_, _) => desktop.Shutdown();
             desktop.MainWindow = window;

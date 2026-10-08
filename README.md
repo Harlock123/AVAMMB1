@@ -150,12 +150,24 @@ reflection that trimming can break; ReadyToRun is used instead for faster startu
 
 ### Build verification status (v1.0.0)
 
-| RID | Published by script | Executed |
+Built on a Linux ARM64 (aarch64) machine with the .NET 10.0.400 SDK:
+
+| RID | Produced by `build-all.sh` | Actually executed |
 |---|---|---|
-| linux-arm64 | yes (on the dev machine) | **yes** - native host: `--smoke-test` passes (UI render, movement, OpenAL init) and the windowed game was launched |
-| linux-x64 | yes (cross-compiled) | no - not runnable on the ARM64 dev machine; CI runs the smoke test on `ubuntu-latest` |
-| win-x64, win-arm64 | yes (cross-compiled) | no - CI smoke-tests win-x64 on `windows-latest` |
-| osx-x64, osx-arm64 | yes (cross-compiled, `.app` bundle) | no - CI builds/signs on `macos-latest` and smoke-tests the native arch |
+| linux-arm64 | yes | **yes** - extracted archive passes `--smoke-test` (UI render, movement, OpenAL init); all README screenshots were captured with the published binary; the windowed game was launched on a Wayland/XWayland desktop |
+| linux-x64 | yes (cross-compiled) | no (no x86-64 environment available) |
+| win-x64, win-arm64 | yes (cross-compiled, PE32+ GUI executables) | no |
+| osx-x64, osx-arm64 | yes (cross-compiled, `.app` bundle; not code-signed when built on Linux) | no |
+
+The GitHub Actions workflow is written to build every RID on its native OS runner and smoke-test
+`win-x64`, `linux-x64` and `osx-arm64`, but it has **not been run yet** (the repository had no
+GitHub remote at the time of writing).
+
+Gameplay verification: 69 unit/integration tests pass, including a scripted playthrough that walks
+the party (with normal movement commands) through every map, fights all scripted battles and
+reaches the victory event, and a balance check of a lightly trained starting party against the
+first dungeon's boss. The UI flow title -> party creation -> town -> shop -> dungeon -> combat ->
+inventory -> automap -> spells -> settings is exercised headlessly by `--screenshot`.
 
 ## Project structure
 

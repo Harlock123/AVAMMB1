@@ -312,6 +312,13 @@ public static class HeadlessRunner
         {
             WalkTo(game, s, x, y);
         }
+        mirela.Sp = mirela.MaxSp;
+        game.AddMessages(s.Spells.Cast(mirela, s.Content.Spell("c_light"), s.State, null, -1, null).Messages);
+        for (var i = 0; i < 4 && s.CurrentMap.Probe(s.State.X, s.State.Y, s.State.Facing).Wall != AVAMMB1.Core.World.WallKind.None; i++)
+        {
+            game.TurnRightCommand.Execute(null); // face down a corridor
+        }
+        game.Refresh();
         game.AutomapCommand.Execute(null);
         Capture(dir, "11-automap-dungeon");
         game.CloseOverlay();
