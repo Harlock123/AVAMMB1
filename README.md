@@ -13,6 +13,8 @@ Crypt and unseal the Inner Vault.
 > sounds. All trademarks belong to their owners. All game content is original; all art and audio is
 > openly licensed (CC0) - see [ASSETS_LICENSES.md](ASSETS_LICENSES.md).
 
+**[Download the latest release](https://github.com/Harlock123/AVAMMB1/releases/latest)** - Windows, Linux and macOS, x64 and ARM64.
+
 Code identifiers, the solution and executables use the name **`AVAMMB1`** (`AVAMMB1.sln`,
 `AVAMMB1.exe`, `AVAMMB1-1.0.0-linux-x64.tar.gz`, ...), because `&` is unsafe in paths.
 
@@ -64,14 +66,17 @@ All screenshots are real frames rendered by the game itself (Avalonia headless +
 
 ## Download and install
 
-Grab the archive for your platform from the GitHub Releases page (built by
-[`.github/workflows/release.yml`](.github/workflows/release.yml)), or build it yourself (below).
+Download the archive for your platform from the **[latest release](https://github.com/Harlock123/AVAMMB1/releases/latest)**
+(all releases: [https://github.com/Harlock123/AVAMMB1/releases](https://github.com/Harlock123/AVAMMB1/releases)), or build it yourself (below). Direct links for v1.0.0:
 
-| Platform | Archive | How to run |
+| Platform | Download | How to run |
 |---|---|---|
-| Windows x64 / ARM64 | `AVAMMB1-<ver>-win-x64.zip` / `win-arm64.zip` | Unzip, run `AVAMMB1.exe`. SmartScreen may warn about an unsigned app: *More info -> Run anyway*. |
-| Linux x64 / ARM64 | `AVAMMB1-<ver>-linux-x64.tar.gz` / `linux-arm64.tar.gz` | `tar xzf AVAMMB1-*.tar.gz && ./AVAMMB1`. Needs an X11 session (XWayland works) and the usual desktop libraries (fontconfig, libX11/libICE/libSM). |
-| macOS Intel / Apple Silicon | `AVAMMB1-<ver>-osx-x64.tar.gz` / `osx-arm64.tar.gz` | Extract, then open `AVAMMB1.app`. The app is **not notarized**: right-click -> *Open* the first time, or run `xattr -dr com.apple.quarantine AVAMMB1.app`. |
+| Windows x64 | [AVAMMB1-1.0.0-win-x64.zip](https://github.com/Harlock123/AVAMMB1/releases/download/v1.0.0/AVAMMB1-1.0.0-win-x64.zip) | Unzip, run `AVAMMB1.exe`. SmartScreen may warn about an unsigned app: *More info -> Run anyway*. |
+| Windows ARM64 | [AVAMMB1-1.0.0-win-arm64.zip](https://github.com/Harlock123/AVAMMB1/releases/download/v1.0.0/AVAMMB1-1.0.0-win-arm64.zip) | Same as above. |
+| Linux x64 | [AVAMMB1-1.0.0-linux-x64.tar.gz](https://github.com/Harlock123/AVAMMB1/releases/download/v1.0.0/AVAMMB1-1.0.0-linux-x64.tar.gz) | `tar xzf AVAMMB1-*.tar.gz && ./AVAMMB1`. Needs an X11 session (XWayland works) and the usual desktop libraries (fontconfig, libX11/libICE/libSM). |
+| Linux ARM64 | [AVAMMB1-1.0.0-linux-arm64.tar.gz](https://github.com/Harlock123/AVAMMB1/releases/download/v1.0.0/AVAMMB1-1.0.0-linux-arm64.tar.gz) | Same as above. |
+| macOS Apple Silicon | [AVAMMB1-1.0.0-osx-arm64.tar.gz](https://github.com/Harlock123/AVAMMB1/releases/download/v1.0.0/AVAMMB1-1.0.0-osx-arm64.tar.gz) | Extract, then open `AVAMMB1.app`. The app is **not notarized**: right-click -> *Open* the first time, or run `xattr -dr com.apple.quarantine AVAMMB1.app`. |
+| macOS Intel | [AVAMMB1-1.0.0-osx-x64.tar.gz](https://github.com/Harlock123/AVAMMB1/releases/download/v1.0.0/AVAMMB1-1.0.0-osx-x64.tar.gz) | Same as above. |
 
 **Gatekeeper / notarization:** release builds made on the macOS CI runner are ad-hoc signed
 (`codesign -s -`), which Apple Silicon requires, but they are not signed with a Developer ID or
@@ -124,7 +129,7 @@ Requirements: [.NET 10 SDK](https://dotnet.microsoft.com/download). No other too
 building; `ffmpeg`/`python3` were only used once to import the assets.
 
 ```bash
-git clone <this repo> && cd AVAMMB1
+git clone https://github.com/Harlock123/AVAMMB1.git && cd AVAMMB1
 dotnet build AVAMMB1.sln              # zero warnings (warnings are errors)
 dotnet test AVAMMB1.sln               # unit tests
 dotnet run --project src/AVAMMB1.App  # play
@@ -159,9 +164,11 @@ Built on a Linux ARM64 (aarch64) machine with the .NET 10.0.400 SDK:
 | win-x64, win-arm64 | yes (cross-compiled, PE32+ GUI executables) | no |
 | osx-x64, osx-arm64 | yes (cross-compiled, `.app` bundle; not code-signed when built on Linux) | no |
 
-The GitHub Actions workflow is written to build every RID on its native OS runner and smoke-test
-`win-x64`, `linux-x64` and `osx-arm64`, but it has **not been run yet** (the repository had no
-GitHub remote at the time of writing).
+The GitHub Actions workflow builds every RID on GitHub's Windows, Ubuntu and macOS runners. For
+v1.0.0 it passed and smoke-tested `win-x64`, `linux-x64` and `osx-arm64` on those runners, each
+loading the bundled OpenAL library. `win-arm64`, `osx-x64` and the CI-built `linux-arm64` were built
+but not executed. The published `linux-arm64` release archive was downloaded and passes
+`--smoke-test` on the dev machine.
 
 Gameplay verification: 69 unit/integration tests pass, including a scripted playthrough that walks
 the party (with normal movement commands) through every map, fights all scripted battles and
