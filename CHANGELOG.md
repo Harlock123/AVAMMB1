@@ -5,6 +5,8 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+## [1.7.1] - 2026-10-09
+
 ### Changed
 - Light lasts longer: torches 150 steps (was 100), Holy Light 200 (was 150), Glowlight 250 (was 200)
   and the Scroll of Light 400 (was 300).
