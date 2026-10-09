@@ -3,7 +3,7 @@
 All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses semantic versioning.
 
-## [Unreleased]
+## [1.2.0] - 2026-10-09
 
 ### Added
 - Smooth movement: steps and turns in the 3D view are animated (eased, ~0.15 s) instead of
