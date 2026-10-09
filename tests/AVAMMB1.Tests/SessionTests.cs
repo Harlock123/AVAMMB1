@@ -180,6 +180,13 @@ public class SessionTests
             Assert.Equal(100, loaded.MusicVolume);
             Assert.Equal(["I"], loaded.KeyBindings[InputAction.MoveForward]);
             Assert.Equal(["R"], loaded.KeyBindings[InputAction.Rest]);
+            Assert.True(loaded.SmoothMovement);
+            Assert.True(loaded.AnimateMonsters);
+            loaded.SmoothMovement = false;
+            loaded.AnimateMonsters = false;
+            store.Save(loaded);
+            Assert.False(store.Load().SmoothMovement);
+            Assert.False(store.Load().AnimateMonsters);
         }
         finally
         {

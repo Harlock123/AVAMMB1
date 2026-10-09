@@ -3,6 +3,20 @@
 All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses semantic versioning.
 
+## [Unreleased]
+
+### Added
+- Smooth movement: steps and turns in the 3D view are animated (eased, ~0.15 s) instead of
+  snapping. A new key press mid-animation completes the current move instantly. The renderer now
+  supports a free camera (fractional position and any angle).
+- Animated combat: idle breathing/bobbing (two tempos so groups don't move in lock-step), attack
+  lunges, hit flash and shake, slain monsters fading out (kept on screen, not targetable), and a red
+  flash/shake on party portraits that take damage. `CombatEngine.MonsterActed` event drives it.
+- Settings toggles: *Smooth movement* and *Animated monsters in combat* (both on by default).
+
+### Fixed
+- The selected combat target's red border never showed (local values overrode the style).
+
 ## [1.1.0] - 2026-10-09
 
 ### Added

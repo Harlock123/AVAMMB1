@@ -11,6 +11,30 @@ namespace AVAMMB1.App.Rendering;
 /// <param name="Scale">Height relative to a wall (1 = full height).</param>
 public readonly record struct SceneSprite(int X, int Y, Texture Texture, double Scale = 0.5);
 
+/// <summary>A free camera: position in cell units (cell centers are at +0.5) and view angle in radians
+/// (0 = east, pi/2 = south, since y grows southwards).</summary>
+/// <param name="X">X position.</param>
+/// <param name="Y">Y position.</param>
+/// <param name="Angle">View angle.</param>
+public readonly record struct Camera(double X, double Y, double Angle)
+{
+    /// <summary>The camera standing in the center of a cell, looking along a grid direction.</summary>
+    /// <param name="x">Cell X.</param>
+    /// <param name="y">Cell Y.</param>
+    /// <param name="facing">Facing.</param>
+    public static Camera At(int x, int y, Direction facing) => new(x + 0.5, y + 0.5, Math.Atan2(facing.Dy(), facing.Dx()));
+
+    /// <summary>Interpolates between two cameras, turning the short way round.</summary>
+    /// <param name="a">Start.</param>
+    /// <param name="b">End.</param>
+    /// <param name="t">0..1.</param>
+    public static Camera Lerp(Camera a, Camera b, double t)
+    {
+        var turn = Math.IEEERemainder(b.Angle - a.Angle, 2 * Math.PI);
+        return new Camera(a.X + (b.X - a.X) * t, a.Y + (b.Y - a.Y) * t, a.Angle + turn * t);
+    }
+}
+
 /// <summary>Everything needed to draw one frame of the first-person view.</summary>
 public sealed class SceneDescription
 {
@@ -82,13 +106,18 @@ public sealed class SceneRenderer(TextureCache textures)
 
     /// <summary>Renders a frame into <see cref="Pixels"/>.</summary>
     /// <param name="scene">What to draw.</param>
-    public void Render(SceneDescription scene)
+    /// <param name="camera">Camera override (used for movement animation); defaults to the party's cell and facing.</param>
+    public void Render(SceneDescription scene, Camera? camera = null)
     {
         var map = scene.Map;
         var def = map.Def;
-        var px = scene.X + 0.5;
-        var py = scene.Y + 0.5;
-        double dirX = scene.Facing.Dx(), dirY = scene.Facing.Dy();
+        var cam = camera ?? Camera.At(scene.X, scene.Y, scene.Facing);
+        var px = cam.X;
+        var py = cam.Y;
+        double dirX = Math.Cos(cam.Angle), dirY = Math.Sin(cam.Angle);
+        // Snap tiny floating point noise so grid-aligned views stay pixel-identical to before.
+        if (Math.Abs(dirX) < 1e-9) dirX = 0;
+        if (Math.Abs(dirY) < 1e-9) dirY = 0;
         var planeX = -dirY * PlaneLength;
         var planeY = dirX * PlaneLength;
 
@@ -106,8 +135,8 @@ public sealed class SceneRenderer(TextureCache textures)
             var cameraX = 2.0 * x / Width - 1;
             var rdx = dirX + planeX * cameraX;
             var rdy = dirY + planeY * cameraX;
-            var mapX = (int)px;
-            var mapY = (int)py;
+            var mapX = (int)Math.Floor(px);
+            var mapY = (int)Math.Floor(py);
             var deltaX = rdx == 0 ? 1e30 : Math.Abs(1 / rdx);
             var deltaY = rdy == 0 ? 1e30 : Math.Abs(1 / rdy);
             int stepX, stepY;

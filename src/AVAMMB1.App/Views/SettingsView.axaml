@@ -16,6 +16,8 @@
           <TextBlock Classes="h2" Text="Display" />
           <CheckBox Content="Fullscreen (F11 toggles)" IsChecked="{Binding Fullscreen}" />
           <CheckBox Content="Show minimap" IsChecked="{Binding ShowMinimap}" />
+          <CheckBox Content="Smooth movement (animated steps and turns)" IsChecked="{Binding SmoothMovement}" />
+          <CheckBox Content="Animated monsters in combat" IsChecked="{Binding AnimateMonsters}" />
           <TextBlock Classes="h2" Text="Data" />
           <TextBlock Text="{Binding DataLocation}" Classes="dim" FontSize="12" TextWrapping="Wrap" />
         </StackPanel>

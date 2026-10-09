@@ -62,7 +62,14 @@ Randomness always flows through `IRandomSource`, so tests can script dice rolls
   DDA through the grid checking thin walls before entering each cell and opaque cells after,
   textured floor/ceiling casting, sky gradient, distance fog / darkness, z-buffered billboards.
   `SceneView` copies the framebuffer into a `WriteableBitmap` and scales it with nearest-neighbor
-  filtering. A frame is rendered only when the scene changes (movement is turn-based).
+  filtering. Frames are rendered only when the scene changes; for a single step or 90-degree turn,
+  `SceneView` interpolates a free `Camera` (fractional position, any angle) on
+  `TopLevel.RequestAnimationFrame` for ~0.15 s with smoothstep easing. A new move during an
+  animation starts from the previous destination, so input is never delayed.
+* **Combat animation**: `CombatViewModel` compares HP snapshots and listens to
+  `CombatEngine.MonsterActed` after each engine step, then pulses `IsHit` / `IsAttacking` /
+  `IsHurt` flags that toggle style classes with keyframe animations (transform properties) in
+  `CombatView.axaml` and `GameView.axaml`.
   `MapView` draws the automap with vector primitives from the explored-cell bitmap in `GameState`.
 * **Textures**: `TextureCache` loads PNGs from Avalonia resources (`avares://AVAMMB1/Assets/...`),
   decodes them to raw pixels for the ray caster, and composites paper-doll portraits.

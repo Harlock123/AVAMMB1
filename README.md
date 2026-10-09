@@ -27,6 +27,10 @@ Code identifiers, the solution and executables use the name **`AVAMMB1`** (`AVAM
   best searcher rolls (Intellect, Luck and a robber's thievery help); found doors appear as doors in
   the 3D view and in purple on the automap, and are remembered in save games.
 - **Grid movement**: step forward/back, turn 90 degrees, strafe; keyboard *and* on-screen buttons.
+  Steps and turns glide smoothly (about 0.15 s, eased) instead of snapping; pressing a key mid-move
+  finishes it instantly, so fast input never lags. Can be switched off in Settings for classic movement.
+- **Animated combat**: monsters breathe and bob while idle, lunge when they attack, flash and shake
+  when hit and fade out when slain; party portraits flash red when hurt (Settings toggle).
 - **Automap and minimap** that record only what the party has actually seen.
 - **Party of up to six** with full character creation: 5 races, 6 classes (Knight, Paladin, Archer,
   Cleric, Sorcerer, Robber), 7 attributes rolled 3d6, sex, alignment, class requirements and
@@ -212,7 +216,7 @@ More detail: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 
 ## Roadmap
 
-- Smooth step/turn animation and animated monster sprites in the 3D view
+- Monsters visible in the 3D view (currently they appear in the combat window only)
 - More towns and dungeons (the original scope had five towns and many more dungeon levels)
 - Per-character gold (currently shared by the party), more spells and special items
 - Spinners, darkness/anti-magic squares, more trap types

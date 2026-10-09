@@ -162,3 +162,24 @@ public class CombatTests
         Assert.Null(undead.BribeCost);
     }
 }
+
+public class CombatEventTests
+{
+    [Fact]
+    public void MonsterActed_IsRaisedForMonstersThatAct()
+    {
+        var s = TestContent.StartedSession(4);
+        var start = new StepResult();
+        s.StartCombat(CombatEngine.Spawn(s.Content.Monster("goblin"), 2, s.Random), start);
+        var acted = new List<MonsterInstance>();
+        s.Combat!.MonsterActed += acted.Add;
+        var guard = 0;
+        s.Combat.Advance();
+        while (s.Combat.Outcome == CombatOutcome.Ongoing && acted.Count == 0 && guard++ < 50)
+        {
+            s.Combat.Act(new CombatAction(CombatActionKind.Block));
+        }
+        Assert.NotEmpty(acted);
+        Assert.All(acted, m => Assert.Contains(m, s.Combat.Monsters));
+    }
+}

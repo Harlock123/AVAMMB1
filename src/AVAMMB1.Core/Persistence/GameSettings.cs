@@ -48,6 +48,10 @@ public sealed class GameSettings
     public bool Fullscreen { get; set; }
     /// <summary>Show the minimap overlay.</summary>
     public bool ShowMinimap { get; set; } = true;
+    /// <summary>Animate steps and turns in the 3D view (off = classic instant movement).</summary>
+    public bool SmoothMovement { get; set; } = true;
+    /// <summary>Animate monsters in combat (idle motion, attacks, hits, deaths).</summary>
+    public bool AnimateMonsters { get; set; } = true;
     /// <summary>Key names (Avalonia <c>Key</c> enum names) bound to each action.</summary>
     public Dictionary<InputAction, List<string>> KeyBindings { get; set; } = DefaultBindings();
 

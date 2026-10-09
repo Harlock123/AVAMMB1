@@ -57,6 +57,10 @@ public sealed partial class PartyMemberViewModel : ObservableObject
     [ObservableProperty]
     private bool _isActive;
 
+    /// <summary>Briefly true after taking damage (drives the hurt flash).</summary>
+    [ObservableProperty]
+    private bool _isHurt;
+
     /// <summary>Re-reads every property.</summary>
     public void Refresh() => OnPropertyChanged(string.Empty);
 }

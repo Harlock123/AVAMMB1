@@ -39,6 +39,9 @@ public static class HeadlessRunner
 
             App.BuildServices(options, new NullAudioService("headless mode"), seed: 1986);
             var vm = App.Services.GetRequiredService<MainViewModel>();
+            // Screenshots must show settled frames, not the middle of a step or a monster lunge.
+            vm.Services.Settings.SmoothMovement = false;
+            vm.Services.Settings.AnimateMonsters = false;
             _window = new MainWindow { DataContext = vm, Width = 1280, Height = 800 };
             _window.Show();
             Pump();
@@ -358,6 +361,9 @@ public static class HeadlessRunner
         game.Refresh();
         Capture(dir, "14-secret-door");
 
+        // Show the real defaults on the settings screen (animations were only disabled for capturing).
+        vm.Services.Settings.SmoothMovement = true;
+        vm.Services.Settings.AnimateMonsters = true;
         vm.ShowSettings(game);
         Capture(dir, "13-settings");
     }

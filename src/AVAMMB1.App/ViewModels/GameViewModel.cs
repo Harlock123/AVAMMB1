@@ -71,6 +71,8 @@ public sealed partial class GameViewModel : ViewModelBase
     public string TimeText => $"Day {Session.State.Day}" + (Session.State.LightSteps > 0 ? $"   Light {Session.State.LightSteps}" : Session.CurrentMap.Def.Dark ? "   (dark)" : "");
     /// <summary>Whether the minimap is visible.</summary>
     public bool ShowMinimap => Services.Settings.ShowMinimap;
+    /// <summary>Whether steps and turns are animated.</summary>
+    public bool SmoothMovement => Services.Settings.SmoothMovement;
 
     /// <summary>Re-reads everything from the session.</summary>
     public void Refresh()
@@ -81,7 +83,7 @@ public sealed partial class GameViewModel : ViewModelBase
         foreach (var ev in map.AllEvents)
         {
             var key = ev.Id ?? $"{map.Id}:{ev.X}:{ev.Y}:{map.Def.Events.IndexOf(ev)}";
-            if (ev.Feature is not null && !(ev.Once && state.CompletedEvents.Contains(key)) && !(ev.X == state.X && ev.Y == state.Y))
+            if (ev.Feature is not null && !(ev.Once && state.CompletedEvents.Contains(key)))
             {
                 sprites.Add(new SceneSprite(ev.X, ev.Y, Services.Textures.Get("Features/" + ev.Feature)));
             }
@@ -125,6 +127,7 @@ public sealed partial class GameViewModel : ViewModelBase
         OnPropertyChanged(nameof(GoldText));
         OnPropertyChanged(nameof(TimeText));
         OnPropertyChanged(nameof(ShowMinimap));
+        OnPropertyChanged(nameof(SmoothMovement));
         if (Overlay is not CombatViewModel)
         {
             Services.Audio.PlayMusic(map.Def.Music);

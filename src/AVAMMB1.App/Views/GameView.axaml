@@ -8,7 +8,7 @@
     <!-- First-person view -->
     <Border Classes="panel" Padding="4" Margin="0,0,8,8">
       <Grid>
-        <c:SceneView Scene="{Binding Scene}" />
+        <c:SceneView Scene="{Binding Scene}" Animate="{Binding SmoothMovement}" />
         <Border VerticalAlignment="Top" HorizontalAlignment="Center" Background="#aa000000" CornerRadius="0,0,6,6" Padding="14,4">
           <TextBlock Text="{Binding LocationText}" Foreground="{StaticResource Gold}" FontSize="18" FontWeight="Bold" />
         </Border>
@@ -76,11 +76,24 @@
           <Button Padding="0" Margin="0,0,6,0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch"
                   Background="Transparent" BorderThickness="0"
                   Command="{Binding $parent[UserControl].((vm:GameViewModel)DataContext).OpenMemberCommand}" CommandParameter="{Binding}">
-            <Border Classes="panel" Padding="6" Classes.active="{Binding IsActive}">
+            <Border Classes="panel" Padding="6" Classes.active="{Binding IsActive}" Classes.hurt="{Binding IsHurt}">
               <Border.Styles>
                 <Style Selector="Border.active">
                   <Setter Property="BorderBrush" Value="#ffd75e" />
                   <Setter Property="Background" Value="#2e2840" />
+                </Style>
+                <Style Selector="Border.hurt">
+                  <Setter Property="BorderBrush" Value="#ff4030" />
+                  <Setter Property="Background" Value="#5a1a1a" />
+                  <Style.Animations>
+                    <Animation Duration="0:0:0.45">
+                      <KeyFrame Cue="0%"><Setter Property="TranslateTransform.X" Value="0" /></KeyFrame>
+                      <KeyFrame Cue="25%"><Setter Property="TranslateTransform.X" Value="-5" /></KeyFrame>
+                      <KeyFrame Cue="50%"><Setter Property="TranslateTransform.X" Value="4" /></KeyFrame>
+                      <KeyFrame Cue="75%"><Setter Property="TranslateTransform.X" Value="-2" /></KeyFrame>
+                      <KeyFrame Cue="100%"><Setter Property="TranslateTransform.X" Value="0" /></KeyFrame>
+                    </Animation>
+                  </Style.Animations>
                 </Style>
               </Border.Styles>
               <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto">

@@ -153,6 +153,8 @@ public sealed partial class SettingsViewModel : ViewModelBase
         _sfxVolume = s.SfxVolume;
         _fullscreen = s.Fullscreen;
         _showMinimap = s.ShowMinimap;
+        _smoothMovement = s.SmoothMovement;
+        _animateMonsters = s.AnimateMonsters;
         LoadBindings();
         AudioStatus = main.Services.Audio.Status;
         DataLocation = UserDataPaths.DataDirectory;
@@ -180,6 +182,14 @@ public sealed partial class SettingsViewModel : ViewModelBase
     /// <summary>Minimap.</summary>
     [ObservableProperty]
     private bool _showMinimap;
+
+    /// <summary>Animated movement.</summary>
+    [ObservableProperty]
+    private bool _smoothMovement;
+
+    /// <summary>Animated monsters.</summary>
+    [ObservableProperty]
+    private bool _animateMonsters;
 
     /// <summary>Hint text.</summary>
     [ObservableProperty]
@@ -232,6 +242,8 @@ public sealed partial class SettingsViewModel : ViewModelBase
         var fullscreenChanged = s.Fullscreen != Fullscreen;
         s.Fullscreen = Fullscreen;
         s.ShowMinimap = ShowMinimap;
+        s.SmoothMovement = SmoothMovement;
+        s.AnimateMonsters = AnimateMonsters;
         _main.Services.SaveSettings();
         if (fullscreenChanged)
         {

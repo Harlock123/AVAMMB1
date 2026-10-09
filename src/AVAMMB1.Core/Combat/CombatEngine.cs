@@ -69,6 +69,9 @@ public sealed class CombatEngine
     /// <summary>The party member awaiting a decision, if any.</summary>
     public Character? ActiveCharacter { get; private set; }
 
+    /// <summary>Raised when a monster takes an action (attack or ability), e.g. to animate it.</summary>
+    public event Action<MonsterInstance>? MonsterActed;
+
     /// <summary>Party-wide armor class bonus from spells.</summary>
     public int ArmorBuff { get; set; }
 
@@ -480,10 +483,15 @@ public sealed class CombatEngine
         {
             if (_rng.Chance(ability.Chance) && UseAbility(m, ability, log))
             {
+                MonsterActed?.Invoke(m);
                 return;
             }
         }
         var inFront = MeleeTargets.Contains(m);
+        if (m.Def.Attacks.Any(a => a.Ranged || inFront))
+        {
+            MonsterActed?.Invoke(m);
+        }
         foreach (var attack in m.Def.Attacks)
         {
             if (!attack.Ranged && !inFront)

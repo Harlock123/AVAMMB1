@@ -17,12 +17,31 @@ public sealed partial class MonsterViewModel : ObservableObject
     /// <param name="monster">Monster.</param>
     /// <param name="index">Index in the combat's monster list.</param>
     /// <param name="sprite">Sprite.</param>
-    public MonsterViewModel(MonsterInstance monster, int index, Bitmap? sprite)
+    /// <param name="animated">Whether animations are enabled.</param>
+    public MonsterViewModel(MonsterInstance monster, int index, Bitmap? sprite, bool animated)
     {
         Monster = monster;
         Index = index;
         Sprite = sprite;
+        Animated = animated;
     }
+
+    /// <summary>Whether animations are enabled.</summary>
+    public bool Animated { get; }
+    /// <summary>Idle motion variant A (alternates by position so monsters don't bob in lock-step).</summary>
+    public bool IdleA => Animated && !IsDead && Index % 2 == 0;
+    /// <summary>Idle motion variant B.</summary>
+    public bool IdleB => Animated && !IsDead && Index % 2 == 1;
+    /// <summary>Killed (shown faded until the battle ends).</summary>
+    public bool IsDead => Monster.IsDead;
+
+    /// <summary>Briefly true after taking damage (drives the hit shake).</summary>
+    [ObservableProperty]
+    private bool _isHit;
+
+    /// <summary>Briefly true after acting (drives the attack lunge).</summary>
+    [ObservableProperty]
+    private bool _isAttacking;
 
     /// <summary>Monster.</summary>
     public MonsterInstance Monster { get; }
@@ -78,7 +97,10 @@ public sealed partial class CombatViewModel : ViewModelBase
 {
     private readonly GameViewModel _game;
     private readonly CombatEngine _combat;
+    private readonly HashSet<MonsterInstance> _acted = new();
+    private readonly Dictionary<object, int> _hpSnapshot = new();
     private CombatAction? _pending;
+    private bool AnimationsOn => _game.Services.Settings.AnimateMonsters;
 
     /// <summary>Creates the overlay.</summary>
     /// <param name="game">Owner.</param>
@@ -90,8 +112,10 @@ public sealed partial class CombatViewModel : ViewModelBase
         for (var i = 0; i < combat.Monsters.Count; i++)
         {
             var m = combat.Monsters[i];
-            Monsters.Add(new MonsterViewModel(m, i, game.Services.Textures.Bitmap("Monsters/" + m.Def.Sprite)));
+            Monsters.Add(new MonsterViewModel(m, i, game.Services.Textures.Bitmap("Monsters/" + m.Def.Sprite), AnimationsOn));
         }
+        combat.MonsterActed += m => _acted.Add(m);
+        TakeSnapshot();
         Party = game.Party;
         game.Services.Audio.PlayMusic("battle");
         var names = combat.Monsters.GroupBy(m => m.Def).Select(g => g.Count() == 1 ? $"a {g.Key.Name}" : $"{g.Count()} {g.Key.PluralName}");
@@ -168,7 +192,7 @@ public sealed partial class CombatViewModel : ViewModelBase
         var front = _combat.MeleeTargets.ToHashSet();
         foreach (var m in Monsters.ToList())
         {
-            if (!m.Monster.IsActive)
+            if (m.Monster.Fled)
             {
                 Monsters.Remove(m);
                 continue;
@@ -176,9 +200,9 @@ public sealed partial class CombatViewModel : ViewModelBase
             m.IsFront = front.Contains(m.Monster);
             m.Refresh();
         }
-        if (TargetIndex < 0 || !Monsters.Any(m => m.Index == TargetIndex))
+        if (TargetIndex < 0 || !Monsters.Any(m => m.Index == TargetIndex && m.Monster.IsActive))
         {
-            TargetIndex = Monsters.FirstOrDefault()?.Index ?? -1;
+            TargetIndex = Monsters.FirstOrDefault(m => m.Monster.IsActive)?.Index ?? -1;
         }
         foreach (var m in Monsters)
         {
@@ -196,9 +220,58 @@ public sealed partial class CombatViewModel : ViewModelBase
         OnPropertyChanged(nameof(CanCast));
     }
 
+    private void TakeSnapshot()
+    {
+        _hpSnapshot.Clear();
+        foreach (var m in _combat.Monsters)
+        {
+            _hpSnapshot[m] = m.Hp;
+        }
+        foreach (var c in _combat.Party)
+        {
+            _hpSnapshot[c] = c.Hp;
+        }
+    }
+
+    private static void Pulse(Action<bool> set, int milliseconds)
+    {
+        set(false);
+        set(true);
+        Avalonia.Threading.DispatcherTimer.RunOnce(() => set(false), TimeSpan.FromMilliseconds(milliseconds));
+    }
+
+    /// <summary>Plays hit, lunge and hurt animations for what changed since the last update.</summary>
+    private void Animate()
+    {
+        if (AnimationsOn)
+        {
+            foreach (var card in Monsters)
+            {
+                if (_hpSnapshot.TryGetValue(card.Monster, out var hp) && card.Monster.Hp < hp)
+                {
+                    Pulse(v => card.IsHit = v, 420);
+                }
+                else if (_acted.Contains(card.Monster) && card.Monster.IsActive)
+                {
+                    Pulse(v => card.IsAttacking = v, 450);
+                }
+            }
+            foreach (var p in Party)
+            {
+                if (_hpSnapshot.TryGetValue(p.Character, out var hp) && p.Character.Hp < hp)
+                {
+                    Pulse(v => p.IsHurt = v, 450);
+                }
+            }
+        }
+        _acted.Clear();
+        TakeSnapshot();
+    }
+
     private void AfterEngine(IReadOnlyList<GameMessage> log)
     {
         AddLog(log);
+        Animate();
         if (_combat.Outcome != CombatOutcome.Ongoing)
         {
             Finish();
@@ -275,6 +348,10 @@ public sealed partial class CombatViewModel : ViewModelBase
     [RelayCommand]
     private void Target(MonsterViewModel m)
     {
+        if (!m.Monster.IsActive)
+        {
+            return;
+        }
         TargetIndex = m.Index;
         RefreshAll();
     }
