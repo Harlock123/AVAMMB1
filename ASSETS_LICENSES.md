@@ -33,6 +33,7 @@ The game code is licensed separately under the MIT license (see [LICENSE](LICENS
 | Dripping Water Loop | qubodup | <https://opengameart.org/content/dripping-water-loop> | CC0 1.0 |
 | Loopable Dungeon Ambience | JaggedStone | <https://opengameart.org/content/loopable-dungeon-ambience> | CC0 1.0 |
 | Park Ambiences | Thimras | <https://opengameart.org/content/park-ambiences> | CC0 1.0 |
+| Tiny Texture Pack (128x128) | Screaming Brain Studios | <https://opengameart.org/content/tiny-texture-pack> | CC0 1.0 |
 
 ## Original works (made for this project)
 
@@ -337,3 +338,28 @@ The game code is licensed separately under the MIT license (see [LICENSE](LICENS
 | `Graphics/Textures/wall_vault.png` | Dungeon Crawl 32x32 tiles | `dungeon/wall/crystal_wall_lightblue.png` |
 | `Graphics/Textures/wall_wintermere.png` | Dungeon Crawl 32x32 tiles | `dungeon/wall/stone_brick_1.png` |
 | `Graphics/Textures/water.png` | Dungeon Crawl 32x32 tiles | `dungeon/water/deep_water.png` |
+| `Graphics/TexturesHD/floor_cobble.png` | Tiny Texture Pack | `128x128/Tile/Tile 24 - 128x128.png` |
+| `Graphics/TexturesHD/floor_crypt.png` | Tiny Texture Pack | `128x128/Tile/Tile 10 - 128x128.png` |
+| `Graphics/TexturesHD/floor_earth.png` | Tiny Texture Pack | `128x128/Grass/Grass 19 - 128x128.png` |
+| `Graphics/TexturesHD/floor_grass.png` | Tiny Texture Pack | `128x128/Grass/Grass 1 - 128x128.png` |
+| `Graphics/TexturesHD/floor_limestone.png` | Tiny Texture Pack | `128x128/Tile/Tile 6 - 128x128.png` |
+| `Graphics/TexturesHD/floor_marble.png` | Tiny Texture Pack | `128x128/Tile/Tile 13 - 128x128.png` |
+| `Graphics/TexturesHD/floor_pebble.png` | Tiny Texture Pack | `128x128/Tile/Tile 25 - 128x128.png` |
+| `Graphics/TexturesHD/floor_sandstone.png` | Tiny Texture Pack | `128x128/Tile/Tile 16 - 128x128.png` |
+| `Graphics/TexturesHD/floor_tomb.png` | Tiny Texture Pack | `128x128/Tile/Tile 10 - 128x128.png` |
+| `Graphics/TexturesHD/wall_catacombs.png` | Tiny Texture Pack | `128x128/Bricks/Brick 23 - 128x128.png` |
+| `Graphics/TexturesHD/wall_cellar.png` | Tiny Texture Pack | `128x128/Bricks/Brick 24 - 128x128.png` |
+| `Graphics/TexturesHD/wall_cistern.png` | Tiny Texture Pack | `128x128/Bricks/Brick 4 - 128x128.png` |
+| `Graphics/TexturesHD/wall_crypt.png` | Tiny Texture Pack | `128x128/Bricks/Brick 19 - 128x128.png` |
+| `Graphics/TexturesHD/wall_desert_town.png` | Tiny Texture Pack | `128x128/Bricks/Brick 17 - 128x128.png` |
+| `Graphics/TexturesHD/wall_dungeon.png` | Tiny Texture Pack | `128x128/Bricks/Brick 13 - 128x128.png` |
+| `Graphics/TexturesHD/wall_marble.png` | Tiny Texture Pack | `128x128/Tile/Tile 15 - 128x128.png` |
+| `Graphics/TexturesHD/wall_sandstone.png` | Tiny Texture Pack | `128x128/Bricks/Brick 18 - 128x128.png` |
+| `Graphics/TexturesHD/wall_temple.png` | Tiny Texture Pack | `128x128/Bricks/Brick 1 - 128x128.png` |
+| `Graphics/TexturesHD/wall_tomb2.png` | Tiny Texture Pack | `128x128/Bricks/Brick 21 - 128x128.png` |
+| `Graphics/TexturesHD/wall_town.png` | Tiny Texture Pack | `128x128/Bricks/Brick 5 - 128x128.png` |
+| `Graphics/TexturesHD/wall_town2.png` | Tiny Texture Pack | `128x128/Bricks/Brick 9 - 128x128.png` |
+| `Graphics/TexturesHD/wall_town3.png` | Tiny Texture Pack | `128x128/Bricks/Brick 25 - 128x128.png` |
+| `Graphics/TexturesHD/wall_town4.png` | Tiny Texture Pack | `128x128/Bricks/Brick 10 - 128x128.png` |
+| `Graphics/TexturesHD/wall_town5.png` | Tiny Texture Pack | `128x128/Bricks/Brick 7 - 128x128.png` |
+| `Graphics/TexturesHD/wall_wintermere.png` | Tiny Texture Pack | `128x128/Bricks/Brick 14 - 128x128.png` |

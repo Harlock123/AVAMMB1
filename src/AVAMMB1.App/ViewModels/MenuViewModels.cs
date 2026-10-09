@@ -210,6 +210,7 @@ public sealed partial class SettingsViewModel : ViewModelBase
         _textScaleIndex = Math.Max(0, Array.IndexOf(TextScales, s.TextScale) is var i and >= 0 ? i : 1);
         _resolutionIndex = Math.Max(0, Array.IndexOf(Resolutions, s.ViewResolution));
         _smoothView = s.SmoothView;
+        _detailedTextures = s.DetailedTextures;
         _pad = new Dictionary<InputAction, AVAMMB1.Core.Input.GamepadButton>(s.GamepadBindings);
         LoadPadRows();
         LoadBindings();
@@ -291,6 +292,10 @@ public sealed partial class SettingsViewModel : ViewModelBase
     /// <summary>Smooth scaling of the 3D view.</summary>
     [ObservableProperty]
     private bool _smoothView;
+
+    /// <summary>Detailed wall and floor textures.</summary>
+    [ObservableProperty]
+    private bool _detailedTextures;
 
     /// <summary>Controller buttons for exploring.</summary>
     public ObservableCollection<PadRow> PadRows { get; } = new();
@@ -434,6 +439,8 @@ public sealed partial class SettingsViewModel : ViewModelBase
         s.AnimateMonsters = AnimateMonsters;
         s.ViewResolution = Resolutions[Math.Clamp(ResolutionIndex, 0, Resolutions.Length - 1)];
         s.SmoothView = SmoothView;
+        s.DetailedTextures = DetailedTextures;
+        _main.Services.Textures.Detailed = DetailedTextures;
         s.GamepadBindings = new Dictionary<InputAction, AVAMMB1.Core.Input.GamepadButton>(_pad);
         PreviewTheme();
         _main.Services.SaveSettings();

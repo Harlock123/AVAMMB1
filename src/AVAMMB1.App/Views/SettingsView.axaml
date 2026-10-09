@@ -51,6 +51,7 @@
                     <ComboBox Grid.Column="1" ItemsSource="{Binding ResolutionOptions}" SelectedIndex="{Binding ResolutionIndex}" HorizontalAlignment="Stretch" />
                   </Grid>
                   <CheckBox Content="Smooth scaling (softer, less pixelated)" IsChecked="{Binding SmoothView}" />
+                  <CheckBox Content="Detailed textures (128 x 128 walls and floors)" IsChecked="{Binding DetailedTextures}" />
                   <TextBlock Classes="dim" FontSize="{DynamicResource Font12}" TextWrapping="Wrap"
                              Text="Classic matches the original chunky look. Higher resolutions give finer detail and use more processor time." />
                 </StackPanel>

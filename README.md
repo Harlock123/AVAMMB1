@@ -96,7 +96,9 @@ Code identifiers, the solution and executables use the name **`AVAMMB1`** (`AVAM
   shows good news in blue and bad news in orange instead of green and red, using the Okabe-Ito
   palette), adjustable text size (90-130%), and rebindable keys and controller buttons.
 - **3D view options**: classic 400 x 300, sharp 640 x 480 or high 800 x 600 internal resolution,
-  with optional smooth scaling.
+  optional smooth scaling, and optional **detailed textures** - 128 x 128 walls and floors (CC0,
+  Screaming Brain Studios) for the towns and most dungeons, with mipmapping so distant walls do not
+  shimmer; places with a distinctive classic look keep their original tiles.
 - **Gamepad support** (Xbox, PlayStation, Switch Pro and other SDL-supported controllers) for
   exploring, combat and every menu; exploring buttons can be rebound in Settings.
 - **Save/load** (10 slots incl. quick-save, JSON) in the OS user-data directory; **settings** for
@@ -127,6 +129,7 @@ All screenshots are real frames rendered by the game itself (Avalonia headless +
 | ![Old Cistern](docs/screenshots/21-old-cistern.png) An eel in the Old Cistern's flooded reservoir | ![Journal](docs/screenshots/22-journal.png) The quest journal |
 | ![High contrast](docs/screenshots/23-high-contrast.png) High-contrast theme, 115% text, 800 x 600 view | ![Help](docs/screenshots/24-help.png) The in-game help |
 | ![Wintermere](docs/screenshots/25-wintermere.png) Wintermere, the northern harbour town | ![Rime Halls](docs/screenshots/26-rime-halls.png) The Rime Halls |
+| ![Detailed textures](docs/screenshots/27-detailed-textures.png) Detailed textures at 800 x 600 (the Hollow Crypt) | |
 
 ## Download and install
 
@@ -257,7 +260,7 @@ route order from level 1 to 15 (fighting, camping, curing with spells and potion
 zone's chests, training, selling loot, buying gear and potions, reloading after a wipe) and asserts
 the pace, wipe rate and gold flow stay within tuned bounds (about 600 battles from a new party to
 level 15). It skips boss hoards and quest rewards, so real players end up with a little more gold. The UI flow title -> party creation -> town -> shop -> dungeon -> combat -> inventory ->
-automap with notes -> journal -> spells -> secret door -> Old Cistern -> Ashen Hills -> Sunscar Coast -> Wintermere -> Rime Halls -> high-contrast theme -> settings is exercised headlessly by `--screenshot`.
+automap with notes -> journal -> spells -> secret door -> Old Cistern -> Ashen Hills -> Sunscar Coast -> Wintermere -> Rime Halls -> high-contrast theme -> detailed textures -> settings is exercised headlessly by `--screenshot`.
 Gamepad support has been play-tested with a physical controller on Linux ARM64 (v1.4.0); on the
 other platforms CI confirms the bundled SDL2 library loads, and the button mapping is unit tested.
 The game is currently under testing.

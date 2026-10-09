@@ -123,4 +123,19 @@ public class ContentTests
     [InlineData("sun_king", "The Sun King")]
     public void MonsterNames_TakeTheRightArticle(string id, string expected) =>
         Assert.Equal(expected, TestContent.Content.Monster(id).NameWithArticle);
+
+    [Fact]
+    public void DetailedTextures_Are128Square_AndReplaceAClassicTexture()
+    {
+        var hd = Directory.GetFiles(Path.Combine(RepoAssets(), "Graphics", "TexturesHD"), "*.png");
+        Assert.NotEmpty(hd);
+        foreach (var f in hd)
+        {
+            Assert.True(File.Exists(Path.Combine(RepoAssets(), "Graphics", "Textures", Path.GetFileName(f))), Path.GetFileName(f));
+            var head = File.ReadAllBytes(f).AsSpan(16, 8);
+            var w = (head[0] << 24) | (head[1] << 16) | (head[2] << 8) | head[3];
+            var h = (head[4] << 24) | (head[5] << 16) | (head[6] << 8) | head[7];
+            Assert.Equal((128, 128), (w, h));
+        }
+    }
 }

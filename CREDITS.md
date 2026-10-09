@@ -42,6 +42,11 @@ their code, data, maps, text, graphics, music or sounds. All trademarks belong t
 - **80 CC0 RPG SFX** - rubberduck - https://opengameart.org/content/80-cc0-rpg-sfx
 - **RPG Sound Pack** - artisticdude - https://opengameart.org/content/rpg-sound-pack
 
+## Detailed textures (CC0 1.0)
+
+- **Tiny Texture Pack** - Screaming Brain Studios - https://opengameart.org/content/tiny-texture-pack
+  Used for the optional "Detailed textures" walls and floors (128 x 128).
+
 A file-by-file list of every asset, its source and license is in ASSETS_LICENSES.md.
 
 ## Fonts

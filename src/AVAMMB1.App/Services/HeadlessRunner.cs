@@ -548,6 +548,20 @@ public static class HeadlessRunner
         MainViewModel.ApplyTheme(settings);
         game.Refresh();
 
+        // Detailed textures at 800 x 600, looking down a corridor of the Hollow Crypt.
+        var crypt = s.Content.Map("crypt").AllEvents.First(e => e.Type == MapEventKind.Teleport);
+        (s.State.MapId, s.State.X, s.State.Y, s.State.Facing) = ("crypt", crypt.X, crypt.Y, Direction.North);
+        s.State.LightSteps = 50;
+        vm.Services.Textures.Detailed = true;
+        settings.ViewResolution = 600;
+        game.Refresh();
+        Pump();
+        Capture(dir, "27-detailed-textures");
+        vm.Services.Textures.Detailed = false;
+        settings.ViewResolution = 300;
+        game.Refresh();
+
+
         // Show the real defaults on the settings screen (animations were only disabled for capturing).
         vm.Services.Settings.SmoothMovement = true;
         vm.Services.Settings.AnimateMonsters = true;

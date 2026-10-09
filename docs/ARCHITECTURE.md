@@ -84,6 +84,9 @@ Randomness always flows through `IRandomSource`, so tests can script dice rolls
   `MapView` draws the automap with vector primitives from the explored-cell bitmap in `GameState`.
 * **Textures**: `TextureCache` loads PNGs from Avalonia resources (`avares://AVAMMB1/Assets/...`),
   decodes them to raw pixels for the ray caster, and composites paper-doll portraits.
+* **Textures**: `TextureCache` decodes PNGs to packed pixels; with *Detailed textures* on it prefers
+  `Graphics/TexturesHD/<name>` over `Graphics/Textures/<name>`. `Texture.ForSize` picks a box-filtered
+  half-size copy (mipmap) for textures over 32 px when they are small on screen.
 * **Theming**: `Theming/Theme` holds every interface colour for the three themes and sets them, plus
   `Font<size>` text sizes scaled by the player's choice, as application resources. Views use
   `DynamicResource`, so a change applies immediately; custom-drawn controls (`MapView`) and log

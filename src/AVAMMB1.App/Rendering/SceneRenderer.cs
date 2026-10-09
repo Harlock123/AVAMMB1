@@ -229,12 +229,13 @@ public sealed class SceneRenderer
             dist = Math.Max(dist, 0.05);
             var wallX = side == 0 ? py + dist * rdy : px + dist * rdx;
             wallX -= Math.Floor(wallX);
+            var lineHeight = (int)(Height / dist);
+            hitTex = hitTex.ForSize(lineHeight);
             var texX = (int)(wallX * hitTex.Width);
             if ((side == 0 && rdx > 0) || (side == 1 && rdy < 0))
             {
                 texX = hitTex.Width - texX - 1;
             }
-            var lineHeight = (int)(Height / dist);
             var start = Height / 2 - lineHeight / 2;
             var light = side == 1 ? 0.78 : 1.0;
             var fogAmount = FogAmount(dist, fogDist, dark);
@@ -283,6 +284,7 @@ public sealed class SceneRenderer
         {
             var p = y - half;
             var rowDist = 0.5 * Height / p;
+            var cellPixels = Height / rowDist; // on-screen size of one floor square at this row
             var fogAmount = FogAmount(rowDist, fogDist, dark);
             var stepX = rowDist * (rdx1 - rdx0) / Width;
             var stepY = rowDist * (rdy1 - rdy0) / Width;
@@ -308,14 +310,16 @@ public sealed class SceneRenderer
                     {
                         floorCache[key] = ft = Tex(key);
                     }
+                    ft = ft.ForSize(cellPixels);
                     var tx = (int)(ft.Width * (fx - cellX));
                     var ty = (int)(ft.Height * (fy - cellY));
                     Pixels[y * Width + x] = Shade(ft.Sample(tx, ty), 0.9, fog, fogAmount);
                     if (ceiling is not null)
                     {
-                        var ctx = (int)(ceiling.Width * (fx - cellX));
-                        var cty = (int)(ceiling.Height * (fy - cellY));
-                        Pixels[cy * Width + x] = Shade(ceiling.Sample(ctx, cty), 0.55, fog, fogAmount);
+                        var ct = ceiling.ForSize(cellPixels);
+                        var ctx = (int)(ct.Width * (fx - cellX));
+                        var cty = (int)(ct.Height * (fy - cellY));
+                        Pixels[cy * Width + x] = Shade(ct.Sample(ctx, cty), 0.55, fog, fogAmount);
                     }
                 }
                 fx += stepX;

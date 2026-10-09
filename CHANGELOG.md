@@ -21,6 +21,10 @@ All notable changes to this project are documented here. The format follows
   gear. All new quests appear in the journal.
 - Academies (Wintermere and Port Ashkar): pay for permanent statistic points, 1000 x (points
   already bought + 1) gold each, up to 10 per character - a sink for late-game gold.
+- Detailed textures (Settings > 3D view): 128 x 128 walls and floors from Screaming Brain Studios'
+  CC0 Tiny Texture Pack for the towns and most dungeons, hand-matched to each place; distinctive
+  classic textures (the Inner Vault, the mines, the Sunless Deep, ice, rock, sand, water, doors) stay
+  as they are. Textures larger than 32 pixels are mipmapped so distant walls and floors do not shimmer.
 - Elite monsters: 1 random encounter in 20 is led by an elite (gold name) with double hit points,
   +2 armor class and +50% damage, worth triple experience and gold and possibly extra loot.
 

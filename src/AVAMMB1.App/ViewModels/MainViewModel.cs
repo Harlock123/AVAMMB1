@@ -16,6 +16,7 @@ public sealed partial class MainViewModel : ViewModelBase
         Services = services;
         services.Audio.SetVolumes(services.Settings.MusicVolume, services.Settings.SfxVolume, services.Settings.AmbienceVolume);
         ApplyTheme(services.Settings);
+        services.Textures.Detailed = services.Settings.DetailedTextures;
         _currentScreen = new TitleViewModel(this);
         ShowWhatsNewIfUpdated();
     }

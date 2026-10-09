@@ -22,6 +22,46 @@ public sealed record Texture(int Width, int Height, uint[] Pixels)
         if (y < 0) y += Height;
         return Pixels[y * Width + x];
     }
+
+    private Texture? _half;
+
+    /// <summary>
+    /// The texture to sample when it covers about <paramref name="screenPixels"/> pixels on screen: a
+    /// box-filtered half-size copy (repeatedly) for large textures far away, so detailed textures do not
+    /// shimmer. Textures of 32 pixels or less are never reduced (the classic look stays identical).
+    /// </summary>
+    /// <param name="screenPixels">On-screen size of one texture repeat.</param>
+    public Texture ForSize(double screenPixels)
+    {
+        var t = this;
+        while (t.Width > 32 && t.Height > 32 && t.Width / 2 >= screenPixels)
+        {
+            t = t._half ??= t.Halve();
+        }
+        return t;
+    }
+
+    private Texture Halve()
+    {
+        int w = Width / 2, h = Height / 2;
+        var px = new uint[w * h];
+        for (var y = 0; y < h; y++)
+        {
+            for (var x = 0; x < w; x++)
+            {
+                uint a = 0, r = 0, g = 0, b = 0;
+                foreach (var c in new[] { Pixels[2 * y * Width + 2 * x], Pixels[2 * y * Width + 2 * x + 1], Pixels[(2 * y + 1) * Width + 2 * x], Pixels[(2 * y + 1) * Width + 2 * x + 1] })
+                {
+                    a += c >> 24;
+                    r += (c >> 16) & 0xFF;
+                    g += (c >> 8) & 0xFF;
+                    b += c & 0xFF;
+                }
+                px[y * w + x] = (a / 4) << 24 | (r / 4) << 16 | (g / 4) << 8 | (b / 4);
+            }
+        }
+        return new Texture(w, h, px);
+    }
 }
 
 /// <summary>Loads and caches images from the embedded <c>Assets/Graphics</c> folder.</summary>
@@ -29,6 +69,29 @@ public sealed class TextureCache
 {
     private readonly Dictionary<string, Texture> _textures = new();
     private readonly Dictionary<string, Bitmap?> _bitmaps = new();
+    private readonly Dictionary<string, bool> _hasDetailed = new();
+
+    /// <summary>
+    /// Use the detailed (128 x 128) wall and floor textures from <c>Graphics/TexturesHD</c> where they
+    /// exist; others keep their classic tile.
+    /// </summary>
+    public bool Detailed { get; set; }
+
+    /// <summary>The path actually used for a texture, honouring <see cref="Detailed"/>.</summary>
+    /// <param name="path">Requested path (e.g. <c>Textures/wall_crypt</c>).</param>
+    public string Resolve(string path)
+    {
+        if (!Detailed || !path.StartsWith("Textures/", StringComparison.Ordinal))
+        {
+            return path;
+        }
+        var hd = "TexturesHD/" + path["Textures/".Length..];
+        if (!_hasDetailed.TryGetValue(hd, out var exists))
+        {
+            _hasDetailed[hd] = exists = AssetLoader.Exists(UriFor(hd));
+        }
+        return exists ? hd : path;
+    }
 
     /// <summary>Fallback texture used when an asset is missing (magenta checkerboard).</summary>
     public static Texture Missing { get; } = MakeChecker();
@@ -74,6 +137,7 @@ public sealed class TextureCache
     /// <param name="backing">If non-zero, transparent pixels are composited onto this opaque color.</param>
     public Texture Get(string path, uint backing = 0)
     {
+        path = Resolve(path);
         var key = backing == 0 ? path : $"{path}@{backing:X8}";
         if (_textures.TryGetValue(key, out var tex))
         {
