@@ -5,6 +5,8 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+## [1.6.0] - 2026-10-09
+
 ### Added
 - Quest journal (J, or from the game menu): the main quest and every side quest you have heard of,
   with the story so far and the current goal; completed quests listed last. A Clues tab collects
