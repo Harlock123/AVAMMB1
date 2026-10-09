@@ -71,16 +71,16 @@ All screenshots are real frames rendered by the game itself (Avalonia headless +
 ## Download and install
 
 Download the archive for your platform from the **[latest release](https://github.com/Harlock123/AVAMMB1/releases/latest)**
-(all releases: [https://github.com/Harlock123/AVAMMB1/releases](https://github.com/Harlock123/AVAMMB1/releases)), or build it yourself (below). Direct links for v1.0.0:
+(all releases: [https://github.com/Harlock123/AVAMMB1/releases](https://github.com/Harlock123/AVAMMB1/releases)), or build it yourself (below). Direct links for v1.1.0:
 
 | Platform | Download | How to run |
 |---|---|---|
-| Windows x64 | [AVAMMB1-1.0.0-win-x64.zip](https://github.com/Harlock123/AVAMMB1/releases/download/v1.0.0/AVAMMB1-1.0.0-win-x64.zip) | Unzip, run `AVAMMB1.exe`. SmartScreen may warn about an unsigned app: *More info -> Run anyway*. |
-| Windows ARM64 | [AVAMMB1-1.0.0-win-arm64.zip](https://github.com/Harlock123/AVAMMB1/releases/download/v1.0.0/AVAMMB1-1.0.0-win-arm64.zip) | Same as above. |
-| Linux x64 | [AVAMMB1-1.0.0-linux-x64.tar.gz](https://github.com/Harlock123/AVAMMB1/releases/download/v1.0.0/AVAMMB1-1.0.0-linux-x64.tar.gz) | `tar xzf AVAMMB1-*.tar.gz && ./AVAMMB1`. Needs an X11 session (XWayland works) and the usual desktop libraries (fontconfig, libX11/libICE/libSM). |
-| Linux ARM64 | [AVAMMB1-1.0.0-linux-arm64.tar.gz](https://github.com/Harlock123/AVAMMB1/releases/download/v1.0.0/AVAMMB1-1.0.0-linux-arm64.tar.gz) | Same as above. |
-| macOS Apple Silicon | [AVAMMB1-1.0.0-osx-arm64.tar.gz](https://github.com/Harlock123/AVAMMB1/releases/download/v1.0.0/AVAMMB1-1.0.0-osx-arm64.tar.gz) | Extract, then open `AVAMMB1.app`. The app is **not notarized**: right-click -> *Open* the first time, or run `xattr -dr com.apple.quarantine AVAMMB1.app`. |
-| macOS Intel | [AVAMMB1-1.0.0-osx-x64.tar.gz](https://github.com/Harlock123/AVAMMB1/releases/download/v1.0.0/AVAMMB1-1.0.0-osx-x64.tar.gz) | Same as above. |
+| Windows x64 | [AVAMMB1-1.1.0-win-x64.zip](https://github.com/Harlock123/AVAMMB1/releases/download/v1.1.0/AVAMMB1-1.1.0-win-x64.zip) | Unzip, run `AVAMMB1.exe`. SmartScreen may warn about an unsigned app: *More info -> Run anyway*. |
+| Windows ARM64 | [AVAMMB1-1.1.0-win-arm64.zip](https://github.com/Harlock123/AVAMMB1/releases/download/v1.1.0/AVAMMB1-1.1.0-win-arm64.zip) | Same as above. |
+| Linux x64 | [AVAMMB1-1.1.0-linux-x64.tar.gz](https://github.com/Harlock123/AVAMMB1/releases/download/v1.1.0/AVAMMB1-1.1.0-linux-x64.tar.gz) | `tar xzf AVAMMB1-*.tar.gz && ./AVAMMB1`. Needs an X11 session (XWayland works) and the usual desktop libraries (fontconfig, libX11/libICE/libSM). |
+| Linux ARM64 | [AVAMMB1-1.1.0-linux-arm64.tar.gz](https://github.com/Harlock123/AVAMMB1/releases/download/v1.1.0/AVAMMB1-1.1.0-linux-arm64.tar.gz) | Same as above. |
+| macOS Apple Silicon | [AVAMMB1-1.1.0-osx-arm64.tar.gz](https://github.com/Harlock123/AVAMMB1/releases/download/v1.1.0/AVAMMB1-1.1.0-osx-arm64.tar.gz) | Extract, then open `AVAMMB1.app`. The app is **not notarized**: right-click -> *Open* the first time, or run `xattr -dr com.apple.quarantine AVAMMB1.app`. |
+| macOS Intel | [AVAMMB1-1.1.0-osx-x64.tar.gz](https://github.com/Harlock123/AVAMMB1/releases/download/v1.1.0/AVAMMB1-1.1.0-osx-x64.tar.gz) | Same as above. |
 
 **Gatekeeper / notarization:** release builds made on the macOS CI runner are ad-hoc signed
 (`codesign -s -`), which Apple Silicon requires, but they are not signed with a Developer ID or
