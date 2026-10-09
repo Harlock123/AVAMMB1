@@ -203,8 +203,7 @@ Ashen Hills side quests, checks that every map is connected and every event reac
 deterministic boss-balance checks (each boss beatable at its intended level, not trivial two levels
 below). The UI flow title -> party creation -> town -> shop -> dungeon -> combat -> inventory ->
 automap -> spells -> secret door -> Ashen Hills -> settings is exercised headlessly by `--screenshot`.
-These features have been verified through tests and captured frames; they have had little
-hands-on play testing so far.
+The game is currently under testing.
 
 ## Project structure
 
