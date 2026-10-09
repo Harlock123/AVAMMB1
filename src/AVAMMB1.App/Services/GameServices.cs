@@ -30,6 +30,9 @@ public sealed class GameServices(
     public SettingsStore SettingsStore { get; } = settingsStore;
     /// <summary>Current settings.</summary>
     public GameSettings Settings { get; set; } = settingsStore.Load();
+
+    /// <summary>Whether this is the first launch (no settings file existed).</summary>
+    public bool FreshInstall { get; } = !settingsStore.Exists;
     /// <summary>Audio.</summary>
     public IAudioService Audio { get; } = audio;
     /// <summary>Images.</summary>

@@ -419,6 +419,9 @@ public static class HeadlessRunner
         game.JournalCommand.Execute(null);
         Capture(dir, "22-journal");
         game.CloseOverlay();
+        game.HelpCommand.Execute(null);
+        Capture(dir, "24-help");
+        game.CloseOverlay();
         s.State.Flags.Remove("pell_met");
 
         game.CastCommand.Execute(null);

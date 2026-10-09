@@ -5,6 +5,13 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+### Added
+- "What's new" screen: after an update the game shows the release notes for every version you have
+  not seen yet (once); the title screen's *What's new* button shows them all. The notes are read
+  from the CHANGELOG.md that ships inside the game.
+- Help screen (F1 or H, the title screen, or the game menu): how to play, plus your current keyboard
+  and controller controls, including any you have rebound.
+
 ## [1.6.0] - 2026-10-09
 
 ### Added
@@ -32,8 +39,6 @@ All notable changes to this project are documented here. The format follows
 - The game screen's button bar has Journal and Note buttons; the message log is now headed "Log".
 - Settings are split into General, Keyboard and Controller tabs.
 - All interface colours and font sizes are theme resources (`AVAMMB1.App/Theming/Theme.cs`).
-
-### Changed
 - Balance simulator plays more like a person: it opens each zone's chests, uses healing potions in
   battle and cure potions in the field, keeps a few potions in stock, equips better loot and sells
   the rest. Its findings: chests add only 100-500 gold per zone, and from level 3 to 9 training ate

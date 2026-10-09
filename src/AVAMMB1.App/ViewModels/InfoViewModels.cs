@@ -1,0 +1,138 @@
+using Avalonia.Input;
+using AVAMMB1.Core.Info;
+using AVAMMB1.Core.Input;
+using AVAMMB1.Core.Persistence;
+using CommunityToolkit.Mvvm.Input;
+
+namespace AVAMMB1.App.ViewModels;
+
+/// <summary>Release notes ("What's new"), shown once after an update or from the title screen.</summary>
+/// <param name="entries">Releases to show, newest first.</param>
+/// <param name="onClose">Called when the player continues.</param>
+public sealed partial class WhatsNewViewModel(IReadOnlyList<ReleaseEntry> entries, Action onClose) : ViewModelBase
+{
+    /// <summary>Releases.</summary>
+    public IReadOnlyList<ReleaseView> Releases { get; } = entries.Select(e => new ReleaseView(e)).ToList();
+
+    /// <summary>Heading.</summary>
+    public string Title => Releases.Count == 1 ? $"What's new in AVAM&M {Releases[0].Version}" : "What's new";
+
+    [RelayCommand]
+    private void Close() => onClose();
+
+    /// <inheritdoc />
+    public override bool HandleKey(Key key)
+    {
+        if (key is Key.Escape or Key.Enter or Key.Space)
+        {
+            Close();
+            return true;
+        }
+        return false;
+    }
+}
+
+/// <summary>One release in the notes list.</summary>
+/// <param name="Entry">Release.</param>
+public sealed record ReleaseView(ReleaseEntry Entry)
+{
+    /// <summary>Version text.</summary>
+    public string Version => Entry.Version.ToString();
+    /// <summary>Heading.</summary>
+    public string Heading => $"Version {Entry.Version}" + (Entry.Date.Length > 0 ? $"  -  {Entry.Date}" : "");
+    /// <summary>Lines; section names (Added, Changed...) are the ones without a bullet.</summary>
+    public IReadOnlyList<NoteLine> Lines => Entry.Lines.Select(l => new NoteLine(l)).ToList();
+}
+
+/// <summary>A release-notes line.</summary>
+/// <param name="Text">Text.</param>
+public sealed record NoteLine(string Text)
+{
+    /// <summary>Whether this is a section heading.</summary>
+    public bool IsHeading => !Text.TrimStart().StartsWith('•');
+    /// <summary>Indent for nested bullets.</summary>
+    public Avalonia.Thickness Indent => new(IsHeading ? 0 : 8 + 12 * (Text.Length - Text.TrimStart().Length) / 2, IsHeading ? 8 : 1, 0, 1);
+    /// <summary>Headings are bold.</summary>
+    public Avalonia.Media.FontWeight Weight => IsHeading ? Avalonia.Media.FontWeight.Bold : Avalonia.Media.FontWeight.Normal;
+    /// <summary>Text without leading spaces.</summary>
+    public string Shown => Text.TrimStart();
+}
+
+/// <summary>Help: how to play, plus the current keyboard and controller controls.</summary>
+public sealed partial class HelpViewModel : ViewModelBase
+{
+    private readonly Action _onClose;
+
+    /// <summary>Creates the screen.</summary>
+    /// <param name="settings">Settings (for the current bindings).</param>
+    /// <param name="onClose">Called on close.</param>
+    public HelpViewModel(GameSettings settings, Action onClose)
+    {
+        _onClose = onClose;
+        Keys = Enum.GetValues<InputAction>()
+            .Select(a => new HelpRow(PadRow.LabelOf(a), settings.KeyBindings.TryGetValue(a, out var k) && k.Count > 0 ? string.Join(", ", k) : "-"))
+            .Concat(CombatKeys)
+            .ToList();
+        Pad = Enum.GetValues<InputAction>()
+            .Where(a => settings.GamepadBindings.ContainsKey(a))
+            .Select(a => new HelpRow(PadRow.LabelOf(a), PadRow.Name(settings.GamepadBindings[a])))
+            .Append(new HelpRow("Menu (always)", "Start"))
+            .Concat(CombatPad)
+            .ToList();
+    }
+
+    private static readonly HelpRow[] CombatKeys =
+    [
+        new("Battle: fight / run / bribe", "F, R, B (before the first round)"),
+        new("Battle: attack, shoot, cast, item, block, run", "A, S, C, U, B, R"),
+        new("Battle: repeat last actions / auto-fight", "E, O"),
+        new("Battle: choose target, spell or ally", "1-9 or click"),
+        new("Fullscreen", "F11 or Alt+Enter"),
+    ];
+
+    private static readonly HelpRow[] CombatPad =
+    [
+        new("Battle: fight / attack / continue", "A"),
+        new("Battle: cast, item, block, run", "X, Y, B, View"),
+        new("Battle: change target", "LB / RB or left / right"),
+        new("Battle: repeat last actions / auto-fight", "LT / RT"),
+        new("Menus", "D-pad moves, A selects, B back"),
+    ];
+
+    /// <summary>Keyboard controls.</summary>
+    public IReadOnlyList<HelpRow> Keys { get; }
+    /// <summary>Controller controls.</summary>
+    public IReadOnlyList<HelpRow> Pad { get; }
+
+    /// <summary>How-to-play sections.</summary>
+    public IReadOnlyList<HelpRow> Basics { get; } =
+    [
+        new("Your party", "Up to six adventurers. Knights, paladins and archers fight best in the front three places; sorcerers and clerics cast from the back. Reorder the party at an inn."),
+        new("Exploring", "Move square by square. Step onto signs, shops and stairs, or press Use to interact with what is in front of you. The automap (M) remembers only what you have seen; press N to note a square."),
+        new("Quests", "Talk to the people in towns. The journal (J) keeps track of every quest you have heard of, and the Clues tab keeps the signs and warnings you have read."),
+        new("Fighting", "Choose an action for each character in turn. Monsters you have beaten before show their strengths and weaknesses when targeted. Repeat (E) replays everyone's last action; Auto (O) fights for you until someone is badly hurt."),
+        new("Resting and healing", "Rest (R) in a quiet spot to recover; each rest eats food. Poison stops healing and disease halves it - cure them with spells, cure potions or at a temple, which also raises the dead."),
+        new("Getting stronger", "Experience is not enough on its own: pay to train at a training ground to gain a level. Buy better equipment in shops and sell what you do not need."),
+        new("Gold", "Loot goes to the party purse. Each character can also carry gold of their own; the character sheet moves gold between them and the purse."),
+        new("Danger", "Dungeons hide spinners that turn you around, dark and anti-magic squares, traps and secret doors (search with F). Save often (F5), especially before a boss."),
+    ];
+
+    [RelayCommand]
+    private void Close() => _onClose();
+
+    /// <inheritdoc />
+    public override bool HandleKey(Key key)
+    {
+        if (key is Key.Escape or Key.F1 or Key.H)
+        {
+            Close();
+            return true;
+        }
+        return false;
+    }
+}
+
+/// <summary>A two-column help line.</summary>
+/// <param name="Name">What.</param>
+/// <param name="Value">How.</param>
+public sealed record HelpRow(string Name, string Value);

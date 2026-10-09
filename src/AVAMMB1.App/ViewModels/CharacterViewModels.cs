@@ -545,6 +545,9 @@ public sealed partial class GameMenuViewModel(GameViewModel game) : ViewModelBas
     private void Journal() => game.Overlay = new JournalViewModel(game);
 
     [RelayCommand]
+    private void Help() => game.Overlay = new HelpViewModel(game.Services.Settings, () => game.Overlay = this);
+
+    [RelayCommand]
     private void Save() => game.Overlay = new SaveLoadViewModel(game.Main, saving: true, onClose: () => game.Overlay = this);
 
     [RelayCommand]

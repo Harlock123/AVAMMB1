@@ -119,7 +119,7 @@ All screenshots are real frames rendered by the game itself (Avalonia headless +
 | ![Thornwick](docs/screenshots/17-thornwick.png) Thornwick, the mining town | ![Duskmere](docs/screenshots/18-duskmere.png) Duskmere, the marsh village |
 | ![Port Ashkar](docs/screenshots/19-port-ashkar.png) Port Ashkar on the Sunscar Coast | ![Oasis](docs/screenshots/20-sunscar-oasis.png) The oasis in the Sunscar Wastes |
 | ![Old Cistern](docs/screenshots/21-old-cistern.png) An eel in the Old Cistern's flooded reservoir | ![Journal](docs/screenshots/22-journal.png) The quest journal |
-| ![High contrast](docs/screenshots/23-high-contrast.png) High-contrast theme, 115% text, 800 x 600 view | |
+| ![High contrast](docs/screenshots/23-high-contrast.png) High-contrast theme, 115% text, 800 x 600 view | ![Help](docs/screenshots/24-help.png) The in-game help |
 
 ## Download and install
 
@@ -165,6 +165,7 @@ Set `AVAMMB1_DATA_DIR` to use a different folder.
 | Party / inventory sheet | I / C, or 1-6 for a member | click a portrait |
 | Automap | M | *Map* |
 | Quest journal and clues | J | *Journal* |
+| Help (how to play, your controls) | F1 / H | *Help* in the menu |
 | Note on this automap square | N (or click any square on the automap) | *Note* |
 | Quick save / quick load | F5 / F9 | |
 | Game menu (save, load, settings) | Esc | *Menu* |

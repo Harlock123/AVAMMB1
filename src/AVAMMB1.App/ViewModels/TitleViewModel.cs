@@ -56,6 +56,12 @@ public sealed partial class TitleViewModel : ViewModelBase
     private void Load() => _main.ShowLoad();
 
     [RelayCommand]
+    private void Help() => _main.ShowHelp();
+
+    [RelayCommand]
+    private void WhatsNew() => _main.ShowAllNotes();
+
+    [RelayCommand]
     private void Settings() => _main.ShowSettings(this);
 
     [RelayCommand]
@@ -73,6 +79,7 @@ public sealed partial class TitleViewModel : ViewModelBase
             case Key.C when CanContinue: Continue(); return true;
             case Key.L: Load(); return true;
             case Key.S: Settings(); return true;
+            case Key.F1 or Key.H: Help(); return true;
             default: return false;
         }
     }

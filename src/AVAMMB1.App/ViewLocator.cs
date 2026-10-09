@@ -24,6 +24,8 @@ public sealed class ViewLocator : IDataTemplate
         SpellCastViewModel => new SpellCastView(),
         AutomapViewModel => new AutomapView(),
         JournalViewModel => new JournalView(),
+        WhatsNewViewModel => new WhatsNewView(),
+        HelpViewModel => new HelpView(),
         GameMenuViewModel => new GameMenuView(),
         SaveLoadViewModel => new SaveLoadView(),
         SettingsViewModel => new SettingsView(),

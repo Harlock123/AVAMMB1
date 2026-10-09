@@ -39,6 +39,8 @@ public enum InputAction
     Journal,
     /// <summary>Write a note on the current automap square.</summary>
     Note,
+    /// <summary>Open the help screen.</summary>
+    Help,
 }
 
 /// <summary>User preferences persisted between sessions.</summary>
@@ -52,6 +54,8 @@ public sealed class GameSettings
     public int AmbienceVolume { get; set; } = 50;
     /// <summary>Run full-screen.</summary>
     public bool Fullscreen { get; set; }
+    /// <summary>The game version whose release notes the player has seen ("" before 1.7).</summary>
+    public string LastSeenVersion { get; set; } = "";
     /// <summary>Height of the 3D view's internal image: 300 (400x300, classic), 480 (640x480) or 600 (800x600).</summary>
     public int ViewResolution { get; set; } = 300;
     /// <summary>Smooth (filtered) scaling of the 3D view instead of sharp pixels.</summary>
@@ -95,6 +99,7 @@ public sealed class GameSettings
         [InputAction.Menu] = ["Escape"],
         [InputAction.Journal] = ["J"],
         [InputAction.Note] = ["N"],
+        [InputAction.Help] = ["F1", "H"],
     };
 
     /// <summary>Fills in any actions missing from <see cref="KeyBindings"/> with defaults.</summary>
@@ -125,6 +130,9 @@ public sealed class SettingsStore(string path)
 {
     /// <summary>Settings file path.</summary>
     public string Path => path;
+
+    /// <summary>Whether a settings file already existed (false on a fresh install).</summary>
+    public bool Exists => File.Exists(path);
 
     /// <summary>Loads settings, returning defaults when missing or corrupt.</summary>
     public GameSettings Load()

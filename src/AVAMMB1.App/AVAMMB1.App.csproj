@@ -40,5 +40,6 @@
     <AvaloniaResource Include="$(RepoRoot)Assets/Audio/**/*.ogg" Link="Assets/Audio/%(RecursiveDir)%(Filename)%(Extension)" />
     <AvaloniaResource Include="$(RepoRoot)Assets/Icons/*.png" Link="Assets/Icons/%(Filename)%(Extension)" />
     <AvaloniaResource Include="$(RepoRoot)CREDITS.md" Link="Assets/Text/CREDITS.md" />
+    <AvaloniaResource Include="$(RepoRoot)CHANGELOG.md" Link="Assets/Text/CHANGELOG.md" />
   </ItemGroup>
 </Project>

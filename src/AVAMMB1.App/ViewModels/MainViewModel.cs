@@ -17,6 +17,7 @@ public sealed partial class MainViewModel : ViewModelBase
         services.Audio.SetVolumes(services.Settings.MusicVolume, services.Settings.SfxVolume, services.Settings.AmbienceVolume);
         ApplyTheme(services.Settings);
         _currentScreen = new TitleViewModel(this);
+        ShowWhatsNewIfUpdated();
     }
 
     /// <summary>Shared services.</summary>
@@ -45,6 +46,62 @@ public sealed partial class MainViewModel : ViewModelBase
 
     /// <summary>The live exploration screen, if a game is running.</summary>
     public GameViewModel? Game { get; private set; }
+
+    /// <summary>The running game version (major.minor.build).</summary>
+    public static Version GameVersion => typeof(MainViewModel).Assembly.GetName().Version is { } v ? new Version(v.Major, v.Minor, v.Build) : new Version(1, 0, 0);
+
+    /// <summary>All release notes shipped with the game (newest first).</summary>
+    public static IReadOnlyList<AVAMMB1.Core.Info.ReleaseEntry> AllReleaseNotes()
+    {
+        try
+        {
+            using var s = Avalonia.Platform.AssetLoader.Open(new Uri("avares://AVAMMB1/Assets/Text/CHANGELOG.md"));
+            using var r = new StreamReader(s);
+            return AVAMMB1.Core.Info.ReleaseNotes.Parse(r.ReadToEnd());
+        }
+        catch (Exception ex) when (ex is IOException or FileNotFoundException)
+        {
+            return [];
+        }
+    }
+
+    /// <summary>After an update, shows the notes for every version the player has not seen yet (once).</summary>
+    private void ShowWhatsNewIfUpdated()
+    {
+        var s = Services.Settings;
+        var current = GameVersion;
+        if (Services.FreshInstall)
+        {
+            MarkNotesSeen();
+            return;
+        }
+        if (s.LastSeenVersion == current.ToString())
+        {
+            return;
+        }
+        // Settings from before 1.7 never recorded a version: show this release only.
+        var all = AllReleaseNotes();
+        var entries = Version.TryParse(s.LastSeenVersion, out var lastSeen)
+            ? AVAMMB1.Core.Info.ReleaseNotes.NewerThan(all, lastSeen).Where(e => e.Version <= current).ToList()
+            : all.Where(e => e.Version == current).ToList();
+        MarkNotesSeen();
+        if (entries.Count > 0)
+        {
+            CurrentScreen = new WhatsNewViewModel(entries, ShowTitle);
+        }
+    }
+
+    private void MarkNotesSeen()
+    {
+        Services.Settings.LastSeenVersion = GameVersion.ToString();
+        Services.SaveSettings();
+    }
+
+    /// <summary>Shows the release notes for all versions.</summary>
+    public void ShowAllNotes() => CurrentScreen = new WhatsNewViewModel(AllReleaseNotes(), ShowTitle);
+
+    /// <summary>Shows the help screen as a full screen (from the title).</summary>
+    public void ShowHelp() => CurrentScreen = new HelpViewModel(Services.Settings, ShowTitle);
 
     /// <summary>Shows the title screen.</summary>
     public void ShowTitle()

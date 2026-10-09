@@ -35,6 +35,8 @@
       <Button Classes="big" HorizontalAlignment="Center" Content="Continue  (C)" Command="{Binding ContinueCommand}" IsEnabled="{Binding CanContinue}" />
       <Button Classes="big" HorizontalAlignment="Center" Content="Load Game  (L)" Command="{Binding LoadCommand}" />
       <Button Classes="big" HorizontalAlignment="Center" Content="Settings  (S)" Command="{Binding SettingsCommand}" />
+      <Button Classes="big" HorizontalAlignment="Center" Content="Help  (F1)" Command="{Binding HelpCommand}" />
+      <Button Classes="big" HorizontalAlignment="Center" Content="What's new" Command="{Binding WhatsNewCommand}" />
       <Button Classes="big" HorizontalAlignment="Center" Content="Credits" Command="{Binding CreditsCommand}" />
       <Button Classes="big" HorizontalAlignment="Center" Content="Quit" Command="{Binding QuitCommand}" />
       <TextBlock Text="{Binding Error}" Foreground="{DynamicResource Bad}" HorizontalAlignment="Center" />

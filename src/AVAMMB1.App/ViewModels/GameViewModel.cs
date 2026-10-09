@@ -339,6 +339,8 @@ public sealed partial class GameViewModel : ViewModelBase
 
     [RelayCommand] private void Journal() => Overlay = new JournalViewModel(this);
 
+    [RelayCommand] private void Help() => Overlay = new HelpViewModel(Services.Settings, CloseOverlay);
+
     [RelayCommand] private void Note() => Overlay = new AutomapViewModel(this, editNote: true);
 
     [RelayCommand] private void Menu() => Overlay = new GameMenuViewModel(this);
@@ -429,6 +431,7 @@ public sealed partial class GameViewModel : ViewModelBase
             case InputAction.Menu: Menu(); return true;
             case InputAction.Journal: Journal(); return true;
             case InputAction.Note: Note(); return true;
+            case InputAction.Help: Help(); return true;
             default: return false;
         }
     }
