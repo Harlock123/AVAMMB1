@@ -71,12 +71,14 @@ public sealed partial class HelpViewModel : ViewModelBase
         _onClose = onClose;
         Keys = Enum.GetValues<InputAction>()
             .Select(a => new HelpRow(PadRow.LabelOf(a), settings.KeyBindings.TryGetValue(a, out var k) && k.Count > 0 ? string.Join(", ", k) : "-"))
+            .Append(new HelpRow("Character sheet: move the character a place left / right", "[, ]"))
             .Concat(CombatKeys)
             .ToList();
         Pad = Enum.GetValues<InputAction>()
             .Where(a => settings.GamepadBindings.ContainsKey(a))
             .Select(a => new HelpRow(PadRow.LabelOf(a), PadRow.Name(settings.GamepadBindings[a])))
             .Append(new HelpRow("Menu (always)", "Start"))
+            .Append(new HelpRow("Change places", "Party sheet: Move left / Move right buttons"))
             .Concat(CombatPad)
             .ToList();
     }
@@ -110,7 +112,7 @@ public sealed partial class HelpViewModel : ViewModelBase
     /// <summary>How-to-play sections.</summary>
     public IReadOnlyList<HelpRow> Basics { get; } =
     [
-        new("Your party", "Up to six adventurers. Knights, paladins and archers fight best in the front three places; sorcerers and clerics cast from the back. Drag a party card along the bar at the bottom to change places (not in battle), or reorder at an inn."),
+        new("Your party", "Up to six adventurers. Knights, paladins and archers fight best in the front three places; sorcerers and clerics cast from the back. Drag a party card along the bar at the bottom to change places (not in battle), or use Move left / Move right ([ and ]) on a character sheet, or reorder at an inn."),
         new("Exploring", "Move square by square. Step onto signs, shops and stairs, or press Use to interact with what is in front of you. The automap (M) remembers only what you have seen; press N to note a square."),
         new("Quests", "Talk to the people in towns. The journal (J) keeps track of every quest you have heard of, and the Clues tab keeps the signs and warnings you have read."),
         new("Fighting", "Choose an action for each character in turn. Monsters you have beaten before show their strengths and weaknesses when targeted. Repeat (E) replays everyone's last action; Auto (O) fights for you until someone is badly hurt."),

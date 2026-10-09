@@ -232,20 +232,24 @@ public sealed partial class GameViewModel : ViewModelBase
     /// <summary>Moves a party member to another place (drag and drop on the party cards).</summary>
     /// <param name="from">Current index.</param>
     /// <param name="to">New index.</param>
-    public void MoveMember(int from, int to)
+    /// <param name="fromSheet">True when asked from the character sheet (which is itself an overlay).</param>
+    /// <returns>The message describing the move, or null if nothing moved.</returns>
+    public string? MoveMember(int from, int to, bool fromSheet = false)
     {
         if (InCombat)
         {
             AddMessage("There is no time to change places in the middle of a battle.");
-            return;
+            return null;
         }
-        if (HasOverlay || !Session.MoveMember(from, to))
+        if (HasOverlay && !fromSheet || !Session.MoveMember(from, to))
         {
-            return;
+            return null;
         }
         var c = Session.State.Party[to];
-        AddMessage($"{c.Name} moves to place {to + 1}{(to < 3 ? " (front rank)" : "")}.");
+        var text = $"{c.Name} moves to place {to + 1}{(to < 3 ? " (front rank)" : "")}.";
+        AddMessage(text);
         Refresh();
+        return text;
     }
 
     /// <summary>Adds messages to the log and plays their sounds.</summary>

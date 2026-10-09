@@ -69,7 +69,8 @@ Code identifiers, the solution and executables use the name **`AVAMMB1`** (`AVAM
   donate), taverns (food, rumors), smithies and magic shops, training grounds, and **academies**
   where gold buys permanent statistic points (each lesson dearer than the last - a late-game gold sink).
 - **Drag-and-drop marching order**: drag a party card along the bar at the bottom of the screen to
-  change places (anywhere but in battle); a click still opens the character sheet.
+  change places (anywhere but in battle); a click still opens the character sheet. Without a mouse,
+  Move left / Move right on the character sheet (`[` / `]`, or the buttons with a controller).
 - **Twenty-three maps**: six towns (Brindlemoor, Saltreach, Thornwick, Duskmere, Port Ashkar and
   Wintermere), four wilderness regions (the Greenvale Wilds, the Ashen Hills, the Sunscar Wastes and
   the Frostmark), twelve dungeon levels plus the final vault. The main quest chain (keys, quest items, flags) leads to a final boss
@@ -262,7 +263,7 @@ GitHub's runners - each RID on its own operating system - after the test suite p
 | osx-arm64 | macOS runner (ad-hoc signed `.app`) | **yes** - `--smoke-test` passes in CI, audio device opened; play-tested by the maintainer |
 | linux-arm64 | Ubuntu runner (cross-compiled) | **yes** - the published release archive was downloaded and passes `--smoke-test` on an ARM64 Linux machine; the README screenshots are captured with this build |
 | win-arm64 | Windows runner (cross-compiled) | **yes** - play-tested by the maintainer on Windows on ARM |
-| osx-x64 | macOS runner (cross-compiled) | no |
+| osx-x64 | macOS runner (cross-compiled) | **yes** - play-tested by the maintainer on an Intel Mac |
 
 The CI runners have no sound card, so on Windows and Linux the smoke test only checks that the
 bundled OpenAL Soft library loads; on macOS (CI) and Linux ARM64 it also opens the audio device and

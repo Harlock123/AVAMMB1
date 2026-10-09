@@ -5,6 +5,14 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+### Added
+- Change the marching order without a mouse: the character sheet has Move left / Move right buttons
+  (keys `[` and `]`; a controller reaches the buttons like any other). The sheet follows the
+  character as they move.
+
+### Changed
+- macOS Intel (osx-x64) builds are now verified (play-tested on an Intel Mac).
+
 ## [1.9.1] - 2026-10-09
 
 ### Fixed

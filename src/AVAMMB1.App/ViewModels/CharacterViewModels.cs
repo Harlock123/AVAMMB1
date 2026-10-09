@@ -132,6 +132,8 @@ public sealed partial class CharacterSheetViewModel : ViewModelBase
         }
         Selected = null;
         OnPropertyChanged(nameof(Member));
+        OnPropertyChanged(nameof(CanMoveLeft));
+        OnPropertyChanged(nameof(CanMoveRight));
         OnPropertyChanged(nameof(Character));
         OnPropertyChanged(nameof(Header));
         OnPropertyChanged(nameof(Summary));
@@ -177,6 +179,28 @@ public sealed partial class CharacterSheetViewModel : ViewModelBase
 
     [RelayCommand]
     private void ShareGold() => GoldDone(Session.Town.ShareEvenly());
+
+    /// <summary>Whether the shown character can move one place forward / back in the marching order.</summary>
+    public bool CanMoveLeft => Index > 0;
+
+    /// <inheritdoc cref="CanMoveLeft" />
+    public bool CanMoveRight => Index < _game.Party.Count - 1;
+
+    [RelayCommand]
+    private void MoveLeft() => MoveTo(Index - 1);
+
+    [RelayCommand]
+    private void MoveRight() => MoveTo(Index + 1);
+
+    private void MoveTo(int place)
+    {
+        if (place < 0 || place >= _game.Party.Count || _game.MoveMember(Index, place, fromSheet: true) is not { } text)
+        {
+            return;
+        }
+        Index = place; // keep showing the same character
+        Feedback = text;
+    }
 
     [RelayCommand]
     private void Next() => Index = (Index + 1) % _game.Party.Count;
@@ -250,6 +274,8 @@ public sealed partial class CharacterSheetViewModel : ViewModelBase
             case Key.Left: Previous(); return true;
             case >= Key.D1 and <= Key.D6 when key - Key.D1 < _game.Party.Count: Index = key - Key.D1; return true;
             case Key.I or Key.C: Close(); return true;
+            case Key.OemOpenBrackets: MoveLeft(); return true;
+            case Key.OemCloseBrackets: MoveRight(); return true;
             default: return false;
         }
     }

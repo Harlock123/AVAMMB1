@@ -146,6 +146,19 @@ public static class HeadlessRunner
         {
             throw new InvalidOperationException("Clicking a party card no longer opens the character sheet.");
         }
+        // Keyboard / controller route: Move right on the sheet, then back with "[".
+        var sheet = (CharacterSheetViewModel)game.Overlay;
+        var shown = sheet.Character;
+        sheet.MoveRightCommand.Execute(null);
+        if (!ReferenceEquals(s.State.Party[2], shown) || !ReferenceEquals(sheet.Character, shown))
+        {
+            throw new InvalidOperationException("Move right on the character sheet did not move the character.");
+        }
+        sheet.HandleKey(Key.OemOpenBrackets);
+        if (!s.State.Party.SequenceEqual(before))
+        {
+            throw new InvalidOperationException("[ on the character sheet did not move the character back.");
+        }
         game.CloseOverlay();
         while (game.Messages.Count > logLength)
         {

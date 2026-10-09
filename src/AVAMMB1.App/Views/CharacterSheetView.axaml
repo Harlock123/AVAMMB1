@@ -9,9 +9,11 @@
         <c:PixelImage Source="{Binding Member.Portrait}" Width="64" Height="64" Margin="0,0,10,0" />
         <StackPanel Grid.Column="1" VerticalAlignment="Center">
           <TextBlock Classes="title" Text="{Binding Header}" />
-          <TextBlock Text="Left/Right or 1-6 to switch characters" Classes="dim" FontSize="{DynamicResource Font12}" />
+          <TextBlock Text="Left/Right or 1-6 to switch characters; [ and ] to change their place in the party" Classes="dim" FontSize="{DynamicResource Font12}" />
         </StackPanel>
         <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+          <Button Content="Move left [" Command="{Binding MoveLeftCommand}" IsEnabled="{Binding CanMoveLeft}" ToolTip.Tip="Move this character one place towards the front" />
+          <Button Content="Move right ]" Command="{Binding MoveRightCommand}" IsEnabled="{Binding CanMoveRight}" Margin="0,0,12,0" ToolTip.Tip="Move this character one place towards the back" />
           <Button Content="&lt; Prev" Command="{Binding PreviousCommand}" />
           <Button Content="Next &gt;" Command="{Binding NextCommand}" />
         </StackPanel>
