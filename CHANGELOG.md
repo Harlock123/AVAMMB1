@@ -3,7 +3,7 @@
 All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses semantic versioning.
 
-## [Unreleased]
+## [1.4.0] - 2026-10-09
 
 ### Added
 - Per-character gold with a shared party purse. Loot and sales go to the purse; costs are paid from
