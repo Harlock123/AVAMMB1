@@ -224,9 +224,9 @@ three side quests, checks that every map is connected and every event reachable,
 deterministic boss-balance checks (each boss beatable at its intended level, not trivial two levels
 below). The UI flow title -> party creation -> town -> shop -> dungeon -> combat -> inventory ->
 automap -> spells -> secret door -> Ashen Hills -> Sunscar Coast -> settings is exercised headlessly by `--screenshot`.
-Gamepad support is verified up to the SDL library loading on every platform and the button mapping
-(unit tests); it has not yet been tried with a physical controller. The game is currently under
-testing.
+Gamepad support has been play-tested with a physical controller on Linux ARM64 (v1.4.0); on the
+other platforms CI confirms the bundled SDL2 library loads, and the button mapping is unit tested.
+The game is currently under testing.
 
 ## Project structure
 
