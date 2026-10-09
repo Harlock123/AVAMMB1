@@ -25,6 +25,8 @@ public sealed class ClassDef
 {
     /// <summary>Unique identifier.</summary>
     public string Id { get; set; } = "";
+    /// <summary>Special abilities (see <see cref="ClassAbility"/>).</summary>
+    public List<string> Abilities { get; set; } = new();
     /// <summary>Display name.</summary>
     public string Name { get; set; } = "";
     /// <summary>Flavor text.</summary>
@@ -361,4 +363,22 @@ public sealed class QuestStageDef
     public string? Visited { get; set; }
     /// <summary>Journal text.</summary>
     public string Text { get; set; } = "";
+}
+
+/// <summary>Ability names used in <see cref="ClassDef.Abilities"/>.</summary>
+public static class ClassAbility
+{
+    /// <summary>Battle: protect an ally this round - attacks aimed at them strike the guard instead.</summary>
+    public const string Guard = "guard";
+    /// <summary>Battle, once per fight: heal an ally (3 x level + 5) and cure poison.</summary>
+    public const string LayOnHands = "layOnHands";
+    /// <summary>Battle: one careful missile shot at +4 to hit for double damage.</summary>
+    public const string AimedShot = "aimedShot";
+    /// <summary>Double damage on the first round of a battle.</summary>
+    public const string SneakAttack = "sneakAttack";
+    /// <summary>Exploring: try to pick locked doors.</summary>
+    public const string PickLocks = "pickLocks";
+
+    /// <summary>All known abilities.</summary>
+    public static readonly IReadOnlyList<string> All = [Guard, LayOnHands, AimedShot, SneakAttack, PickLocks];
 }

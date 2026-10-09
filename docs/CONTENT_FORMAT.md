@@ -86,6 +86,12 @@ hit points, +2 armor class, +50% damage, triple experience and gold, and a 50% c
 chosen by its level. Set `"boss": true` on unique bosses: any battle that
 includes one plays the boss theme instead of the normal battle music.
 
+## Class abilities
+
+`classes.json` entries may list `abilities`: `guard`, `layOnHands`, `aimedShot`, `sneakAttack`,
+`pickLocks` (knight, paladin, archer and robber have them by default). Maps can set
+`"masterLocks": true` so their locked doors cannot be picked.
+
 ## spells.json
 
 ```json

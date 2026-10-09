@@ -32,6 +32,12 @@ public enum CombatActionKind
     Block,
     /// <summary>The whole party tries to run away.</summary>
     Run,
+    /// <summary>Knights: protect an ally this round.</summary>
+    Guard,
+    /// <summary>Paladins: heal an ally once per battle.</summary>
+    LayOnHands,
+    /// <summary>Archers: one careful shot at +4 to hit for double damage.</summary>
+    AimedShot,
 }
 
 /// <summary>An action chosen by the player for the active character.</summary>

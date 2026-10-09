@@ -24,6 +24,9 @@ public sealed class CombatEngine
     private readonly SpellCaster _spells;
     private readonly List<object> _order = new();
     private readonly HashSet<Character> _blocking = new();
+    private readonly Dictionary<Character, Character> _guardedBy = new();
+    private readonly HashSet<Character> _laidHands = new();
+    private readonly Dictionary<Character, int> _aimedInRound = new();
     private int _turn;
 
     /// <summary>Creates a battle.</summary>
@@ -196,6 +199,9 @@ public sealed class CombatEngine
             CombatActionKind.Cast => Cast(c, action, log),
             CombatActionKind.UseItem => UseItem(c, action, log),
             CombatActionKind.Block => Block(c, log),
+            CombatActionKind.Guard => Guard(c, action.Ally, log),
+            CombatActionKind.LayOnHands => LayOnHands(c, action.Ally, log),
+            CombatActionKind.AimedShot => AimedShot(c, action.Target, log),
             CombatActionKind.Run => Run(log),
             _ => false,
         };
@@ -219,6 +225,7 @@ public sealed class CombatEngine
     {
         Round++;
         _turn = 0;
+        _guardedBy.Clear();
         _order.Clear();
         var entries = new List<(object Actor, int Init)>();
         foreach (var c in _state.Party.Where(c => c.IsAlive))
@@ -360,7 +367,8 @@ public sealed class CombatEngine
                 damage += _rules.RollMeleeDamage(c, _rng);
             }
         }
-        ReportAttack(c.Name, m, hits, attacks, damage, "attacks", log);
+        var sneak = IsSneakAttack(c);
+        ReportAttack(c.Name, m, hits, attacks, sneak ? damage * 2 : damage, sneak ? "strikes from the shadows at" : "attacks", log);
         return true;
     }
 
@@ -377,8 +385,104 @@ public sealed class CombatEngine
             return false;
         }
         var hit = Rulebook.IsHit(_rng.Die(20), _rules.MissileAttackBonus(c) + HitBuff, m.ArmorClass);
-        ReportAttack(c.Name, m, hit ? 1 : 0, 1, hit ? _rules.RollMissileDamage(c, _rng) : 0, "shoots at", log);
+        var sneak = IsSneakAttack(c);
+        var dmg = hit ? _rules.RollMissileDamage(c, _rng) * (sneak ? 2 : 1) : 0;
+        ReportAttack(c.Name, m, hit ? 1 : 0, 1, dmg, sneak ? "shoots from the shadows at" : "shoots at", log);
         return true;
+    }
+
+    /// <summary>Robbers' sneak attack: double damage on the first round.</summary>
+    private bool IsSneakAttack(Character c) => Round == 1 && _rules.HasAbility(c, ClassAbility.SneakAttack);
+
+    private bool AimedShot(Character c, int target, List<GameMessage> log)
+    {
+        if (!_rules.HasAbility(c, ClassAbility.AimedShot))
+        {
+            return false;
+        }
+        if (!_rules.HasMissileWeapon(c))
+        {
+            log.Add(new($"{c.Name} has no missile weapon to aim.", MessageKind.Info));
+            return false;
+        }
+        if (!CanAim(c))
+        {
+            log.Add(new($"{c.Name} needs a round to steady their aim again.", MessageKind.Info));
+            return false;
+        }
+        var m = ResolveTarget(target, meleeOnly: false);
+        if (m is null)
+        {
+            return false;
+        }
+        _aimedInRound[c] = Round;
+        var hit = Rulebook.IsHit(_rng.Die(20), _rules.MissileAttackBonus(c) + HitBuff + 4, m.ArmorClass);
+        ReportAttack(c.Name, m, hit ? 1 : 0, 1, hit ? _rules.RollMissileDamage(c, _rng) * 2 : 0, "takes careful aim at", log);
+        return true;
+    }
+
+    private bool Guard(Character c, int ally, List<GameMessage> log)
+    {
+        if (!_rules.HasAbility(c, ClassAbility.Guard) || ally < 0 || ally >= _state.Party.Count)
+        {
+            return false;
+        }
+        var target = _state.Party[ally];
+        if (ReferenceEquals(target, c) || !target.IsAlive)
+        {
+            log.Add(new($"{c.Name} can only guard a living companion.", MessageKind.Info));
+            return false;
+        }
+        _guardedBy[target] = c;
+        _blocking.Add(c);
+        log.Add(new($"{c.Name} raises a shield before {target.Name}.", MessageKind.Combat));
+        return true;
+    }
+
+    private bool LayOnHands(Character c, int ally, List<GameMessage> log)
+    {
+        if (!_rules.HasAbility(c, ClassAbility.LayOnHands) || ally < 0 || ally >= _state.Party.Count)
+        {
+            return false;
+        }
+        if (_laidHands.Contains(c))
+        {
+            log.Add(new($"{c.Name} has already laid on hands this battle.", MessageKind.Info));
+            return false;
+        }
+        var target = _state.Party[ally];
+        if (!target.IsAlive)
+        {
+            log.Add(new($"{target.Name} is beyond a paladin's touch.", MessageKind.Info));
+            return false;
+        }
+        _laidHands.Add(c);
+        var amount = 3 * c.Level + 5;
+        Rulebook.Heal(target, amount);
+        target.Conditions &= ~Condition.Poisoned;
+        log.Add(new($"{c.Name} lays hands on {target.Name}, healing {amount} and drawing out any poison.", MessageKind.Good, "heal"));
+        return true;
+    }
+
+    /// <summary>Whether an archer can take an aimed shot now (not two rounds running).</summary>
+    /// <param name="c">Character.</param>
+    public bool CanAim(Character c) =>
+        _rules.HasAbility(c, ClassAbility.AimedShot) && _rules.HasMissileWeapon(c) &&
+        (!_aimedInRound.TryGetValue(c, out var r) || r < Round - 1);
+
+    /// <summary>Whether a paladin has already laid on hands this battle.</summary>
+    /// <param name="c">Character.</param>
+    public bool HasLaidHands(Character c) => _laidHands.Contains(c);
+
+    /// <summary>A knight guarding the target steps in front of the blow.</summary>
+    private Character? Redirect(Character? target, List<GameMessage> log)
+    {
+        if (target is not null && _guardedBy.TryGetValue(target, out var guard) && guard.IsAlive && guard.CanAct)
+        {
+            log.Add(new($"{guard.Name} steps in front of {target.Name}!", MessageKind.Combat));
+            return guard;
+        }
+        return target;
     }
 
     private void ReportAttack(string who, MonsterInstance m, int hits, int attempts, int damage, string verb, List<GameMessage> log)
@@ -538,7 +642,7 @@ public sealed class CombatEngine
             {
                 continue;
             }
-            var target = ChooseTarget(attack.Ranged, m.Def.Smart);
+            var target = Redirect(ChooseTarget(attack.Ranged, m.Def.Smart), log);
             if (target is null)
             {
                 return;
@@ -576,7 +680,7 @@ public sealed class CombatEngine
         }
         var targets = a.AllTargets
             ? Standing.ToList()
-            : ChooseTarget(true, m.Def.Smart) is { } single ? [single] : new List<Character>();
+            : Redirect(ChooseTarget(true, m.Def.Smart), log) is { } single ? [single] : new List<Character>();
         if (targets.Count == 0)
         {
             return false;

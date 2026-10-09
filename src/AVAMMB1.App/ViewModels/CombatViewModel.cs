@@ -235,6 +235,9 @@ public sealed partial class CombatViewModel : ViewModelBase
         OnPropertyChanged(nameof(CanShoot));
         OnPropertyChanged(nameof(CanCast));
         OnPropertyChanged(nameof(CanRepeat));
+        OnPropertyChanged(nameof(AbilityLabel));
+        OnPropertyChanged(nameof(CanAbility));
+        OnPropertyChanged(nameof(AbilityTip));
         OnPropertyChanged(nameof(TargetInfo));
     }
 
@@ -374,6 +377,59 @@ public sealed partial class CombatViewModel : ViewModelBase
         AfterEngine(_combat.Act(action));
     }
 
+    /// <summary>The active character's class ability, or null.</summary>
+    private string? ActiveAbility => _combat.ActiveCharacter is { } c
+        ? _game.Services.Content.Class(c.Class).Abilities.FirstOrDefault(a => a is ClassAbility.Guard or ClassAbility.LayOnHands or ClassAbility.AimedShot)
+        : null;
+
+    /// <summary>Label of the class ability button.</summary>
+    public string AbilityLabel => ActiveAbility switch
+    {
+        ClassAbility.Guard => "Guard (G)",
+        ClassAbility.LayOnHands => "Lay hands (L)",
+        ClassAbility.AimedShot => "Aim (T)",
+        _ => "No ability",
+    };
+
+    /// <summary>Whether the active character has a class ability to use now.</summary>
+    public bool CanAbility => _combat.ActiveCharacter is { } c && ActiveAbility switch
+    {
+        ClassAbility.Guard => _combat.Party.Count(p => p.IsAlive) > 1,
+        ClassAbility.LayOnHands => !_combat.HasLaidHands(c),
+        ClassAbility.AimedShot => _combat.CanAim(c),
+        _ => false,
+    };
+
+    /// <summary>Tooltip for the ability button.</summary>
+    public string AbilityTip => ActiveAbility switch
+    {
+        ClassAbility.Guard => "Protect an ally this round: attacks aimed at them strike you instead (and you count as blocking)",
+        ClassAbility.LayOnHands => "Once per battle: heal an ally (3 x level + 5) and draw out poison",
+        ClassAbility.AimedShot => "One careful shot at +4 to hit for double damage; not two rounds running",
+        _ => "",
+    };
+
+    /// <summary>Uses the active character's class ability.</summary>
+    [RelayCommand]
+    private void Ability()
+    {
+        if (Phase != CombatPhase.Action || !CanAbility)
+        {
+            return;
+        }
+        switch (ActiveAbility)
+        {
+            case ClassAbility.AimedShot:
+                Act(new CombatAction(CombatActionKind.AimedShot, TargetIndex));
+                break;
+            case ClassAbility.Guard or ClassAbility.LayOnHands:
+                _pending = new CombatAction(ActiveAbility == ClassAbility.Guard ? CombatActionKind.Guard : CombatActionKind.LayOnHands);
+                Phase = CombatPhase.Ally;
+                Prompt = ActiveAbility == ClassAbility.Guard ? "Guard which companion?" : "Lay hands on whom?";
+                break;
+        }
+    }
+
     /// <summary>Whether auto-fight is running.</summary>
     [ObservableProperty]
     private bool _isAutoFighting;
@@ -422,6 +478,9 @@ public sealed partial class CombatViewModel : ViewModelBase
             CombatActionKind.UseItem => true, // the item may be used up
             CombatActionKind.Attack => !_combat.IsInFrontRank(c),
             CombatActionKind.Shoot => !session.Rules.HasMissileWeapon(c),
+            CombatActionKind.AimedShot => !_combat.CanAim(c),
+            CombatActionKind.LayOnHands => _combat.HasLaidHands(c),
+            CombatActionKind.Guard => last.Ally < 0 || last.Ally >= session.State.Party.Count || !session.State.Party[last.Ally].IsAlive,
             _ => false,
         };
         if (stale)
@@ -644,6 +703,9 @@ public sealed partial class CombatViewModel : ViewModelBase
             case AVAMMB1.Core.Input.CombatCommand.Run when Phase == CombatPhase.Action:
                 Run();
                 break;
+            case AVAMMB1.Core.Input.CombatCommand.Ability:
+                Ability();
+                break;
             case AVAMMB1.Core.Input.CombatCommand.Repeat:
                 Repeat();
                 break;
@@ -696,6 +758,7 @@ public sealed partial class CombatViewModel : ViewModelBase
                 return key == Key.Escape;
             case CombatPhase.Action:
                 if (key == Key.E) { Repeat(); return true; }
+                if (key is Key.G or Key.L or Key.T && CanAbility) { Ability(); return true; }
                 if (key == Key.O) { ToggleAuto(); return true; }
                 if (key == Key.A && CanMelee) { Attack(); return true; }
                 if (key == Key.S && CanShoot) { Shoot(); return true; }

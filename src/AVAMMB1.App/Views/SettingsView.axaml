@@ -105,7 +105,7 @@
                 <StackPanel Grid.Column="2" Spacing="6">
                   <TextBlock Classes="h2" Text="Fixed buttons" />
                   <TextBlock TextWrapping="Wrap" Text="Start always opens the menu." />
-                  <TextBlock TextWrapping="Wrap" Text="Battle: A attack (shoots from the back rank) / continue, X cast, Y item, B block, View run, LB / RB or left / right change target, LT repeat last actions, RT auto-fight." />
+                  <TextBlock TextWrapping="Wrap" Text="Battle: A attack (shoots from the back rank) / continue, X cast, Y item, B block, View run, LB or left / right change target, RB class ability, LT repeat last actions, RT auto-fight." />
                   <TextBlock TextWrapping="Wrap" Text="Menus: D-pad moves between buttons (left / right adjust sliders), A selects, B goes back." />
                 </StackPanel>
               </Grid>

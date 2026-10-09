@@ -159,6 +159,15 @@ public sealed class Rulebook(ContentDatabase db)
     /// <param name="c">Character.</param>
     public long XpForNextLevel(Character c) => XpForLevel(db.Class(c.Class), c.Level + 1);
 
+    /// <summary>Whether the character's class has a special ability (see <c>ClassAbility</c>).</summary>
+    /// <param name="c">Character.</param>
+    /// <param name="ability">Ability name.</param>
+    public bool HasAbility(Character c, string ability) => db.Classes.TryGetValue(c.Class, out var cls) && cls.Abilities.Contains(ability);
+
+    /// <summary>Chance (percent) that a character picks a lock: 35 + 5 per level + luck bonus x 5, at most 95.</summary>
+    /// <param name="c">Character.</param>
+    public int LockpickChance(Character c) => Math.Clamp(35 + 5 * c.Level + Bonus(c, Rules.Stat.Luck) * 5, 5, 95);
+
     /// <summary>Whether the character has enough experience to train.</summary>
     /// <param name="c">Character.</param>
     public bool CanLevelUp(Character c) => c.Level < MaxLevel && c.IsAlive && c.Experience >= XpForNextLevel(c);

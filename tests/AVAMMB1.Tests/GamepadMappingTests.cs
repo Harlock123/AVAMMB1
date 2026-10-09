@@ -28,7 +28,7 @@ public class GamepadMappingTests
     [InlineData(GamepadButton.Y, CombatCommand.UseItem)]
     [InlineData(GamepadButton.B, CombatCommand.Block)]
     [InlineData(GamepadButton.LeftShoulder, CombatCommand.PreviousTarget)]
-    [InlineData(GamepadButton.RightShoulder, CombatCommand.NextTarget)]
+    [InlineData(GamepadButton.RightShoulder, CombatCommand.Ability)]
     public void Combat_MapsToCombatCommands(GamepadButton button, CombatCommand expected) =>
         Assert.Equal(expected, GamepadMapping.Map(GamepadContext.Combat, button).Combat);
 

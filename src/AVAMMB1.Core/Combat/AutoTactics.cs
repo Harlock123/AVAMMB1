@@ -28,6 +28,10 @@ public static class AutoTactics
         {
             return new CombatAction(CombatActionKind.Cast, Ally: allies.IndexOf(hurt), SpellId: heal.Id);
         }
+        if (hurt is not null && rules.HasAbility(c, Content.ClassAbility.LayOnHands) && !combat.HasLaidHands(c))
+        {
+            return new CombatAction(CombatActionKind.LayOnHands, Ally: allies.IndexOf(hurt));
+        }
         var potion = c.Backpack.FindIndex(i => i.ItemId == "potion_healing");
         if (hurt is not null && hurt.Hp * 4 < hurt.MaxHp && potion >= 0)
         {
@@ -47,6 +51,10 @@ public static class AutoTactics
                 var target = active.OrderBy(m => m.Hp).First();
                 return new CombatAction(CombatActionKind.Cast, Target: combat.Monsters.IndexOf(target), SpellId: nuke.Id);
             }
+        }
+        if (!combat.IsInFrontRank(c) && combat.CanAim(c))
+        {
+            return new CombatAction(CombatActionKind.AimedShot);
         }
         return combat.IsInFrontRank(c) ? new CombatAction(CombatActionKind.Attack)
             : rules.HasMissileWeapon(c) ? new CombatAction(CombatActionKind.Shoot)

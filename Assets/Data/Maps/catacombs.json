@@ -316,5 +316,6 @@
   }
  ],
  "music": "dungeon",
- "ambience": "deep"
+ "ambience": "deep",
+ "masterLocks": true
 }

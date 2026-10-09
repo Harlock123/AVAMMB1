@@ -209,6 +209,10 @@ public sealed class ContentDatabase
 
         foreach (var c in Classes.Values)
         {
+            foreach (var ab in c.Abilities)
+            {
+                Check(ClassAbility.All.Contains(ab), $"class {c.Id}: unknown ability {ab}");
+            }
             foreach (var i in c.StartingItems)
             {
                 Check(Items.ContainsKey(i), $"class {c.Id}: unknown starting item {i}");

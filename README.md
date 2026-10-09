@@ -52,6 +52,9 @@ Code identifiers, the solution and executables use the name **`AVAMMB1`** (`AVAM
   **notes** on any square.
 - **Quest journal**: every quest you have heard of, with its story so far and your current goal, plus
   the signs, inscriptions and warnings you have read (Clues). The game menu opens it too.
+- **Class abilities**: knights Guard a companion (blows strike the knight instead), paladins Lay on
+  Hands once a battle, archers take Aimed shots (+4 to hit, double damage, not two rounds running),
+  and robbers sneak-attack for double damage in the first round and pick locked doors.
 - **Combat helpers**: *Repeat* replays everyone's last action for the round (picking a new target
   if the old one fell), *Auto* fights with weapons and healing until the battle ends or someone is
   badly hurt, and monsters you have defeated before show their level, HP, armor class, undead-ness,
@@ -195,13 +198,14 @@ Set `AVAMMB1_DATA_DIR` to use a different folder.
 | **Combat**: Attack, Shoot, Cast, Use item, Block, Run | A, S, C, U, B, R | buttons |
 | **Combat**: pick target / spell / ally | 1-9 | click the monster |
 | **Combat**: repeat everyone's last action / auto-fight on-off | E, O | *Repeat*, *Auto* |
+| **Combat**: class ability - Guard (knight), Lay on Hands (paladin), Aimed shot (archer) | G, L, T | ability button |
 
 **Gamepad** (any controller SDL recognises; Xbox button names shown):
 
 | Context | Controls |
 |---|---|
 | Exploring (defaults; rebind in Settings > Controller) | D-pad / left stick: move and turn (hold to repeat) - LB / RB: strafe - A: use - X: search - Y: party sheet - View: map - Start or B: menu - LT: rest - RT: cast |
-| Battle | A: fight / attack (shoots from the back rank) / continue - X: cast - Y: use item - B: block - View: run - LB / RB or left / right: change target - LT: repeat last actions - RT: auto-fight |
+| Battle | A: fight / attack (shoots from the back rank) / continue - X: cast - Y: use item - B: block - View: run - LB or left / right: change target - RB: class ability - LT: repeat last actions - RT: auto-fight |
 | Menus and dialogs | D-pad: move between buttons (left / right adjust sliders) - A: select - B: back |
 
 ## How to play

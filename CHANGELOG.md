@@ -6,6 +6,14 @@ All notable changes to this project are documented here. The format follows
 ## [Unreleased]
 
 ### Added
+- Class abilities. Knights: Guard a companion for the round - attacks aimed at them strike the
+  knight, who counts as blocking. Paladins: Lay on Hands once per battle (heals 3 x level + 5 and
+  cures poison). Archers: Aimed shot (+4 to hit, double damage, not two rounds running). Robbers:
+  sneak attack (double damage in the first round) and lock-picking - walking into a locked door makes
+  the best robber try (35% + 5% per level, luck helps, up to 95%); story locks (`masterLocks` on a
+  map, e.g. the Barrow-King's throne room) still need their key. Combat has an ability button (G / L
+  / T, RB on a controller); auto-fight uses Lay on Hands and Aimed shots. Abilities are class data
+  (`abilities` in classes.json), so mod packs can grant them.
 - Day and night. A clock runs as you travel (3 minutes a step, 8 hours a rest; a night at the inn
   lasts until 07:00), shown under the gold. At dusk the sky darkens; at night (20:00-05:00) the open
   country and towns are dark: sight outdoors drops to 4 squares unless your light reaches further
@@ -32,6 +40,7 @@ All notable changes to this project are documented here. The format follows
 - The character sheet shows a lantern's oil; the top-right counter shows lantern oil and torch light.
 
 ### Changed
+- Controller in battle: RB is now the class ability (LB or left / right still change target).
 - Brightness tiers in dark places: no light 1 square, torch 5, light spells and the Scroll of Light 6,
   lantern 8 (before, any light showed 7). The automap now also records the corridor ahead, as far as
   your light reaches, and updates when you turn.

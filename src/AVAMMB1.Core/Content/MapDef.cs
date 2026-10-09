@@ -214,6 +214,8 @@ public sealed class MapDef
     public int EncounterChance { get; set; }
     /// <summary>Random encounter table.</summary>
     public List<EncounterEntryDef> Encounters { get; set; } = new();
+    /// <summary>Locked doors on this map cannot be picked (a key or story step is required).</summary>
+    public bool MasterLocks { get; set; }
     /// <summary>Outdoor maps: monsters that also roam at night (half of night encounters come from this list).</summary>
     public List<EncounterEntryDef> NightEncounters { get; set; } = new();
     /// <summary>Item id that opens locked doors on this map.</summary>

@@ -224,9 +224,9 @@ public sealed class GameSession
             result.Messages.Add(new(map.Def.Kind == MapKind.Dungeon ? "Ouch! A solid wall." : "The way is blocked.", MessageKind.Info, "bump"));
             return result;
         }
-        if (wall == WallKind.LockedDoor && !CanOpenLocks(map))
+        if (wall == WallKind.LockedDoor && !CanOpenLocks(map) && !State.PickedLocks.Contains(GameState.SecretKey(map.Id, State.X, State.Y, dir)))
         {
-            result.Messages.Add(new("The door is locked tight.", MessageKind.Info, "bump"));
+            TryPickLock(map, dir, result);
             return result;
         }
         var nx = State.X + dir.Dx();
@@ -374,7 +374,7 @@ public sealed class GameSession
         return !solid && wall switch
         {
             WallKind.Wall => false,
-            WallKind.LockedDoor => CanOpenLocks(map),
+            WallKind.LockedDoor => CanOpenLocks(map) || State.PickedLocks.Contains(GameState.SecretKey(map.Id, x, y, dir)),
             WallKind.SecretDoor => State.IsSecretFound(map.Id, x, y, dir),
             _ => true,
         };
@@ -428,6 +428,35 @@ public sealed class GameSession
 
     private string DescribeSide(Direction d) =>
         d == State.Facing ? "front" : d == State.Facing.Opposite() ? "rear" : d == State.Facing.Left() ? "left" : "right";
+
+    /// <summary>The party's best lock-picker tries a locked door (robbers); a failed try takes a few minutes.</summary>
+    private void TryPickLock(GameMap map, Direction dir, StepResult result)
+    {
+        var picker = State.Party.Where(c => c.IsAlive && c.CanAct && Rules.HasAbility(c, ClassAbility.PickLocks))
+            .OrderByDescending(Rules.LockpickChance).FirstOrDefault();
+        if (picker is null)
+        {
+            result.Messages.Add(new("The door is locked tight.", MessageKind.Info, "bump"));
+            return;
+        }
+        if (map.Def.MasterLocks)
+        {
+            result.Messages.Add(new($"{picker.Name} studies the lock and shakes their head: no pick will open this one. It needs its key.", MessageKind.Info, "bump"));
+            return;
+        }
+        var chance = Rules.LockpickChance(picker);
+        PassTime(5, result.Messages);
+        if (Random.Chance(chance))
+        {
+            State.PickedLocks.Add(GameState.SecretKey(map.Id, State.X, State.Y, dir));
+            result.Messages.Add(new($"{picker.Name} works the lock - click! The door is open.", MessageKind.Good, "door"));
+        }
+        else
+        {
+            result.Messages.Add(new($"{picker.Name} fails to pick the lock ({chance}% chance). Try again?", MessageKind.Info, "bump"));
+            TryRandomEncounter(result, map.Def.EncounterChance);
+        }
+    }
 
     private bool CanOpenLocks(GameMap map) =>
         (map.Def.LockedDoorKey is { } key && Inventory_AnyoneHas(key)) ||

@@ -67,6 +67,8 @@ public enum CombatCommand
     Repeat,
     /// <summary>Start or stop auto-fight.</summary>
     AutoFight,
+    /// <summary>The active character's class ability (guard, lay on hands, aimed shot).</summary>
+    Ability,
 }
 
 /// <summary>Menu navigation commands.</summary>
@@ -162,7 +164,8 @@ public static class GamepadMapping
             GamepadButton.B => CombatCommand.Block,
             GamepadButton.Back => CombatCommand.Run,
             GamepadButton.LeftShoulder or GamepadButton.Left => CombatCommand.PreviousTarget,
-            GamepadButton.RightShoulder or GamepadButton.Right => CombatCommand.NextTarget,
+            GamepadButton.Right => CombatCommand.NextTarget,
+            GamepadButton.RightShoulder => CombatCommand.Ability,
             GamepadButton.LeftTrigger => CombatCommand.Repeat,
             GamepadButton.RightTrigger => CombatCommand.AutoFight,
             _ => null,
