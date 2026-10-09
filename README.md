@@ -23,6 +23,9 @@ Code identifiers, the solution and executables use the name **`AVAMMB1`** (`AVAM
 - **Pseudo-3D first-person view** - a software ray caster with textured walls, floors and ceilings,
   sky, distance fog, darkness that needs light, billboard sprites (trees, fountains, chests, shop
   signs), thin walls with doors, locked doors and secret doors, plus solid terrain blocks.
+- **Secret doors**: hidden doors look and block like walls until the party **searches** (F). The
+  best searcher rolls (Intellect, Luck and a robber's thievery help); found doors appear as doors in
+  the 3D view and in purple on the automap, and are remembered in save games.
 - **Grid movement**: step forward/back, turn 90 degrees, strafe; keyboard *and* on-screen buttons.
 - **Automap and minimap** that record only what the party has actually seen.
 - **Party of up to six** with full character creation: 5 races, 6 classes (Knight, Paladin, Archer,
@@ -63,6 +66,7 @@ All screenshots are real frames rendered by the game itself (Avalonia headless +
 | ![Inventory](docs/screenshots/10-inventory.png) Character sheet / inventory | ![Automap](docs/screenshots/11-automap-dungeon.png) Dungeon automap |
 | ![Town automap](docs/screenshots/06-automap-town.png) Town automap | ![Spells](docs/screenshots/12-spells.png) Spellcasting |
 | ![Intro](docs/screenshots/03-intro.png) Story dialog | ![Settings](docs/screenshots/13-settings.png) Settings and key bindings |
+| ![Dungeon entrance](docs/screenshots/07-dungeon-entrance.png) Arriving in the cellars | ![Secret door](docs/screenshots/14-secret-door.png) A secret door found by searching (purple on the minimap) |
 
 ## Download and install
 
@@ -102,6 +106,7 @@ Set `AVAMMB1_DATA_DIR` to use a different folder.
 | Turn left / right | Left / A, Right / D | curved-arrow buttons |
 | Strafe left / right | Q / E | side-arrow buttons |
 | Use location (re-enter shop, read sign) | Space / Enter | *Use* |
+| Search for secret doors | F | *Search* |
 | Rest (8 hours, eats food) | R | *Rest* |
 | Cast a spell | K | *Cast* |
 | Party / inventory sheet | I / C, or 1-6 for a member | click a portrait |
@@ -210,7 +215,7 @@ More detail: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 - Smooth step/turn animation and animated monster sprites in the 3D view
 - More towns and dungeons (the original scope had five towns and many more dungeon levels)
 - Per-character gold (currently shared by the party), more spells and special items
-- Secret-door searching, spinners, darkness/anti-magic squares, more trap types
+- Spinners, darkness/anti-magic squares, more trap types
 - Proper Developer ID signing / notarization and an installer for Windows
 - Gamepad support, localization, UI scaling options
 

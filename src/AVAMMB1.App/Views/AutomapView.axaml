@@ -17,6 +17,7 @@
         <TextBlock Text="&#x25CF; quest" Foreground="#ff70b0" />
         <TextBlock Text="&#x2501; door" Foreground="#e09040" />
         <TextBlock Text="&#x2501; locked" Foreground="#ff4040" />
+        <TextBlock Text="&#x2501; secret" Foreground="#c070ff" />
         <Button Content="Close (M)" Command="{Binding CloseCommand}" />
       </StackPanel>
       <c:MapView MapInfo="{Binding MapInfo}" Radius="0" />

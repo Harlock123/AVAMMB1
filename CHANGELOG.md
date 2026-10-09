@@ -3,6 +3,22 @@
 All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses semantic versioning.
 
+## [Unreleased]
+
+### Added
+- Secret-door searching: `S` edges block like walls until found with the new Search action
+  (default key F, *Search* button). The chance uses the best searcher's Intellect and Luck plus
+  thievery; each search takes game time and may attract wandering monsters. Found doors render as
+  doors, show in purple on the automap and persist in save games.
+- Two hidden rooms with treasure: a smuggler's cache in the Brindlemoor Cellars and an embalmer's
+  room in the Hollow Crypt, each with a hint near the hidden wall.
+- *Save (F5)* button in the exploration screen; `14-secret-door` screenshot.
+
+### Fixed
+- The bundled OpenAL Soft library is now loaded in single-file builds (previously audio only worked
+  where a system OpenAL was installed, so Windows and most Linux machines had no sound).
+- Intermittent crash while saving `--screenshot` images.
+
 ## [1.0.0] - 2026-10-08
 
 ### Added

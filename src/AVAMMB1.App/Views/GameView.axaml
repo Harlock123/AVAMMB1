@@ -36,13 +36,21 @@
             <Button Grid.Row="1" Grid.Column="1" Classes="nav" Content="&#x2193;" ToolTip.Tip="Back (Down / S)" Command="{Binding BackCommand}" />
             <Button Grid.Row="1" Grid.Column="2" Classes="nav" Content="&#x2192;" ToolTip.Tip="Strafe right (E)" Command="{Binding StrafeRightCommand}" />
           </Grid>
-          <UniformGrid Columns="3">
+          <UniformGrid Columns="4">
+            <UniformGrid.Styles>
+              <Style Selector="Button">
+                <Setter Property="Padding" Value="2,5" />
+                <Setter Property="FontSize" Value="12.5" />
+              </Style>
+            </UniformGrid.Styles>
             <Button Content="Use (Spc)" Command="{Binding InteractCommand}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" />
+            <Button Content="Search (F)" Command="{Binding SearchCommand}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" ToolTip.Tip="Search the walls here for secret doors" />
             <Button Content="Rest (R)" Command="{Binding RestCommand}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" />
             <Button Content="Cast (K)" Command="{Binding CastCommand}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" />
             <Button Content="Party (I)" Command="{Binding CharactersCommand}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" />
             <Button Content="Map (M)" Command="{Binding AutomapCommand}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" />
             <Button Content="Menu (Esc)" Command="{Binding MenuCommand}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" />
+            <Button Content="Save (F5)" Command="{Binding QuickSaveCommand}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" />
           </UniformGrid>
           <TextBlock Classes="h2" Text="Journal" Margin="0,4,0,0" />
         </StackPanel>

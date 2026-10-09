@@ -25,7 +25,6 @@ public class PlaythroughTests
             var map = s.CurrentMap;
             var avoid = map.AllEvents.Where(e => e.Type == MapEventKind.Teleport).Select(e => (e.X, e.Y)).ToHashSet();
             avoid.Remove((tx, ty));
-            var keys = map.Def.LockedDoorKey is { } k && Inventory.AnyoneHas(s.State.Party, k);
             var prev = new Dictionary<(int, int), ((int, int), Direction)> { [(s.State.X, s.State.Y)] = ((s.State.X, s.State.Y), Direction.North) };
             var q = new Queue<(int, int)>();
             q.Enqueue((s.State.X, s.State.Y));
@@ -46,9 +45,8 @@ public class PlaythroughTests
                 }
                 foreach (var d in Enum.GetValues<Direction>())
                 {
-                    var (wall, solid) = map.Probe(cur.Item1, cur.Item2, d);
                     var n = (cur.Item1 + d.Dx(), cur.Item2 + d.Dy());
-                    if (solid || wall == WallKind.Wall || (wall == WallKind.LockedDoor && !keys) || avoid.Contains(n) || prev.ContainsKey(n))
+                    if (!s.CanPass(cur.Item1, cur.Item2, d) || avoid.Contains(n) || prev.ContainsKey(n))
                     {
                         continue;
                     }

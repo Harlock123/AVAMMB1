@@ -24,6 +24,8 @@ public sealed class SceneDescription
     public required Direction Facing { get; init; }
     /// <summary>Visible distance in cells.</summary>
     public required int ViewDistance { get; init; }
+    /// <summary>Whether the secret door on a side of a cell has been discovered (undiscovered ones draw as walls).</summary>
+    public Func<int, int, Direction, bool> SecretFound { get; init; } = (_, _, _) => false;
     /// <summary>Feature billboards.</summary>
     public IReadOnlyList<SceneSprite> Sprites { get; init; } = Array.Empty<SceneSprite>();
 }
@@ -120,12 +122,17 @@ public sealed class SceneRenderer(TextureCache textures)
             {
                 double d;
                 WallKind wall;
+                Direction side0;
+                int fromX, fromY;
                 if (sideX < sideY)
                 {
                     d = sideX;
                     sideX += deltaX;
                     side = 0;
-                    wall = map.GetWall(mapX, mapY, stepX > 0 ? Direction.East : Direction.West);
+                    side0 = stepX > 0 ? Direction.East : Direction.West;
+                    wall = map.GetWall(mapX, mapY, side0);
+                    fromX = mapX;
+                    fromY = mapY;
                     mapX += stepX;
                 }
                 else
@@ -133,7 +140,10 @@ public sealed class SceneRenderer(TextureCache textures)
                     d = sideY;
                     sideY += deltaY;
                     side = 1;
-                    wall = map.GetWall(mapX, mapY, stepY > 0 ? Direction.South : Direction.North);
+                    side0 = stepY > 0 ? Direction.South : Direction.North;
+                    wall = map.GetWall(mapX, mapY, side0);
+                    fromX = mapX;
+                    fromY = mapY;
                     mapY += stepY;
                 }
                 if (d > maxDist)
@@ -146,6 +156,7 @@ public sealed class SceneRenderer(TextureCache textures)
                     {
                         WallKind.Door => Tex("door"),
                         WallKind.LockedDoor => Tex("door_locked"),
+                        WallKind.SecretDoor when scene.SecretFound(fromX, fromY, side0) => Tex("door"),
                         _ => Tex(def.WallTexture),
                     };
                     dist = d;

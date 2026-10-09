@@ -133,7 +133,7 @@ public static class HeadlessRunner
     private static bool WalkTo(GameViewModel game, GameSession s, int tx, int ty)
     {
         var map = s.CurrentMap;
-        var path = FindPath(map, s.State.X, s.State.Y, tx, ty);
+        var path = FindPath(s, s.State.X, s.State.Y, tx, ty);
         if (path is null)
         {
             return false;
@@ -187,8 +187,9 @@ public static class HeadlessRunner
         s.EndCombat();
     }
 
-    private static List<Direction>? FindPath(AVAMMB1.Core.World.GameMap map, int sx, int sy, int tx, int ty)
+    private static List<Direction>? FindPath(GameSession s, int sx, int sy, int tx, int ty)
     {
+        var map = s.CurrentMap;
         var blocked = map.AllEvents.Where(e => e.Type is MapEventKind.Teleport or MapEventKind.Encounter || e.Blocking)
             .Select(e => (e.X, e.Y)).ToHashSet();
         blocked.Remove((tx, ty));
@@ -214,9 +215,8 @@ public static class HeadlessRunner
             }
             foreach (var d in Enum.GetValues<Direction>())
             {
-                var (wall, solid) = map.Probe(x, y, d);
                 var n = (x + d.Dx(), y + d.Dy());
-                if (solid || wall is AVAMMB1.Core.World.WallKind.Wall or AVAMMB1.Core.World.WallKind.LockedDoor || blocked.Contains(n) || prev.ContainsKey(n))
+                if (!s.CanPass(x, y, d) || blocked.Contains(n) || prev.ContainsKey(n))
                 {
                     continue;
                 }
@@ -338,6 +338,25 @@ public static class HeadlessRunner
         game.CastCommand.Execute(null);
         Capture(dir, "12-spells");
         game.CloseOverlay();
+
+        // Find the cellars' hidden room: walk to the drafty wall and search until the door shows up.
+        WalkTo(game, s, 4, 3);
+        ResolveInterruptions(game, s);
+        Face(game, s, Direction.West);
+        for (var i = 0; i < 30 && !s.CanPass(4, 3, Direction.West); i++)
+        {
+            game.SearchCommand.Execute(null);
+            ResolveInterruptions(game, s);
+            if ((s.State.X, s.State.Y) != (4, 3))
+            {
+                WalkTo(game, s, 4, 3);
+                Face(game, s, Direction.West);
+            }
+        }
+        mirela.Sp = mirela.MaxSp;
+        s.State.LightSteps = Math.Max(s.State.LightSteps, 50);
+        game.Refresh();
+        Capture(dir, "14-secret-door");
 
         vm.ShowSettings(game);
         Capture(dir, "13-settings");

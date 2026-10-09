@@ -13,7 +13,7 @@
   "+ +-+ + +-+ +-+-+ + + +-+ + + + +",
   "|.|. . . .|. . .|.|.|. .|. . . .|",
   "+ +-+-+-+ + +-+-+ + +-+-+ + + + +",
-  "|. . .|. .|.|. .|.|. .|.|. . . .|",
+  "|. . .|.S.|.|. .|.|. .|.|. . . .|",
   "+ +-+ +-+ +-+ + + + +-+ +-+D+-+-+",
   "|.|.|. .|. .|.|. .|. . .|. .|.|.|",
   "+ + +-+ +-+ + +-+-+ +-+-+ + + + +",
@@ -212,6 +212,31 @@
    ],
    "xp": 40,
    "text": "An old chest holds coins and a journal. One page reads: 'The Lodestone of Seasons sleeps in the Inner Vault. Should it die, so does spring.'"
+  },
+  {
+   "x": 4,
+   "y": 3,
+   "type": "message",
+   "id": "cellar_secret_hint",
+   "once": true,
+   "name": "Drafty Wall",
+   "text": "A cold draft seeps from a crack in the stonework here. Perhaps it is worth a closer look. (Search with F.)"
+  },
+  {
+   "x": 3,
+   "y": 3,
+   "type": "treasure",
+   "id": "cellar_secret_cache",
+   "once": true,
+   "feature": "chest",
+   "name": "Smuggler's Cache",
+   "gold": "6d10+20",
+   "gems": 2,
+   "items": [
+    "ring_might",
+    "potion_healing"
+   ],
+   "text": "Behind the hidden door, a smuggler's cache lies forgotten beneath a dusty tarp."
   }
  ]
 }

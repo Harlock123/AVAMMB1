@@ -135,7 +135,12 @@ their maximum spell level automatically.
 
 **`edges`** - `2*height+1` rows of `2*width+1` characters. Cells sit at odd row/column positions,
 the characters between them are walls: `-` or `|` wall, `D` door, `L` locked door, `S` secret
-door (looks like a wall, can be walked through), space = open. `+` corners are ignored.
+door, space = open. `+` corners are ignored.
+
+A secret door looks and blocks exactly like a wall until the party searches next to it (Search,
+default key F). It is then drawn as a door, shown in purple on the automap, and can be walked
+through; discoveries are stored in the save game. A good pattern is a dead-end alcove whose only
+opening is an `S`, with a once-only `message` hint event on the cell outside it.
 
 ```
 "+-+-+-+",

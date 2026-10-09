@@ -24,6 +24,7 @@ public sealed class MapView : Control
     private static readonly IBrush PartyBrush = new SolidColorBrush(Color.Parse("#ffd75e"));
     private static readonly IPen WallPen = new Pen(new SolidColorBrush(Color.Parse("#d8d0c0")), 2);
     private static readonly IPen DoorPen = new Pen(new SolidColorBrush(Color.Parse("#e09040")), 3);
+    private static readonly IPen SecretPen = new Pen(new SolidColorBrush(Color.Parse("#c070ff")), 3);
     private static readonly IPen LockPen = new Pen(new SolidColorBrush(Color.Parse("#ff4040")), 3);
     private static readonly IPen GridPen = new Pen(new SolidColorBrush(Color.Parse("#1c1c28")), 1);
     private static readonly Dictionary<string, IBrush> TerrainBrushes = new();
@@ -127,15 +128,16 @@ public sealed class MapView : Control
                     continue;
                 }
                 var r = CellRect(x, y);
-                DrawEdge(context, map.GetWall(x, y, Direction.North), r.TopLeft, r.TopRight);
-                DrawEdge(context, map.GetWall(x, y, Direction.West), r.TopLeft, r.BottomLeft);
+                bool Found(Direction d) => state.IsSecretFound(map.Id, x, y, d);
+                DrawEdge(context, map.GetWall(x, y, Direction.North), Found(Direction.North), r.TopLeft, r.TopRight);
+                DrawEdge(context, map.GetWall(x, y, Direction.West), Found(Direction.West), r.TopLeft, r.BottomLeft);
                 if (y == map.Height - 1 || !state.IsExplored(map.Id, map.Width, x, y + 1))
                 {
-                    DrawEdge(context, map.GetWall(x, y, Direction.South), r.BottomLeft, r.BottomRight);
+                    DrawEdge(context, map.GetWall(x, y, Direction.South), Found(Direction.South), r.BottomLeft, r.BottomRight);
                 }
                 if (x == map.Width - 1 || !state.IsExplored(map.Id, map.Width, x + 1, y))
                 {
-                    DrawEdge(context, map.GetWall(x, y, Direction.East), r.TopRight, r.BottomRight);
+                    DrawEdge(context, map.GetWall(x, y, Direction.East), Found(Direction.East), r.TopRight, r.BottomRight);
                 }
             }
         }
@@ -174,11 +176,12 @@ public sealed class MapView : Control
         context.DrawGeometry(PartyBrush, new Pen(Brushes.Black, 1), geo);
     }
 
-    private static void DrawEdge(DrawingContext ctx, WallKind kind, Point a, Point b)
+    private static void DrawEdge(DrawingContext ctx, WallKind kind, bool secretFound, Point a, Point b)
     {
         var pen = kind switch
         {
-            WallKind.Wall or WallKind.SecretDoor => WallPen,
+            WallKind.SecretDoor => secretFound ? SecretPen : WallPen,
+            WallKind.Wall => WallPen,
             WallKind.Door => DoorPen,
             WallKind.LockedDoor => LockPen,
             _ => null,

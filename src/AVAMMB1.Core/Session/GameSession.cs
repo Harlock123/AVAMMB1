@@ -179,7 +179,7 @@ public sealed class GameSession
         };
         var map = CurrentMap;
         var (wall, solid) = map.Probe(State.X, State.Y, dir);
-        if (solid || wall == WallKind.Wall)
+        if (solid || wall == WallKind.Wall || (wall == WallKind.SecretDoor && !State.IsSecretFound(map.Id, State.X, State.Y, dir)))
         {
             result.Messages.Add(new(map.Def.Kind == MapKind.Dungeon ? "Ouch! A solid wall." : "The way is blocked.", MessageKind.Info, "bump"));
             return result;
@@ -203,7 +203,7 @@ public sealed class GameSession
         State.X = nx;
         State.Y = ny;
         result.Moved = true;
-        if (wall is WallKind.Door or WallKind.LockedDoor)
+        if (wall is WallKind.Door or WallKind.LockedDoor or WallKind.SecretDoor)
         {
             result.Messages.Add(new(wall == WallKind.LockedDoor ? "The lock clicks open." : "", MessageKind.Info, "door"));
         }
@@ -309,6 +309,74 @@ public sealed class GameSession
         return result;
     }
 
+    /// <summary>
+    /// Whether the party could step from a cell in a direction right now, ignoring map events:
+    /// walls, solid terrain, locked doors (needs the map's key or flag) and undiscovered secret doors block.
+    /// </summary>
+    /// <param name="x">Cell X.</param>
+    /// <param name="y">Cell Y.</param>
+    /// <param name="dir">Direction of travel.</param>
+    public bool CanPass(int x, int y, Direction dir)
+    {
+        var map = CurrentMap;
+        var (wall, solid) = map.Probe(x, y, dir);
+        return !solid && wall switch
+        {
+            WallKind.Wall => false,
+            WallKind.LockedDoor => CanOpenLocks(map),
+            WallKind.SecretDoor => State.IsSecretFound(map.Id, x, y, dir),
+            _ => true,
+        };
+    }
+
+    /// <summary>Chance (percent) that a party member spots a hidden door when searching.</summary>
+    /// <param name="c">Searcher.</param>
+    public int SearchChance(Character c) =>
+        Math.Clamp(35 + 10 * (Rules.Bonus(c, Stat.Intellect) + Rules.Bonus(c, Stat.Luck)) + Rules.Thievery(c) / 2, 20, 95);
+
+    /// <summary>
+    /// Searches the walls around the party for secret doors. Takes a few minutes of game time and,
+    /// like a step, may attract wandering monsters. The best searcher in the party rolls once per hidden door.
+    /// </summary>
+    public StepResult Search()
+    {
+        var result = new StepResult();
+        if (Combat is not null || !IsActive)
+        {
+            return result;
+        }
+        var searcher = State.Party.Where(c => c.CanAct).OrderByDescending(SearchChance).FirstOrDefault();
+        if (searcher is null)
+        {
+            result.Messages.Add(new("No one in the party is able to search!", MessageKind.Bad));
+            return result;
+        }
+        var map = CurrentMap;
+        result.Messages.Add(new($"{searcher.Name} searches the walls carefully...", MessageKind.Info, "step"));
+        PassTime(5, result.Messages);
+        var found = 0;
+        foreach (var d in Enum.GetValues<Direction>())
+        {
+            if (map.GetWall(State.X, State.Y, d) == WallKind.SecretDoor &&
+                !State.IsSecretFound(map.Id, State.X, State.Y, d) &&
+                Random.Chance(SearchChance(searcher)))
+            {
+                State.FoundSecrets.Add(GameState.SecretKey(map.Id, State.X, State.Y, d));
+                result.Messages.Add(new($"{searcher.Name} discovers a secret door to the {DescribeSide(d)}!", MessageKind.Good, "door"));
+                found++;
+            }
+        }
+        if (found == 0)
+        {
+            result.Messages.Add(new("You find nothing unusual.", MessageKind.Info));
+            TryRandomEncounter(result, map.Def.EncounterChance);
+        }
+        return result;
+    }
+
+    private string DescribeSide(Direction d) =>
+        d == State.Facing ? "front" : d == State.Facing.Opposite() ? "rear" : d == State.Facing.Left() ? "left" : "right";
+
     private bool CanOpenLocks(GameMap map) =>
         (map.Def.LockedDoorKey is { } key && Inventory_AnyoneHas(key)) ||
         (map.Def.LockedDoorFlag is { } flag && State.Flags.Contains(flag));
@@ -343,7 +411,8 @@ public sealed class GameSession
         foreach (var d in Enum.GetValues<Direction>())
         {
             var (wall, _) = map.Probe(State.X, State.Y, d);
-            if (map.Def.Kind != MapKind.Dungeon || wall != WallKind.Wall)
+            var hidden = wall == WallKind.SecretDoor && !State.IsSecretFound(map.Id, State.X, State.Y, d);
+            if (map.Def.Kind != MapKind.Dungeon || (wall != WallKind.Wall && !hidden))
             {
                 Mark(State.X + d.Dx(), State.Y + d.Dy());
             }

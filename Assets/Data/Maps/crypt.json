@@ -17,7 +17,7 @@
   "+-+D+-+-+-+ +-+ +-+-+ + + + + + +",
   "|.|.|. . . .|. . .|. .|. . . . .|",
   "+ + + +-+-+ + +-+ +-+ +-+-+L+-+-+",
-  "|.|.|.|. .|. . .|. .|.|.|.|. .|.|",
+  "|.|.|.|. .|. .S.|. .|.|.|.|. .|.|",
   "+ + +-+ + +-+-+-+-+ + + + +-+ + +",
   "|. . . .|. .|. . . .|.|.|. . .|.|",
   "+ + +-+-+-+ + +-+-+-+ + +-+-+-+ +",
@@ -254,6 +254,31 @@
     "potion_mana"
    ],
    "text": "Coins left as offerings to the dead."
+  },
+  {
+   "x": 6,
+   "y": 5,
+   "type": "message",
+   "id": "crypt_secret_hint",
+   "once": true,
+   "name": "Faded Carving",
+   "text": "A carving of a closed eye is set into the wall, its stone worn smooth by many hands. (Search with F.)"
+  },
+  {
+   "x": 7,
+   "y": 5,
+   "type": "treasure",
+   "id": "crypt_secret_cache",
+   "once": true,
+   "feature": "chest",
+   "name": "Embalmer's Hidden Room",
+   "gold": "10d10+40",
+   "gems": 3,
+   "items": [
+    "amulet_insight",
+    "potion_vigor"
+   ],
+   "text": "A hidden embalming room. The embalmer's tools are long rusted, but their savings are not."
   }
  ]
 }

@@ -34,6 +34,8 @@ public sealed class GameState
     public HashSet<string> CompletedEvents { get; set; } = new(StringComparer.Ordinal);
     /// <summary>Explored cells per map, as a string of '0'/'1' (row-major).</summary>
     public Dictionary<string, string> Explored { get; set; } = new(StringComparer.Ordinal);
+    /// <summary>Secret doors the party has discovered (see <see cref="SecretKey"/>).</summary>
+    public HashSet<string> FoundSecrets { get; set; } = new(StringComparer.Ordinal);
     /// <summary>Total steps taken (game clock).</summary>
     public long Steps { get; set; }
     /// <summary>Remaining steps of magical or torch light.</summary>
@@ -49,6 +51,29 @@ public sealed class GameState
 
     /// <summary>Game day derived from the step counter.</summary>
     public long Day => 1 + Steps / 500;
+
+    /// <summary>
+    /// Canonical key for the edge on one side of a cell, so both cells sharing a wall
+    /// produce the same key (east/south edges are stored as the neighbor's west/north edge).
+    /// </summary>
+    /// <param name="mapId">Map id.</param>
+    /// <param name="x">Cell X.</param>
+    /// <param name="y">Cell Y.</param>
+    /// <param name="side">Side of the cell.</param>
+    public static string SecretKey(string mapId, int x, int y, Direction side) => side switch
+    {
+        Direction.East => $"{mapId}:{x + 1}:{y}:W",
+        Direction.South => $"{mapId}:{x}:{y + 1}:N",
+        Direction.West => $"{mapId}:{x}:{y}:W",
+        _ => $"{mapId}:{x}:{y}:N",
+    };
+
+    /// <summary>Whether the secret door on a side of a cell has been found.</summary>
+    /// <param name="mapId">Map id.</param>
+    /// <param name="x">Cell X.</param>
+    /// <param name="y">Cell Y.</param>
+    /// <param name="side">Side of the cell.</param>
+    public bool IsSecretFound(string mapId, int x, int y, Direction side) => FoundSecrets.Contains(SecretKey(mapId, x, y, side));
 
     /// <summary>Marks a cell explored.</summary>
     /// <param name="mapId">Map id.</param>

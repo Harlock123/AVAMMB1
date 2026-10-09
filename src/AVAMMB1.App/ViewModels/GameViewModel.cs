@@ -104,6 +104,7 @@ public sealed partial class GameViewModel : ViewModelBase
             Y = state.Y,
             Facing = state.Facing,
             ViewDistance = Session.ViewDistance,
+            SecretFound = (x, y, d) => state.IsSecretFound(map.Id, x, y, d),
             Sprites = sprites,
         };
         MapInfo = new MapSnapshot(Session, ++_version);
@@ -250,6 +251,8 @@ public sealed partial class GameViewModel : ViewModelBase
 
     [RelayCommand] private void Interact() => Apply(Session.Interact());
 
+    [RelayCommand] private void Search() => Apply(Session.Search());
+
     [RelayCommand]
     private void Rest()
     {
@@ -337,6 +340,7 @@ public sealed partial class GameViewModel : ViewModelBase
             case InputAction.StrafeRight: StrafeRight(); return true;
             case InputAction.Interact: Interact(); return true;
             case InputAction.Automap: Automap(); return true;
+            case InputAction.Search: Search(); return true;
             case InputAction.Characters: Characters(); return true;
             case InputAction.Cast: Cast(); return true;
             case InputAction.Rest: Rest(); return true;

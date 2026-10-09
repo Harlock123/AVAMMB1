@@ -21,6 +21,8 @@ public enum InputAction
     Interact,
     /// <summary>Open the automap.</summary>
     Automap,
+    /// <summary>Search the surrounding walls for secret doors.</summary>
+    Search,
     /// <summary>Open the character / inventory screen.</summary>
     Characters,
     /// <summary>Cast a spell.</summary>
@@ -60,6 +62,7 @@ public sealed class GameSettings
         [InputAction.StrafeRight] = ["E"],
         [InputAction.Interact] = ["Space", "Enter"],
         [InputAction.Automap] = ["M"],
+        [InputAction.Search] = ["F"],
         [InputAction.Characters] = ["I", "C"],
         [InputAction.Cast] = ["K"],
         [InputAction.Rest] = ["R"],
