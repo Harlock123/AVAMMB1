@@ -1537,5 +1537,563 @@
    }
   ],
   "description": "The last of the Sun Kings, who would not lie down when the sun went out of the world."
+ },
+ {
+  "id": "giant_roach",
+  "name": "Giant Roach",
+  "sprite": "giant_roach",
+  "level": 2,
+  "hitPoints": "2d6",
+  "armorClass": 4,
+  "speed": 14,
+  "xp": 18,
+  "attacks": [
+   {
+    "verb": "bites",
+    "damage": "1d4",
+    "inflicts": "diseased",
+    "inflictChance": 8
+   }
+  ],
+  "plural": "Giant Roaches",
+  "description": "A cockroach the length of your arm, glossy with sewer water."
+ },
+ {
+  "id": "cistern_toad",
+  "name": "Cistern Toad",
+  "sprite": "cistern_toad",
+  "level": 2,
+  "hitPoints": "2d8+2",
+  "armorClass": 2,
+  "speed": 9,
+  "xp": 22,
+  "attacks": [
+   {
+    "verb": "lashes",
+    "damage": "1d6"
+   }
+  ],
+  "description": "Pale and bloated from a life without sun."
+ },
+ {
+  "id": "brown_ooze",
+  "name": "Brown Ooze",
+  "sprite": "brown_ooze",
+  "level": 3,
+  "hitPoints": "3d8",
+  "armorClass": 1,
+  "speed": 6,
+  "xp": 40,
+  "attacks": [
+   {
+    "verb": "engulfs",
+    "damage": "1d8",
+    "element": "acid"
+   }
+  ],
+  "resistances": {
+   "physical": 25,
+   "poison": 100
+  },
+  "description": "A slow, hungry puddle that eats leather and boot-nails alike."
+ },
+ {
+  "id": "cistern_eel",
+  "name": "Cistern Eel",
+  "sprite": "cistern_eel",
+  "level": 3,
+  "hitPoints": "3d8",
+  "armorClass": 4,
+  "speed": 15,
+  "xp": 45,
+  "attacks": [
+   {
+    "verb": "shocks",
+    "damage": "1d6",
+    "element": "electric",
+    "inflicts": "paralyzed",
+    "inflictChance": 5
+   }
+  ],
+  "resistances": {
+   "electric": 100
+  },
+  "description": "A black eel that crackles where it touches the water."
+ },
+ {
+  "id": "ooze_mother",
+  "name": "The Mother of Oozes",
+  "sprite": "ooze_mother",
+  "boss": true,
+  "level": 5,
+  "hitPoints": "100",
+  "armorClass": 4,
+  "speed": 8,
+  "xp": 400,
+  "attacks": [
+   {
+    "verb": "engulfs",
+    "damage": "1d10",
+    "element": "acid",
+    "inflicts": "poisoned",
+    "inflictChance": 20
+   },
+   {
+    "verb": "engulfs",
+    "damage": "1d8",
+    "element": "acid"
+   }
+  ],
+  "gold": "3d20+60",
+  "smart": false,
+  "abilities": [
+   {
+    "name": "a spray of acid",
+    "chance": 30,
+    "allTargets": true,
+    "damage": "2d6",
+    "element": "acid"
+   },
+   {
+    "name": "a heave of new slime",
+    "chance": 15,
+    "selfHeal": "3d8"
+   }
+  ],
+  "resistances": {
+   "physical": 25,
+   "poison": 100,
+   "acid": 100
+  },
+  "drops": [
+   {
+    "item": "drain_buckler",
+    "chance": 100
+   },
+   {
+    "item": "potion_cure",
+    "chance": 100
+   }
+  ],
+  "description": "Every slime in the cisterns budded off from her, once."
+ },
+ {
+  "id": "crawling_corpse",
+  "name": "Crawling Corpse",
+  "sprite": "crawling_corpse",
+  "level": 4,
+  "hitPoints": "4d8",
+  "armorClass": 2,
+  "speed": 7,
+  "xp": 55,
+  "attacks": [
+   {
+    "verb": "claws",
+    "damage": "1d8",
+    "inflicts": "diseased",
+    "inflictChance": 10
+   }
+  ],
+  "resistances": {
+   "poison": 100,
+   "cold": 50
+  },
+  "description": "It has lost its legs but not its appetite.",
+  "undead": true
+ },
+ {
+  "id": "skeletal_warrior",
+  "name": "Skeletal Warrior",
+  "sprite": "skeletal_warrior",
+  "level": 5,
+  "hitPoints": "5d8",
+  "armorClass": 7,
+  "speed": 11,
+  "xp": 100,
+  "attacks": [
+   {
+    "verb": "slashes",
+    "damage": "1d10"
+   }
+  ],
+  "gold": "3d10",
+  "resistances": {
+   "physical": 20,
+   "cold": 50,
+   "poison": 100
+  },
+  "description": "Still wearing the armor it was buried in.",
+  "undead": true
+ },
+ {
+  "id": "necrophage",
+  "name": "Necrophage",
+  "sprite": "necrophage",
+  "level": 6,
+  "hitPoints": "6d8",
+  "armorClass": 5,
+  "speed": 13,
+  "xp": 150,
+  "attacks": [
+   {
+    "verb": "bites",
+    "damage": "1d8",
+    "inflicts": "paralyzed",
+    "inflictChance": 10
+   }
+  ],
+  "resistances": {
+   "poison": 100,
+   "cold": 50
+  },
+  "description": "A grey, hunched thing that feeds on the catacombs' dead - and the living.",
+  "undead": true
+ },
+ {
+  "id": "flayed_ghost",
+  "name": "Flayed Ghost",
+  "sprite": "flayed_ghost",
+  "level": 7,
+  "hitPoints": "6d8",
+  "armorClass": 6,
+  "speed": 14,
+  "xp": 200,
+  "attacks": [
+   {
+    "verb": "rakes",
+    "damage": "1d10",
+    "element": "magic"
+   }
+  ],
+  "abilities": [
+   {
+    "name": "a flaying curse",
+    "chance": 20,
+    "damage": "2d8",
+    "element": "magic"
+   }
+  ],
+  "resistances": {
+   "physical": 50,
+   "cold": 100,
+   "poison": 100
+  },
+  "description": "A skinless spirit, screaming without sound.",
+  "undead": true
+ },
+ {
+  "id": "curse_skull",
+  "name": "Curse Skull",
+  "sprite": "curse_skull",
+  "level": 7,
+  "hitPoints": "5d8",
+  "armorClass": 8,
+  "speed": 16,
+  "xp": 220,
+  "attacks": [
+   {
+    "verb": "bites",
+    "damage": "1d6"
+   }
+  ],
+  "abilities": [
+   {
+    "name": "a withering curse",
+    "chance": 25,
+    "allTargets": true,
+    "damage": "1d8",
+    "element": "magic"
+   }
+  ],
+  "resistances": {
+   "physical": 25,
+   "cold": 100,
+   "poison": 100,
+   "magic": 25
+  },
+  "description": "A floating skull, its sockets lit with green fire.",
+  "undead": true
+ },
+ {
+  "id": "wight_king",
+  "name": "The Wight King",
+  "sprite": "wight_king",
+  "boss": true,
+  "level": 9,
+  "hitPoints": "240",
+  "armorClass": 10,
+  "speed": 13,
+  "xp": 2000,
+  "attacks": [
+   {
+    "verb": "strikes",
+    "damage": "2d10",
+    "element": "cold",
+    "inflicts": "paralyzed",
+    "inflictChance": 15
+   },
+   {
+    "verb": "strikes",
+    "damage": "2d8"
+   }
+  ],
+  "gold": "300",
+  "smart": true,
+  "abilities": [
+   {
+    "name": "a grave chill",
+    "chance": 30,
+    "allTargets": true,
+    "damage": "4d6",
+    "element": "cold"
+   },
+   {
+    "name": "the strength of the barrows",
+    "chance": 12,
+    "selfHeal": "5d8"
+   }
+  ],
+  "resistances": {
+   "physical": 15,
+   "cold": 100,
+   "poison": 100
+  },
+  "drops": [
+   {
+    "item": "gravewarden_blade",
+    "chance": 100
+   },
+   {
+    "item": "bone_amulet",
+    "chance": 100
+   }
+  ],
+  "description": "Once the lord of the barrow-folk, now the jailer of the catacombs.",
+  "undead": true
+ },
+ {
+  "id": "deep_troll",
+  "name": "Deep Troll",
+  "sprite": "deep_troll",
+  "level": 12,
+  "hitPoints": "12d8+12",
+  "armorClass": 8,
+  "speed": 11,
+  "xp": 3000,
+  "attacks": [
+   {
+    "verb": "claws",
+    "damage": "2d8"
+   },
+   {
+    "verb": "claws",
+    "damage": "2d8"
+   }
+  ],
+  "gold": "6d20",
+  "regenerates": 5,
+  "description": "A troll grown huge and grey in the dark under the world."
+ },
+ {
+  "id": "shade",
+  "name": "Shade",
+  "sprite": "shade",
+  "level": 12,
+  "hitPoints": "10d8",
+  "armorClass": 10,
+  "speed": 15,
+  "xp": 3200,
+  "attacks": [
+   {
+    "verb": "chills",
+    "damage": "2d8",
+    "element": "cold"
+   }
+  ],
+  "abilities": [
+   {
+    "name": "a lightless wail",
+    "chance": 15,
+    "allTargets": true,
+    "damage": "2d8",
+    "element": "magic"
+   }
+  ],
+  "resistances": {
+   "physical": 40,
+   "cold": 100,
+   "poison": 100
+  },
+  "description": "A hole in the dark shaped like a person.",
+  "undead": true
+ },
+ {
+  "id": "draining_eye",
+  "name": "Draining Eye",
+  "sprite": "draining_eye",
+  "level": 13,
+  "hitPoints": "9d8",
+  "armorClass": 9,
+  "speed": 12,
+  "xp": 3500,
+  "attacks": [
+   {
+    "verb": "glares at",
+    "damage": "1d8",
+    "element": "magic",
+    "ranged": true
+   }
+  ],
+  "abilities": [
+   {
+    "name": "a draining gaze",
+    "chance": 30,
+    "damage": "3d8",
+    "element": "magic"
+   },
+   {
+    "name": "a stare of stillness",
+    "chance": 10,
+    "inflicts": "paralyzed"
+   }
+  ],
+  "resistances": {
+   "magic": 50
+  },
+  "description": "A floating eye that drinks the strength of whatever it watches."
+ },
+ {
+  "id": "vampire_knight",
+  "name": "Vampire Knight",
+  "sprite": "vampire_knight",
+  "level": 13,
+  "hitPoints": "12d8",
+  "armorClass": 11,
+  "speed": 14,
+  "xp": 4000,
+  "attacks": [
+   {
+    "verb": "slashes",
+    "damage": "2d10"
+   },
+   {
+    "verb": "bites",
+    "damage": "2d8"
+   }
+  ],
+  "gold": "8d20",
+  "smart": true,
+  "abilities": [
+   {
+    "name": "a draught of blood",
+    "chance": 15,
+    "selfHeal": "3d10"
+   }
+  ],
+  "resistances": {
+   "cold": 50,
+   "poison": 100
+  },
+  "description": "Armored in black steel, polite to the last.",
+  "undead": true
+ },
+ {
+  "id": "bone_dragon",
+  "name": "Bone Dragon",
+  "sprite": "bone_dragon",
+  "level": 14,
+  "hitPoints": "14d8+14",
+  "armorClass": 10,
+  "speed": 13,
+  "xp": 5000,
+  "attacks": [
+   {
+    "verb": "bites",
+    "damage": "3d8"
+   },
+   {
+    "verb": "claws",
+    "damage": "2d10"
+   }
+  ],
+  "abilities": [
+   {
+    "name": "a blast of grave-frost",
+    "chance": 20,
+    "allTargets": true,
+    "damage": "4d8",
+    "element": "cold"
+   }
+  ],
+  "resistances": {
+   "physical": 20,
+   "cold": 100,
+   "poison": 100
+  },
+  "description": "Something raised it long after it died.",
+  "undead": true
+ },
+ {
+  "id": "umbral_wyrm",
+  "name": "The Umbral Wyrm",
+  "sprite": "umbral_wyrm",
+  "boss": true,
+  "level": 17,
+  "hitPoints": "520",
+  "armorClass": 12,
+  "speed": 14,
+  "xp": 40000,
+  "attacks": [
+   {
+    "verb": "bites",
+    "damage": "3d10"
+   },
+   {
+    "verb": "rakes",
+    "damage": "3d10"
+   },
+   {
+    "verb": "lashes",
+    "damage": "2d10"
+   }
+  ],
+  "gold": "3000",
+  "smart": true,
+  "abilities": [
+   {
+    "name": "a breath of the void",
+    "chance": 25,
+    "allTargets": true,
+    "damage": "7d8",
+    "element": "magic"
+   },
+   {
+    "name": "a wave of terror",
+    "chance": 10,
+    "allTargets": true,
+    "inflicts": "paralyzed"
+   },
+   {
+    "name": "the heat of the deep",
+    "chance": 12,
+    "selfHeal": "6d10"
+   }
+  ],
+  "resistances": {
+   "cold": 50,
+   "magic": 25,
+   "poison": 100
+  },
+  "drops": [
+   {
+    "item": "umbral_blade",
+    "chance": 100
+   },
+   {
+    "item": "ring_deep",
+    "chance": 100
+   }
+  ],
+  "description": "The thing that ate the light at the bottom of the world."
  }
 ]

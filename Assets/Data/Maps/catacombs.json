@@ -1,0 +1,319 @@
+{
+ "id": "catacombs",
+ "name": "The Catacombs",
+ "kind": "dungeon",
+ "format": "edges",
+ "width": 16,
+ "height": 16,
+ "grid": [
+  "+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+",
+  "|. . . . .|. .|. . . . . . . . .|",
+  "+ + + + + +-+ + +-+-+-+-+-+-+ + +",
+  "|. . . . . .|.|. . . .|. . .|. .|",
+  "+ + + + + + + +-+-+ + + + + + +-+",
+  "|. . . . .|.|.|. . .|.D. . .|. .|",
+  "+ + + + + + + + + +-+ + + + +-+ +",
+  "|. . . . .|.|.|. .|. .|. . .|.|.|",
+  "+ +-+L+-+-+-+ +-+ + + +-+D+-+ + +",
+  "|. .|.|.|. .|.|. .|. . .|. . . .|",
+  "+-+-+ +S+ + + + +-+-+-+ +-+-+-+-+",
+  "|. .|. .|.|.|.|. . .|. . . .|. .|",
+  "+ + +-+ + + + +D+-+-+ + +-+-+ + +",
+  "|.|. .|. .|.|. . . .|. . . . .|.|",
+  "+ +-+ +-+-+ + + + + + +-+-+-+-+ +",
+  "|. .|.|. .|.D. . . .D.|. . . . .|",
+  "+ + + + + +-+ + + + +-+ +-+ +-+ +",
+  "|.|.|. .|. .|. . . .|. .|. .|. .|",
+  "+-+ +-+-+-+ +-+-+D+-+-+-+ +-+ +-+",
+  "|. .|. .|. .|. . .|. . .|. .|. .|",
+  "+ +-+ +-+ + +-+-+-+ +-+ + + + + +",
+  "|.|. . .|. . . . .|.|. .|.|. . .|",
+  "+ + + + +-+-+ + + + + + +-+ + +-+",
+  "|.|. .|. . . .|. .|.|.|. . .|.|.|",
+  "+ + + +-+ + +-+ +-+ + +-+-+-+ + +",
+  "|.|. . .|.|. . .|. .|. .|. .|. .|",
+  "+ + +-+ + +-+-+-+ + + +-+ +-+D+-+",
+  "|. . . .|. . .|. .|.|. . .|. . .|",
+  "+ +-+ +-+-+-+ +-+-+ + +-+ + + + +",
+  "|.|. . . . .|. .|. .|.|. .D. . .|",
+  "+-+ +-+ +-+ +-+ + +-+ + + + + + +",
+  "|. .|. . . a a a .|. . .|.|. . .|",
+  "+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+"
+ ],
+ "terrain": {
+  "d": {
+   "darkness": true,
+   "name": "Magical darkness",
+   "mapColor": "#07070c"
+  },
+  "a": {
+   "antiMagic": true,
+   "name": "Anti-magic",
+   "mapColor": "#3a2050"
+  }
+ },
+ "wallTexture": "wall_catacombs",
+ "floorTexture": "floor_crypt",
+ "ceilingTexture": "wall_catacombs",
+ "dark": true,
+ "encounterChance": 8,
+ "lockedDoorKey": "barrow_key",
+ "encounters": [
+  {
+   "monster": "crawling_corpse",
+   "count": "1d4+1",
+   "weight": 20
+  },
+  {
+   "monster": "skeletal_warrior",
+   "count": "1d3+1",
+   "weight": 20
+  },
+  {
+   "monster": "necrophage",
+   "count": "1d3",
+   "weight": 15
+  },
+  {
+   "monster": "flayed_ghost",
+   "count": "1d2",
+   "weight": 12
+  },
+  {
+   "monster": "curse_skull",
+   "count": "1d2",
+   "weight": 10
+  },
+  {
+   "monster": "barrow_wight",
+   "count": "1d2",
+   "weight": 10
+  },
+  {
+   "monster": "wraith",
+   "count": "1",
+   "weight": 8
+  },
+  {
+   "monster": "ghoul",
+   "count": "2d2",
+   "weight": 5
+  }
+ ],
+ "events": [
+  {
+   "x": 15,
+   "y": 15,
+   "type": "teleport",
+   "name": "Stairs Up",
+   "feature": "stairs_up",
+   "map": "crypt",
+   "toX": 15,
+   "toY": 15,
+   "facing": "West",
+   "text": "You climb back up into the Hollow Crypt."
+  },
+  {
+   "x": 14,
+   "y": 14,
+   "type": "message",
+   "id": "catacombs_hint",
+   "once": true,
+   "name": "Barrow Stone",
+   "text": "Runes on a standing stone: 'HERE LIES THE BARROW-KING AND ALL HIS HOUSE. THE BONE KEY SLEEPS AMONG HIS PEOPLE.'"
+  },
+  {
+   "x": 7,
+   "y": 7,
+   "type": "encounter",
+   "id": "catacomb_ossuary",
+   "once": true,
+   "name": "Ossuary of the Barrow-Folk",
+   "setFlag": "catacomb_ossuary_clear",
+   "text": "Skulls are stacked to the ceiling. Some of them turn to look at you.",
+   "monsters": [
+    {
+     "monster": "skeletal_warrior",
+     "count": "3"
+    },
+    {
+     "monster": "necrophage",
+     "count": "1"
+    }
+   ]
+  },
+  {
+   "x": 9,
+   "y": 6,
+   "type": "treasure",
+   "id": "barrow_key_chest",
+   "once": true,
+   "feature": "altar",
+   "name": "Bone Altar",
+   "requiresFlag": "catacomb_ossuary_clear",
+   "blocking": true,
+   "failText": "A bone altar - but its guardians stand between you and it.",
+   "gold": "8d10",
+   "items": [
+    "barrow_key"
+   ],
+   "text": "On the altar lies a key of yellowed bone, carved with a crown."
+  },
+  {
+   "x": 12,
+   "y": 2,
+   "type": "fountain",
+   "name": "Chapel of Rest",
+   "feature": "fountain",
+   "heal": true,
+   "restoreSp": true,
+   "conditions": "paralyzed, diseased",
+   "text": "A spring rises in a quiet chapel the dead never enter. The party rests and is restored."
+  },
+  {
+   "x": 2,
+   "y": 3,
+   "type": "encounter",
+   "id": "wight_king_fight",
+   "once": true,
+   "name": "The Barrow Throne",
+   "setFlag": "wight_king_dead",
+   "text": "On a throne of stacked shields sits a crowned corpse. Its eyes open, cold and blue. \"Who unlocks my door?\"",
+   "monsters": [
+    {
+     "monster": "wight_king",
+     "count": "1"
+    },
+    {
+     "monster": "skeletal_warrior",
+     "count": "2"
+    }
+   ]
+  },
+  {
+   "x": 2,
+   "y": 1,
+   "type": "treasure",
+   "id": "wight_king_hoard",
+   "once": true,
+   "feature": "chest",
+   "name": "Barrow Hoard",
+   "requiresFlag": "wight_king_dead",
+   "blocking": true,
+   "failText": "The Barrow-King's hoard. The King still sits his throne.",
+   "gold": "15d20+100",
+   "gems": 4,
+   "items": [
+    "potion_vigor",
+    "potion_mana"
+   ],
+   "xp": 500,
+   "text": "Grave-gold of a forgotten kingdom."
+  },
+  {
+   "x": 5,
+   "y": 0,
+   "type": "treasure",
+   "id": "catacombs_chest_a",
+   "once": true,
+   "feature": "chest",
+   "name": "Burial Urn",
+   "gold": "8d10",
+   "items": [
+    "potion_cure"
+   ],
+   "text": "A burial urn holds ashes - and the coins to pay the ferryman."
+  },
+  {
+   "x": 5,
+   "y": 3,
+   "type": "trap",
+   "id": "catacombs_trap_a",
+   "once": true,
+   "damage": "3d6",
+   "conditions": "diseased",
+   "text": "A bone-dust trap! The air fills with grave rot."
+  },
+  {
+   "x": 14,
+   "y": 3,
+   "type": "treasure",
+   "id": "catacombs_chest_b",
+   "once": true,
+   "feature": "chest",
+   "name": "Warrior's Barrow",
+   "gold": "6d10",
+   "items": [
+    "ring_might"
+   ],
+   "text": "A warrior's barrow. The warrior is gone, but not the ring."
+  },
+  {
+   "x": 1,
+   "y": 4,
+   "type": "trap",
+   "id": "catacombs_trap_b",
+   "once": true,
+   "damage": "2d8",
+   "text": "Blades swing out of the niches!"
+  },
+  {
+   "x": 3,
+   "y": 5,
+   "type": "message",
+   "id": "catacombs_secret_hint",
+   "once": true,
+   "name": "Bricked Arch",
+   "text": "An arch here has been bricked up in haste, the mortar never smoothed. (Search with F.)"
+  },
+  {
+   "x": 3,
+   "y": 4,
+   "type": "treasure",
+   "id": "catacombs_secret",
+   "once": true,
+   "feature": "chest",
+   "name": "Plague Pit Cache",
+   "gold": "12d10+50",
+   "gems": 3,
+   "items": [
+    "potion_vigor",
+    "scroll_fire"
+   ],
+   "text": "Someone sealed their valuables in here when the plague came, meaning to come back."
+  },
+  {
+   "x": 12,
+   "y": 0,
+   "type": "spinner"
+  },
+  {
+   "x": 3,
+   "y": 11,
+   "type": "trap",
+   "trap": "teleport",
+   "text": "Grave-light flickers on the floor and the walls swim around you!"
+  },
+  {
+   "x": 10,
+   "y": 9,
+   "type": "trap",
+   "id": "catacombs_alarm",
+   "once": true,
+   "trap": "alarm",
+   "text": "A bone chime rattles in the dark, and the catacombs wake!",
+   "monsters": [
+    {
+     "monster": "crawling_corpse",
+     "count": "3"
+    },
+    {
+     "monster": "flayed_ghost",
+     "count": "1"
+    }
+   ]
+  }
+ ],
+ "music": "dungeon",
+ "ambience": "deep"
+}

@@ -23,6 +23,12 @@ public class BossBalanceTests(ITestOutputHelper output)
     [InlineData("sphinx", null, 0, 8, false)]
     [InlineData("sun_king", "guardian_mummy", 2, 12, true)]
     [InlineData("sun_king", "guardian_mummy", 2, 9, false)]
+    [InlineData("ooze_mother", "brown_ooze", 2, 4, true)]
+    [InlineData("ooze_mother", "brown_ooze", 2, 2, false)]
+    [InlineData("wight_king", "skeletal_warrior", 2, 8, true)]
+    [InlineData("wight_king", "skeletal_warrior", 2, 6, false)]
+    [InlineData("umbral_wyrm", "shade", 2, 15, true)]
+    [InlineData("umbral_wyrm", "shade", 2, 12, false)]
     public void Boss_IsChallengingButFair(string boss, string? adds, int addCount, int level, bool shouldUsuallyWin)
     {
         var wins = 0;

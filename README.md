@@ -52,12 +52,15 @@ Code identifiers, the solution and executables use the name **`AVAMMB1`** (`AVAM
   silenced, poisoned, diseased, paralyzed, unconscious, dead, stoned), trap disarming, saving throws.
 - **Towns** with inns (rest, save, roster of up to 18 characters), temples (heal, cure, raise dead,
   donate), taverns (food, rumors), smithies and magic shops, and training grounds.
-- **Sixteen maps**: five towns (Brindlemoor, Saltreach, Thornwick, Duskmere and Port Ashkar), three
-  wilderness regions (the Greenvale Wilds, the Ashen Hills and the Sunscar Wastes), seven dungeon
+- **Nineteen maps**: five towns (Brindlemoor, Saltreach, Thornwick, Duskmere and Port Ashkar), three
+  wilderness regions (the Greenvale Wilds, the Ashen Hills and the Sunscar Wastes), ten dungeon
   levels plus the final vault. The main quest chain (keys, quest items, flags) leads to a final boss
   and victory screen; optional side quests reward unique gear: the Thornwick Mines' Stone Wyrm and
   the Sunken Temple's Drowned Hydra (levels 7-9), and - across the bay by ferry - the Tomb of the
-  Sun Kings and its undying king (levels 10-12).
+  Sun Kings and its undying king (levels 10-12). Optional deeper levels each end in a boss: the Old
+  Cistern below the Brindlemoor cellars (levels 2-4), the Catacombs below the Hollow Crypt (levels
+  5-8, behind a locked throne room), and - sealed until the Sun King falls - the post-game Sunless
+  Deep (levels 13-15).
 - **Turn-based combat**: initiative order, front/back ranks for both sides, melee and missile attacks,
   blocking, running, bribing; monster AI with special abilities, healing, fleeing and target
   selection; treasure, item drops and XP.
@@ -80,8 +83,10 @@ Code identifiers, the solution and executables use the name **`AVAMMB1`** (`AVAM
   exploring, combat and every menu.
 - **Save/load** (10 slots incl. quick-save, JSON) in the OS user-data directory; **settings** for
   music/effects volume, fullscreen, minimap and **rebindable keys**.
-- **Music and sound effects** via OpenAL Soft (Silk.NET) + NVorbis, bundled for all six platforms;
-  the game silently falls back to no audio if no device is available.
+- **Music, ambience and sound effects** via OpenAL Soft (Silk.NET) + NVorbis, bundled for all six
+  platforms: region music (towns, wilds, desert, marsh, caves, dungeons), a boss theme, and ambient
+  loops (birdsong, river, wind, dripping water, deep dungeon) under the music, each with its own
+  volume. The game silently falls back to no audio if no device is available.
 - **Single-file, self-contained executables** for Windows, Linux and macOS (x64 and ARM64).
 
 ## Screenshots
@@ -101,6 +106,7 @@ All screenshots are real frames rendered by the game itself (Avalonia headless +
 | ![Guardian](docs/screenshots/15-guardian.png) A guardian waiting in its alcove | ![Ashen Hills](docs/screenshots/16-ashen-hills.png) The Ashen Hills marsh road |
 | ![Thornwick](docs/screenshots/17-thornwick.png) Thornwick, the mining town | ![Duskmere](docs/screenshots/18-duskmere.png) Duskmere, the marsh village |
 | ![Port Ashkar](docs/screenshots/19-port-ashkar.png) Port Ashkar on the Sunscar Coast | ![Oasis](docs/screenshots/20-sunscar-oasis.png) The oasis in the Sunscar Wastes |
+| ![Old Cistern](docs/screenshots/21-old-cistern.png) An eel in the Old Cistern's flooded reservoir | |
 
 ## Download and install
 
@@ -276,9 +282,15 @@ More detail: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
   The fifth town: Port Ashkar (by ferry from Saltreach), the Sunscar Wastes and the two-level Tomb
   of the Sun Kings for levels 9-12.
 
+### Unreleased (on `main`, not yet in a release)
+
+- Save-game versioning and migration (older saves upgrade automatically, with a backup).
+- Region music, a boss theme and ambient sound loops, with an Ambience volume setting.
+- Three new dungeon levels with new monsters, bosses and unique items: the Old Cistern, the
+  Catacombs and the post-game Sunless Deep.
+
 ### Planned
 
-- More dungeon levels (the original game had many more; AVAM&M has seven plus the vault)
 - Proper Developer ID signing / notarization for macOS and an installer for Windows
 - Localization (translations)
 

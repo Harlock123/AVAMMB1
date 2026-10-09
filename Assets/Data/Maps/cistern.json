@@ -1,0 +1,277 @@
+{
+ "id": "cistern",
+ "name": "The Old Cistern",
+ "kind": "dungeon",
+ "format": "edges",
+ "width": 16,
+ "height": 16,
+ "grid": [
+  "+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+",
+  "|. . . .|. . .|. .|. . .|. . . .|",
+  "+ + + + +-+-+ + + +-+-+ + +-+-+ +",
+  "|. . . .D. . . .|. . .|. .|. . .|",
+  "+ + + + +-+-+-+-+-+-+ +-+ + + + +",
+  "|. . . .|. .|. . . .|. .|. .|.|.|",
+  "+ + + + +-+ + +-+-+-+-+ +-+ + + +",
+  "|. . . . .|.|. . . .S.|. .|. .|.|",
+  "+-+-+D+-+ + +-+ + + +-+ + + + + +",
+  "|. . .|. .|. . .|.|. . . .|.|.|.|",
+  "+ + + + +-+-+-+D+-+-+-+-+-+ + +-+",
+  "|.|. .|. .|w w w w w w|d d|.|. .|",
+  "+-+ +-+-+-+ + + + + + + + + +-+ +",
+  "|. .|. . .|w w w w w w|.|d .|. .|",
+  "+ + + +-+-+ + + + + + + + +-+ + +",
+  "|. .|. . .Dw w w w w w|.|. . .|.|",
+  "+ + + +-+ + + + + + + +-+-+ + +-+",
+  "|.|. . .|.|w w w w w wD. . . . .|",
+  "+ +-+-+ + + + + + + + +-+ + +-+ +",
+  "|.|. .|.|.|w w w w w w|.|.|. .|.|",
+  "+ + + + + + + + + + + + + +-+ + +",
+  "|. .|. . .|w w w w w w|.|. . .|.|",
+  "+-+ + +-+ +-+-+-+D+-+-+ +-+ +-+ +",
+  "|. .|. . .|. .|.|. .|. .|. . . .|",
+  "+ + + +-+-+-+ + + + + + + + + + +",
+  "|. .|. . .|. .|. . .|.|. .|. . .|",
+  "+ + +-+-+ + + + +-+-+ +-+-+-+D+-+",
+  "|.|.|. . . .|. .|. .|. .|.|. . .|",
+  "+-+ + + + + +-+ + + + + + + + + +",
+  "|. .|.|. .|. .|. .|. .|.|.D. . .|",
+  "+ +-+ +-+-+-+ + +-+-+ + + + + + +",
+  "|. . . . . .|. . . . . .|.|. . .|",
+  "+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+"
+ ],
+ "terrain": {
+  "d": {
+   "darkness": true,
+   "name": "Magical darkness",
+   "mapColor": "#07070c"
+  },
+  "a": {
+   "antiMagic": true,
+   "name": "Anti-magic",
+   "mapColor": "#3a2050"
+  },
+  "w": {
+   "floor": "shallow_water",
+   "name": "Flooded",
+   "mapColor": "#2a4a6a"
+  }
+ },
+ "wallTexture": "wall_cistern",
+ "floorTexture": "floor_cobble",
+ "ceilingTexture": "wall_cistern",
+ "dark": true,
+ "encounterChance": 7,
+ "encounters": [
+  {
+   "monster": "giant_roach",
+   "count": "2d3",
+   "weight": 25
+  },
+  {
+   "monster": "cistern_toad",
+   "count": "1d3+1",
+   "weight": 20
+  },
+  {
+   "monster": "brown_ooze",
+   "count": "1d2",
+   "weight": 15
+  },
+  {
+   "monster": "cistern_eel",
+   "count": "1d3",
+   "weight": 15
+  },
+  {
+   "monster": "giant_leech",
+   "count": "1d3",
+   "weight": 10
+  },
+  {
+   "monster": "green_slime",
+   "count": "1d3",
+   "weight": 10
+  },
+  {
+   "monster": "cellar_rat",
+   "count": "2d4",
+   "weight": 5
+  }
+ ],
+ "events": [
+  {
+   "x": 15,
+   "y": 15,
+   "type": "teleport",
+   "name": "Stairs Up",
+   "feature": "stairs_up",
+   "map": "cellars",
+   "toX": 14,
+   "toY": 15,
+   "facing": "North",
+   "text": "You climb back up into the Brindlemoor cellars."
+  },
+  {
+   "x": 14,
+   "y": 15,
+   "type": "message",
+   "id": "cistern_hint",
+   "once": true,
+   "name": "Keeper's Plaque",
+   "text": "A bronze plaque: 'THE CISTERNS OF BRINDLEMOOR. KEEP THE SLUICES CLEAR.' Scratched beneath it: 'something big lives in the north-west pool.'"
+  },
+  {
+   "x": 8,
+   "y": 8,
+   "type": "encounter",
+   "id": "reservoir_eels",
+   "once": true,
+   "name": "The Great Reservoir",
+   "text": "The black water of the reservoir boils - eels!",
+   "monsters": [
+    {
+     "monster": "cistern_eel",
+     "count": "3"
+    }
+   ]
+  },
+  {
+   "x": 2,
+   "y": 2,
+   "type": "encounter",
+   "id": "ooze_mother_fight",
+   "once": true,
+   "name": "The Mother's Pool",
+   "setFlag": "ooze_mother_dead",
+   "text": "The pool heaves itself up out of its basin. It is not water.",
+   "monsters": [
+    {
+     "monster": "ooze_mother",
+     "count": "1"
+    },
+    {
+     "monster": "brown_ooze",
+     "count": "2"
+    }
+   ]
+  },
+  {
+   "x": 0,
+   "y": 0,
+   "type": "treasure",
+   "id": "ooze_mother_hoard",
+   "once": true,
+   "feature": "chest",
+   "name": "Keeper's Strongbox",
+   "requiresFlag": "ooze_mother_dead",
+   "blocking": true,
+   "failText": "A strongbox sits in the slime. The pool around it is watching you.",
+   "gold": "6d20+30",
+   "gems": 2,
+   "items": [
+    "ring_protection",
+    "potion_healing"
+   ],
+   "xp": 150,
+   "text": "The old cistern keeper's strongbox, sealed with wax. The Mother never managed to digest it."
+  },
+  {
+   "x": 4,
+   "y": 0,
+   "type": "treasure",
+   "id": "cistern_chest_a",
+   "once": true,
+   "feature": "chest",
+   "name": "Sluice Locker",
+   "gold": "4d10",
+   "items": [
+    "potion_healing",
+    "torch"
+   ],
+   "text": "A rusted locker of the sluice-keepers."
+  },
+  {
+   "x": 9,
+   "y": 0,
+   "type": "trap",
+   "id": "cistern_trap_a",
+   "once": true,
+   "damage": "1d8",
+   "conditions": "poisoned",
+   "text": "Bubbles of foul gas burst up from the drain!"
+  },
+  {
+   "x": 4,
+   "y": 2,
+   "type": "treasure",
+   "id": "cistern_chest_b",
+   "once": true,
+   "feature": "chest",
+   "name": "Drowned Satchel",
+   "gold": "5d10",
+   "items": [
+    "scroll_light",
+    "potion_cure"
+   ],
+   "text": "A satchel lies half-sunk in the silt."
+  },
+  {
+   "x": 9,
+   "y": 2,
+   "type": "encounter",
+   "id": "cistern_roach_nest",
+   "once": true,
+   "name": "Roach Nest",
+   "text": "The walls of this alcove are moving. Roaches - hundreds - and some very large ones.",
+   "monsters": [
+    {
+     "monster": "giant_roach",
+     "count": "5"
+    }
+   ]
+  },
+  {
+   "x": 9,
+   "y": 3,
+   "type": "message",
+   "id": "cistern_secret_hint",
+   "once": true,
+   "name": "Hollow Echo",
+   "text": "Your footsteps echo strangely here, as if the wall were hollow. (Search with F.)"
+  },
+  {
+   "x": 10,
+   "y": 3,
+   "type": "treasure",
+   "id": "cistern_secret",
+   "once": true,
+   "feature": "chest",
+   "name": "Smugglers' Dry Room",
+   "gold": "8d10+30",
+   "gems": 2,
+   "items": [
+    "potion_mana",
+    "potion_healing"
+   ],
+   "text": "A dry room the smugglers used before the cellars were dug. They left in a hurry."
+  },
+  {
+   "x": 0,
+   "y": 9,
+   "type": "spinner"
+  },
+  {
+   "x": 2,
+   "y": 13,
+   "type": "trap",
+   "id": "cistern_pit",
+   "once": true,
+   "trap": "pit",
+   "damage": "1d6",
+   "text": "A rotten grate gives way and the party slides down an overflow channel!"
+  }
+ ],
+ "music": "caves",
+ "ambience": "drips"
+}

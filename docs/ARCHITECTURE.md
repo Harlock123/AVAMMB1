@@ -85,9 +85,10 @@ Randomness always flows through `IRandomSource`, so tests can script dice rolls
 * **Textures**: `TextureCache` loads PNGs from Avalonia resources (`avares://AVAMMB1/Assets/...`),
   decodes them to raw pixels for the ray caster, and composites paper-doll portraits.
 * **Audio**: `OpenAlAudioService` (Silk.NET OpenAL + OpenAL Soft natives for every RID) decodes Ogg
-  Vorbis with NVorbis; sound effects are cached buffers on a pool of sources, music streams on a
-  background thread with four queued buffers and loops. If no device is available a
-  `NullAudioService` is used.
+  Vorbis with NVorbis; sound effects are cached buffers on a pool of sources. Music and the map's
+  ambient loop are two independent `StreamChannel`s, each streaming on its own background thread
+  with four queued buffers and looping; each has its own volume. Battles that include a monster
+  flagged `boss` switch to the boss theme. If no device is available a `NullAudioService` is used.
 * **Headless mode**: `HeadlessRunner` starts Avalonia with the headless platform and real Skia
   rendering, drives the actual view models (`--screenshot DIR` captures README screenshots,
   `--smoke-test` validates a build, including OpenAL initialization).

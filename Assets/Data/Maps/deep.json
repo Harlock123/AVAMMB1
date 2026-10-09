@@ -1,0 +1,289 @@
+{
+ "id": "deep",
+ "name": "The Sunless Deep",
+ "kind": "dungeon",
+ "format": "edges",
+ "width": 16,
+ "height": 16,
+ "grid": [
+  "+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+",
+  "|. . . . .|. . . . .|. . . . . .|",
+  "+-+ +-+-+ + +-+ +-+-+ + + + + + +",
+  "|. .|. . .|. .|. . .|. . . . . .|",
+  "+ +-+-+-+ +-+S+ +-+-+ + + + + + +",
+  "|. . . .|. .|.|. . .|. . . . . .|",
+  "+-+ + + + + +-+ +-+-+ + + + + + +",
+  "|. .|.|.|.|. . . . .D. . . . . .|",
+  "+ + +-+ + +-+ + + + + + + + + + +",
+  "|.|.|. .|. . . . .|.|. . . . . .|",
+  "+ + + + +-+-+ + +-+ + + + + + + +",
+  "|.|. .|.|. .|. . .|.|. . . . . .|",
+  "+ +-+-+-+ + + +-+ + +-+-+D+-+-+-+",
+  "|. . . . .|a|.|. .|.|. . .|.|.|.|",
+  "+ +-+-+-+-+ +-+D+-+-+ + + + + + +",
+  "|.|. .|. .|a|. . . .|.|. .|.|.|.|",
+  "+ + + + +-+ + + + + +-+ +-+ + + +",
+  "|. .|. .|. aD. . . .D. . .|.|.|.|",
+  "+-+-+-+ + + + + + + + + +-+ + + +",
+  "|. . .|. . .|. . . .|.|d . .|.|.|",
+  "+-+-+ + + +-+-+-+D+-+ + +-+-+ + +",
+  "|. .|. . .|. .|. . .|.|d d|. .|.|",
+  "+ + + +-+ + +-+-+ + +-+-+ + +-+ +",
+  "|.|. . . .|.|. .|. .|. .|.|. .|.|",
+  "+ +-+-+ +-+ + + + +-+ + + + + + +",
+  "|. . .|. .|. .|.|. . . . .|.|. .|",
+  "+-+D+-+-+ + +-+ +-+ +-+-+-+ + + +",
+  "|. . .|. .|. .|. . . . .|.|.|. .|",
+  "+ + + + +-+ + + + +-+-+ + + + + +",
+  "|. . .D. . .|. .|.|. .|d|. .|.|.|",
+  "+ + + +-+ +-+ + + + + + +-+-+ + +",
+  "|. . .|. . . .|. .|.|d d d d d|.|",
+  "+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+"
+ ],
+ "terrain": {
+  "d": {
+   "darkness": true,
+   "name": "Magical darkness",
+   "mapColor": "#07070c"
+  },
+  "a": {
+   "antiMagic": true,
+   "name": "Anti-magic",
+   "mapColor": "#3a2050"
+  }
+ },
+ "wallTexture": "wall_obsidian",
+ "floorTexture": "floor_cobalt",
+ "ceilingTexture": "wall_obsidian",
+ "dark": true,
+ "encounterChance": 9,
+ "encounters": [
+  {
+   "monster": "deep_troll",
+   "count": "1d2",
+   "weight": 20
+  },
+  {
+   "monster": "shade",
+   "count": "1d3",
+   "weight": 20
+  },
+  {
+   "monster": "draining_eye",
+   "count": "1",
+   "weight": 15
+  },
+  {
+   "monster": "vampire_knight",
+   "count": "1d2",
+   "weight": 15
+  },
+  {
+   "monster": "bone_dragon",
+   "count": "1",
+   "weight": 10
+  },
+  {
+   "monster": "tomb_wraith",
+   "count": "1d3",
+   "weight": 10
+  },
+  {
+   "monster": "efreet",
+   "count": "1",
+   "weight": 10
+  }
+ ],
+ "events": [
+  {
+   "x": 0,
+   "y": 15,
+   "type": "teleport",
+   "name": "The Sunless Stair",
+   "feature": "stairs_up",
+   "map": "tomb2",
+   "toX": 12,
+   "toY": 14,
+   "facing": "West",
+   "text": "You climb the long stair back up to the Sun King's Chamber."
+  },
+  {
+   "x": 1,
+   "y": 14,
+   "type": "message",
+   "id": "deep_hint",
+   "once": true,
+   "name": "Last Inscription",
+   "text": "The Sun Kings' final carving: a great serpent coiled around a darkened sun. 'IT ATE THE LIGHT. WE SEALED IT IN. DO NOT WAKE IT.'"
+  },
+  {
+   "x": 7,
+   "y": 8,
+   "type": "fountain",
+   "name": "The Last Light",
+   "feature": "fountain",
+   "heal": true,
+   "restoreSp": true,
+   "conditions": "poisoned, diseased, paralyzed, blinded",
+   "text": "A spring of faintly glowing water - the last light left down here. The party drinks and is restored."
+  },
+  {
+   "x": 12,
+   "y": 5,
+   "type": "encounter",
+   "id": "umbral_wyrm_fight",
+   "once": true,
+   "name": "The Wyrm's Lair",
+   "setFlag": "umbral_wyrm_slain",
+   "text": "The darkness ahead uncoils. Two eyes open, and there is less light in the world.",
+   "monsters": [
+    {
+     "monster": "umbral_wyrm",
+     "count": "1"
+    },
+    {
+     "monster": "shade",
+     "count": "2"
+    }
+   ]
+  },
+  {
+   "x": 13,
+   "y": 2,
+   "type": "treasure",
+   "id": "umbral_wyrm_hoard",
+   "once": true,
+   "feature": "altar",
+   "name": "The Wyrm's Hoard",
+   "requiresFlag": "umbral_wyrm_slain",
+   "blocking": true,
+   "failText": "A hoard glitters faintly in the dark. Something vast is curled around it.",
+   "gold": "40d20+1500",
+   "gems": 12,
+   "items": [
+    "potion_vigor",
+    "potion_vigor"
+   ],
+   "xp": 10000,
+   "text": "The hoard of the Umbral Wyrm. As you lift the first coin, the first light in an age creeps down the stair behind you."
+  },
+  {
+   "x": 0,
+   "y": 0,
+   "type": "treasure",
+   "id": "deep_chest_a",
+   "once": true,
+   "feature": "chest",
+   "name": "Fallen Explorer's Pack",
+   "gold": "20d20",
+   "gems": 3,
+   "items": [
+    "potion_vigor"
+   ],
+   "text": "The pack of an explorer who came down before you, and stayed."
+  },
+  {
+   "x": 9,
+   "y": 0,
+   "type": "trap",
+   "id": "deep_trap_a",
+   "once": true,
+   "damage": "6d8",
+   "text": "The floor cracks and a jet of magma bursts up!"
+  },
+  {
+   "x": 2,
+   "y": 1,
+   "type": "treasure",
+   "id": "deep_chest_b",
+   "once": true,
+   "feature": "chest",
+   "name": "Vampire's Coffin",
+   "gold": "25d20",
+   "gems": 4,
+   "items": [
+    "potion_mana",
+    "potion_mana"
+   ],
+   "text": "A coffin lined with velvet and stuffed with tribute."
+  },
+  {
+   "x": 9,
+   "y": 1,
+   "type": "encounter",
+   "id": "deep_dragon_bones",
+   "once": true,
+   "name": "Dragon Graveyard",
+   "text": "A dragon's bones lie heaped in this alcove - and they begin to stand.",
+   "monsters": [
+    {
+     "monster": "bone_dragon",
+     "count": "2"
+    }
+   ]
+  },
+  {
+   "x": 6,
+   "y": 1,
+   "type": "message",
+   "id": "deep_secret_hint",
+   "once": true,
+   "name": "Sun Seal",
+   "text": "A small sun-disk is carved into the obsidian here, the only bright thing for miles. (Search with F.)"
+  },
+  {
+   "x": 6,
+   "y": 2,
+   "type": "treasure",
+   "id": "deep_secret",
+   "once": true,
+   "feature": "chest",
+   "name": "The Sun Kings' Last Cache",
+   "gold": "30d20+500",
+   "gems": 6,
+   "items": [
+    "ring_heartfire",
+    "potion_vigor"
+   ],
+   "text": "The Sun Kings left a cache here for whoever would finish what they could not."
+  },
+  {
+   "x": 2,
+   "y": 0,
+   "type": "spinner"
+  },
+  {
+   "x": 15,
+   "y": 11,
+   "type": "spinner"
+  },
+  {
+   "x": 2,
+   "y": 5,
+   "type": "trap",
+   "trap": "teleport",
+   "text": "The darkness folds around you and puts you down somewhere else!"
+  },
+  {
+   "x": 5,
+   "y": 3,
+   "type": "trap",
+   "id": "deep_alarm",
+   "once": true,
+   "trap": "alarm",
+   "text": "Your torchlight wakes something in the walls - and it calls its kin!",
+   "monsters": [
+    {
+     "monster": "shade",
+     "count": "3"
+    },
+    {
+     "monster": "vampire_knight",
+     "count": "1"
+    }
+   ]
+  }
+ ],
+ "music": "dungeon",
+ "ambience": "wind"
+}

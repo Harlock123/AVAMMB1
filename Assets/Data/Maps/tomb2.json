@@ -105,6 +105,20 @@
   },
   {
    "x": 12,
+   "y": 14,
+   "type": "teleport",
+   "name": "The Sunless Stair",
+   "feature": "stairs_down",
+   "map": "deep",
+   "toX": 0,
+   "toY": 15,
+   "facing": "North",
+   "requiresFlag": "sun_king_slain",
+   "failText": "A black stair spirals down past the roots of the world. A seal of the Sun Kings bars it - while a Sun King still reigns.",
+   "text": "With the Sun King gone, the seal crumbles. You descend into the Sunless Deep..."
+  },
+  {
+   "x": 12,
    "y": 4,
    "type": "encounter",
    "id": "sun_king_fight",

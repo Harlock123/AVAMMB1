@@ -87,6 +87,18 @@
    "text": "You climb back up into the well house."
   },
   {
+   "x": 14,
+   "y": 15,
+   "type": "teleport",
+   "name": "Cistern Stair",
+   "feature": "stairs_down",
+   "map": "cistern",
+   "toX": 15,
+   "toY": 15,
+   "facing": "West",
+   "text": "Slick steps lead down to the old cisterns beneath the town. The air smells of standing water."
+  },
+  {
    "x": 1,
    "y": 13,
    "type": "message",

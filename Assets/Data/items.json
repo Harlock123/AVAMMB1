@@ -805,5 +805,89 @@
   "kind": "quest",
   "icon": "crystal",
   "description": "A disk of beaten gold that glows like the noon sun."
+ },
+ {
+  "id": "barrow_key",
+  "name": "Barrow Key",
+  "kind": "quest",
+  "icon": "key",
+  "description": "A key of yellowed bone, carved with a crown."
+ },
+ {
+  "id": "drain_buckler",
+  "name": "Drainwarden's Buckler",
+  "kind": "shield",
+  "icon": "buckler",
+  "price": 400,
+  "armorClass": 2,
+  "statBonuses": {
+   "speed": 1
+  },
+  "classes": [
+   "knight",
+   "paladin",
+   "archer",
+   "cleric",
+   "robber"
+  ],
+  "description": "A light buckler of green bronze, worn by the old keepers of the cisterns."
+ },
+ {
+  "id": "gravewarden_blade",
+  "name": "Gravewarden's Blade",
+  "kind": "weapon",
+  "icon": "claymore",
+  "price": 2200,
+  "damage": "2d8+2",
+  "hitBonus": 2,
+  "twoHanded": true,
+  "classes": [
+   "knight",
+   "paladin"
+  ],
+  "description": "A barrow-king's greatsword. The dead remember it and hesitate."
+ },
+ {
+  "id": "bone_amulet",
+  "name": "Bone Ward",
+  "kind": "amulet",
+  "icon": "bone_amulet",
+  "price": 1500,
+  "armorClass": 2,
+  "statBonuses": {
+   "endurance": 2
+  },
+  "description": "Carved from a king's knucklebone. Cold, but it keeps you alive."
+ },
+ {
+  "id": "umbral_blade",
+  "name": "Umbral Blade",
+  "kind": "weapon",
+  "icon": "umbral_blade",
+  "price": 9000,
+  "damage": "3d6+4",
+  "hitBonus": 4,
+  "element": "magic",
+  "classes": [
+   "knight",
+   "paladin",
+   "archer",
+   "robber"
+  ],
+  "description": "A blade of folded night, cut from the Umbral Wyrm's heart."
+ },
+ {
+  "id": "ring_deep",
+  "name": "Ring of the Deep",
+  "kind": "ring",
+  "icon": "ring_agate",
+  "price": 7000,
+  "armorClass": 2,
+  "statBonuses": {
+   "might": 2,
+   "endurance": 2,
+   "luck": 2
+  },
+  "description": "A ring of green stone from the bottom of the world."
  }
 ]

@@ -14,6 +14,21 @@ All notable changes to this project are documented here. The format follows
   whenever a unique boss is in the fight) and five CC0 ambient loops (birds, river, wind, dripping
   water, deep dungeon) that play under the music. Every town, wilderness and dungeon now has its own
   music and ambience (`ambience` map field, `boss` monster flag). New Ambience volume slider in Settings.
+- Three new dungeon levels (19 maps in total), each with a boss, a secret room, hazards and unique
+  rewards, using new CC0 DCSS tiles:
+  - **The Old Cistern** (below the Brindlemoor cellars, levels 2-4): flooded reservoirs, eels and
+    oozes, and the Mother of Oozes (drops the Drainwarden's Buckler).
+  - **The Catacombs** (below the Hollow Crypt, levels 5-8): the Barrow Key in the ossuary opens the
+    throne room of the Wight King (Gravewarden's Blade, Bone Ward amulet).
+  - **The Sunless Deep** (below the Sun King's Chamber, post-game, levels 13-15): sealed until the
+    Sun King falls; deep trolls, shades, vampire knights, bone dragons and the Umbral Wyrm
+    (Umbral Blade, Ring of the Deep).
+  - 17 new monsters and 6 new items; boss balance tests cover the three new bosses.
+
+### Changed
+- Settings: the volume sliders now share a row with their labels.
+- The headless screenshot script trains the demo party before each harder region so it no longer
+  depends on lucky dice; new screenshot of the Old Cistern.
 
 ## [1.4.0] - 2026-10-09
 

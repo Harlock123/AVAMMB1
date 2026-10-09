@@ -110,6 +110,18 @@
    "text": "You climb out into the daylight."
   },
   {
+   "x": 15,
+   "y": 15,
+   "type": "teleport",
+   "name": "Catacomb Stair",
+   "feature": "stairs_down",
+   "map": "catacombs",
+   "toX": 15,
+   "toY": 15,
+   "facing": "North",
+   "text": "Behind a broken tomb, a stair descends into the catacombs."
+  },
+  {
    "x": 1,
    "y": 14,
    "type": "message",

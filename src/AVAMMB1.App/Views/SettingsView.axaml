@@ -8,12 +8,18 @@
         <TextBlock Grid.ColumnSpan="3" Classes="title" Text="Settings" Margin="0,0,0,8" />
         <StackPanel Grid.Row="1" Spacing="6">
           <TextBlock Classes="h2" Text="Audio" />
-          <TextBlock Text="{Binding MusicVolume, StringFormat='Music volume: {0}'}" />
-          <Slider Minimum="0" Maximum="100" Value="{Binding MusicVolume}" TickFrequency="5" IsSnapToTickEnabled="True" />
-          <TextBlock Text="{Binding SfxVolume, StringFormat='Effects volume: {0}'}" />
-          <Slider Minimum="0" Maximum="100" Value="{Binding SfxVolume}" TickFrequency="5" IsSnapToTickEnabled="True" />
-          <TextBlock Text="{Binding AmbienceVolume, StringFormat='Ambience volume: {0}'}" />
-          <Slider Minimum="0" Maximum="100" Value="{Binding AmbienceVolume}" TickFrequency="5" IsSnapToTickEnabled="True" />
+          <Grid ColumnDefinitions="110,*">
+            <TextBlock Text="{Binding MusicVolume, StringFormat='Music: {0}'}" VerticalAlignment="Center" />
+            <Slider Grid.Column="1" Minimum="0" Maximum="100" Value="{Binding MusicVolume}" TickFrequency="5" IsSnapToTickEnabled="True" />
+          </Grid>
+          <Grid ColumnDefinitions="110,*">
+            <TextBlock Text="{Binding SfxVolume, StringFormat='Effects: {0}'}" VerticalAlignment="Center" />
+            <Slider Grid.Column="1" Minimum="0" Maximum="100" Value="{Binding SfxVolume}" TickFrequency="5" IsSnapToTickEnabled="True" />
+          </Grid>
+          <Grid ColumnDefinitions="110,*">
+            <TextBlock Text="{Binding AmbienceVolume, StringFormat='Ambience: {0}'}" VerticalAlignment="Center" />
+            <Slider Grid.Column="1" Minimum="0" Maximum="100" Value="{Binding AmbienceVolume}" TickFrequency="5" IsSnapToTickEnabled="True" />
+          </Grid>
           <TextBlock Text="{Binding AudioStatus}" Classes="dim" FontSize="12" />
           <TextBlock Classes="h2" Text="Display" />
           <CheckBox Content="Fullscreen (F11 toggles)" IsChecked="{Binding Fullscreen}" />

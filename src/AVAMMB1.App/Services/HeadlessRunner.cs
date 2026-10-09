@@ -267,6 +267,20 @@ public static class HeadlessRunner
         game.Refresh();
     }
 
+    /// <summary>Raises the demo party to a level with the normal level-up rules, then heals it.</summary>
+    private static void TrainTo(GameSession s, int level)
+    {
+        foreach (var c in s.State.Party)
+        {
+            c.Experience = Math.Max(c.Experience, Rulebook.XpForLevel(s.Content.Class(c.Class), level));
+            while (s.Rules.LevelUp(c, s.Random) is not null)
+            {
+            }
+            c.Conditions = Condition.None;
+            Rulebook.Heal(c, c.MaxHp);
+        }
+    }
+
     private static void Face(GameViewModel game, GameSession s, Direction d)
     {
         while (s.State.Facing != d)
@@ -414,7 +428,19 @@ public static class HeadlessRunner
         game.Refresh();
         Capture(dir, "14-secret-door");
 
-        // The Ashen Hills expansion: travel there the long way, through each map's exits.
+        // Down to the Old Cistern below the cellars (level 2-4 country: train the demo party up first)
+        // and a look across the flooded reservoir.
+        TrainTo(s, 4);
+        TravelTo(game, s, "cistern");
+        WalkTo(game, s, 10, 8);
+        Face(game, s, Direction.West);
+        s.State.LightSteps = Math.Max(s.State.LightSteps, 50);
+        game.Refresh();
+        Capture(dir, "21-old-cistern");
+        TravelTo(game, s, "cellars");
+
+        // The Ashen Hills expansion (level 5-7 country): travel there the long way, through each map's exits.
+        TrainTo(s, 7);
         foreach (var stop in new[] { "brindlemoor", "wilds", "hills" })
         {
             TravelTo(game, s, stop);
@@ -431,16 +457,8 @@ public static class HeadlessRunner
         game.Refresh();
         Capture(dir, "18-duskmere");
 
-        // The Sunscar Coast is level 9-12 country: train the demo party up (normal level-up rules) first.
-        foreach (var c in s.State.Party)
-        {
-            c.Experience = Math.Max(c.Experience, Rulebook.XpForLevel(s.Content.Class(c.Class), 12));
-            while (s.Rules.LevelUp(c, s.Random) is not null)
-            {
-            }
-            c.Conditions = Condition.None;
-            Rulebook.Heal(c, c.MaxHp);
-        }
+        // The Sunscar Coast is level 9-12 country: train the demo party up first.
+        TrainTo(s, 12);
         s.State.Gold = Math.Max(s.State.Gold, 500);
         // Back over the pass, through Saltreach and across on the ferry.
         foreach (var stop in new[] { "hills", "wilds", "saltreach", "ashkar" })
