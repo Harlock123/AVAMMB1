@@ -87,7 +87,8 @@ public sealed partial class HelpViewModel : ViewModelBase
         new("Battle: attack, shoot, cast, item, block, run", "A, S, C, U, B, R"),
         new("Battle: repeat last actions / auto-fight", "E, O"),
         new("Battle: class ability (guard / lay on hands / aimed shot)", "G, L, T"),
-        new("Battle: choose target, spell or ally", "1-9 or click"),
+        new("Battle: choose target or ally", "1-9 or click"),
+        new("Battle: choose spell or item (keys shown in the list)", "1-9, then A-Z"),
         new("Fullscreen", "F11 or Alt+Enter"),
     ];
 

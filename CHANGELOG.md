@@ -6,6 +6,9 @@ All notable changes to this project are documented here. The format follows
 ## [Unreleased]
 
 ### Added
+- Keyboard picking for battle spells and items: each entry in the list shows its key (1-9, then A-Z
+  for longer spell lists) and pressing it picks that spell or item. The number pad works too, and a
+  spell that cannot be cast says why (e.g. not enough SP).
 - Audio polish. The Frostmark and the Rime Halls have their own music ("Beyond the Frozen Veil");
   crickets replace birdsong outdoors at night; footsteps sound like the ground underfoot (snow and
   ice, water, grass and earth, stone); lighting a torch, filling a lantern, picking a lock and a

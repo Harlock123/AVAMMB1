@@ -590,7 +590,7 @@ public sealed partial class CombatViewModel : ViewModelBase
         var caster = _game.Services.Session.Spells;
         foreach (var s in _game.Services.Session.Rules.KnownSpells(c).Where(s => s.Combat))
         {
-            Choices.Add(new CombatChoice(s.Id, $"L{s.Level} {s.Name} ({s.Cost} SP)", s.Target, caster.CanCast(c, s, true) is null));
+            Choices.Add(new CombatChoice(s.Id, $"{ChoiceKey(Choices.Count)}. L{s.Level} {s.Name} ({s.Cost} SP)", s.Target, caster.CanCast(c, s, true) is null));
         }
         Phase = CombatPhase.Spell;
         Prompt = $"{c.Name} has {c.Sp} SP. Choose a spell.";
@@ -610,12 +610,28 @@ public sealed partial class CombatViewModel : ViewModelBase
             var d = db.Item(c.Backpack[i].ItemId);
             if (d.UseSpell is not null && db.Spell(d.UseSpell).Combat)
             {
-                Choices.Add(new CombatChoice(i.ToString(System.Globalization.CultureInfo.InvariantCulture), d.Name, db.Spell(d.UseSpell).Target, true));
+                Choices.Add(new CombatChoice(i.ToString(System.Globalization.CultureInfo.InvariantCulture), $"{ChoiceKey(Choices.Count)}. {d.Name}", db.Spell(d.UseSpell).Target, true));
             }
         }
         Phase = CombatPhase.Item;
         Prompt = Choices.Count == 0 ? $"{c.Name} has nothing usable in battle." : "Choose an item to use.";
     }
+
+    /// <summary>The key that picks the n-th (0-based) spell or item: 1-9, then A-Z.</summary>
+    /// <param name="n">Position in the list.</param>
+    public static string ChoiceKey(int n) => n < 9
+        ? (n + 1).ToString(System.Globalization.CultureInfo.InvariantCulture)
+        : n < 35 ? ((char)('A' + n - 9)).ToString() : "";
+
+    /// <summary>The list position a key picks (inverse of <see cref="ChoiceKey"/>), or -1.</summary>
+    /// <param name="key">Key pressed.</param>
+    public static int ChoiceIndex(Key key) => key switch
+    {
+        >= Key.D1 and <= Key.D9 => key - Key.D1,
+        >= Key.NumPad1 and <= Key.NumPad9 => key - Key.NumPad1,
+        >= Key.A and <= Key.Z => 9 + (key - Key.A),
+        _ => -1,
+    };
 
     /// <summary>Picks a spell or item.</summary>
     /// <param name="choice">Choice.</param>
@@ -624,6 +640,11 @@ public sealed partial class CombatViewModel : ViewModelBase
     {
         if (!choice.Enabled)
         {
+            if (Phase == CombatPhase.Spell && _combat.ActiveCharacter is { } c)
+            {
+                var session = _game.Services.Session;
+                Prompt = session.Spells.CanCast(c, session.Content.Spell(choice.Id), inCombat: true) ?? Prompt;
+            }
             return;
         }
         var isSpell = Phase == CombatPhase.Spell;
@@ -731,6 +752,14 @@ public sealed partial class CombatViewModel : ViewModelBase
     /// <inheritdoc />
     public override bool HandleKey(Key key)
     {
+        if (IsChoosing && ChoiceIndex(key) is var pick and >= 0)
+        {
+            if (pick < Choices.Count)
+            {
+                Choose(Choices[pick]);
+            }
+            return true;
+        }
         if (key >= Key.D1 && key <= Key.D9)
         {
             var n = key - Key.D1;

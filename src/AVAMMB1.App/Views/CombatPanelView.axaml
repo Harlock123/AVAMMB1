@@ -43,6 +43,7 @@
             </DataTemplate>
           </ItemsControl.ItemTemplate>
         </ItemsControl>
+        <TextBlock Text="Press the key shown, or click." Classes="dim" FontSize="{DynamicResource Font12}" />
         <Button Content="Cancel (Esc)" Command="{Binding CancelCommand}" HorizontalAlignment="Left" />
       </StackPanel>
       <StackPanel IsVisible="{Binding IsAlly}" Spacing="2">

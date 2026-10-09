@@ -391,6 +391,16 @@ public static class HeadlessRunner
             }
         }
         Capture(dir, "09-combat");
+        for (var i = 0; i < 6 && combatVm.IsAction && !combatVm.CanCast; i++)
+        {
+            combatVm.BlockCommand.Execute(null);
+        }
+        if (combatVm.IsAction && combatVm.CanCast)
+        {
+            combatVm.ShowSpellsCommand.Execute(null);
+            Capture(dir, "30-combat-spells");
+            combatVm.HandleKey(Avalonia.Input.Key.Escape);
+        }
         if (s.Combat is not null)
         {
             AutoBattle(s);
