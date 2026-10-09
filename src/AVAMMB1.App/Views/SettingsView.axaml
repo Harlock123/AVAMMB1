@@ -15,9 +15,15 @@
           <TextBlock Text="{Binding AudioStatus}" Classes="dim" FontSize="12" />
           <TextBlock Classes="h2" Text="Display" />
           <CheckBox Content="Fullscreen (F11 toggles)" IsChecked="{Binding Fullscreen}" />
+          <CheckBox Content="Fit interface to window (scales for small and large screens)" IsChecked="{Binding FitToWindow}" />
           <CheckBox Content="Show minimap" IsChecked="{Binding ShowMinimap}" />
           <CheckBox Content="Smooth movement (animated steps and turns)" IsChecked="{Binding SmoothMovement}" />
           <CheckBox Content="Animated monsters in combat" IsChecked="{Binding AnimateMonsters}" />
+          <TextBlock Classes="h2" Text="Controller" />
+          <CheckBox Content="Use gamepad" IsChecked="{Binding GamepadEnabled}" />
+          <TextBlock Text="{Binding GamepadStatus}" Classes="dim" FontSize="12" TextWrapping="Wrap" />
+          <TextBlock Classes="dim" FontSize="12" TextWrapping="Wrap"
+                     Text="Explore: D-pad/stick move, LB/RB strafe, A use, X search, Y party, View map, Start menu, LT rest, RT cast. Battle: A attack, X cast, Y item, B block, LB/RB target. Menus: D-pad moves, A selects, B back." />
           <TextBlock Classes="h2" Text="Data" />
           <TextBlock Text="{Binding DataLocation}" Classes="dim" FontSize="12" TextWrapping="Wrap" />
         </StackPanel>

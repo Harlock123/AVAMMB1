@@ -1,0 +1,217 @@
+{
+ "id": "sunscar",
+ "name": "The Sunscar Wastes",
+ "kind": "outdoor",
+ "format": "blocks",
+ "width": 20,
+ "height": 20,
+ "grid": [
+  "^^^^^^^^^^^^^^^^^^^^",
+  "^^^^........^^^^^^^^",
+  "^^^^........^^^^^^^^",
+  "^.....DDD........^^^",
+  "^.....DDD........^^^",
+  "^.....DDD........^^^",
+  "^................^^^",
+  "^^^........DDD.....^",
+  "^^^........DDD.....^",
+  "^^^................^",
+  "^..................^",
+  "^....DDD...........^",
+  "^....DDD...P.......^",
+  "^.......P~~.P.DDD..^",
+  "^..........~..DDD..^",
+  "^.......P.~.P.DDD..^",
+  "^..................^",
+  "^..................^",
+  "^..................^",
+  "^^^^^^^^^^^^^^^^^^^^"
+ ],
+ "terrain": {
+  "^": {
+   "solid": true,
+   "texture": "wall_sandstone",
+   "name": "Rock",
+   "mapColor": "#8a6a4a"
+  },
+  "D": {
+   "solid": true,
+   "texture": "wall_desert_town",
+   "name": "Dune",
+   "mapColor": "#c9a86a"
+  },
+  "~": {
+   "solid": true,
+   "opaque": false,
+   "floor": "water",
+   "name": "Oasis",
+   "mapColor": "#2a7ab8"
+  },
+  "P": {
+   "solid": true,
+   "opaque": false,
+   "feature": "tree",
+   "name": "Palm",
+   "mapColor": "#5a8a3a"
+  }
+ },
+ "wallTexture": "wall_sandstone",
+ "floorTexture": "floor_sand",
+ "skyColor": "#e0a060",
+ "music": "title",
+ "encounterChance": 7,
+ "encounters": [
+  {
+   "monster": "giant_scorpion",
+   "count": "1d3",
+   "weight": 25
+  },
+  {
+   "monster": "salamander",
+   "count": "1d3",
+   "weight": 20
+  },
+  {
+   "monster": "efreet",
+   "count": "1",
+   "weight": 10
+  },
+  {
+   "monster": "scarab",
+   "count": "2d3",
+   "weight": 15
+  },
+  {
+   "monster": "manticore",
+   "count": "1d2",
+   "weight": 15
+  },
+  {
+   "monster": "hill_giant",
+   "count": "1d2",
+   "weight": 10
+  },
+  {
+   "monster": "emperor_scorpion",
+   "count": "1",
+   "weight": 5
+  }
+ ],
+ "events": [
+  {
+   "x": 18,
+   "y": 10,
+   "type": "teleport",
+   "name": "Port Ashkar",
+   "feature": "entrance",
+   "map": "ashkar",
+   "toX": 1,
+   "toY": 10,
+   "facing": "East",
+   "text": "The white walls of Port Ashkar shimmer in the heat."
+  },
+  {
+   "x": 3,
+   "y": 4,
+   "type": "teleport",
+   "name": "Tomb of the Sun Kings",
+   "feature": "tomb_entrance",
+   "map": "tomb1",
+   "toX": 7,
+   "toY": 15,
+   "facing": "North",
+   "text": "Steps cut into the rock lead down into darkness. The air below is cold."
+  },
+  {
+   "x": 10,
+   "y": 14,
+   "type": "fountain",
+   "name": "The Oasis",
+   "feature": "oasis",
+   "heal": true,
+   "restoreSp": true,
+   "conditions": "poisoned, diseased",
+   "text": "Clear, cold water in the middle of the desert. The party drinks and is restored."
+  },
+  {
+   "x": 15,
+   "y": 4,
+   "type": "encounter",
+   "id": "scorpion_nest",
+   "once": true,
+   "name": "Scorpion Nest",
+   "setFlag": "scorpion_nest_clear",
+   "text": "The rocks are alive with scorpions - and one of them is enormous.",
+   "monsters": [
+    {
+     "monster": "emperor_scorpion",
+     "count": "1"
+    },
+    {
+     "monster": "giant_scorpion",
+     "count": "3"
+    }
+   ]
+  },
+  {
+   "x": 16,
+   "y": 3,
+   "type": "treasure",
+   "id": "scorpion_hoard",
+   "once": true,
+   "feature": "chest",
+   "name": "Picked Bones",
+   "requiresFlag": "scorpion_nest_clear",
+   "blocking": true,
+   "failText": "Among the rocks lie the bones of earlier travellers - and their packs. Scorpions skitter over them.",
+   "gold": "20d20",
+   "gems": 4,
+   "items": [
+    "potion_vigor"
+   ],
+   "text": "The packs of earlier, unluckier travellers."
+  },
+  {
+   "x": 4,
+   "y": 16,
+   "type": "encounter",
+   "id": "sphinx_shrine",
+   "once": true,
+   "name": "Ruined Shrine",
+   "setFlag": "sphinx_defeated",
+   "text": "A great lion-bodied shape rises from the ruins. Its stone eyes open.",
+   "monsters": [
+    {
+     "monster": "sphinx",
+     "count": "1"
+    }
+   ]
+  },
+  {
+   "x": 3,
+   "y": 17,
+   "type": "treasure",
+   "id": "sphinx_hoard",
+   "once": true,
+   "feature": "altar",
+   "name": "Shrine Altar",
+   "requiresFlag": "sphinx_defeated",
+   "blocking": true,
+   "failText": "An altar glints behind the sphinx.",
+   "gold": "15d20",
+   "gems": 5,
+   "items": [
+    "mithril_coat"
+   ],
+   "text": "Offerings left at the shrine over a thousand years."
+  },
+  {
+   "x": 9,
+   "y": 9,
+   "type": "message",
+   "name": "Half-Buried Statue",
+   "feature": "column",
+   "text": "A statue of a crowned king, half buried in sand, points west toward the rocks."
+  }
+ ]
+}

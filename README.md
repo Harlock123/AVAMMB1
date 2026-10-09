@@ -52,11 +52,12 @@ Code identifiers, the solution and executables use the name **`AVAMMB1`** (`AVAM
   silenced, poisoned, diseased, paralyzed, unconscious, dead, stoned), trap disarming, saving throws.
 - **Towns** with inns (rest, save, roster of up to 18 characters), temples (heal, cure, raise dead,
   donate), taverns (food, rumors), smithies and magic shops, and training grounds.
-- **Twelve maps**: four towns (Brindlemoor, Saltreach, Thornwick, Duskmere), two wilderness regions
-  (the Greenvale Wilds and the Ashen Hills), five dungeon levels plus the final vault. The main quest
-  chain (keys, quest items, flags) leads to a final boss and victory screen; two optional side
-  quests in the Ashen Hills - the Thornwick Mines' Stone Wyrm and the Sunken Temple's Drowned Hydra -
-  reward unique gear.
+- **Sixteen maps**: five towns (Brindlemoor, Saltreach, Thornwick, Duskmere and Port Ashkar), three
+  wilderness regions (the Greenvale Wilds, the Ashen Hills and the Sunscar Wastes), seven dungeon
+  levels plus the final vault. The main quest chain (keys, quest items, flags) leads to a final boss
+  and victory screen; optional side quests reward unique gear: the Thornwick Mines' Stone Wyrm and
+  the Sunken Temple's Drowned Hydra (levels 7-9), and - across the bay by ferry - the Tomb of the
+  Sun Kings and its undying king (levels 10-12).
 - **Turn-based combat**: initiative order, front/back ranks for both sides, melee and missile attacks,
   blocking, running, bribing; monster AI with special abilities, healing, fleeing and target
   selection; treasure, item drops and XP.
@@ -73,6 +74,10 @@ Code identifiers, the solution and executables use the name **`AVAMMB1`** (`AVAM
 - **Data-driven content**: monsters, items, spells, races, classes, shops and maps are JSON files you
   can edit (see [docs/CONTENT_FORMAT.md](docs/CONTENT_FORMAT.md)); put a `Content` folder next to the
   executable or pass `--content DIR` to mod the game without rebuilding.
+- **Any screen size**: the interface scales to fit the window - crisp on a small laptop or a 4K
+  monitor (Settings can switch back to a fixed 100% layout).
+- **Gamepad support** (Xbox, PlayStation, Switch Pro and other SDL-supported controllers) for
+  exploring, combat and every menu.
 - **Save/load** (10 slots incl. quick-save, JSON) in the OS user-data directory; **settings** for
   music/effects volume, fullscreen, minimap and **rebindable keys**.
 - **Music and sound effects** via OpenAL Soft (Silk.NET) + NVorbis, bundled for all six platforms;
@@ -95,6 +100,7 @@ All screenshots are real frames rendered by the game itself (Avalonia headless +
 | ![Dungeon entrance](docs/screenshots/07-dungeon-entrance.png) Arriving in the cellars | ![Secret door](docs/screenshots/14-secret-door.png) A secret door found by searching (purple on the minimap) |
 | ![Guardian](docs/screenshots/15-guardian.png) A guardian waiting in its alcove | ![Ashen Hills](docs/screenshots/16-ashen-hills.png) The Ashen Hills marsh road |
 | ![Thornwick](docs/screenshots/17-thornwick.png) Thornwick, the mining town | ![Duskmere](docs/screenshots/18-duskmere.png) Duskmere, the marsh village |
+| ![Port Ashkar](docs/screenshots/19-port-ashkar.png) Port Ashkar on the Sunscar Coast | ![Oasis](docs/screenshots/20-sunscar-oasis.png) The oasis in the Sunscar Wastes |
 
 ## Download and install
 
@@ -144,7 +150,15 @@ Set `AVAMMB1_DATA_DIR` to use a different folder.
 | Fullscreen | F11 or Alt+Enter | Settings |
 | **Combat**: Fight / Run / Bribe | F, R, B | buttons |
 | **Combat**: Attack, Shoot, Cast, Use item, Block, Run | A, S, C, U, B, R | buttons |
-| **Combat**: pick target / spell / ally | 1-9 | click the monster card |
+| **Combat**: pick target / spell / ally | 1-9 | click the monster |
+
+**Gamepad** (any controller SDL recognises; Xbox button names shown):
+
+| Context | Controls |
+|---|---|
+| Exploring | D-pad / left stick: move and turn (hold to repeat) - LB / RB: strafe - A: use - X: search - Y: party sheet - View: map - Start or B: menu - LT: rest - RT: cast |
+| Battle | A: fight / attack (shoots from the back rank) / continue - X: cast - Y: use item - B: block - View: run - LB / RB or left / right: change target |
+| Menus and dialogs | D-pad: move between buttons (left / right adjust sliders) - A: select - B: back |
 
 ## How to play
 
@@ -204,13 +218,15 @@ The CI runners have no sound card, so on Windows and Linux the smoke test only c
 bundled OpenAL Soft library loads; on macOS (CI) and Linux ARM64 it also opens the audio device and
 loads a test sound.
 
-Gameplay verification: 101 unit and integration tests pass. They include scripted playthroughs that
-walk the party with normal movement commands from Brindlemoor to the victory event and through both
-Ashen Hills side quests, checks that every map is connected and every event reachable, and
+Gameplay verification: 150 unit and integration tests pass. They include scripted playthroughs that
+walk the party with normal movement commands from Brindlemoor to the victory event and through all
+three side quests, checks that every map is connected and every event reachable, and
 deterministic boss-balance checks (each boss beatable at its intended level, not trivial two levels
 below). The UI flow title -> party creation -> town -> shop -> dungeon -> combat -> inventory ->
-automap -> spells -> secret door -> Ashen Hills -> settings is exercised headlessly by `--screenshot`.
-The game is currently under testing.
+automap -> spells -> secret door -> Ashen Hills -> Sunscar Coast -> settings is exercised headlessly by `--screenshot`.
+Gamepad support is verified up to the SDL library loading on every platform and the button mapping
+(unit tests); it has not yet been tried with a physical controller. The game is currently under
+testing.
 
 ## Project structure
 
@@ -256,14 +272,15 @@ More detail: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
   boss balance tuning.
 - **Unreleased** - Per-character gold with a shared party purse (deposit, withdraw, pool, share,
   take gold along when leaving at an inn); 13 new spells including a new spell level 6, a new
-  armor-weakening effect and Stone to Flesh; spell tomes.
+  armor-weakening effect and Stone to Flesh; spell tomes. Interface scaling and gamepad support.
+  The fifth town: Port Ashkar (by ferry from Saltreach), the Sunscar Wastes and the two-level Tomb
+  of the Sun Kings for levels 9-12.
 
 ### Planned
 
-- A fifth town and more dungeon levels (the original game had five towns and many more levels;
-  AVAM&M now has four towns and five dungeon levels plus the vault)
+- More dungeon levels (the original game had many more; AVAM&M has seven plus the vault)
 - Proper Developer ID signing / notarization for macOS and an installer for Windows
-- Gamepad support, localization, UI scaling options
+- Localization (translations)
 
 ## License
 

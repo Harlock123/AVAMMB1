@@ -98,7 +98,8 @@
     "The crystal door in the northern mountains has been sealed for a thousand years.",
     "Trolls heal their wounds unless you burn them.",
     "Our armory sells plate mail, if you've the coin.",
-    "Thornwick's forge in the Ashen Hills makes dwarven mail lighter than plate and nearly as strong."
+    "Thornwick's forge in the Ashen Hills makes dwarven mail lighter than plate and nearly as strong.",
+    "The ferry at the north dock crosses to Port Ashkar on the desert coast - a hundred gold, and worth it if you're tough enough for the Wastes."
    ]
   },
   {
@@ -158,6 +159,20 @@
    "name": "Sage Orrin's House",
    "requiresFlag": "sigil_forged",
    "text": "\"The Inner Vault waits in the northern mountains. Go with courage.\""
+  },
+  {
+   "x": 11,
+   "y": 3,
+   "type": "teleport",
+   "name": "Ferry to Port Ashkar",
+   "feature": "entrance",
+   "map": "ashkar",
+   "toX": 6,
+   "toY": 3,
+   "facing": "East",
+   "fare": 100,
+   "failText": "The ferryman shakes his head. \"A hundred gold to cross to Port Ashkar. The desert coast is a long way south.\"",
+   "text": "The ferry carries you south across the bay to Port Ashkar on the Sunscar Coast."
   },
   {
    "x": 9,

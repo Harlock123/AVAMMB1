@@ -60,6 +60,12 @@ public static class HeadlessRunner
                     var detail = audio is OpenAlAudioService al ? $"{al.Status}, device open, test buffer {al.Preload("ui")}" : $"{lib} loaded; {audio.Status}";
                     Console.WriteLine("Audio: " + detail);
                 }
+                var pad = GamepadService.Probe();
+                if (!pad.StartsWith("bundled", StringComparison.Ordinal))
+                {
+                    throw new InvalidOperationException("Bundled SDL2 was not loaded: " + pad);
+                }
+                Console.WriteLine("Gamepad: " + pad);
                 Console.WriteLine("SMOKE TEST OK");
                 return 0;
             }
@@ -416,6 +422,32 @@ public static class HeadlessRunner
         Face(game, s, Direction.West);
         game.Refresh();
         Capture(dir, "18-duskmere");
+
+        // The Sunscar Coast is level 9-12 country: train the demo party up (normal level-up rules) first.
+        foreach (var c in s.State.Party)
+        {
+            c.Experience = Math.Max(c.Experience, Rulebook.XpForLevel(s.Content.Class(c.Class), 12));
+            while (s.Rules.LevelUp(c, s.Random) is not null)
+            {
+            }
+            c.Conditions = Condition.None;
+            Rulebook.Heal(c, c.MaxHp);
+        }
+        s.State.Gold = Math.Max(s.State.Gold, 500);
+        // Back over the pass, through Saltreach and across on the ferry.
+        foreach (var stop in new[] { "hills", "wilds", "saltreach", "ashkar" })
+        {
+            TravelTo(game, s, stop);
+        }
+        WalkTo(game, s, 12, 10);
+        Face(game, s, Direction.West);
+        game.Refresh();
+        Capture(dir, "19-port-ashkar");
+        TravelTo(game, s, "sunscar");
+        WalkTo(game, s, 9, 14);
+        Face(game, s, Direction.East);
+        game.Refresh();
+        Capture(dir, "20-sunscar-oasis");
 
         // Show the real defaults on the settings screen (animations were only disabled for capturing).
         vm.Services.Settings.SmoothMovement = true;

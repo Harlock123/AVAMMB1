@@ -121,5 +121,45 @@
    "torch",
    "ration"
   ]
+ },
+ {
+  "id": "ashkar_bazaar",
+  "name": "The Grand Bazaar",
+  "greeting": "Steel from Thornwick, silk from the islands, and wonders from the deep desert!",
+  "priceFactor": 1.2,
+  "stock": [
+   "sunsteel_scimitar",
+   "scarab_amulet",
+   "mithril_coat",
+   "plate_mail",
+   "great_sword",
+   "halberd",
+   "elven_bow",
+   "long_bow",
+   "ring_protection",
+   "ring_might",
+   "amulet_insight",
+   "large_shield",
+   "gauntlets",
+   "helmet"
+  ]
+ },
+ {
+  "id": "ashkar_alchemist",
+  "name": "House of Seven Flasks",
+  "greeting": "Every cure the desert knows, and a few it would rather forget.",
+  "priceFactor": 1.1,
+  "stock": [
+   "potion_healing",
+   "potion_cure",
+   "potion_mana",
+   "potion_vigor",
+   "scroll_fire",
+   "scroll_recall",
+   "scroll_light",
+   "wand_lightning",
+   "torch",
+   "ration"
+  ]
  }
 ]

@@ -530,6 +530,15 @@ public sealed class GameSession
                 result.Interaction = ev;
                 break;
             case MapEventKind.Teleport:
+                if (ev.Fare > 0)
+                {
+                    if (!State.TryPay(ev.Fare))
+                    {
+                        result.Messages.Add(new(ev.FailText ?? $"Passage costs {ev.Fare} gold, which the party does not have.", MessageKind.Bad));
+                        break;
+                    }
+                    result.Messages.Add(new($"The party pays {ev.Fare} gold for passage.", MessageKind.Info, "coins"));
+                }
                 Story(result, ev);
                 Complete(map, ev);
                 var destMap = ev.Map ?? map.Id;

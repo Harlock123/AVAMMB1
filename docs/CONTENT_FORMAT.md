@@ -178,7 +178,7 @@ for monsters; potions still work). Both show their `mapColor` on the automap onc
 | `message` | `text` (shown as a story dialog) |
 | `shop` | `shop` id |
 | `inn`, `temple`, `tavern`, `training` | `name`, `priceFactor`; tavern `rumors[]` |
-| `teleport` | `map`, `toX`, `toY`, `facing` |
+| `teleport` | `map`, `toX`, `toY`, `facing`; optional `fare` (gold the party pays, e.g. a ferry - travel fails with `failText` if it can't pay) |
 | `treasure`, `quest` | `gold`, `gems`, `xp`, `items`, `consumeItem` |
 | `encounter` | `monsters: [{ "monster": "kobold", "count": "1d4" }]`; `setFlag` is set on victory |
 | `trap` | `trap` effect: `damage` (default: `damage` per member, `conditions` such as a sleeping gas), `teleport` (to `map`/`toX`/`toY`, or a random reachable square if none is given), `pit` (`damage`, then fall like a teleport), `alarm` (fights `monsters`, or a group from the map's encounter table). Robbers may disarm traps. |

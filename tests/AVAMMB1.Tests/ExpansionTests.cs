@@ -9,10 +9,10 @@ namespace AVAMMB1.Tests;
 public class ExpansionTests
 {
     [Fact]
-    public void World_HasFourTownsAndEveryMapIsConnected()
+    public void World_HasFiveTownsAndEveryMapIsConnected()
     {
         var db = TestContent.Content;
-        Assert.Equal(4, db.Maps.Values.Count(m => m.Def.Kind == MapKind.Town));
+        Assert.Equal(5, db.Maps.Values.Count(m => m.Def.Kind == MapKind.Town));
         Assert.True(db.Maps.Values.Count(m => m.Def.Kind == MapKind.Dungeon) >= 6);
 
         // Follow every teleport from the start map: all maps must be reachable.
@@ -108,5 +108,63 @@ public class ExpansionTests
         Assert.Contains(c.Backpack, i => i.ItemId == "dwarven_mail");
         Assert.True(s.Inventory.Equip(c, c.Backpack.FindIndex(i => i.ItemId == "dwarven_mail")).Success);
         Assert.Equal(6 + 1 + 0, s.Rules.ArmorClass(c)); // dwarven mail + small shield + Speed 12
+    }
+}
+
+/// <summary>The Sunscar Coast: Port Ashkar, the Wastes and the Tomb of the Sun Kings.</summary>
+public class SunscarTests
+{
+    [Fact]
+    public void Ferry_ChargesTheFare_AndRefusesWithoutGold()
+    {
+        var s = TestContent.StartedSession();
+        var w = new Walker(s);
+        w.Travel("wilds");
+        w.Travel("saltreach");
+        s.State.Gold = 0; // everyone's own gold is already pooled at the start
+        var refused = w.Travel("ashkar");
+        Assert.Equal("saltreach", s.State.MapId);
+        Assert.Contains(refused.Messages, m => m.Text.Contains("hundred gold", StringComparison.Ordinal));
+
+        s.State.Gold = 150;
+        w.Go(s.State.X, s.State.Y + 1); // step off the dock and back on
+        w.Travel("ashkar");
+        Assert.Equal("ashkar", s.State.MapId);
+        Assert.Equal(50, s.State.Gold);
+    }
+
+    [Theory]
+    [InlineData(1)]
+    [InlineData(2)]
+    public void SunDiskQuest_CanBeCompleted(int seed)
+    {
+        var s = TestContent.StartedSession(seed);
+        foreach (var c in s.State.Party)
+        {
+            c.Level = 18;
+            c.MaxHp = c.Hp = 900;
+            c.Stats[AVAMMB1.Core.Rules.Stat.Accuracy] = 25;
+            c.Stats[AVAMMB1.Core.Rules.Stat.Might] = 25;
+        }
+        s.State.Gold = 5000;
+        var w = new Walker(s);
+        w.Travel("wilds");
+        w.Travel("saltreach");
+        w.Travel("ashkar");
+        w.GoTo(e => e.Id == "tamsin_intro");
+        Assert.Contains("tamsin_met", s.State.Flags);
+        w.Travel("sunscar");
+        w.Travel("tomb1");
+        w.Travel("tomb2");
+        w.GoTo(e => e.Id == "sun_king_fight");
+        Assert.Contains("sun_king_slain", s.State.Flags);
+        w.GoTo(e => e.Id == "sun_king_hoard");
+        Assert.True(AVAMMB1.Core.Items.Inventory.AnyoneHas(s.State.Party, "sun_disk"));
+        w.Travel("tomb1");
+        w.Travel("sunscar");
+        w.Travel("ashkar");
+        w.GoTo(e => e.Id == "tamsin_intro");
+        Assert.Contains("sun_disk_returned", s.State.Flags);
+        Assert.True(AVAMMB1.Core.Items.Inventory.AnyoneHas(s.State.Party, "scarab_amulet"));
     }
 }

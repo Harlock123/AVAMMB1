@@ -106,6 +106,8 @@ public sealed class MapEventDef
     public int ToX { get; set; }
     /// <summary>Destination Y.</summary>
     public int ToY { get; set; }
+    /// <summary>Gold charged for a teleport (a ferry fare); paid by the party, travel fails if it can't pay.</summary>
+    public int Fare { get; set; }
     /// <summary>Destination facing.</summary>
     public Direction? Facing { get; set; }
     /// <summary>Gold reward.</summary>

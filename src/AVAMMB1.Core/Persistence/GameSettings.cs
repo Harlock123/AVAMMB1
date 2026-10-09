@@ -46,6 +46,10 @@ public sealed class GameSettings
     public int SfxVolume { get; set; } = 80;
     /// <summary>Run full-screen.</summary>
     public bool Fullscreen { get; set; }
+    /// <summary>Scale the whole interface to fit the window (off = fixed 100% size).</summary>
+    public bool FitToWindow { get; set; } = true;
+    /// <summary>Read game controllers (SDL).</summary>
+    public bool GamepadEnabled { get; set; } = true;
     /// <summary>Show the minimap overlay.</summary>
     public bool ShowMinimap { get; set; } = true;
     /// <summary>Animate steps and turns in the 3D view (off = classic instant movement).</summary>

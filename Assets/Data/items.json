@@ -756,5 +756,54 @@
   "price": 3500,
   "teachSpell": "s_iron_grip",
   "description": "Teaches a sorcerer (level 6 spells) Iron Grip."
+ },
+ {
+  "id": "sunsteel_scimitar",
+  "name": "Sunsteel Scimitar",
+  "kind": "weapon",
+  "icon": "scimitar",
+  "price": 3500,
+  "damage": "2d6+3",
+  "hitBonus": 3,
+  "element": "fire",
+  "classes": [
+   "knight",
+   "paladin",
+   "archer",
+   "robber"
+  ],
+  "description": "Forged in Ashkar from metal that never cools."
+ },
+ {
+  "id": "scarab_amulet",
+  "name": "Scarab Amulet",
+  "kind": "amulet",
+  "icon": "scarab_amulet",
+  "price": 3000,
+  "armorClass": 2,
+  "statBonuses": {
+   "luck": 3
+  },
+  "description": "A golden scarab, warm against the skin."
+ },
+ {
+  "id": "sun_crown",
+  "name": "Crown of the Sun King",
+  "kind": "helmet",
+  "icon": "sun_crown",
+  "price": 6000,
+  "armorClass": 3,
+  "statBonuses": {
+   "personality": 2,
+   "intellect": 2
+  },
+  "description": "Gold and lapis, still faintly warm."
+ },
+ {
+  "id": "sun_disk",
+  "name": "Sun Disk",
+  "kind": "quest",
+  "icon": "crystal",
+  "description": "A disk of beaten gold that glows like the noon sun."
  }
 ]

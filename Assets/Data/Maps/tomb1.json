@@ -1,0 +1,219 @@
+{
+ "id": "tomb1",
+ "name": "Tomb of the Sun Kings",
+ "kind": "dungeon",
+ "format": "edges",
+ "width": 16,
+ "height": 16,
+ "grid": [
+  "+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+",
+  "|a a|. . .|. . . . . .|. . . . .|",
+  "+ + + + +-+ + + + +-+-+ +-+-+ + +",
+  "|a|. .|. .|. .|.|. . .|.|. . .|.|",
+  "+ +-+-+-+ + + + +-+-+ + + + + + +",
+  "|. . .|.|. .|.|.|. .|. .|.|. . .|",
+  "+-+-+ + +-+-+ + + + + +-+ + +-+ +",
+  "|. .|. . . .|.|. .|.|. .|. .|. .|",
+  "+-+ +-+-+ + + +-+-+ +-+ +-+ +-+ +",
+  "|. . .|. .|.|.|. .|.|. . .|. . .|",
+  "+ +-+ + +-+-+-+-+D+-+-+-+ +-+-+ +",
+  "|.|. . . .|. . . . . .|. . . .|.|",
+  "+ + +-+-+-+ + + + + + + + +-+ + +",
+  "|. . . . .|. . . . . .|. .|. .|.|",
+  "+-+-+ +-+-+ + + + + + +-+-+-+-+ +",
+  "|. . .|. .|. . . . . .|. .|. . .|",
+  "+ +-+-+ + + + + + + + +-+ + +-+ +",
+  "|. .|. .|.|. . . . . .|.|. .|.|.|",
+  "+ + + + + +-+-+D+-+-+-+ +-+ + + +",
+  "|. . .|. .|. .|. .|. . .|. . .|.|",
+  "+ +-+-+ +-+ + + + +-+-+ + + + + +",
+  "|. . .|. . .|. .|.|. .|. .|.|. .|",
+  "+ +-+ + + + + +-+ + + +-+-+ +-+-+",
+  "|. .|.|.|.|.|.|.|.|. . .|. .|. .|",
+  "+ + + + + +-+ + + + +-+ + +-+-+ +",
+  "|.|.|. . .|. .|. .|.|.|. .|. . .|",
+  "+ +-+-+ + + +-+D+-+-+ +-+ +-+ + +",
+  "|. . . .|.|.|. . . .|. .|. .|.|.|",
+  "+-+-+-+-+ + + + + + + + + + + +-+",
+  "|. . . . .|.|. . . .|.|.|.|.|. .|",
+  "+ +-+ + +-+-+ + + + + + + + +-+ +",
+  "|.|. . .|. . . . . .|. . .|. . .|",
+  "+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+"
+ ],
+ "terrain": {
+  "d": {
+   "darkness": true,
+   "name": "Magical darkness",
+   "mapColor": "#07070c"
+  },
+  "a": {
+   "antiMagic": true,
+   "name": "Anti-magic",
+   "mapColor": "#3a2050"
+  }
+ },
+ "wallTexture": "wall_tomb2",
+ "floorTexture": "floor_sandstone",
+ "ceilingTexture": "wall_tomb2",
+ "dark": true,
+ "music": "dungeon",
+ "encounterChance": 8,
+ "encounters": [
+  {
+   "monster": "mummy",
+   "count": "1d3+1",
+   "weight": 25
+  },
+  {
+   "monster": "scarab",
+   "count": "2d3",
+   "weight": 20
+  },
+  {
+   "monster": "guardian_mummy",
+   "count": "1d2",
+   "weight": 15
+  },
+  {
+   "monster": "tomb_wraith",
+   "count": "1d2",
+   "weight": 15
+  },
+  {
+   "monster": "jackal_guard",
+   "count": "1d2",
+   "weight": 15
+  },
+  {
+   "monster": "mummy_priest",
+   "count": "1",
+   "weight": 10
+  }
+ ],
+ "events": [
+  {
+   "x": 7,
+   "y": 15,
+   "type": "teleport",
+   "name": "Steps to the Surface",
+   "feature": "stairs_up",
+   "map": "sunscar",
+   "toX": 4,
+   "toY": 4,
+   "facing": "East",
+   "text": "You climb back up into the glare of the desert."
+  },
+  {
+   "x": 7,
+   "y": 14,
+   "type": "message",
+   "id": "tomb1_hint",
+   "once": true,
+   "name": "Painted Wall",
+   "text": "Painted kings in a long procession, each carrying a golden disk. The last king's face has been scratched away."
+  },
+  {
+   "x": 7,
+   "y": 7,
+   "type": "encounter",
+   "id": "guardian_hall",
+   "once": true,
+   "name": "Hall of Guardians",
+   "setFlag": "guardian_hall_clear",
+   "text": "Jackal-headed statues step down from their plinths, halberds lowered.",
+   "monsters": [
+    {
+     "monster": "jackal_guard",
+     "count": "3"
+    },
+    {
+     "monster": "mummy_priest",
+     "count": "1"
+    }
+   ]
+  },
+  {
+   "x": 6,
+   "y": 6,
+   "type": "treasure",
+   "id": "guardian_hall_loot",
+   "once": true,
+   "feature": "chest",
+   "name": "Funeral Goods",
+   "requiresFlag": "guardian_hall_clear",
+   "blocking": true,
+   "failText": "Funeral goods are stacked behind the guardians.",
+   "gold": "20d20",
+   "gems": 3,
+   "items": [
+    "potion_vigor",
+    "potion_mana"
+   ],
+   "text": "Funeral goods for a king who never needed them."
+  },
+  {
+   "x": 4,
+   "y": 0,
+   "type": "teleport",
+   "name": "Stair to the King",
+   "feature": "stairs_down",
+   "map": "tomb2",
+   "toX": 0,
+   "toY": 15,
+   "facing": "North",
+   "text": "A long stair winds down toward the Sun King's chamber."
+  },
+  {
+   "x": 10,
+   "y": 0,
+   "type": "treasure",
+   "id": "tomb1_chest_a",
+   "once": true,
+   "feature": "chest",
+   "name": "Canopic Chest",
+   "gold": "15d20",
+   "gems": 2,
+   "text": "A chest of canopic jars - and the gold buried with them."
+  },
+  {
+   "x": 3,
+   "y": 2,
+   "type": "trap",
+   "id": "tomb1_curse",
+   "once": true,
+   "damage": "3d8",
+   "conditions": "diseased",
+   "text": "A curse-ward flares as you pass: rot spreads across your skin!"
+  },
+  {
+   "x": 0,
+   "y": 3,
+   "type": "treasure",
+   "id": "tomb1_chest_b",
+   "once": true,
+   "feature": "chest",
+   "name": "Scribe's Coffer",
+   "gold": "10d20",
+   "items": [
+    "scroll_fire",
+    "scroll_fire"
+   ],
+   "text": "A scribe's coffer of sealed scrolls."
+  },
+  {
+   "x": 13,
+   "y": 5,
+   "type": "spinner"
+  },
+  {
+   "x": 0,
+   "y": 14,
+   "type": "trap",
+   "id": "tomb1_pit",
+   "once": true,
+   "trap": "pit",
+   "damage": "3d6",
+   "text": "A sand-filled pit swallows the party and spits it out elsewhere!"
+  }
+ ]
+}

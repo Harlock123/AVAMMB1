@@ -134,7 +134,7 @@
     </ItemsControl>
 
     <!-- Overlay dialogs -->
-    <Border Grid.ColumnSpan="2" Background="#99000000" IsVisible="{Binding HasOverlay}" Margin="0,0,0,8">
+    <Border x:Name="OverlayHost" Grid.ColumnSpan="2" Background="#99000000" IsVisible="{Binding HasOverlay}" Margin="0,0,0,8">
       <ContentControl Content="{Binding Overlay}" HorizontalAlignment="Center" VerticalAlignment="Center" />
     </Border>
   </Grid>

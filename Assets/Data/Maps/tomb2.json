@@ -1,0 +1,226 @@
+{
+ "id": "tomb2",
+ "name": "The Sun King's Chamber",
+ "kind": "dungeon",
+ "format": "edges",
+ "width": 16,
+ "height": 16,
+ "grid": [
+  "+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+",
+  "|. . . . . . . .|. .|. . . . . .|",
+  "+ + +-+ + +-+ +-+ +-+ + + + + + +",
+  "|.|. .|.|. .|. . . .|. . . . . .|",
+  "+ +-+ + +-+ +-+-+-+-+ + + + + + +",
+  "|. . . . .|.|. . . .|. . . . . .|",
+  "+-+-+ +-+ + + +-+ +S+ + + + + + +",
+  "|. .|. .|. . .|. .|.|. . . . . .|",
+  "+ + +-+ + +-+-+ + +-+ + + + + + +",
+  "|. . . . . . .|.|. .|. . . . . .|",
+  "+ + + + +-+-+ + +-+-+-+-+D+-+-+-+",
+  "|.|. .|.|. . .|.|. .|. .|. . .|.|",
+  "+ + +-+ + +-+-+ + + + + +-+-+ + +",
+  "|. . . .|.|. . .|.|.|.|. . .|.|.|",
+  "+ +-+ +-+ + +-+ + + + + +-+ + + +",
+  "|.|. . . .|. . .|. .|. . . . .|.|",
+  "+-+ +-+-+-+ +-+ + + +-+-+ +-+ + +",
+  "|. .|. .|. . .|.|.|. . . . .|. .|",
+  "+ +-+ + + +-+ + + +-+-+-+ + + + +",
+  "|. .|.|. . .|.|.|.|.|. . . .|.|.|",
+  "+ + + +-+-+-+ + + + + + +-+-+-+ +",
+  "|.|. .|. . .|. .|.|.|.|. . . . .|",
+  "+ +-+-+ +-+ +-+ + + + +-+ +-+ +-+",
+  "|. .|. .|. .|. . .|.|. .|. .|. .|",
+  "+-+ + +-+ +-+ +-+-+ +-+ + +-+-+ +",
+  "|. .|.|.|. . .|d d d . .|.|. . .|",
+  "+-+-+ + +-+-+-+ + +-+-+-+ + +-+ +",
+  "|. . .|. . .|. .|d d d .|.|.|. .|",
+  "+ +-+ +-+-+ + + +-+-+-+ + + +-+-+",
+  "|. .|. . . .|. . . . . .|.|. . .|",
+  "+-+ + +-+ +-+ + +-+ + +-+-+-+ + +",
+  "|. .|. . . . .|. . . . . . . . .|",
+  "+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+"
+ ],
+ "terrain": {
+  "d": {
+   "darkness": true,
+   "name": "Magical darkness",
+   "mapColor": "#07070c"
+  },
+  "a": {
+   "antiMagic": true,
+   "name": "Anti-magic",
+   "mapColor": "#3a2050"
+  }
+ },
+ "wallTexture": "wall_sunvault",
+ "floorTexture": "floor_sandstone",
+ "ceilingTexture": "wall_sunvault",
+ "dark": true,
+ "music": "dungeon",
+ "encounterChance": 9,
+ "encounters": [
+  {
+   "monster": "guardian_mummy",
+   "count": "1d3",
+   "weight": 20
+  },
+  {
+   "monster": "mummy_priest",
+   "count": "1d2",
+   "weight": 15
+  },
+  {
+   "monster": "tomb_wraith",
+   "count": "1d3",
+   "weight": 20
+  },
+  {
+   "monster": "jackal_guard",
+   "count": "2d2",
+   "weight": 15
+  },
+  {
+   "monster": "efreet",
+   "count": "1",
+   "weight": 10
+  },
+  {
+   "monster": "scarab",
+   "count": "2d3",
+   "weight": 20
+  }
+ ],
+ "events": [
+  {
+   "x": 0,
+   "y": 15,
+   "type": "teleport",
+   "name": "Stair Up",
+   "feature": "stairs_up",
+   "map": "tomb1",
+   "toX": 4,
+   "toY": 0,
+   "facing": "North",
+   "text": "You climb back up to the upper halls."
+  },
+  {
+   "x": 12,
+   "y": 4,
+   "type": "encounter",
+   "id": "sun_king_fight",
+   "once": true,
+   "name": "The Burial Chamber",
+   "setFlag": "sun_king_slain",
+   "text": "On a throne of gold sits a withered king, the Sun Disk blazing on his breast. He rises. \"Who comes to the court of the sun?\"",
+   "monsters": [
+    {
+     "monster": "sun_king",
+     "count": "1"
+    },
+    {
+     "monster": "guardian_mummy",
+     "count": "2"
+    }
+   ]
+  },
+  {
+   "x": 13,
+   "y": 1,
+   "type": "treasure",
+   "id": "sun_king_hoard",
+   "once": true,
+   "feature": "altar",
+   "name": "The Golden Throne",
+   "requiresFlag": "sun_king_slain",
+   "blocking": true,
+   "failText": "The golden throne is not empty.",
+   "gold": "30d20+500",
+   "gems": 8,
+   "items": [
+    "sun_disk",
+    "sun_crown",
+    "sunsteel_scimitar"
+   ],
+   "text": "The Sun Disk, the Sun King's crown, and a blade of sunsteel lie among the treasures of the throne."
+  },
+  {
+   "x": 7,
+   "y": 0,
+   "type": "treasure",
+   "id": "tomb2_chest_a",
+   "once": true,
+   "feature": "chest",
+   "name": "Queen's Casket",
+   "gold": "20d20",
+   "gems": 3,
+   "text": "A queen's casket of jewels."
+  },
+  {
+   "x": 9,
+   "y": 0,
+   "type": "trap",
+   "id": "tomb2_fire",
+   "once": true,
+   "damage": "4d8",
+   "text": "Jets of fire roar from the walls!"
+  },
+  {
+   "x": 9,
+   "y": 1,
+   "type": "treasure",
+   "id": "tomb2_chest_b",
+   "once": true,
+   "feature": "chest",
+   "name": "Embalmer's Store",
+   "items": [
+    "potion_vigor",
+    "potion_cure",
+    "potion_cure"
+   ],
+   "text": "An embalmer's store of salts and potions."
+  },
+  {
+   "x": 9,
+   "y": 2,
+   "type": "message",
+   "id": "tomb2_secret_hint",
+   "once": true,
+   "name": "Sealed Niche",
+   "text": "Fresh mortar seals a niche in the wall - newer than anything else here. (Search with F.)"
+  },
+  {
+   "x": 9,
+   "y": 3,
+   "type": "treasure",
+   "id": "tomb2_secret",
+   "once": true,
+   "feature": "chest",
+   "name": "Tomb-Robber's Stash",
+   "gold": "25d20",
+   "items": [
+    "ring_might",
+    "potion_vigor"
+   ],
+   "text": "Some long-dead tomb robber hid their haul here and never came back for it."
+  },
+  {
+   "x": 14,
+   "y": 5,
+   "type": "trap",
+   "id": "tomb2_alarm",
+   "once": true,
+   "trap": "alarm",
+   "text": "A gong booms through the chamber. The dead are summoned!",
+   "monsters": [
+    {
+     "monster": "mummy",
+     "count": "3"
+    },
+    {
+     "monster": "tomb_wraith",
+     "count": "1"
+    }
+   ]
+  }
+ ]
+}

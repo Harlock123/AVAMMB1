@@ -19,6 +19,10 @@ public class BossBalanceTests(ITestOutputHelper output)
     [InlineData("drowned_hydra", null, 0, 9, true)]
     [InlineData("drowned_hydra", null, 0, 7, false)]
     [InlineData("crypt_lich", "ghoul", 2, 5, true)]
+    [InlineData("sphinx", null, 0, 10, true)]
+    [InlineData("sphinx", null, 0, 8, false)]
+    [InlineData("sun_king", "guardian_mummy", 2, 12, true)]
+    [InlineData("sun_king", "guardian_mummy", 2, 9, false)]
     public void Boss_IsChallengingButFair(string boss, string? adds, int addCount, int level, bool shouldUsuallyWin)
     {
         var wins = 0;

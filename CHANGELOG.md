@@ -18,6 +18,16 @@ All notable changes to this project are documented here. The format follows
   Flesh, Chain Lightning and Iron Grip.
 - Spell tomes (`tome` item kind): Chain Lightning is sold in Saltreach; Stone to Flesh and Iron Grip
   are hidden in the Sunken Temple and the Stone Wyrm's hoard.
+- Interface scaling: the 1280x800 layout scales uniformly to any window size (Settings: *Fit
+  interface to window*, on by default); the window can now be as small as 640x400.
+- Gamepad support via SDL2 (Silk.NET.SDL, natives for all six platforms): exploration, combat and
+  spatial menu navigation, hold-to-repeat movement, a Settings toggle and connection status.
+  `--smoke-test` checks that SDL loads.
+- The fifth town: Port Ashkar on the Sunscar Coast, reached by a 100-gold ferry from Saltreach
+  (new `fare` option on teleports). The Sunscar Wastes (oasis, scorpion nest, sphinx shrine) and the
+  two-level Tomb of the Sun Kings with the Sun King boss and the Sun Disk side quest, for levels
+  9-12. 12 new monsters, 4 new items, 2 shops (the Grand Bazaar and House of Seven Flasks).
+- Tests: gamepad mapping, ferry fares, the Sun Disk quest walk-through, sphinx / Sun King balance.
 
 ## [1.3.0] - 2026-10-09
 

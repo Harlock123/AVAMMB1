@@ -28,6 +28,12 @@ public sealed partial class MainViewModel : ViewModelBase
     /// <summary>Raised when the fullscreen preference changes.</summary>
     public event EventHandler? FullscreenChanged;
 
+    /// <summary>Raised when the interface scaling preference changes.</summary>
+    public event EventHandler? LayoutChanged;
+
+    /// <summary>Applies the interface scaling setting.</summary>
+    public void ApplyLayout() => LayoutChanged?.Invoke(this, EventArgs.Empty);
+
     /// <summary>Raised when the user asks to quit.</summary>
     public event EventHandler? QuitRequested;
 

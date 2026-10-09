@@ -22,6 +22,9 @@ public partial class App : Application
     /// <summary>The DI container.</summary>
     public static IServiceProvider Services { get; private set; } = null!;
 
+    /// <summary>The controller service (null in headless mode).</summary>
+    public static GamepadService? Gamepad { get; private set; }
+
     /// <summary>Shared texture cache (used by custom controls).</summary>
     public static TextureCache Textures => Services.GetRequiredService<TextureCache>();
 
@@ -94,9 +97,15 @@ public partial class App : Application
                 return;
             }
             var window = new MainWindow { DataContext = vm };
+            Gamepad = GamepadService.Create(enabled: true); // the GamepadEnabled setting is checked per press, so toggling needs no restart
+            window.AttachGamepad(Gamepad);
             vm.QuitRequested += (_, _) => desktop.Shutdown();
             desktop.MainWindow = window;
-            desktop.Exit += (_, _) => audio.Dispose();
+            desktop.Exit += (_, _) =>
+            {
+                Gamepad?.Dispose();
+                audio.Dispose();
+            };
         }
         base.OnFrameworkInitializationCompleted();
     }

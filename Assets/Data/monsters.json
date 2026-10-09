@@ -1168,5 +1168,367 @@
    }
   ],
   "description": "Four heads, one hunger. It nests where the temple drowned."
+ },
+ {
+  "id": "giant_scorpion",
+  "name": "Giant Scorpion",
+  "sprite": "giant_scorpion",
+  "level": 8,
+  "hitPoints": "8d8",
+  "armorClass": 7,
+  "speed": 12,
+  "xp": 800,
+  "attacks": [
+   {
+    "verb": "pinches",
+    "damage": "2d6"
+   },
+   {
+    "verb": "stings",
+    "damage": "1d8",
+    "inflicts": "poisoned",
+    "inflictChance": 35
+   }
+  ]
+ },
+ {
+  "id": "emperor_scorpion",
+  "name": "Emperor Scorpion",
+  "sprite": "emperor_scorpion",
+  "level": 10,
+  "hitPoints": "10d8+10",
+  "armorClass": 9,
+  "speed": 11,
+  "xp": 1500,
+  "attacks": [
+   {
+    "verb": "crushes",
+    "damage": "2d8"
+   },
+   {
+    "verb": "crushes",
+    "damage": "2d8"
+   },
+   {
+    "verb": "stings",
+    "damage": "2d6",
+    "inflicts": "poisoned",
+    "inflictChance": 40
+   }
+  ]
+ },
+ {
+  "id": "efreet",
+  "name": "Efreet",
+  "sprite": "efreet",
+  "level": 11,
+  "hitPoints": "10d8",
+  "armorClass": 8,
+  "speed": 14,
+  "xp": 1800,
+  "gold": "6d20",
+  "resistances": {
+   "fire": 100,
+   "cold": -50
+  },
+  "attacks": [
+   {
+    "verb": "burns",
+    "damage": "2d8",
+    "element": "fire"
+   }
+  ],
+  "abilities": [
+   {
+    "name": "a gout of flame",
+    "chance": 35,
+    "allTargets": true,
+    "damage": "5d8",
+    "element": "fire"
+   }
+  ]
+ },
+ {
+  "id": "salamander",
+  "name": "Salamander",
+  "sprite": "salamander",
+  "level": 9,
+  "hitPoints": "9d8",
+  "armorClass": 7,
+  "speed": 12,
+  "xp": 1000,
+  "gold": "4d12",
+  "resistances": {
+   "fire": 100
+  },
+  "attacks": [
+   {
+    "verb": "spears",
+    "damage": "2d6",
+    "element": "fire"
+   }
+  ]
+ },
+ {
+  "id": "mummy",
+  "name": "Mummy",
+  "plural": "Mummies",
+  "sprite": "mummy",
+  "level": 9,
+  "hitPoints": "9d8",
+  "armorClass": 6,
+  "speed": 7,
+  "xp": 1200,
+  "undead": true,
+  "resistances": {
+   "fire": -50,
+   "poison": 100,
+   "cold": 50
+  },
+  "attacks": [
+   {
+    "verb": "pummels",
+    "damage": "2d6",
+    "inflicts": "diseased",
+    "inflictChance": 25
+   }
+  ]
+ },
+ {
+  "id": "guardian_mummy",
+  "name": "Guardian Mummy",
+  "plural": "Guardian Mummies",
+  "sprite": "guardian_mummy",
+  "level": 10,
+  "hitPoints": "10d8",
+  "armorClass": 9,
+  "speed": 9,
+  "xp": 1600,
+  "undead": true,
+  "resistances": {
+   "fire": -25,
+   "poison": 100,
+   "cold": 50
+  },
+  "attacks": [
+   {
+    "verb": "strikes",
+    "damage": "2d8"
+   },
+   {
+    "verb": "strikes",
+    "damage": "2d8"
+   }
+  ]
+ },
+ {
+  "id": "mummy_priest",
+  "name": "Mummy Priest",
+  "sprite": "mummy_priest",
+  "level": 11,
+  "hitPoints": "9d8",
+  "armorClass": 7,
+  "speed": 10,
+  "xp": 2000,
+  "undead": true,
+  "smart": true,
+  "gold": "8d20",
+  "resistances": {
+   "fire": -25,
+   "poison": 100,
+   "cold": 50
+  },
+  "attacks": [
+   {
+    "verb": "touches",
+    "damage": "1d10",
+    "inflicts": "diseased",
+    "inflictChance": 30
+   }
+  ],
+  "abilities": [
+   {
+    "name": "a curse of withering",
+    "chance": 35,
+    "damage": "5d8",
+    "element": "magic"
+   },
+   {
+    "name": "a plague of locusts",
+    "chance": 20,
+    "allTargets": true,
+    "damage": "3d8",
+    "element": "physical"
+   }
+  ],
+  "drops": [
+   {
+    "item": "potion_mana",
+    "chance": 30
+   },
+   {
+    "item": "potion_vigor",
+    "chance": 10
+   }
+  ]
+ },
+ {
+  "id": "jackal_guard",
+  "name": "Jackal-Headed Guard",
+  "sprite": "jackal_guard",
+  "level": 10,
+  "hitPoints": "10d8",
+  "armorClass": 9,
+  "speed": 13,
+  "xp": 1800,
+  "resistances": {
+   "poison": 50
+  },
+  "attacks": [
+   {
+    "verb": "sweeps a halberd at",
+    "damage": "2d10"
+   }
+  ]
+ },
+ {
+  "id": "tomb_wraith",
+  "name": "Tomb Wraith",
+  "sprite": "tomb_wraith",
+  "level": 10,
+  "hitPoints": "8d8",
+  "armorClass": 9,
+  "speed": 15,
+  "xp": 1500,
+  "undead": true,
+  "resistances": {
+   "physical": 30,
+   "cold": 100,
+   "poison": 100
+  },
+  "attacks": [
+   {
+    "verb": "drains",
+    "damage": "2d8",
+    "element": "cold"
+   }
+  ],
+  "abilities": [
+   {
+    "name": "a soul-chilling wail",
+    "chance": 15,
+    "allTargets": true,
+    "damage": "2d10",
+    "element": "magic"
+   }
+  ]
+ },
+ {
+  "id": "scarab",
+  "name": "Tomb Scarab",
+  "sprite": "scarab",
+  "level": 8,
+  "hitPoints": "6d8+8",
+  "armorClass": 10,
+  "speed": 8,
+  "xp": 600,
+  "resistances": {
+   "physical": 25
+  },
+  "attacks": [
+   {
+    "verb": "bites",
+    "damage": "1d12"
+   }
+  ]
+ },
+ {
+  "id": "sphinx",
+  "name": "Sphinx",
+  "sprite": "sphinx",
+  "level": 13,
+  "hitPoints": "320",
+  "armorClass": 11,
+  "speed": 14,
+  "xp": 6000,
+  "gold": "800",
+  "smart": true,
+  "attacks": [
+   {
+    "verb": "claws",
+    "damage": "3d10"
+   },
+   {
+    "verb": "claws",
+    "damage": "3d10"
+   }
+  ],
+  "abilities": [
+   {
+    "name": "a riddle that addles the mind",
+    "chance": 20,
+    "allTargets": true,
+    "inflicts": "asleep"
+   },
+   {
+    "name": "a thunderous roar",
+    "chance": 30,
+    "allTargets": true,
+    "damage": "5d8",
+    "element": "physical"
+   }
+  ],
+  "description": "It has guarded the shrine for a thousand years and asks no riddles of trespassers."
+ },
+ {
+  "id": "sun_king",
+  "name": "The Sun King",
+  "sprite": "sun_king",
+  "level": 15,
+  "hitPoints": "380",
+  "armorClass": 11,
+  "speed": 12,
+  "xp": 25000,
+  "gold": "2000",
+  "undead": true,
+  "smart": true,
+  "resistances": {
+   "fire": 50,
+   "poison": 100,
+   "cold": 50
+  },
+  "attacks": [
+   {
+    "verb": "seizes",
+    "damage": "3d10",
+    "inflicts": "diseased",
+    "inflictChance": 25
+   },
+   {
+    "verb": "seizes",
+    "damage": "3d10"
+   }
+  ],
+  "abilities": [
+   {
+    "name": "the wrath of the sun",
+    "chance": 30,
+    "allTargets": true,
+    "damage": "6d8",
+    "element": "fire"
+   },
+   {
+    "name": "a royal command",
+    "chance": 12,
+    "allTargets": true,
+    "inflicts": "paralyzed"
+   },
+   {
+    "name": "a draught from the canopic jars",
+    "chance": 15,
+    "selfHeal": "6d10"
+   }
+  ],
+  "description": "The last of the Sun Kings, who would not lie down when the sun went out of the world."
  }
 ]

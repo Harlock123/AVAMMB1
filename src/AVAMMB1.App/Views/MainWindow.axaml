@@ -7,5 +7,5 @@
         Icon="avares://AVAMMB1/Assets/Icons/avammb1.png"
         Width="1280" Height="800" MinWidth="1024" MinHeight="700"
         WindowStartupLocation="CenterScreen">
-  <ContentControl Content="{Binding CurrentScreen}" />
+  <ContentControl x:Name="Screen" Content="{Binding CurrentScreen}" />
 </Window>

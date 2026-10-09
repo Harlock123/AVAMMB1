@@ -381,7 +381,15 @@ public sealed partial class GameViewModel : ViewModelBase
             }
             return true;
         }
-        switch (_main.ActionFor(key))
+        return _main.ActionFor(key) is { } action && Perform(action);
+    }
+
+    /// <summary>Performs an exploration action (from the keyboard or a controller).</summary>
+    /// <param name="action">Action.</param>
+    /// <returns>True when the action applies.</returns>
+    public bool Perform(InputAction action)
+    {
+        switch (action)
         {
             case InputAction.MoveForward: Forward(); return true;
             case InputAction.MoveBack: Back(); return true;
@@ -401,4 +409,10 @@ public sealed partial class GameViewModel : ViewModelBase
             default: return false;
         }
     }
+
+    /// <summary>What a controller's buttons should do right now.</summary>
+    public AVAMMB1.Core.Input.GamepadContext GamepadContext =>
+        Overlay is not null ? AVAMMB1.Core.Input.GamepadContext.Menu
+        : Combat is { } c ? (c.WantsMenuNavigation ? AVAMMB1.Core.Input.GamepadContext.Menu : AVAMMB1.Core.Input.GamepadContext.Combat)
+        : AVAMMB1.Core.Input.GamepadContext.Exploring;
 }

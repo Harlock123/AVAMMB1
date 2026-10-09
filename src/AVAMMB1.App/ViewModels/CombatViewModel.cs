@@ -479,6 +479,55 @@ public sealed partial class CombatViewModel : ViewModelBase
     [RelayCommand]
     private void Continue() => _game.CombatFinished();
 
+    /// <summary>True while a list (spells, items, allies) is open, where the D-pad should move between buttons.</summary>
+    public bool WantsMenuNavigation => Phase is CombatPhase.Spell or CombatPhase.Item or CombatPhase.Ally;
+
+    /// <summary>Executes a controller command.</summary>
+    /// <param name="command">Command.</param>
+    public void Gamepad(AVAMMB1.Core.Input.CombatCommand command)
+    {
+        switch (command)
+        {
+            case AVAMMB1.Core.Input.CombatCommand.Primary when Phase == CombatPhase.Opening:
+                Fight();
+                break;
+            case AVAMMB1.Core.Input.CombatCommand.Primary when Phase == CombatPhase.Finished:
+                Continue();
+                break;
+            case AVAMMB1.Core.Input.CombatCommand.Primary when Phase == CombatPhase.Action:
+                if (CanMelee) { Attack(); } else if (CanShoot) { Shoot(); } else { Block(); }
+                break;
+            case AVAMMB1.Core.Input.CombatCommand.Cast when Phase == CombatPhase.Action && CanCast:
+                ShowSpells();
+                break;
+            case AVAMMB1.Core.Input.CombatCommand.UseItem when Phase == CombatPhase.Action:
+                ShowItems();
+                break;
+            case AVAMMB1.Core.Input.CombatCommand.Block when Phase == CombatPhase.Action:
+                Block();
+                break;
+            case AVAMMB1.Core.Input.CombatCommand.Run when Phase == CombatPhase.Opening:
+                Flee();
+                break;
+            case AVAMMB1.Core.Input.CombatCommand.Run when Phase == CombatPhase.Action:
+                Run();
+                break;
+            case AVAMMB1.Core.Input.CombatCommand.PreviousTarget:
+            case AVAMMB1.Core.Input.CombatCommand.NextTarget:
+                {
+                    var targets = Monsters.Where(m => m.Monster.IsActive).ToList();
+                    if (targets.Count == 0)
+                    {
+                        break;
+                    }
+                    var i = targets.FindIndex(m => m.Index == TargetIndex);
+                    var step = command == AVAMMB1.Core.Input.CombatCommand.NextTarget ? 1 : -1;
+                    Target(targets[((i < 0 ? 0 : i + step) % targets.Count + targets.Count) % targets.Count]);
+                    break;
+                }
+        }
+    }
+
     /// <inheritdoc />
     public override bool HandleKey(Key key)
     {

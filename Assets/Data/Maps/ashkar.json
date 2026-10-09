@@ -1,0 +1,190 @@
+{
+ "id": "ashkar",
+ "name": "Port Ashkar",
+ "kind": "town",
+ "format": "blocks",
+ "width": 16,
+ "height": 16,
+ "grid": [
+  "################",
+  "#~~~~~~~~~~~~~~#",
+  "#~~~~~~~~~~~~~~#",
+  "#..............#",
+  "#.###.####.###.#",
+  "#.###.####.###.#",
+  "#..............#",
+  "#.BB..P..P..BB.#",
+  "#.BB........BB.#",
+  "#......##......#",
+  "...............#",
+  "#.###......###.#",
+  "#.###..P...###.#",
+  "#..............#",
+  "#..BBB....BBB..#",
+  "################"
+ ],
+ "terrain": {
+  "#": {
+   "solid": true,
+   "texture": "wall_desert_town",
+   "name": "Building",
+   "mapColor": "#b08a50"
+  },
+  "B": {
+   "solid": true,
+   "texture": "wall_sandstone",
+   "name": "Building",
+   "mapColor": "#a07a40"
+  },
+  "P": {
+   "solid": true,
+   "opaque": false,
+   "feature": "tree",
+   "floor": "floor_sand",
+   "name": "Palm",
+   "mapColor": "#5a8a3a"
+  },
+  "~": {
+   "solid": true,
+   "opaque": false,
+   "floor": "water",
+   "name": "Harbor",
+   "mapColor": "#2a5aa8"
+  }
+ },
+ "wallTexture": "wall_desert_town",
+ "floorTexture": "floor_sand",
+ "skyColor": "#d9a86a",
+ "music": "town",
+ "encounterChance": 0,
+ "events": [
+  {
+   "x": 7,
+   "y": 3,
+   "type": "teleport",
+   "name": "Ferry to Saltreach",
+   "feature": "entrance",
+   "map": "saltreach",
+   "toX": 10,
+   "toY": 3,
+   "facing": "West",
+   "fare": 100,
+   "failText": "The ferryman holds out a hand. \"A hundred gold, friends. The sea is long.\"",
+   "text": "The ferry carries you north across the bay to Saltreach."
+  },
+  {
+   "x": 0,
+   "y": 10,
+   "type": "teleport",
+   "name": "Desert Gate",
+   "feature": "entrance",
+   "map": "sunscar",
+   "toX": 17,
+   "toY": 10,
+   "facing": "West",
+   "text": "Beyond the gate the dunes roll away to the horizon."
+  },
+  {
+   "x": 3,
+   "y": 6,
+   "type": "inn",
+   "name": "The Shaded Courtyard",
+   "feature": "shop_general",
+   "priceFactor": 1.5
+  },
+  {
+   "x": 7,
+   "y": 6,
+   "type": "temple",
+   "name": "Temple of the Morning Star",
+   "feature": "altar",
+   "priceFactor": 1.4
+  },
+  {
+   "x": 12,
+   "y": 6,
+   "type": "tavern",
+   "name": "The Dry Well",
+   "feature": "shop_food",
+   "priceFactor": 1.5,
+   "rumors": [
+    "Curator Tamsin at the museum would pay a fortune for the Sun Disk.",
+    "The Sun King still sits on his throne beneath the sand. Dead, but not finished.",
+    "Mummies burn like old paper. Bring fire.",
+    "Scorpions the size of oxen nest in the rocks north-east of the oasis.",
+    "A sphinx guards a ruined shrine in the south-west. It doesn't ask riddles any more.",
+    "The tomb's priests can rot a man where he stands. Keep your cure potions close."
+   ]
+  },
+  {
+   "x": 2,
+   "y": 9,
+   "type": "shop",
+   "name": "The Grand Bazaar",
+   "shop": "ashkar_bazaar",
+   "feature": "shop_weapon"
+  },
+  {
+   "x": 13,
+   "y": 9,
+   "type": "shop",
+   "name": "House of Seven Flasks",
+   "shop": "ashkar_alchemist",
+   "feature": "shop_potions"
+  },
+  {
+   "x": 3,
+   "y": 13,
+   "type": "training",
+   "name": "School of the Desert Blade",
+   "feature": "shop_armor",
+   "priceFactor": 1.5
+  },
+  {
+   "x": 8,
+   "y": 10,
+   "type": "message",
+   "name": "Notice",
+   "feature": "column",
+   "text": "REWARD: for the Sun Disk of the Sun Kings, returned to the Museum of Ashkar. Enquire within. - T."
+  },
+  {
+   "x": 11,
+   "y": 13,
+   "type": "quest",
+   "id": "tamsin_intro",
+   "once": true,
+   "name": "Museum of Ashkar",
+   "feature": "shop_books",
+   "requiresNotFlag": "tamsin_met",
+   "setFlag": "tamsin_met",
+   "text": "A sharp-eyed woman looks up from a case of broken pottery. \"Curator Tamsin. You have the look of tomb-breakers - good. The Sun Disk lies with the last Sun King, in the tomb west across the Wastes. He did not go quietly into death, and I am told he has not gone quietly since. Bring me the Disk.\""
+  },
+  {
+   "x": 11,
+   "y": 13,
+   "type": "quest",
+   "id": "tamsin_reward",
+   "once": true,
+   "name": "Museum of Ashkar",
+   "requiresItem": "sun_disk",
+   "consumeItem": true,
+   "requiresFlag": "tamsin_met",
+   "setFlag": "sun_disk_returned",
+   "items": [
+    "scarab_amulet"
+   ],
+   "xp": 20000,
+   "gold": "3000",
+   "text": "Tamsin sets the Disk on black velvet and is silent for a long time. \"Thank you. Ashkar will remember the names of the ones who brought back the sun.\" She presses a heavy purse and a golden scarab into your hands."
+  },
+  {
+   "x": 11,
+   "y": 13,
+   "type": "message",
+   "name": "Museum of Ashkar",
+   "requiresFlag": "sun_disk_returned",
+   "text": "The Sun Disk glows in the museum's centre case. Crowds come every day to see it."
+  }
+ ]
+}

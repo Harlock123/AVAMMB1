@@ -47,6 +47,7 @@ A file-by-file list of every asset, its source and license is in ASSETS_LICENSES
 - OpenAL Soft (LGPL-2.0-or-later) - unmodified native audio library (from the Silk.NET.OpenAL.Soft.Native
   package), loaded dynamically at runtime. Source code: https://github.com/kcat/openal-soft .
   Because AVAM&M itself is open source (MIT), you can rebuild it against any other build of OpenAL Soft.
+- Silk.NET SDL bindings (MIT) and SDL2 (Zlib license, https://libsdl.org) - game controller input
 - xUnit (Apache 2.0) - tests only
 
 Thank you to everyone who shares their work under open licenses.

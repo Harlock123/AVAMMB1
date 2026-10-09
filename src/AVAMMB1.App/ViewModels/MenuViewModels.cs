@@ -154,6 +154,9 @@ public sealed partial class SettingsViewModel : ViewModelBase
         _fullscreen = s.Fullscreen;
         _showMinimap = s.ShowMinimap;
         _smoothMovement = s.SmoothMovement;
+        _fitToWindow = s.FitToWindow;
+        _gamepadEnabled = s.GamepadEnabled;
+        GamepadStatus = App.Gamepad?.Status ?? "Gamepad support not running";
         _animateMonsters = s.AnimateMonsters;
         LoadBindings();
         AudioStatus = main.Services.Audio.Status;
@@ -186,6 +189,17 @@ public sealed partial class SettingsViewModel : ViewModelBase
     /// <summary>Animated movement.</summary>
     [ObservableProperty]
     private bool _smoothMovement;
+
+    /// <summary>Scale the interface to the window.</summary>
+    [ObservableProperty]
+    private bool _fitToWindow;
+
+    /// <summary>Use game controllers.</summary>
+    [ObservableProperty]
+    private bool _gamepadEnabled;
+
+    /// <summary>Controller status line.</summary>
+    public string GamepadStatus { get; }
 
     /// <summary>Animated monsters.</summary>
     [ObservableProperty]
@@ -243,11 +257,18 @@ public sealed partial class SettingsViewModel : ViewModelBase
         s.Fullscreen = Fullscreen;
         s.ShowMinimap = ShowMinimap;
         s.SmoothMovement = SmoothMovement;
+        var layoutChanged = s.FitToWindow != FitToWindow;
+        s.FitToWindow = FitToWindow;
+        s.GamepadEnabled = GamepadEnabled;
         s.AnimateMonsters = AnimateMonsters;
         _main.Services.SaveSettings();
         if (fullscreenChanged)
         {
             _main.ApplyFullscreen();
+        }
+        if (layoutChanged)
+        {
+            _main.ApplyLayout();
         }
         if (_returnTo is GameViewModel)
         {

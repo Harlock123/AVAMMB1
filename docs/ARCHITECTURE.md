@@ -59,6 +59,13 @@ Randomness always flows through `IRandomSource`, so tests can script dice rolls
   `ViewLocator` maps view models to views with a `switch` (no reflection). Compiled bindings are on.
 * **Input**: `MainWindow` intercepts keys in the tunnel phase and forwards them to the current screen;
   bindable actions are looked up in `GameSettings.KeyBindings` (Avalonia `Key` names).
+  `GamepadService` reads controllers through SDL2's GameController API on a background thread and
+  posts presses to the UI thread; `GamepadMapping` (Core, unit tested) turns a button into an
+  exploration action, a combat command or menu navigation depending on context. Menu navigation
+  is spatial: the D-pad focuses the nearest button in that direction inside the top-most dialog.
+* **Scaling**: screens are laid out for 1280x800; with *Fit interface to window* the window wraps
+  them in a `Viewbox`, so the whole UI (vector text and controls, nearest-neighbour pixel art) scales
+  uniformly to any window size.
 * **Rendering**: `SceneRenderer` is a CPU ray caster writing a 400x300 BGRA framebuffer:
   DDA through the grid checking thin walls before entering each cell and opaque cells after,
   textured floor/ceiling casting, sky gradient, distance fog / darkness, z-buffered billboards.
