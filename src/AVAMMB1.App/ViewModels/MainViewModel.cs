@@ -101,6 +101,9 @@ public sealed partial class MainViewModel : ViewModelBase
     /// <summary>Shows the release notes for all versions.</summary>
     public void ShowAllNotes() => CurrentScreen = new WhatsNewViewModel(AllReleaseNotes(), ShowTitle);
 
+    /// <summary>Shows the Mods screen.</summary>
+    public void ShowMods() => CurrentScreen = new ModsViewModel(this);
+
     /// <summary>Shows the help screen as a full screen (from the title).</summary>
     public void ShowHelp() => CurrentScreen = new HelpViewModel(Services.Settings, ShowTitle);
 
@@ -148,10 +151,22 @@ public sealed partial class MainViewModel : ViewModelBase
         try
         {
             var file = Services.Saves.Load(slot);
-            Services.Session.Load(file.State);
+            var missing = file.Mods.Except(Services.Content.Mods.Select(m => m.Id)).ToList();
+            try
+            {
+                Services.Session.Load(file.State);
+            }
+            catch (InvalidDataException) when (missing.Count > 0)
+            {
+                throw new InvalidDataException($"This save needs mod packs that are not active: {string.Join(", ", missing)}. Enable them on the Mods screen and restart.");
+            }
             Game = new GameViewModel(this);
             CurrentScreen = Game;
             Game.AddMessage($"Loaded \"{file.Name}\".");
+            if (missing.Count > 0)
+            {
+                Game.AddMessage($"Warning: this save was made with mod packs that are not active ({string.Join(", ", missing)}).");
+            }
             return null;
         }
         catch (Exception ex) when (ex is IOException or InvalidDataException or UnauthorizedAccessException)

@@ -1,0 +1,12 @@
+[
+ {
+  "id": "well_charm",
+  "name": "Well-Keeper's Charm",
+  "kind": "amulet",
+  "icon": "amulet",
+  "price": 250,
+  "armorClass": 1,
+  "statBonuses": { "luck": 1 },
+  "description": "A copper coin on a cord, worn smooth by a hundred years of wishes."
+ }
+]

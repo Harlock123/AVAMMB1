@@ -24,6 +24,8 @@ public sealed class ContentDatabase
 
     /// <summary>Shops by id.</summary>
     public IReadOnlyDictionary<string, ShopDef> Shops { get; private init; } = new Dictionary<string, ShopDef>();
+    /// <summary>Mod packs that were applied, in order.</summary>
+    public IReadOnlyList<ModPack> Mods { get; private init; } = [];
     /// <summary>Global configuration.</summary>
     public GameConfigDef Config { get; private init; } = new();
     /// <summary>Maps by id.</summary>
@@ -56,29 +58,114 @@ public sealed class ContentDatabase
     /// <summary>Loads and validates content from a source.</summary>
     /// <param name="source">Where to read JSON files from.</param>
     /// <exception cref="InvalidDataException">Thrown when content is malformed or inconsistent.</exception>
-    public static ContentDatabase Load(IContentSource source)
+    public static ContentDatabase Load(IContentSource source) => Load(source, []);
+
+    /// <summary>
+    /// Loads the base content, then each mod pack in order. Definitions merge by id (a new id adds, an
+    /// existing id replaces), new maps are added, and <c>mapPatches.json</c> adds events to existing maps.
+    /// </summary>
+    /// <param name="source">Base content.</param>
+    /// <param name="mods">Mod packs to apply, in order.</param>
+    /// <exception cref="InvalidDataException">Thrown when content is malformed or inconsistent; mod errors name the pack.</exception>
+    public static ContentDatabase Load(IContentSource source, IReadOnlyList<ModPack> mods)
     {
         var ctx = GameJsonContext.Default;
-        var db = new ContentDatabase
-        {
-            Races = Index(Read(source, "races.json", ctx.ListRaceDef), r => r.Id, "race"),
-            Classes = Index(Read(source, "classes.json", ctx.ListClassDef), c => c.Id, "class"),
-            Items = Index(Read(source, "items.json", ctx.ListItemDef), i => i.Id, "item"),
-            Monsters = Index(Read(source, "monsters.json", ctx.ListMonsterDef), m => m.Id, "monster"),
-            Spells = Index(Read(source, "spells.json", ctx.ListSpellDef), s => s.Id, "spell"),
-            Shops = Index(Read(source, "shops.json", ctx.ListShopDef), s => s.Id, "shop"),
-            Config = Read(source, "game.json", ctx.GameConfigDef),
-            Quests = source.List().Contains("quests.json") ? Read(source, "quests.json", ctx.ListQuestDef) : [],
-        };
+        var races = Index(Read(source, "races.json", ctx.ListRaceDef), r => r.Id, "race");
+        var classes = Index(Read(source, "classes.json", ctx.ListClassDef), c => c.Id, "class");
+        var items = Index(Read(source, "items.json", ctx.ListItemDef), i => i.Id, "item");
+        var monsters = Index(Read(source, "monsters.json", ctx.ListMonsterDef), m => m.Id, "monster");
+        var spells = Index(Read(source, "spells.json", ctx.ListSpellDef), s => s.Id, "spell");
+        var shops = Index(Read(source, "shops.json", ctx.ListShopDef), s => s.Id, "shop");
+        var quests = source.List().Contains("quests.json") ? Read(source, "quests.json", ctx.ListQuestDef) : [];
+        var maps = new Dictionary<string, MapDef>(StringComparer.Ordinal);
         foreach (var path in source.List().Where(p => p.StartsWith("Maps/", StringComparison.Ordinal)).OrderBy(p => p, StringComparer.Ordinal))
         {
             var def = Read(source, path, ctx.MapDef);
-            if (!db._maps.TryAdd(def.Id, GameMap.Parse(def)))
+            if (!maps.TryAdd(def.Id, def))
             {
                 throw new InvalidDataException($"Duplicate map id '{def.Id}'.");
             }
         }
-        db.Validate();
+
+        foreach (var mod in mods)
+        {
+            try
+            {
+                var src = mod.Source;
+                var files = src.List().ToHashSet(StringComparer.Ordinal);
+                void Merge<T>(string file, Dictionary<string, T> into, System.Text.Json.Serialization.Metadata.JsonTypeInfo<List<T>> info, Func<T, string> key)
+                {
+                    if (files.Contains(file))
+                    {
+                        foreach (var d in Read(src, file, info))
+                        {
+                            into[key(d)] = d;
+                        }
+                    }
+                }
+                Merge("races.json", races, ctx.ListRaceDef, r => r.Id);
+                Merge("classes.json", classes, ctx.ListClassDef, c => c.Id);
+                Merge("items.json", items, ctx.ListItemDef, i => i.Id);
+                Merge("monsters.json", monsters, ctx.ListMonsterDef, m => m.Id);
+                Merge("spells.json", spells, ctx.ListSpellDef, s => s.Id);
+                Merge("shops.json", shops, ctx.ListShopDef, s => s.Id);
+                if (files.Contains("quests.json"))
+                {
+                    foreach (var q in Read(src, "quests.json", ctx.ListQuestDef))
+                    {
+                        var at = quests.FindIndex(x => x.Id == q.Id);
+                        if (at >= 0)
+                        {
+                            quests[at] = q;
+                        }
+                        else
+                        {
+                            quests.Add(q);
+                        }
+                    }
+                }
+                foreach (var path in files.Where(p => p.StartsWith("Maps/", StringComparison.Ordinal)).OrderBy(p => p, StringComparer.Ordinal))
+                {
+                    var def = Read(src, path, ctx.MapDef);
+                    maps[def.Id] = def;
+                }
+                if (files.Contains("mapPatches.json"))
+                {
+                    foreach (var patch in Read(src, "mapPatches.json", ctx.ListMapPatchDef))
+                    {
+                        if (!maps.TryGetValue(patch.Map, out var target))
+                        {
+                            throw new InvalidDataException($"mapPatches.json: unknown map '{patch.Map}'.");
+                        }
+                        target.Events.AddRange(patch.AddEvents);
+                    }
+                }
+            }
+            catch (InvalidDataException ex)
+            {
+                throw new InvalidDataException($"Mod '{mod.Manifest.Name}' ({mod.Root}): {ex.Message}", ex);
+            }
+        }
+
+        var db = new ContentDatabase
+        {
+            Races = races, Classes = classes, Items = items, Monsters = monsters, Spells = spells, Shops = shops,
+            Config = Read(source, "game.json", ctx.GameConfigDef),
+            Quests = quests,
+            Mods = mods,
+        };
+        foreach (var def in maps.Values.OrderBy(d => d.Id, StringComparer.Ordinal))
+        {
+            db._maps[def.Id] = GameMap.Parse(def);
+        }
+        try
+        {
+            db.Validate();
+        }
+        catch (InvalidDataException ex) when (mods.Count > 0)
+        {
+            throw new InvalidDataException(ex.Message + "\n(Mods active: " + string.Join(", ", mods.Select(m => m.Manifest.Name)) + ")", ex);
+        }
         return db;
     }
 

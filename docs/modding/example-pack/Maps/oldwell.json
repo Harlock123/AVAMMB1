@@ -1,0 +1,38 @@
+{
+ "id": "oldwell",
+ "name": "Under the Old Well",
+ "kind": "dungeon",
+ "format": "blocks",
+ "width": 8,
+ "height": 8,
+ "grid": [
+  "########",
+  "#..#...#",
+  "#.##.#.#",
+  "#....#.#",
+  "##.###.#",
+  "#..#...#",
+  "#.##.#.#",
+  "########"
+ ],
+ "terrain": { "#": { "solid": true, "texture": "wall_cellar", "name": "Wall", "mapColor": "#6a6a6a" } },
+ "wallTexture": "wall_cellar",
+ "floorTexture": "floor_dirt",
+ "ceilingTexture": "wall_cellar",
+ "dark": true,
+ "music": "dungeon",
+ "ambience": "drips",
+ "encounterChance": 6,
+ "encounters": [ { "monster": "well_crab", "count": "1d2", "weight": 60 }, { "monster": "cellar_rat", "count": "2d3", "weight": 40 } ],
+ "events": [
+  { "x": 1, "y": 1, "type": "teleport", "name": "Rope up the Well", "feature": "stairs_up", "map": "brindlemoor", "toX": 13, "toY": 4, "facing": "South",
+    "text": "You climb the rope back up into Brindlemoor." },
+  { "x": 2, "y": 1, "type": "message", "id": "oldwell_hint", "once": true, "name": "Wet Stones",
+    "text": "Coins glint in the mud - wishes, thrown down the well over the years. Something scuttles in the dark." },
+  { "x": 6, "y": 5, "type": "encounter", "id": "oldwell_crabs", "once": true, "name": "Crab Nest", "setFlag": "oldwell_crabs_dead",
+    "text": "The mud heaves and red shells rise out of it.", "monsters": [ { "monster": "well_crab", "count": "3" } ] },
+  { "x": 6, "y": 6, "type": "treasure", "id": "oldwell_wishes", "once": true, "feature": "chest", "name": "A Century of Wishes",
+    "requiresFlag": "oldwell_crabs_dead", "blocking": true, "failText": "The crabs are guarding something.",
+    "gold": "10d10", "items": [ "well_charm" ], "text": "The crabs' hoard: every coin ever wished upon, and an old charm." }
+ ]
+}

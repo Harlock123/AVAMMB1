@@ -6,13 +6,20 @@ namespace AVAMMB1.App;
 /// <summary>Entry point.</summary>
 public static class Program
 {
-    /// <summary>Main. Supports <c>--screenshot DIR</c>, <c>--smoke-test</c>, <c>--content DIR</c> and <c>--mute</c>.</summary>
+    /// <summary>
+    /// Main. Supports <c>--screenshot DIR</c>, <c>--smoke-test</c>, <c>--content DIR</c>, <c>--mods DIR</c>,
+    /// <c>--check-content</c> and <c>--mute</c>.
+    /// </summary>
     /// <param name="args">Command line.</param>
     [STAThread]
     public static int Main(string[] args)
     {
         var options = LaunchOptions.Parse(args);
         App.Options = options;
+        if (options.CheckContent)
+        {
+            return ContentCheck.Run(options);
+        }
         if (options.ScreenshotDir is not null || options.SmokeTest)
         {
             return HeadlessRunner.Run(options);

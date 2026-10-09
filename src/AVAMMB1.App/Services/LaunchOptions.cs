@@ -11,6 +11,10 @@ public sealed class LaunchOptions
     public bool SmokeTest { get; private set; }
     /// <summary>Disable audio.</summary>
     public bool Mute { get; private set; }
+    /// <summary>An extra folder to look for mod packs in.</summary>
+    public string? ModsDir { get; private set; }
+    /// <summary>Check the content (and mod packs), print problems and exit.</summary>
+    public bool CheckContent { get; private set; }
 
     /// <summary>Parses arguments.</summary>
     /// <param name="args">Command line.</param>
@@ -32,6 +36,12 @@ public sealed class LaunchOptions
                     break;
                 case "--mute":
                     o.Mute = true;
+                    break;
+                case "--mods":
+                    o.ModsDir = i + 1 < args.Length ? args[++i] : null;
+                    break;
+                case "--check-content":
+                    o.CheckContent = true;
                     break;
             }
         }

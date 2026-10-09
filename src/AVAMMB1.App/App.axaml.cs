@@ -35,6 +35,9 @@ public partial class App : Application
         Theming.Theme.Apply(Theming.ThemeKind.Standard, 1); // replaced by the player's choice once settings load
     }
 
+    /// <summary>Mod packs found at start-up.</summary>
+    public static ModSet Mods { get; private set; } = new([], [], [], []);
+
     /// <summary>Builds the service container.</summary>
     /// <param name="options">Launch options.</param>
     /// <param name="audio">Audio implementation.</param>
@@ -42,14 +45,18 @@ public partial class App : Application
     public static IServiceProvider BuildServices(LaunchOptions options, IAudioService audio, int? seed = null)
     {
         var services = new ServiceCollection();
+        var mods = ModSet.Discover(options, new SettingsStore(UserDataPaths.SettingsFile).Load().DisabledMods);
+        Mods = mods;
+        OpenAlAudioService.ModRoots = mods.AssetRoots;
+        services.AddSingleton(mods);
         services.AddSingleton<IContentSource>(_ => ResolveContentSource(options));
-        services.AddSingleton(sp => ContentDatabase.Load(sp.GetRequiredService<IContentSource>()));
+        services.AddSingleton(sp => ContentDatabase.Load(sp.GetRequiredService<IContentSource>(), mods.Active));
         services.AddSingleton<IRandomSource>(_ => new DefaultRandomSource(seed));
         services.AddSingleton<GameSession>();
-        services.AddSingleton(_ => new SaveGameService(UserDataPaths.SaveDirectory));
+        services.AddSingleton(_ => new SaveGameService(UserDataPaths.SaveDirectory) { ActiveMods = mods.Active.Select(m => m.Id).ToList() });
         services.AddSingleton(_ => new SettingsStore(UserDataPaths.SettingsFile));
         services.AddSingleton(audio);
-        services.AddSingleton<TextureCache>();
+        services.AddSingleton(_ => new TextureCache(mods.AssetRoots));
         services.AddSingleton<GameServices>();
         services.AddSingleton<MainViewModel>();
         return Services = services.BuildServiceProvider();

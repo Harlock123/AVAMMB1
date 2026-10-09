@@ -1,0 +1,16 @@
+[
+ {
+  "id": "well_crab",
+  "name": "Well Crab",
+  "sprite": "well_crab",
+  "level": 2,
+  "hitPoints": "2d8+2",
+  "armorClass": 5,
+  "speed": 9,
+  "xp": 30,
+  "gold": "2d6+4",
+  "attacks": [ { "verb": "pinches", "damage": "1d6" } ],
+  "resistances": { "fire": 50 },
+  "description": "A red-shelled crab as big as a dog. It does not like visitors."
+ }
+]

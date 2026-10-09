@@ -5,6 +5,15 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+### Added
+- Mod packs: put a folder with a `pack.json` and any monsters, items, spells, shops, quests, races,
+  classes, maps, graphics or audio into the `Mods` folder. Definitions merge by id (new ids add,
+  existing ids replace), `mapPatches.json` adds events to existing maps, and pack graphics and audio
+  take priority over the built-in files. A Mods screen (title screen) switches packs on and off;
+  `--check-content` validates the game and its packs and names the pack at fault; saves record the
+  packs they were made with. A guide (docs/modding/MODDING.md) and an example pack (The Old Well)
+  are included.
+
 ## [1.8.0] - 2026-10-09
 
 ### Added

@@ -65,8 +65,14 @@ public sealed record Texture(int Width, int Height, uint[] Pixels)
 }
 
 /// <summary>Loads and caches images from the embedded <c>Assets/Graphics</c> folder.</summary>
-public sealed class TextureCache
+public sealed class TextureCache(IReadOnlyList<string>? modRoots = null)
 {
+    private readonly IReadOnlyList<string> _modRoots = modRoots ?? [];
+
+    /// <summary>A mod pack's copy of an image (<c>&lt;pack&gt;/Graphics/&lt;path&gt;.png</c>), if any pack has one.</summary>
+    private string? ModFile(string path) =>
+        _modRoots.Select(r => Path.Combine(r, "Graphics", path.Replace('/', Path.DirectorySeparatorChar) + ".png")).FirstOrDefault(File.Exists);
+
     private readonly Dictionary<string, Texture> _textures = new();
     private readonly Dictionary<string, Bitmap?> _bitmaps = new();
     private readonly Dictionary<string, bool> _hasDetailed = new();
@@ -88,7 +94,7 @@ public sealed class TextureCache
         var hd = "TexturesHD/" + path["Textures/".Length..];
         if (!_hasDetailed.TryGetValue(hd, out var exists))
         {
-            _hasDetailed[hd] = exists = AssetLoader.Exists(UriFor(hd));
+            _hasDetailed[hd] = exists = ModFile(hd) is not null || AssetLoader.Exists(UriFor(hd));
         }
         return exists ? hd : path;
     }
@@ -121,7 +127,7 @@ public sealed class TextureCache
         }
         try
         {
-            using var s = AssetLoader.Open(UriFor(path));
+            using var s = ModFile(path) is { } file ? File.OpenRead(file) : AssetLoader.Open(UriFor(path));
             bmp = new Bitmap(s);
         }
         catch (Exception ex) when (ex is FileNotFoundException or IOException or ArgumentException or InvalidOperationException)

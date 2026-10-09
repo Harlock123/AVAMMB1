@@ -23,6 +23,8 @@ public sealed class SaveFile
     public DateTime SavedUtc { get; set; }
     /// <summary>Short description (location, party).</summary>
     public string Summary { get; set; } = "";
+    /// <summary>Ids of the mod packs that were active when the game was saved.</summary>
+    public List<string> Mods { get; set; } = new();
     /// <summary>The game state.</summary>
     public GameState State { get; set; } = new();
 }
@@ -50,6 +52,9 @@ public sealed class SaveGameService
 
     /// <summary>The save directory.</summary>
     public string Directory { get; }
+
+    /// <summary>Mod packs active in this session (written into new saves).</summary>
+    public IReadOnlyList<string> ActiveMods { get; set; } = [];
 
     private string PathFor(int slot) => Path.Combine(Directory, $"slot{slot}.json");
 
@@ -96,7 +101,7 @@ public sealed class SaveGameService
     {
         ValidateSlot(slot);
         System.IO.Directory.CreateDirectory(Directory);
-        var file = new SaveFile { Name = name, Summary = summary, SavedUtc = DateTime.UtcNow, State = state };
+        var file = new SaveFile { Name = name, Summary = summary, SavedUtc = DateTime.UtcNow, State = state, Mods = ActiveMods.ToList() };
         BackupIfOlderFormat(slot);
         var tmp = PathFor(slot) + ".tmp";
         File.WriteAllText(tmp, Serialize(file));

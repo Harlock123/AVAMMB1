@@ -181,7 +181,13 @@ public sealed unsafe class OpenAlAudioService : IAudioService
         }
     }
 
-    private static Stream OpenAsset(string path) => AssetLoader.Open(new Uri($"avares://AVAMMB1/Assets/Audio/{path}"));
+    /// <summary>Mod pack folders searched for <c>Audio/...</c> files before the built-in ones.</summary>
+    public static IReadOnlyList<string> ModRoots { get; set; } = [];
+
+    private static Stream OpenAsset(string path) =>
+        ModRoots.Select(r => Path.Combine(r, "Audio", path.Replace('/', Path.DirectorySeparatorChar))).FirstOrDefault(File.Exists) is { } file
+            ? File.OpenRead(file)
+            : AssetLoader.Open(new Uri($"avares://AVAMMB1/Assets/Audio/{path}"));
 
     private static (short[] Pcm, int Channels, int Rate) DecodeAll(string path)
     {

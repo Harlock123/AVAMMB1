@@ -42,6 +42,8 @@ public sealed class DiceJsonConverter : JsonConverter<DiceExpression>
 [JsonSerializable(typeof(List<SpellDef>))]
 [JsonSerializable(typeof(List<ShopDef>))]
 [JsonSerializable(typeof(List<QuestDef>))]
+[JsonSerializable(typeof(PackManifest))]
+[JsonSerializable(typeof(List<MapPatchDef>))]
 [JsonSerializable(typeof(GameConfigDef))]
 [JsonSerializable(typeof(MapDef))]
 [JsonSerializable(typeof(SaveFile))]

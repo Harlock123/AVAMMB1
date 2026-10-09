@@ -1,0 +1,9 @@
+[
+ {
+  "id": "oldwell",
+  "title": "Under the Old Well",
+  "doneFlag": "oldwell_crabs_dead",
+  "doneText": "The crabs under the old well are gone, and so are a century of wishes.",
+  "stages": [ { "visited": "oldwell", "text": "Something lives under Brindlemoor's old well - and it has been collecting the coins people wish on." } ]
+ }
+]

@@ -59,6 +59,9 @@ public sealed partial class TitleViewModel : ViewModelBase
     private void Help() => _main.ShowHelp();
 
     [RelayCommand]
+    private void Mods() => _main.ShowMods();
+
+    [RelayCommand]
     private void WhatsNew() => _main.ShowAllNotes();
 
     [RelayCommand]

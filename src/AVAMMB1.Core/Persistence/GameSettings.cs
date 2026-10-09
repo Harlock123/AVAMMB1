@@ -54,6 +54,8 @@ public sealed class GameSettings
     public int AmbienceVolume { get; set; } = 50;
     /// <summary>Run full-screen.</summary>
     public bool Fullscreen { get; set; }
+    /// <summary>Ids of mod packs the player has switched off.</summary>
+    public List<string> DisabledMods { get; set; } = new();
     /// <summary>The game version whose release notes the player has seen ("" before 1.7).</summary>
     public string LastSeenVersion { get; set; } = "";
     /// <summary>Height of the 3D view's internal image: 300 (400x300, classic), 480 (640x480) or 600 (800x600).</summary>
@@ -208,4 +210,6 @@ public static class UserDataPaths
 
     /// <summary>Settings file path.</summary>
     public static string SettingsFile => System.IO.Path.Combine(DataDirectory, "settings.json");
+    /// <summary>Folder for mod packs (one sub-folder per pack).</summary>
+    public static string ModsDirectory => System.IO.Path.Combine(DataDirectory, "Mods");
 }

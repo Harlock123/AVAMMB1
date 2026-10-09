@@ -90,6 +90,10 @@ Code identifiers, the solution and executables use the name **`AVAMMB1`** (`AVAM
   stays at an inn takes their own gold - and as much from the purse as you choose - with them.
 - **Inventory and equipment**: 9 equipment slots, 12-slot backpacks, class restrictions,
   two-handed weapons, give/drop/use, charges.
+- **Mod packs**: drop a folder of JSON (plus optional graphics and music) into the Mods folder to add
+  monsters, items, spells, quests and whole dungeons, or link new maps into the world with map
+  patches - no rebuilding. A Mods screen switches packs on and off, and `--check-content` reports
+  problems. See [docs/modding/MODDING.md](docs/modding/MODDING.md) and the example pack.
 - **Data-driven content**: monsters, items, spells, races, classes, shops and maps are JSON files you
   can edit (see [docs/CONTENT_FORMAT.md](docs/CONTENT_FORMAT.md)); put a `Content` folder next to the
   executable or pass `--content DIR` to mod the game without rebuilding.
