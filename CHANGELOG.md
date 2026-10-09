@@ -6,6 +6,13 @@ All notable changes to this project are documented here. The format follows
 ## [Unreleased]
 
 ### Added
+- Day and night. A clock runs as you travel (3 minutes a step, 8 hours a rest; a night at the inn
+  lasts until 07:00), shown under the gold. At dusk the sky darkens; at night (20:00-05:00) the open
+  country and towns are dark: sight outdoors drops to 4 squares unless your light reaches further
+  (lanterns burn outdoors at night, not in towns), encounters are half as likely again, elites twice
+  as common, and the wilds, the Ashen Hills, the Sunscar Wastes and the Frostmark have night-only
+  monsters (`nightEncounters` in map data). Shops, training grounds and academies close at night.
+  Saves from earlier versions get a clock from their step count.
 - Mod packs: put a folder with a `pack.json` and any monsters, items, spells, shops, quests, races,
   classes, maps, graphics or audio into the `Mods` folder. Definitions merge by id (new ids add,
   existing ids replace), `mapPatches.json` adds events to existing maps, and pack graphics and audio

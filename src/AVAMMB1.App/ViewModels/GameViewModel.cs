@@ -103,7 +103,7 @@ public sealed partial class GameViewModel : ViewModelBase
     /// <summary>Party gold and gems.</summary>
     public string GoldText => $"Purse {Session.State.Gold}  (party {Session.State.TotalGold})   {Session.State.Gems} gems";
     /// <summary>Day counter and light.</summary>
-    public string TimeText => $"Day {Session.State.Day}"
+    public string TimeText => $"Day {Session.State.Day}, {Session.State.ClockText} ({Session.State.PartOfDay})"
         + (Session.CurrentMap.IsDarkness(Session.State.X, Session.State.Y) ? "   Magical darkness" : LightText)
         + (Session.IsAntiMagicHere ? "   Anti-magic" : "");
     /// <summary>The party's light: lantern oil and torch/spell steps, or "(dark)" in an unlit dark place.</summary>
@@ -187,7 +187,8 @@ public sealed partial class GameViewModel : ViewModelBase
             Facing = state.Facing,
             ViewDistance = Session.ViewDistance,
             Dark = Session.IsDarkHere,
-            WarmLight = map.Def.Dark && Session.LanternLit,
+            WarmLight = (map.Def.Dark || (map.Def.Kind == MapKind.Outdoor && state.IsNight)) && Session.LanternLit,
+            Night = map.Def.Kind is MapKind.Outdoor or MapKind.Town ? state.Darkness : 0,
             SecretFound = (x, y, d) => state.IsSecretFound(map.Id, x, y, d),
             Sprites = sprites,
         };

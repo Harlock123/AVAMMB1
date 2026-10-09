@@ -299,6 +299,16 @@ public static class HeadlessRunner
         }
     }
 
+    /// <summary>Screenshots of towns and the open country are taken in daylight (late morning).</summary>
+    private static void Daylight(GameViewModel game, GameSession s)
+    {
+        if (s.State.MinuteOfDay is < 9 * 60 or > 16 * 60)
+        {
+            s.State.AdvanceTo(10 * 60);
+        }
+        game.Refresh();
+    }
+
     private static void Face(GameViewModel game, GameSession s, Direction d)
     {
         while (s.State.Facing != d)
@@ -324,6 +334,7 @@ public static class HeadlessRunner
         game.CloseOverlay();
 
         // Town: look up the main street from the gate.
+        Daylight(game, s);
         Capture(dir, "04-town");
 
         // Walk around town (real moves) so the automap has something to show, then visit the smithy.
@@ -491,13 +502,23 @@ public static class HeadlessRunner
         WalkTo(game, s, 9, 12);
         Face(game, s, Direction.West);
         game.Refresh();
+        Daylight(game, s);
         Capture(dir, "16-ashen-hills");
+        // The same road at night: darker sky, shorter sight, the clock in the corner.
+        var dayTime = s.State.Minutes;
+        s.State.AdvanceTo(22 * 60);
+        game.Refresh();
+        Capture(dir, "29-night");
+        s.State.Minutes = dayTime;
+        game.Refresh();
         TravelTo(game, s, "thornwick");
+        Daylight(game, s);
         Capture(dir, "17-thornwick");
         TravelTo(game, s, "hills");
         TravelTo(game, s, "duskmere");
         Face(game, s, Direction.West);
         game.Refresh();
+        Daylight(game, s);
         Capture(dir, "18-duskmere");
 
         // The Sunscar Coast is level 9-12 country: train the demo party up first.
@@ -511,11 +532,13 @@ public static class HeadlessRunner
         WalkTo(game, s, 12, 10);
         Face(game, s, Direction.West);
         game.Refresh();
+        Daylight(game, s);
         Capture(dir, "19-port-ashkar");
         TravelTo(game, s, "sunscar");
         WalkTo(game, s, 9, 14);
         Face(game, s, Direction.East);
         game.Refresh();
+        Daylight(game, s);
         Capture(dir, "20-sunscar-oasis");
 
         // North by ship to Wintermere (level 11-14 country) and into the Rime Halls.
@@ -528,6 +551,7 @@ public static class HeadlessRunner
         WalkTo(game, s, 7, 9);
         Face(game, s, Direction.North);
         game.Refresh();
+        Daylight(game, s);
         Capture(dir, "25-wintermere");
         TravelTo(game, s, "frostmark");
         TravelTo(game, s, "rime1");

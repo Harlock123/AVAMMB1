@@ -188,7 +188,57 @@ public sealed class GameState
 
     /// <summary>Game day derived from the step counter.</summary>
     [System.Text.Json.Serialization.JsonIgnore]
-    public long Day => 1 + Steps / 500;
+    public long Day => 1 + (Minutes + StartMinuteOfDay) / MinutesPerDay;
+
+    /// <summary>Minutes in a day.</summary>
+    public const int MinutesPerDay = 1440;
+    /// <summary>Game minutes per step.</summary>
+    public const int MinutesPerStep = 3;
+    /// <summary>The adventure starts at 08:00.</summary>
+    public const int StartMinuteOfDay = 8 * 60;
+
+    /// <summary>The game clock: minutes since the adventure began.</summary>
+    public long Minutes { get; set; }
+
+    /// <summary>Minutes since midnight (0-1439).</summary>
+    [System.Text.Json.Serialization.JsonIgnore]
+    public int MinuteOfDay => (int)((Minutes + StartMinuteOfDay) % MinutesPerDay);
+
+    /// <summary>The time as hh:mm.</summary>
+    [System.Text.Json.Serialization.JsonIgnore]
+    public string ClockText => $"{MinuteOfDay / 60:00}:{MinuteOfDay % 60:00}";
+
+    /// <summary>Night is 20:00 to 05:00.</summary>
+    [System.Text.Json.Serialization.JsonIgnore]
+    public bool IsNight => MinuteOfDay >= 20 * 60 || MinuteOfDay < 5 * 60;
+
+    /// <summary>How dark the sky is: 0 by day, 1 at night, in between at dusk (18-20) and dawn (05-07).</summary>
+    [System.Text.Json.Serialization.JsonIgnore]
+    public double Darkness => MinuteOfDay switch
+    {
+        >= 7 * 60 and < 18 * 60 => 0,
+        >= 18 * 60 and < 20 * 60 => (MinuteOfDay - 18 * 60) / 120.0,
+        >= 5 * 60 and < 7 * 60 => 1 - (MinuteOfDay - 5 * 60) / 120.0,
+        _ => 1,
+    };
+
+    /// <summary>"night", "dawn", "day" or "dusk".</summary>
+    [System.Text.Json.Serialization.JsonIgnore]
+    public string PartOfDay => MinuteOfDay switch
+    {
+        >= 5 * 60 and < 7 * 60 => "dawn",
+        >= 7 * 60 and < 18 * 60 => "day",
+        >= 18 * 60 and < 20 * 60 => "dusk",
+        _ => "night",
+    };
+
+    /// <summary>Moves the clock forward to the next given time of day.</summary>
+    /// <param name="minuteOfDay">Target time (minutes since midnight).</param>
+    public void AdvanceTo(int minuteOfDay)
+    {
+        var wait = (minuteOfDay - MinuteOfDay + MinutesPerDay) % MinutesPerDay;
+        Minutes += wait == 0 ? MinutesPerDay : wait;
+    }
 
     /// <summary>
     /// Canonical key for the edge on one side of a cell, so both cells sharing a wall

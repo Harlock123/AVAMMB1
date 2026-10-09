@@ -28,10 +28,8 @@
       <DockPanel IsVisible="{Binding Exploring}">
         <StackPanel DockPanel.Dock="Top" Spacing="6">
           <c:MapView MapInfo="{Binding MapInfo}" Radius="5" Height="200" IsVisible="{Binding ShowMinimap}" />
-          <Grid ColumnDefinitions="*,Auto">
-            <TextBlock Text="{Binding GoldText}" Foreground="{DynamicResource Gold}" TextTrimming="CharacterEllipsis" />
-            <TextBlock Grid.Column="1" Text="{Binding TimeText}" Classes="dim" />
-          </Grid>
+          <TextBlock Text="{Binding GoldText}" Foreground="{DynamicResource Gold}" TextTrimming="CharacterEllipsis" />
+          <TextBlock Text="{Binding TimeText}" Classes="dim" TextTrimming="CharacterEllipsis" />
           <!-- Movement -->
           <Grid ColumnDefinitions="Auto,Auto,Auto" RowDefinitions="Auto,Auto" HorizontalAlignment="Center">
             <Button Classes="nav" Content="&#x21B6;" ToolTip.Tip="Turn left (Left / A)" Command="{Binding TurnLeftCommand}" />

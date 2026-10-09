@@ -63,11 +63,12 @@ public sealed class TownServices(GameSession session)
             return log;
         }
         State.Steps += 50;
+        State.AdvanceTo(7 * 60); // sleep until seven the next morning
         foreach (var c in State.Party.Where(c => c.IsAlive))
         {
             session.RestCharacter(c, log, requireFood: false);
         }
-        log.Insert(0, new("The party enjoys a warm meal and a soft bed.", MessageKind.Good, "heal"));
+        log.Insert(0, new($"The party enjoys a warm meal and a soft bed, and wakes at seven on day {State.Day}.", MessageKind.Good, "heal"));
         return log;
     }
 

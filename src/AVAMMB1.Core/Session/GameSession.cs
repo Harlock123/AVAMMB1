@@ -93,7 +93,13 @@ public sealed class GameSession
     /// How many cells the party can see. In dark places this is the light radius: torch 5, light
     /// spells 6, lantern 8; with no light, 1.
     /// </summary>
-    public int ViewDistance => IsDarkHere ? 1 : CurrentMap.Def.Kind == MapKind.Outdoor ? 10 : CurrentMap.Def.Dark ? LightRadius : 7;
+    public int ViewDistance => IsDarkHere ? 1
+        : CurrentMap.Def.Kind == MapKind.Outdoor ? (IsNightOutside ? Math.Max(4, LightRadius) : 10)
+        : CurrentMap.Def.Kind == MapKind.Town && IsNightOutside ? Math.Max(6, LightRadius)
+        : CurrentMap.Def.Dark ? LightRadius : 7;
+
+    /// <summary>Whether it is night under the open sky (outdoors or in a town).</summary>
+    public bool IsNightOutside => State.IsNight && CurrentMap.Def.Kind is MapKind.Outdoor or MapKind.Town;
 
     /// <summary>Reach of the party's light: the brighter of a lit lantern and any torch or spell light (0 = none).</summary>
     public int LightRadius => Math.Max(State.TemporaryLightRadius,
@@ -159,6 +165,10 @@ public sealed class GameSession
             }
         }
         State = state;
+        if (State.Minutes == 0 && State.Steps > 0)
+        {
+            State.Minutes = State.Steps * GameState.MinutesPerStep; // saves from before the clock
+        }
         Combat = null;
         Explore();
     }
@@ -297,6 +307,7 @@ public sealed class GameSession
             }
         }
         PassTime(50, result.Messages);
+        State.Minutes += 8 * 60 - 50 * GameState.MinutesPerStep; // a rest is eight hours on the clock
         foreach (var c in State.Party.Where(c => c.IsAlive))
         {
             RestCharacter(c, result.Messages, requireFood: true);
@@ -409,7 +420,8 @@ public sealed class GameSession
         if (found == 0)
         {
             result.Messages.Add(new("You find nothing unusual.", MessageKind.Info));
-            TryRandomEncounter(result, map.Def.EncounterChance);
+            // Under the open sky, monsters are half as likely again to find you at night.
+            TryRandomEncounter(result, IsNightOutside && map.Def.Kind == MapKind.Outdoor ? map.Def.EncounterChance * 3 / 2 : map.Def.EncounterChance);
         }
         return result;
     }
@@ -427,6 +439,7 @@ public sealed class GameSession
     {
         var before = State.Steps;
         State.Steps += steps;
+        State.Minutes += steps * GameState.MinutesPerStep;
         State.LightSteps = Math.Max(0, State.LightSteps - steps);
         BurnLantern(steps, log);
         var ticks = (int)(State.Steps / 10 - before / 10);
@@ -449,7 +462,8 @@ public sealed class GameSession
     /// <summary>The lantern lighting the party burns oil while the party is in a dark place.</summary>
     private void BurnLantern(int steps, List<GameMessage> log)
     {
-        if (!IsActive || !CurrentMap.Def.Dark || Items.Lanterns.Active(Rules, State.Party) is not { } active)
+        var dark = CurrentMap.Def.Dark || (State.IsNight && CurrentMap.Def.Kind == MapKind.Outdoor); // towns have street lights
+        if (!IsActive || !dark || Items.Lanterns.Active(Rules, State.Party) is not { } active)
         {
             return;
         }
@@ -595,6 +609,9 @@ public sealed class GameSession
             case MapEventKind.Message:
                 Story(result, ev);
                 Complete(map, ev);
+                break;
+            case MapEventKind.Shop or MapEventKind.Training or MapEventKind.Academy when State.IsNight && map.Def.Kind == MapKind.Town:
+                result.Messages.Add(new($"{ev.Name ?? "The shop"} is closed for the night. It opens at dawn (5:00). The inn, temple and tavern stay open.", MessageKind.Info));
                 break;
             case MapEventKind.Shop:
             case MapEventKind.Temple:
@@ -904,14 +921,16 @@ public sealed class GameSession
         }
         var monsters = new List<MonsterInstance>();
         var groups = Random.Chance(30) ? 2 : 1;
+        var night = IsNightOutside;
         for (var g = 0; g < groups; g++)
         {
-            var entry = PickWeighted(map.Def.Encounters);
+            var table = night && map.Def.NightEncounters.Count > 0 && Random.Chance(50) ? map.Def.NightEncounters : map.Def.Encounters;
+            var entry = PickWeighted(table);
             monsters.AddRange(CombatEngine.Spawn(Content.Monster(entry.Monster), entry.Count.Roll(Random), Random));
         }
         var ordered = monsters.Take(8).ToList();
         // Now and then a group is led by an elite: tougher, but worth far more.
-        if (Random.Chance(EliteChance) && ordered.FirstOrDefault(m => !m.Def.Boss) is { } leader)
+        if (Random.Chance(night ? EliteChance * 2 : EliteChance) && ordered.FirstOrDefault(m => !m.Def.Boss) is { } leader)
         {
             leader.MakeElite();
         }

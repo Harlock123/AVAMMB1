@@ -245,5 +245,27 @@
    "text": "Behind the ogre's den lies a pile of gnawed bones and a silver ring."
   }
  ],
- "ambience": "birds"
+ "ambience": "birds",
+ "nightEncounters": [
+  {
+   "monster": "dire_wolf",
+   "count": "1d3+1",
+   "weight": 35
+  },
+  {
+   "monster": "ghoul",
+   "count": "1d3",
+   "weight": 25
+  },
+  {
+   "monster": "zombie",
+   "count": "1d4",
+   "weight": 20
+  },
+  {
+   "monster": "rattlebones",
+   "count": "2d3",
+   "weight": 20
+  }
+ ]
 }

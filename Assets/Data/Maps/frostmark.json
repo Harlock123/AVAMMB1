@@ -208,5 +208,27 @@
   }
  ],
  "music": "title",
- "ambience": "wind"
+ "ambience": "wind",
+ "nightEncounters": [
+  {
+   "monster": "frost_warg",
+   "count": "2d3",
+   "weight": 35
+  },
+  {
+   "monster": "ice_devil",
+   "count": "1d2",
+   "weight": 25
+  },
+  {
+   "monster": "blizzard_demon",
+   "count": "1",
+   "weight": 20
+  },
+  {
+   "monster": "white_imp",
+   "count": "1d3",
+   "weight": 20
+  }
+ ]
 }

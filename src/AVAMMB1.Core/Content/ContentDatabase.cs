@@ -255,7 +255,7 @@ public sealed class ContentDatabase
         Check(_maps.ContainsKey(Config.StartMap), $"game.json: unknown start map {Config.StartMap}");
         foreach (var map in _maps.Values)
         {
-            foreach (var e in map.Def.Encounters)
+            foreach (var e in map.Def.Encounters.Concat(map.Def.NightEncounters))
             {
                 Check(Monsters.ContainsKey(e.Monster), $"map {map.Id}: unknown encounter monster {e.Monster}");
             }

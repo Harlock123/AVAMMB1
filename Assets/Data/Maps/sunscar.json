@@ -215,5 +215,27 @@
    "text": "A statue of a crowned king, half buried in sand, points west toward the rocks."
   }
  ],
- "ambience": "wind"
+ "ambience": "wind",
+ "nightEncounters": [
+  {
+   "monster": "mummy",
+   "count": "1d2",
+   "weight": 30
+  },
+  {
+   "monster": "tomb_wraith",
+   "count": "1d2",
+   "weight": 30
+  },
+  {
+   "monster": "giant_scorpion",
+   "count": "1d3",
+   "weight": 25
+  },
+  {
+   "monster": "efreet",
+   "count": "1",
+   "weight": 15
+  }
+ ]
 }

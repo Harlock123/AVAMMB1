@@ -53,6 +53,8 @@ public sealed class SceneDescription
     public required int ViewDistance { get; init; }
     /// <summary>Whether a lantern lights the scene (gives it a warm, golden cast).</summary>
     public bool WarmLight { get; init; }
+    /// <summary>How dark the sky is (0 day - 1 night), for outdoor maps and towns.</summary>
+    public double Night { get; init; }
     /// <summary>Whether the secret door on a side of a cell has been discovered (undiscovered ones draw as walls).</summary>
     public Func<int, int, Direction, bool> SecretFound { get; init; } = (_, _, _) => false;
     /// <summary>Feature billboards.</summary>
@@ -148,6 +150,12 @@ public sealed class SceneRenderer
         var dark = scene.Dark || (def.Dark && scene.ViewDistance <= 1);
         var skyTop = ParseColor(def.SkyColor, 0xFF3B6FB6);
         var horizon = Shade(skyTop, 1.0, 0xFFE8EEF5, 0.55);
+        if (scene.Night > 0)
+        {
+            // Dusk, night and dawn: the sky and the haze on the horizon sink toward deep night blue.
+            skyTop = Shade(skyTop, 1.0, 0xFF070B1C, scene.Night);
+            horizon = Shade(horizon, 1.0, 0xFF161D33, scene.Night);
+        }
         var fog = def.Kind == MapKind.Dungeon || dark ? 0xFF000000u : horizon;
         var fogDist = dark ? 1.7 : scene.ViewDistance + 0.8;
         var maxDist = Math.Max(2.0, fogDist + 0.5);
@@ -251,9 +259,27 @@ public sealed class SceneRenderer
         }
 
         DrawSprites(scene, px, py, dirX, dirY, planeX, planeY, fog, fogDist, dark);
+        if (scene.Night > 0)
+        {
+            Dim(1 - 0.45 * scene.Night);
+        }
         if (scene.WarmLight && !dark)
         {
             WarmTint();
+        }
+    }
+
+    /// <summary>Darkens the whole view (night under the open sky).</summary>
+    private void Dim(double factor)
+    {
+        var f = (uint)Math.Clamp(factor * 256, 0, 256);
+        for (var i = 0; i < Pixels.Length; i++)
+        {
+            var c = Pixels[i];
+            var r = ((c >> 16) & 0xFF) * f / 256;
+            var g = ((c >> 8) & 0xFF) * f / 256;
+            var b = (c & 0xFF) * f / 256;
+            Pixels[i] = (c & 0xFF000000u) | (r << 16) | (g << 8) | b;
         }
     }
 

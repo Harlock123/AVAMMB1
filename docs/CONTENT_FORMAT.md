@@ -145,6 +145,7 @@ is set. Nothing extra is stored in saves - the journal is rebuilt from flags, it
 | `skyColor` | Hex color for the sky gradient |
 | `dark` | Needs light to see further than one cell |
 | `music` | Track key: `title`, `town`, `dungeon`, `caves`, `desert`, `marsh` (`Audio/Music/<key>.ogg`; `battle` and `boss` are used for fights) |
+| `nightEncounters` | Outdoor maps: extra encounter entries (same format as `encounters`); at night half of the encounters come from this list |
 | `ambience` | Optional looping ambient sound under the music: `birds`, `river`, `wind`, `drips`, `deep` (`Audio/Ambience/<key>.ogg`) |
 | `encounterChance`, `encounters` | Percent per step; weighted `{ monster, count, weight }` |
 | `lockedDoorKey`, `lockedDoorFlag` | Item or flag that opens `L` doors |

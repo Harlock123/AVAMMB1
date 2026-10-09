@@ -226,5 +226,27 @@
    "text": "Among the bones: coins, gems and a silver ring."
   }
  ],
- "ambience": "wind"
+ "ambience": "wind",
+ "nightEncounters": [
+  {
+   "monster": "dire_wolf",
+   "count": "2d3",
+   "weight": 25
+  },
+  {
+   "monster": "barrow_wight",
+   "count": "1d2",
+   "weight": 25
+  },
+  {
+   "monster": "wraith",
+   "count": "1",
+   "weight": 20
+  },
+  {
+   "monster": "troll",
+   "count": "1d2",
+   "weight": 30
+  }
+ ]
 }

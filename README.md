@@ -43,6 +43,8 @@ Code identifiers, the solution and executables use the name **`AVAMMB1`** (`AVAM
 - **Animated combat**: monsters breathe and bob while idle, lunge toward the party when they
   attack, blink and shake when hit and fade out when slain; party portraits flash red when hurt
   (Settings toggle).
+- **Day and night**: a clock runs as you travel; nights are dark outdoors and in towns, bring out
+  night-only monsters and close the shops - plan around the inn, or carry a lantern.
 - **Light and lanterns**: dungeons are dark; torches (5 squares), light spells (6) and an equippable
   **Brass Lantern** (8 squares, warm light) that burns oil you buy by the flask - Angband style. A
   flask of oil can also be thrown in battle as a fire bomb.
@@ -137,6 +139,7 @@ All screenshots are real frames rendered by the game itself (Avalonia headless +
 | ![High contrast](docs/screenshots/23-high-contrast.png) High-contrast theme, 115% text, 800 x 600 view | ![Help](docs/screenshots/24-help.png) The in-game help |
 | ![Wintermere](docs/screenshots/25-wintermere.png) Wintermere, the northern harbour town | ![Rime Halls](docs/screenshots/26-rime-halls.png) The Rime Halls |
 | ![Detailed textures](docs/screenshots/27-detailed-textures.png) Detailed textures at 800 x 600 (the Hollow Crypt) | ![Lantern](docs/screenshots/28-lantern.png) Lantern light in the cellars |
+| ![Night](docs/screenshots/29-night.png) The Ashen Hills road at night | |
 
 ## Download and install
 
