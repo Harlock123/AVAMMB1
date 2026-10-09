@@ -5,6 +5,8 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+## [1.8.0] - 2026-10-09
+
 ### Added
 - Lanterns and oil (Angband style). A Brass Lantern (150 gold) is equipped in the new Light slot and
   lights the way 8 squares ahead, with a warm glow, for the whole party. It holds 1500 steps of oil,
