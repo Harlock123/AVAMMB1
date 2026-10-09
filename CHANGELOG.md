@@ -5,6 +5,12 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+### Changed
+- Light lasts longer: torches 150 steps (was 100), Holy Light 200 (was 150), Glowlight 250 (was 200)
+  and the Scroll of Light 400 (was 300).
+- The in-game help has a Light section: how to use a torch, the light spells and scroll, the Light
+  counter, and magical darkness.
+
 ## [1.7.0] - 2026-10-09
 
 ### Added
