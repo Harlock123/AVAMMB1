@@ -5,6 +5,8 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+## [1.7.0] - 2026-10-09
+
 ### Added
 - "What's new" screen: after an update the game shows the release notes for every version you have
   not seen yet (once); the title screen's *What's new* button shows them all. The notes are read
