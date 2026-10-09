@@ -8,77 +8,72 @@
   </Application.DataTemplates>
 
   <Application.Resources>
-    <SolidColorBrush x:Key="Gold">#E8C468</SolidColorBrush>
-    <SolidColorBrush x:Key="PanelBg">#16141f</SolidColorBrush>
-    <SolidColorBrush x:Key="PanelBorder">#7a6338</SolidColorBrush>
-    <SolidColorBrush x:Key="Dim">#9a96a8</SolidColorBrush>
-    <SolidColorBrush x:Key="HpBrush">#c0392b</SolidColorBrush>
-    <SolidColorBrush x:Key="SpBrush">#2e6fd1</SolidColorBrush>
   </Application.Resources>
 
   <Application.Styles>
     <FluentTheme />
     <Style Selector="Window">
-      <Setter Property="Background" Value="#0c0b12" />
+      <Setter Property="Background" Value="{DynamicResource WindowBg}" />
+      <Setter Property="FontSize" Value="{DynamicResource Font14}" />
     </Style>
     <Style Selector="Border.panel">
-      <Setter Property="Background" Value="{StaticResource PanelBg}" />
-      <Setter Property="BorderBrush" Value="{StaticResource PanelBorder}" />
+      <Setter Property="Background" Value="{DynamicResource PanelBg}" />
+      <Setter Property="BorderBrush" Value="{DynamicResource PanelBorder}" />
       <Setter Property="BorderThickness" Value="2" />
       <Setter Property="CornerRadius" Value="4" />
       <Setter Property="Padding" Value="10" />
     </Style>
     <Style Selector="Border.dialog">
-      <Setter Property="Background" Value="#ee15131d" />
-      <Setter Property="BorderBrush" Value="{StaticResource Gold}" />
+      <Setter Property="Background" Value="{DynamicResource DialogBg}" />
+      <Setter Property="BorderBrush" Value="{DynamicResource Gold}" />
       <Setter Property="BorderThickness" Value="2" />
       <Setter Property="CornerRadius" Value="6" />
       <Setter Property="Padding" Value="18" />
       <Setter Property="BoxShadow" Value="0 0 30 0 #000000" />
     </Style>
     <Style Selector="TextBlock.title">
-      <Setter Property="Foreground" Value="{StaticResource Gold}" />
-      <Setter Property="FontSize" Value="24" />
+      <Setter Property="Foreground" Value="{DynamicResource Gold}" />
+      <Setter Property="FontSize" Value="{DynamicResource Font24}" />
       <Setter Property="FontWeight" Value="Bold" />
     </Style>
     <Style Selector="TextBlock.h2">
-      <Setter Property="Foreground" Value="{StaticResource Gold}" />
-      <Setter Property="FontSize" Value="16" />
+      <Setter Property="Foreground" Value="{DynamicResource Gold}" />
+      <Setter Property="FontSize" Value="{DynamicResource Font16}" />
       <Setter Property="FontWeight" Value="SemiBold" />
       <Setter Property="Margin" Value="0,6,0,4" />
     </Style>
     <Style Selector="TextBlock.dim">
-      <Setter Property="Foreground" Value="{StaticResource Dim}" />
+      <Setter Property="Foreground" Value="{DynamicResource Dim}" />
     </Style>
     <Style Selector="Button">
-      <Setter Property="Background" Value="#2a2438" />
-      <Setter Property="BorderBrush" Value="#5a4a2a" />
+      <Setter Property="Background" Value="{DynamicResource ButtonBg}" />
+      <Setter Property="BorderBrush" Value="{DynamicResource ButtonBorder}" />
       <Setter Property="BorderThickness" Value="1" />
-      <Setter Property="Foreground" Value="#efe6cf" />
+      <Setter Property="Foreground" Value="{DynamicResource ButtonFg}" />
       <Setter Property="Padding" Value="10,5" />
       <Setter Property="Margin" Value="2" />
       <Setter Property="CornerRadius" Value="3" />
     </Style>
     <Style Selector="Button:pointerover /template/ ContentPresenter">
-      <Setter Property="Background" Value="#3e3452" />
-      <Setter Property="BorderBrush" Value="{StaticResource Gold}" />
+      <Setter Property="Background" Value="{DynamicResource ButtonHover}" />
+      <Setter Property="BorderBrush" Value="{DynamicResource Gold}" />
     </Style>
     <Style Selector="Button.big">
       <Setter Property="MinWidth" Value="260" />
-      <Setter Property="FontSize" Value="18" />
+      <Setter Property="FontSize" Value="{DynamicResource Font18}" />
       <Setter Property="HorizontalContentAlignment" Value="Center" />
       <Setter Property="Padding" Value="12,8" />
     </Style>
     <Style Selector="Button.nav">
       <Setter Property="Width" Value="64" />
       <Setter Property="Height" Value="40" />
-      <Setter Property="FontSize" Value="18" />
+      <Setter Property="FontSize" Value="{DynamicResource Font18}" />
       <Setter Property="HorizontalContentAlignment" Value="Center" />
       <Setter Property="VerticalContentAlignment" Value="Center" />
     </Style>
     <Style Selector="Button.chip">
       <Setter Property="Padding" Value="8,3" />
-      <Setter Property="FontSize" Value="13" />
+      <Setter Property="FontSize" Value="{DynamicResource Font13}" />
     </Style>
     <Style Selector="ProgressBar">
       <Setter Property="MinHeight" Value="6" />

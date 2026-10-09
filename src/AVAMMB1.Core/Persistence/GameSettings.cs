@@ -52,6 +52,14 @@ public sealed class GameSettings
     public int AmbienceVolume { get; set; } = 50;
     /// <summary>Run full-screen.</summary>
     public bool Fullscreen { get; set; }
+    /// <summary>Height of the 3D view's internal image: 300 (400x300, classic), 480 (640x480) or 600 (800x600).</summary>
+    public int ViewResolution { get; set; } = 300;
+    /// <summary>Smooth (filtered) scaling of the 3D view instead of sharp pixels.</summary>
+    public bool SmoothView { get; set; }
+    /// <summary>Colour theme: Standard, HighContrast or ColorblindFriendly.</summary>
+    public string ColorTheme { get; set; } = "Standard";
+    /// <summary>Text size in percent (90-130).</summary>
+    public int TextScale { get; set; } = 100;
     /// <summary>Scale the whole interface to fit the window (off = fixed 100% size).</summary>
     public bool FitToWindow { get; set; } = true;
     /// <summary>Read game controllers (SDL).</summary>
@@ -62,6 +70,8 @@ public sealed class GameSettings
     public bool SmoothMovement { get; set; } = true;
     /// <summary>Animate monsters in combat (idle motion, attacks, hits, deaths).</summary>
     public bool AnimateMonsters { get; set; } = true;
+    /// <summary>Controller button for each exploring action (unlisted actions have no button).</summary>
+    public Dictionary<InputAction, Input.GamepadButton> GamepadBindings { get; set; } = Input.GamepadMapping.DefaultExploring();
     /// <summary>Key names (Avalonia <c>Key</c> enum names) bound to each action.</summary>
     public Dictionary<InputAction, List<string>> KeyBindings { get; set; } = DefaultBindings();
 
@@ -93,6 +103,12 @@ public sealed class GameSettings
         MusicVolume = Math.Clamp(MusicVolume, 0, 100);
         SfxVolume = Math.Clamp(SfxVolume, 0, 100);
         AmbienceVolume = Math.Clamp(AmbienceVolume, 0, 100);
+        TextScale = Math.Clamp(TextScale, 90, 130);
+        ViewResolution = ViewResolution switch { >= 600 => 600, >= 480 => 480, _ => 300 };
+        if (GamepadBindings is null || GamepadBindings.Count == 0)
+        {
+            GamepadBindings = Input.GamepadMapping.DefaultExploring();
+        }
         foreach (var (action, keys) in DefaultBindings())
         {
             if (!KeyBindings.TryGetValue(action, out var existing) || existing.Count == 0)

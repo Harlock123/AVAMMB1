@@ -135,6 +135,53 @@ public sealed partial class BindingRow : ObservableObject
     private bool _isCapturing;
 }
 
+/// <summary>A controller button binding row in the settings screen.</summary>
+public sealed partial class PadRow : ObservableObject
+{
+    /// <summary>Creates the row.</summary>
+    /// <param name="action">Action.</param>
+    /// <param name="button">Bound button name.</param>
+    public PadRow(InputAction action, string button)
+    {
+        Action = action;
+        _button = button;
+    }
+
+    /// <summary>Action.</summary>
+    public InputAction Action { get; }
+    /// <summary>Action label.</summary>
+    public string Label => LabelOf(Action);
+
+    /// <summary>Button name.</summary>
+    [ObservableProperty]
+    private string _button;
+
+    /// <summary>Waiting for a button press.</summary>
+    [ObservableProperty]
+    private bool _isCapturing;
+
+    /// <summary>Readable action name.</summary>
+    /// <param name="a">Action.</param>
+    public static string LabelOf(InputAction a) => System.Text.RegularExpressions.Regex.Replace(a.ToString(), "(?<=[a-z])([A-Z])", " $1");
+
+    /// <summary>Xbox-style button name.</summary>
+    /// <param name="b">Button.</param>
+    public static string Name(AVAMMB1.Core.Input.GamepadButton b) => b switch
+    {
+        AVAMMB1.Core.Input.GamepadButton.Up => "D-pad up",
+        AVAMMB1.Core.Input.GamepadButton.Down => "D-pad down",
+        AVAMMB1.Core.Input.GamepadButton.Left => "D-pad left",
+        AVAMMB1.Core.Input.GamepadButton.Right => "D-pad right",
+        AVAMMB1.Core.Input.GamepadButton.LeftShoulder => "LB",
+        AVAMMB1.Core.Input.GamepadButton.RightShoulder => "RB",
+        AVAMMB1.Core.Input.GamepadButton.LeftTrigger => "LT",
+        AVAMMB1.Core.Input.GamepadButton.RightTrigger => "RT",
+        AVAMMB1.Core.Input.GamepadButton.Back => "View",
+        AVAMMB1.Core.Input.GamepadButton.Start => "Start",
+        _ => b.ToString(),
+    };
+}
+
 /// <summary>Settings: audio, display and key bindings.</summary>
 public sealed partial class SettingsViewModel : ViewModelBase
 {
@@ -159,6 +206,12 @@ public sealed partial class SettingsViewModel : ViewModelBase
         _gamepadEnabled = s.GamepadEnabled;
         GamepadStatus = App.Gamepad?.Status ?? "Gamepad support not running";
         _animateMonsters = s.AnimateMonsters;
+        _themeIndex = Math.Max(0, Array.IndexOf(ThemeKeys, s.ColorTheme));
+        _textScaleIndex = Math.Max(0, Array.IndexOf(TextScales, s.TextScale) is var i and >= 0 ? i : 1);
+        _resolutionIndex = Math.Max(0, Array.IndexOf(Resolutions, s.ViewResolution));
+        _smoothView = s.SmoothView;
+        _pad = new Dictionary<InputAction, AVAMMB1.Core.Input.GamepadButton>(s.GamepadBindings);
+        LoadPadRows();
         LoadBindings();
         AudioStatus = main.Services.Audio.Status;
         DataLocation = UserDataPaths.DataDirectory;
@@ -209,6 +262,117 @@ public sealed partial class SettingsViewModel : ViewModelBase
     /// <summary>Animated monsters.</summary>
     [ObservableProperty]
     private bool _animateMonsters;
+
+    private static readonly string[] ThemeKeys = ["Standard", "HighContrast", "ColorblindFriendly"];
+    private static readonly int[] TextScales = [90, 100, 115, 130];
+    private static readonly int[] Resolutions = [300, 480, 600];
+    private readonly Dictionary<InputAction, AVAMMB1.Core.Input.GamepadButton> _pad;
+    private PadRow? _capturingPad;
+
+    /// <summary>Theme choices.</summary>
+    public string[] ThemeOptions { get; } = ["Standard", "High contrast", "Colour-blind friendly"];
+    /// <summary>Text size choices.</summary>
+    public string[] TextScaleOptions { get; } = ["90%", "100%", "115%", "130%"];
+    /// <summary>3D view resolution choices.</summary>
+    public string[] ResolutionOptions { get; } = ["Classic 400 x 300", "Sharp 640 x 480", "High 800 x 600"];
+
+    /// <summary>Selected theme.</summary>
+    [ObservableProperty]
+    private int _themeIndex;
+
+    /// <summary>Selected text size.</summary>
+    [ObservableProperty]
+    private int _textScaleIndex;
+
+    /// <summary>Selected 3D view resolution.</summary>
+    [ObservableProperty]
+    private int _resolutionIndex;
+
+    /// <summary>Smooth scaling of the 3D view.</summary>
+    [ObservableProperty]
+    private bool _smoothView;
+
+    /// <summary>Controller buttons for exploring.</summary>
+    public ObservableCollection<PadRow> PadRows { get; } = new();
+
+    /// <summary>Controller hint text.</summary>
+    [ObservableProperty]
+    private string _padHint = "Click Rebind, then press a button on the controller. Start always opens the menu.";
+
+    /// <summary>Whether a controller button press is awaited.</summary>
+    public bool IsCapturingPad => _capturingPad is not null;
+
+    partial void OnThemeIndexChanged(int value) => PreviewTheme();
+    partial void OnTextScaleIndexChanged(int value) => PreviewTheme();
+
+    private void PreviewTheme()
+    {
+        var s = _main.Services.Settings;
+        s.ColorTheme = ThemeKeys[Math.Clamp(ThemeIndex, 0, ThemeKeys.Length - 1)];
+        s.TextScale = TextScales[Math.Clamp(TextScaleIndex, 0, TextScales.Length - 1)];
+        MainViewModel.ApplyTheme(s);
+    }
+
+    private void LoadPadRows()
+    {
+        PadRows.Clear();
+        foreach (var a in Enum.GetValues<InputAction>().Where(a => a is not (InputAction.QuickSave or InputAction.QuickLoad or InputAction.Note)))
+        {
+            PadRows.Add(new PadRow(a, _pad.TryGetValue(a, out var b) ? PadRow.Name(b) : "-"));
+        }
+    }
+
+    [RelayCommand]
+    private void RebindPad(PadRow row)
+    {
+        if (_capturingPad is not null)
+        {
+            _capturingPad.IsCapturing = false;
+        }
+        _capturingPad = row;
+        row.IsCapturing = true;
+        PadHint = App.Gamepad is null ? "No controller support is running - rebinding needs a connected controller." : $"Press a controller button for \"{row.Label}\"...";
+    }
+
+    /// <summary>Receives a controller button while rebinding.</summary>
+    /// <param name="button">Button pressed.</param>
+    public void CapturePad(AVAMMB1.Core.Input.GamepadButton button)
+    {
+        if (_capturingPad is not { } row)
+        {
+            return;
+        }
+        row.IsCapturing = false;
+        _capturingPad = null;
+        if (button == AVAMMB1.Core.Input.GamepadButton.Start)
+        {
+            PadHint = "Start is reserved for the menu. Choose another button.";
+            return;
+        }
+        var displaced = AVAMMB1.Core.Input.GamepadMapping.Rebind(_pad, row.Action, button);
+        LoadPadRows();
+        PadHint = $"\"{row.Label}\" is now on {PadRow.Name(button)}." + (displaced is { } d ? $" {PadRow.LabelOf(d)} no longer has a button." : "");
+    }
+
+    [RelayCommand]
+    private void ClearPad(PadRow row)
+    {
+        _pad.Remove(row.Action);
+        LoadPadRows();
+        PadHint = $"\"{row.Label}\" has no controller button now.";
+    }
+
+    [RelayCommand]
+    private void ResetPad()
+    {
+        _pad.Clear();
+        foreach (var (a, b) in AVAMMB1.Core.Input.GamepadMapping.DefaultExploring())
+        {
+            _pad[a] = b;
+        }
+        LoadPadRows();
+        PadHint = "Controller buttons reset to defaults.";
+    }
 
     /// <summary>Hint text.</summary>
     [ObservableProperty]
@@ -268,6 +432,10 @@ public sealed partial class SettingsViewModel : ViewModelBase
         s.FitToWindow = FitToWindow;
         s.GamepadEnabled = GamepadEnabled;
         s.AnimateMonsters = AnimateMonsters;
+        s.ViewResolution = Resolutions[Math.Clamp(ResolutionIndex, 0, Resolutions.Length - 1)];
+        s.SmoothView = SmoothView;
+        s.GamepadBindings = new Dictionary<InputAction, AVAMMB1.Core.Input.GamepadButton>(_pad);
+        PreviewTheme();
         _main.Services.SaveSettings();
         if (fullscreenChanged)
         {

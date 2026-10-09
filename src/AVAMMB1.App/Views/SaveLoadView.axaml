@@ -11,15 +11,15 @@
             <Button HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" Margin="0,1"
                     Command="{Binding $parent[UserControl].((vm:SaveLoadViewModel)DataContext).PickCommand}" CommandParameter="{Binding}">
               <Grid ColumnDefinitions="70,*">
-                <TextBlock Text="{Binding Label}" FontWeight="Bold" Foreground="{StaticResource Gold}" />
+                <TextBlock Text="{Binding Label}" FontWeight="Bold" Foreground="{DynamicResource Gold}" />
                 <TextBlock Grid.Column="1" Text="{Binding Description}" TextTrimming="CharacterEllipsis" />
               </Grid>
             </Button>
           </DataTemplate>
         </ItemsControl.ItemTemplate>
       </ItemsControl>
-      <TextBlock Text="{Binding Feedback}" Foreground="#9fd0ff" />
-      <TextBlock Text="{Binding Location, StringFormat='Saves are stored in: {0}'}" Classes="dim" FontSize="11" TextWrapping="Wrap" />
+      <TextBlock Text="{Binding Feedback}" Foreground="{DynamicResource Info}" />
+      <TextBlock Text="{Binding Location, StringFormat='Saves are stored in: {0}'}" Classes="dim" FontSize="{DynamicResource Font11}" TextWrapping="Wrap" />
       <Button Content="Back (Esc)" Command="{Binding BackCommand}" HorizontalAlignment="Right" />
     </StackPanel>
   </Border>

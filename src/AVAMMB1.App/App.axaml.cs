@@ -29,7 +29,11 @@ public partial class App : Application
     public static TextureCache Textures => Services.GetRequiredService<TextureCache>();
 
     /// <inheritdoc />
-    public override void Initialize() => AvaloniaXamlLoader.Load(this);
+    public override void Initialize()
+    {
+        AvaloniaXamlLoader.Load(this);
+        Theming.Theme.Apply(Theming.ThemeKind.Standard, 1); // replaced by the player's choice once settings load
+    }
 
     /// <summary>Builds the service container.</summary>
     /// <param name="options">Launch options.</param>

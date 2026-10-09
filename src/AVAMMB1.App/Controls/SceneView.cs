@@ -23,13 +23,35 @@ public sealed class SceneView : Control
     public static readonly StyledProperty<bool> AnimateSpritesProperty =
         AvaloniaProperty.Register<SceneView, bool>(nameof(AnimateSprites), true);
 
+    /// <summary>Height of the internal image (300 = classic 400 x 300).</summary>
+    public static readonly StyledProperty<int> ViewHeightProperty =
+        AvaloniaProperty.Register<SceneView, int>(nameof(ViewHeight), SceneRenderer.ClassicHeight);
+
+    /// <summary>Smooth (filtered) scaling instead of sharp pixels.</summary>
+    public static readonly StyledProperty<bool> SmoothProperty =
+        AvaloniaProperty.Register<SceneView, bool>(nameof(Smooth));
+
+    /// <summary>Internal image height.</summary>
+    public int ViewHeight
+    {
+        get => GetValue(ViewHeightProperty);
+        set => SetValue(ViewHeightProperty, value);
+    }
+
+    /// <summary>Smooth scaling.</summary>
+    public bool Smooth
+    {
+        get => GetValue(SmoothProperty);
+        set => SetValue(SmoothProperty, value);
+    }
+
     /// <summary>Duration of one step.</summary>
     public static readonly TimeSpan StepDuration = TimeSpan.FromMilliseconds(170);
 
     /// <summary>Duration of one 90-degree turn.</summary>
     public static readonly TimeSpan TurnDuration = TimeSpan.FromMilliseconds(150);
 
-    private readonly WriteableBitmap _bitmap = new(new PixelSize(SceneRenderer.Width, SceneRenderer.Height), new Vector(96, 96), PixelFormat.Bgra8888, AlphaFormat.Opaque);
+    private WriteableBitmap? _bitmap;
     private readonly System.Diagnostics.Stopwatch _clock = new();
     private SceneRenderer? _renderer;
     private SceneDescription? _shown;
@@ -43,7 +65,7 @@ public sealed class SceneView : Control
 
     static SceneView()
     {
-        AffectsRender<SceneView>(SceneProperty);
+        AffectsRender<SceneView>(SceneProperty, SmoothProperty);
     }
 
     /// <summary>Scene.</summary>
@@ -77,6 +99,11 @@ public sealed class SceneView : Control
         if (change.Property == AnimateSpritesProperty)
         {
             EnsureLoop();
+        }
+        if (change.Property == ViewHeightProperty && _shown is { } shown && !_animating)
+        {
+            Draw(shown, Camera.At(shown.X, shown.Y, shown.Facing)); // re-render at the new resolution
+            return;
         }
         if (change.Property != SceneProperty || Scene is not { } scene)
         {
@@ -162,19 +189,25 @@ public sealed class SceneView : Control
 
     private void Draw(SceneDescription scene, Camera camera)
     {
-        _renderer ??= new SceneRenderer(App.Textures);
+        if (_renderer is null || _renderer.Height != ViewHeight)
+        {
+            _renderer = new SceneRenderer(App.Textures, ViewHeight);
+            _bitmap?.Dispose();
+            _bitmap = new WriteableBitmap(new PixelSize(_renderer.Width, _renderer.Height), new Vector(96, 96), PixelFormat.Bgra8888, AlphaFormat.Opaque);
+        }
         _renderer.Time = AnimateSprites ? Environment.TickCount64 / 1000.0 : 0;
         _sinceBob.Restart();
         _renderer.Render(scene, camera);
-        using (var fb = _bitmap.Lock())
+        using (var fb = _bitmap!.Lock())
         {
             var px = _renderer.Pixels;
             unsafe
             {
-                for (var y = 0; y < SceneRenderer.Height; y++)
+                var (w, h) = (_renderer.Width, _renderer.Height);
+                for (var y = 0; y < h; y++)
                 {
-                    var dst = new Span<uint>((void*)(fb.Address + y * fb.RowBytes), SceneRenderer.Width);
-                    px.AsSpan(y * SceneRenderer.Width, SceneRenderer.Width).CopyTo(dst);
+                    var dst = new Span<uint>((void*)(fb.Address + y * fb.RowBytes), w);
+                    px.AsSpan(y * w, w).CopyTo(dst);
                 }
             }
         }
@@ -186,17 +219,19 @@ public sealed class SceneView : Control
     {
         var bounds = new Rect(Bounds.Size);
         context.FillRectangle(Brushes.Black, bounds);
-        if (Scene is null)
+        if (Scene is null || _bitmap is null)
         {
             return;
         }
-        var scale = Math.Min(bounds.Width / SceneRenderer.Width, bounds.Height / SceneRenderer.Height);
-        var w = SceneRenderer.Width * scale;
-        var h = SceneRenderer.Height * scale;
+        var src = _bitmap.PixelSize;
+        var scale = Math.Min(bounds.Width / src.Width, bounds.Height / src.Height);
+        var w = src.Width * scale;
+        var h = src.Height * scale;
         var dest = new Rect((bounds.Width - w) / 2, (bounds.Height - h) / 2, w, h);
-        using (context.PushRenderOptions(new RenderOptions { BitmapInterpolationMode = BitmapInterpolationMode.None }))
+        var mode = Smooth ? BitmapInterpolationMode.HighQuality : BitmapInterpolationMode.None;
+        using (context.PushRenderOptions(new RenderOptions { BitmapInterpolationMode = mode }))
         {
-            context.DrawImage(_bitmap, new Rect(0, 0, SceneRenderer.Width, SceneRenderer.Height), dest);
+            context.DrawImage(_bitmap, new Rect(0, 0, src.Width, src.Height), dest);
         }
     }
 }

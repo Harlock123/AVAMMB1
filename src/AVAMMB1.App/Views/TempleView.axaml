@@ -5,7 +5,7 @@
   <Border Classes="dialog" Width="720">
     <StackPanel Spacing="8">
       <TextBlock Classes="title" Text="{Binding Title}" />
-      <TextBlock Text="{Binding GoldText}" Foreground="{StaticResource Gold}" />
+      <TextBlock Text="{Binding GoldText}" Foreground="{DynamicResource Gold}" />
       <ItemsControl ItemsSource="{Binding Rows}">
           <ItemsControl.ItemTemplate>
             <DataTemplate x:DataType="vm:ServiceRowViewModel">
@@ -19,7 +19,7 @@
           </ItemsControl.ItemTemplate>
         </ItemsControl>
       <Button Content="Donate 100 gold" Command="{Binding DonateCommand}" HorizontalAlignment="Left" />
-      <TextBlock Text="{Binding Feedback}" TextWrapping="Wrap" Foreground="#9fd0ff" />
+      <TextBlock Text="{Binding Feedback}" TextWrapping="Wrap" Foreground="{DynamicResource Info}" />
       <Button Content="Leave (Esc)" Command="{Binding LeaveCommand}" HorizontalAlignment="Right" />
     </StackPanel>
   </Border>

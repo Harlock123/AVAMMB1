@@ -27,6 +27,16 @@ public sealed partial class GameViewModel : ViewModelBase
     /// <param name="main">Root view model.</param>
     public GameViewModel(MainViewModel main)
     {
+        // Re-show the log so its colours follow a theme change.
+        Theming.Theme.Changed += () =>
+        {
+            var lines = Messages.ToList();
+            Messages.Clear();
+            foreach (var m in lines)
+            {
+                Messages.Add(m);
+            }
+        };
         _main = main;
         Refresh();
     }
@@ -101,6 +111,10 @@ public sealed partial class GameViewModel : ViewModelBase
     public bool ShowMinimap => Services.Settings.ShowMinimap;
     /// <summary>Whether steps and turns are animated.</summary>
     public bool SmoothMovement => Services.Settings.SmoothMovement;
+    /// <summary>3D view internal image height.</summary>
+    public int ViewResolution => Services.Settings.ViewResolution;
+    /// <summary>Smooth scaling of the 3D view.</summary>
+    public bool SmoothView => Services.Settings.SmoothView;
 
     /// <summary>Re-reads everything from the session.</summary>
     public void Refresh()
@@ -169,6 +183,8 @@ public sealed partial class GameViewModel : ViewModelBase
         OnPropertyChanged(nameof(TimeText));
         OnPropertyChanged(nameof(ShowMinimap));
         OnPropertyChanged(nameof(SmoothMovement));
+        OnPropertyChanged(nameof(ViewResolution));
+        OnPropertyChanged(nameof(SmoothView));
         OnPropertyChanged(nameof(AnimateSprites));
         if (Combat is null)
         {

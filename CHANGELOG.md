@@ -19,8 +19,17 @@ All notable changes to this project are documented here. The format follows
   target's level, HP, armor class, whether it is undead, and its immunities, resistances and
   weaknesses.
 
+- Accessibility: colour themes (Standard, High contrast, Colour-blind friendly using the Okabe-Ito
+  palette - good news blue, bad news orange), text size 90-130%, and rebindable controller buttons
+  for exploring (Settings > Controller: press Rebind, then the button; Start always opens the menu).
+- 3D view resolution (classic 400 x 300, 640 x 480, 800 x 600) and optional smooth scaling. The smoke
+  test reports render times; in a Release build on an ARM64 Linux machine 800 x 600 takes about
+  4 ms per frame.
+
 ### Changed
 - The game screen's button bar has Journal and Note buttons; the message log is now headed "Log".
+- Settings are split into General, Keyboard and Controller tabs.
+- All interface colours and font sizes are theme resources (`AVAMMB1.App/Theming/Theme.cs`).
 
 ### Changed
 - Balance simulator plays more like a person: it opens each zone's chests, uses healing potions in

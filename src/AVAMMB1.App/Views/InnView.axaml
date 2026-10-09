@@ -6,7 +6,7 @@
   <Border Classes="dialog" Width="820">
     <StackPanel Spacing="8">
       <TextBlock Classes="title" Text="{Binding Title}" />
-      <TextBlock Text="{Binding GoldText}" Foreground="{StaticResource Gold}" />
+      <TextBlock Text="{Binding GoldText}" Foreground="{DynamicResource Gold}" />
       <StackPanel Orientation="Horizontal">
         <Button Content="{Binding StayLabel}" Command="{Binding StayCommand}" FontWeight="Bold" />
         <Button Content="Save Game" Command="{Binding SaveGameCommand}" />
@@ -19,7 +19,7 @@
             <ItemsControl.ItemTemplate>
               <DataTemplate x:DataType="vm:PartyMemberViewModel">
                 <Grid ColumnDefinitions="*,Auto,Auto" Margin="0,1">
-                  <TextBlock VerticalAlignment="Center"><Run Text="{Binding Slot}" /><Run Text=". " /><Run Text="{Binding Name}" FontWeight="SemiBold" /><Run Text="  " /><Run Text="{Binding ClassLevel}" Foreground="{StaticResource Dim}" /></TextBlock>
+                  <TextBlock VerticalAlignment="Center"><Run Text="{Binding Slot}" /><Run Text=". " /><Run Text="{Binding Name}" FontWeight="SemiBold" /><Run Text="  " /><Run Text="{Binding ClassLevel}" Foreground="{DynamicResource Dim}" /></TextBlock>
                   <Button Grid.Column="1" Classes="chip" Content="Up" Command="{Binding $parent[UserControl].((vm:InnViewModel)DataContext).MoveUpCommand}" CommandParameter="{Binding}" />
                   <Button Grid.Column="2" Classes="chip" Content="Stay here" Command="{Binding $parent[UserControl].((vm:InnViewModel)DataContext).LeaveMemberCommand}" CommandParameter="{Binding}" />
                 </Grid>
@@ -33,7 +33,7 @@
             <ItemsControl.ItemTemplate>
               <DataTemplate x:DataType="ch:Character">
                 <Grid ColumnDefinitions="*,Auto" Margin="0,1">
-                  <TextBlock VerticalAlignment="Center"><Run Text="{Binding Name}" FontWeight="SemiBold" /><Run Text="  L" /><Run Text="{Binding Level}" /><Run Text=" " /><Run Text="{Binding Class}" Foreground="{StaticResource Dim}" /><Run Text="  " /><Run Text="{Binding Gold}" Foreground="{StaticResource Gold}" /><Run Text=" gp" Foreground="{StaticResource Gold}" /></TextBlock>
+                  <TextBlock VerticalAlignment="Center"><Run Text="{Binding Name}" FontWeight="SemiBold" /><Run Text="  L" /><Run Text="{Binding Level}" /><Run Text=" " /><Run Text="{Binding Class}" Foreground="{DynamicResource Dim}" /><Run Text="  " /><Run Text="{Binding Gold}" Foreground="{DynamicResource Gold}" /><Run Text=" gp" Foreground="{DynamicResource Gold}" /></TextBlock>
                   <Button Grid.Column="1" Classes="chip" Content="Join" Command="{Binding $parent[UserControl].((vm:InnViewModel)DataContext).JoinCommand}" CommandParameter="{Binding}" />
                 </Grid>
               </DataTemplate>
@@ -41,7 +41,7 @@
           </ItemsControl>
         </StackPanel>
       </Grid>
-      <Border IsVisible="{Binding IsChoosingGold}" Background="#2a2438" CornerRadius="4" Padding="10">
+      <Border IsVisible="{Binding IsChoosingGold}" Background="{DynamicResource ButtonBg}" CornerRadius="4" Padding="10">
         <StackPanel Spacing="6">
           <TextBlock Text="{Binding LeavePrompt}" TextWrapping="Wrap" />
           <StackPanel Orientation="Horizontal" Spacing="6">
@@ -51,7 +51,7 @@
           </StackPanel>
         </StackPanel>
       </Border>
-      <TextBlock Text="{Binding Feedback}" TextWrapping="Wrap" Foreground="#9fd0ff" />
+      <TextBlock Text="{Binding Feedback}" TextWrapping="Wrap" Foreground="{DynamicResource Info}" />
       <Button Content="Leave (Esc)" Command="{Binding LeaveCommand}" HorizontalAlignment="Right" />
     </StackPanel>
   </Border>

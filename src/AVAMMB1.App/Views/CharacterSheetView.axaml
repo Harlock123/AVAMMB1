@@ -9,7 +9,7 @@
         <c:PixelImage Source="{Binding Member.Portrait}" Width="64" Height="64" Margin="0,0,10,0" />
         <StackPanel Grid.Column="1" VerticalAlignment="Center">
           <TextBlock Classes="title" Text="{Binding Header}" />
-          <TextBlock Text="Left/Right or 1-6 to switch characters" Classes="dim" FontSize="12" />
+          <TextBlock Text="Left/Right or 1-6 to switch characters" Classes="dim" FontSize="{DynamicResource Font12}" />
         </StackPanel>
         <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
           <Button Content="&lt; Prev" Command="{Binding PreviousCommand}" />
@@ -24,9 +24,9 @@
             <DataTemplate x:DataType="x:String"><TextBlock Text="{Binding}" FontFamily="monospace" /></DataTemplate>
           </ItemsControl.ItemTemplate>
         </ItemsControl>
-        <TextBlock Text="{Binding Summary}" TextWrapping="Wrap" Margin="0,8,0,0" FontSize="13" LineHeight="20" />
+        <TextBlock Text="{Binding Summary}" TextWrapping="Wrap" Margin="0,8,0,0" FontSize="{DynamicResource Font13}" LineHeight="20" />
         <TextBlock Classes="h2" Text="Gold" />
-        <TextBlock Text="{Binding GoldLine}" TextWrapping="Wrap" FontSize="13" Foreground="{StaticResource Gold}" />
+        <TextBlock Text="{Binding GoldLine}" TextWrapping="Wrap" FontSize="{DynamicResource Font13}" Foreground="{DynamicResource Gold}" />
         <StackPanel Orientation="Horizontal" Spacing="2">
           <NumericUpDown Value="{Binding GoldAmount}" Minimum="0" Increment="10" FormatString="0" Width="110" />
           <Button Classes="chip" Content="Deposit" Command="{Binding DepositGoldCommand}" ToolTip.Tip="Put this much into the party purse" />
@@ -47,11 +47,11 @@
               <Button HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Padding="4,0" Margin="0,1" MinHeight="0"
                       Command="{Binding $parent[UserControl].((vm:CharacterSheetViewModel)DataContext).SelectCommand}" CommandParameter="{Binding}">
                 <Grid ColumnDefinitions="70,30,*" Height="34">
-                  <TextBlock Text="{Binding SlotLabel}" Classes="dim" VerticalAlignment="Center" FontSize="12" />
+                  <TextBlock Text="{Binding SlotLabel}" Classes="dim" VerticalAlignment="Center" FontSize="{DynamicResource Font12}" />
                   <Image Grid.Column="1" Classes="pixel" Source="{Binding Icon}" Width="24" Height="24" />
                   <StackPanel Grid.Column="2" VerticalAlignment="Center">
                     <TextBlock Text="{Binding Name}" />
-                    <TextBlock Text="{Binding Detail}" FontSize="11" Classes="dim" />
+                    <TextBlock Text="{Binding Detail}" FontSize="{DynamicResource Font11}" Classes="dim" />
                   </StackPanel>
                 </Grid>
               </Button>
@@ -73,7 +73,7 @@
                       <c:PixelImage Source="{Binding Icon}" Width="28" Height="28" />
                       <StackPanel Grid.Column="1" VerticalAlignment="Center">
                         <TextBlock Text="{Binding Name}" />
-                        <TextBlock Text="{Binding Detail}" FontSize="11" Classes="dim" />
+                        <TextBlock Text="{Binding Detail}" FontSize="{DynamicResource Font11}" Classes="dim" />
                       </StackPanel>
                     </Grid>
                   </Button>
@@ -83,7 +83,7 @@
             <TextBlock Classes="h2" Text="Spells" IsVisible="{Binding Spells.Count}" />
             <ItemsControl ItemsSource="{Binding Spells}">
               <ItemsControl.ItemTemplate>
-                <DataTemplate x:DataType="x:String"><TextBlock Text="{Binding}" FontSize="12" TextWrapping="Wrap" /></DataTemplate>
+                <DataTemplate x:DataType="x:String"><TextBlock Text="{Binding}" FontSize="{DynamicResource Font12}" TextWrapping="Wrap" /></DataTemplate>
               </ItemsControl.ItemTemplate>
             </ItemsControl>
           </StackPanel>
@@ -91,7 +91,7 @@
       </DockPanel>
 
       <StackPanel Grid.Row="2" Grid.ColumnSpan="5" Spacing="4" Margin="0,8,0,0">
-        <TextBlock Text="{Binding SelectedDescription}" Foreground="{StaticResource Gold}" />
+        <TextBlock Text="{Binding SelectedDescription}" Foreground="{DynamicResource Gold}" />
         <StackPanel Orientation="Horizontal" IsEnabled="{Binding HasSelection}">
           <Button Content="Equip / Remove" Command="{Binding EquipOrRemoveCommand}" />
           <Button Content="Use" Command="{Binding UseCommand}" />
@@ -107,7 +107,7 @@
           </ItemsControl>
         </StackPanel>
         <Grid ColumnDefinitions="*,Auto">
-          <TextBlock Text="{Binding Feedback}" Foreground="#9fd0ff" VerticalAlignment="Center" />
+          <TextBlock Text="{Binding Feedback}" Foreground="{DynamicResource Info}" VerticalAlignment="Center" />
           <Button Grid.Column="1" Content="Close (Esc)" Command="{Binding CloseCommand}" />
         </Grid>
       </StackPanel>

@@ -9,13 +9,14 @@
     <!-- First-person view -->
     <Border Classes="panel" Padding="4" Margin="0,0,8,8">
       <Grid>
-        <c:SceneView Scene="{Binding Scene}" Animate="{Binding SmoothMovement}" AnimateSprites="{Binding AnimateSprites}" />
+        <c:SceneView Scene="{Binding Scene}" Animate="{Binding SmoothMovement}" AnimateSprites="{Binding AnimateSprites}"
+                     ViewHeight="{Binding ViewResolution}" Smooth="{Binding SmoothView}" />
         <v:CombatStageView DataContext="{Binding Combat}" IsVisible="{Binding $parent[UserControl].((vm:GameViewModel)DataContext).InCombat}" />
         <Border VerticalAlignment="Top" HorizontalAlignment="Center" Background="#aa000000" CornerRadius="0,0,6,6" Padding="14,4">
-          <TextBlock Text="{Binding LocationText}" Foreground="{StaticResource Gold}" FontSize="18" FontWeight="Bold" />
+          <TextBlock Text="{Binding LocationText}" Foreground="{DynamicResource Gold}" FontSize="{DynamicResource Font18}" FontWeight="Bold" />
         </Border>
         <Border VerticalAlignment="Bottom" HorizontalAlignment="Center" Background="#aa000000" CornerRadius="6,6,0,0" Padding="12,3">
-          <TextBlock Text="{Binding CompassText}" FontSize="14" />
+          <TextBlock Text="{Binding CompassText}" FontSize="{DynamicResource Font14}" />
         </Border>
       </Grid>
     </Border>
@@ -28,7 +29,7 @@
         <StackPanel DockPanel.Dock="Top" Spacing="6">
           <c:MapView MapInfo="{Binding MapInfo}" Radius="5" Height="200" IsVisible="{Binding ShowMinimap}" />
           <Grid ColumnDefinitions="*,Auto">
-            <TextBlock Text="{Binding GoldText}" Foreground="{StaticResource Gold}" />
+            <TextBlock Text="{Binding GoldText}" Foreground="{DynamicResource Gold}" TextTrimming="CharacterEllipsis" />
             <TextBlock Grid.Column="1" Text="{Binding TimeText}" Classes="dim" />
           </Grid>
           <!-- Movement -->
@@ -44,7 +45,7 @@
             <UniformGrid.Styles>
               <Style Selector="Button">
                 <Setter Property="Padding" Value="0,5" />
-                <Setter Property="FontSize" Value="11.5" />
+                <Setter Property="FontSize" Value="11.5" /> <!-- fixed: the labels just fit -->
               </Style>
             </UniformGrid.Styles>
             <Button Content="Use (Spc)" Command="{Binding InteractCommand}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" />
@@ -60,11 +61,11 @@
           </UniformGrid>
           <TextBlock Classes="h2" Text="Log" Margin="0,4,0,0" />
         </StackPanel>
-        <ScrollViewer x:Name="LogScroller" Background="#0b0a10">
+        <ScrollViewer x:Name="LogScroller" Background="{DynamicResource ScreenBg}">
           <ItemsControl ItemsSource="{Binding Messages}" Margin="6,4">
             <ItemsControl.ItemTemplate>
               <DataTemplate x:DataType="vm:MessageViewModel">
-                <TextBlock Text="{Binding Text}" Foreground="{Binding Brush}" TextWrapping="Wrap" FontSize="13" Margin="0,1" />
+                <TextBlock Text="{Binding Text}" Foreground="{Binding Brush}" TextWrapping="Wrap" FontSize="{DynamicResource Font13}" Margin="0,1" />
               </DataTemplate>
             </ItemsControl.ItemTemplate>
           </ItemsControl>
@@ -86,12 +87,12 @@
             <Border Classes="panel" Padding="6" Classes.active="{Binding IsActive}" Classes.hurt="{Binding IsHurt}">
               <Border.Styles>
                 <Style Selector="Border.active">
-                  <Setter Property="BorderBrush" Value="#ffd75e" />
-                  <Setter Property="Background" Value="#2e2840" />
+                  <Setter Property="BorderBrush" Value="{DynamicResource Loot}" />
+                  <Setter Property="Background" Value="{DynamicResource CardSelBg}" />
                 </Style>
                 <Style Selector="Border.hurt">
-                  <Setter Property="BorderBrush" Value="#ff4030" />
-                  <Setter Property="Background" Value="#5a1a1a" />
+                  <Setter Property="BorderBrush" Value="{DynamicResource Danger}" />
+                  <Setter Property="Background" Value="{DynamicResource CardDangerBg}" />
                   <Style.Animations>
                     <Animation Duration="0:0:0.45">
                       <KeyFrame Cue="0%"><Setter Property="TranslateTransform.X" Value="0" /></KeyFrame>
@@ -104,30 +105,32 @@
                 </Style>
               </Border.Styles>
               <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto">
-                <Border Grid.RowSpan="3" Background="#0b0a10" Margin="0,0,6,0" CornerRadius="2">
+                <Border Grid.RowSpan="3" Background="{DynamicResource ScreenBg}" Margin="0,0,6,0" CornerRadius="2">
                   <c:PixelImage Source="{Binding Portrait}" Width="48" Height="48" />
                 </Border>
-                <TextBlock Grid.Column="1" Text="{Binding Name}" FontWeight="Bold" />
-                <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding ClassLevel}" Classes="dim" FontSize="11" TextTrimming="CharacterEllipsis" />
+                <Grid Grid.Column="1" ColumnDefinitions="*,Auto">
+                  <TextBlock Text="{Binding Name}" FontWeight="Bold" TextTrimming="CharacterEllipsis" />
+                  <Border Grid.Column="1" VerticalAlignment="Top" Margin="4,0,0,0"
+                          Background="{DynamicResource BadgeBg}" CornerRadius="3" Padding="4,0" IsVisible="{Binding !IsOk}">
+                    <TextBlock Text="{Binding Status}" FontSize="{DynamicResource Font11}" />
+                  </Border>
+                </Grid>
+                <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding ClassLevel}" Classes="dim" FontSize="{DynamicResource Font11}" TextTrimming="CharacterEllipsis" />
                 <StackPanel Grid.Column="1" Grid.Row="2" Orientation="Horizontal" Spacing="8">
-                  <TextBlock FontSize="12"><Run Text="AC " Foreground="{StaticResource Dim}" /><Run Text="{Binding ArmorClass}" /></TextBlock>
-                  <TextBlock FontSize="12"><Run Text="Food " Foreground="{StaticResource Dim}" /><Run Text="{Binding Food}" /></TextBlock>
-                  <TextBlock FontSize="12" Text="LVL!" Foreground="#8fe08f" IsVisible="{Binding CanLevel}" FontWeight="Bold" />
+                  <TextBlock FontSize="{DynamicResource Font12}"><Run Text="AC " Foreground="{DynamicResource Dim}" /><Run Text="{Binding ArmorClass}" /></TextBlock>
+                  <TextBlock FontSize="{DynamicResource Font12}"><Run Text="Food " Foreground="{DynamicResource Dim}" /><Run Text="{Binding Food}" /></TextBlock>
+                  <TextBlock FontSize="{DynamicResource Font12}" Text="LVL!" Foreground="{DynamicResource Good}" IsVisible="{Binding CanLevel}" FontWeight="Bold" />
                 </StackPanel>
                 <Grid Grid.Row="3" Grid.ColumnSpan="2" ColumnDefinitions="26,*,60" Margin="0,4,0,0">
-                  <TextBlock Text="HP" FontSize="11" Classes="dim" />
-                  <ProgressBar Grid.Column="1" Minimum="0" Maximum="1" Value="{Binding HpFraction}" Foreground="{StaticResource HpBrush}" VerticalAlignment="Center" />
-                  <TextBlock Grid.Column="2" Text="{Binding HpText}" FontSize="11" HorizontalAlignment="Right" />
+                  <TextBlock Text="HP" FontSize="{DynamicResource Font11}" Classes="dim" />
+                  <ProgressBar Grid.Column="1" Minimum="0" Maximum="1" Value="{Binding HpFraction}" Foreground="{DynamicResource HpBrush}" VerticalAlignment="Center" />
+                  <TextBlock Grid.Column="2" Text="{Binding HpText}" FontSize="{DynamicResource Font11}" HorizontalAlignment="Right" />
                 </Grid>
                 <Grid Grid.Row="4" Grid.ColumnSpan="2" ColumnDefinitions="26,*,60">
-                  <TextBlock Text="SP" FontSize="11" Classes="dim" />
-                  <ProgressBar Grid.Column="1" Minimum="0" Maximum="1" Value="{Binding SpFraction}" Foreground="{StaticResource SpBrush}" VerticalAlignment="Center" />
-                  <TextBlock Grid.Column="2" Text="{Binding SpText}" FontSize="11" HorizontalAlignment="Right" />
+                  <TextBlock Text="SP" FontSize="{DynamicResource Font11}" Classes="dim" />
+                  <ProgressBar Grid.Column="1" Minimum="0" Maximum="1" Value="{Binding SpFraction}" Foreground="{DynamicResource SpBrush}" VerticalAlignment="Center" />
+                  <TextBlock Grid.Column="2" Text="{Binding SpText}" FontSize="{DynamicResource Font11}" HorizontalAlignment="Right" />
                 </Grid>
-                <Border Grid.ColumnSpan="2" Grid.RowSpan="5" HorizontalAlignment="Right" VerticalAlignment="Top"
-                        Background="#aa7a2020" CornerRadius="3" Padding="4,0" IsVisible="{Binding !IsOk}">
-                  <TextBlock Text="{Binding Status}" FontSize="11" />
-                </Border>
               </Grid>
             </Border>
           </Button>

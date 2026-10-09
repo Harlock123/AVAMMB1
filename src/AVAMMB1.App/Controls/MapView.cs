@@ -28,7 +28,6 @@ public sealed class MapView : Control
     public static readonly StyledProperty<int> RevisionProperty =
         AvaloniaProperty.Register<MapView, int>(nameof(Revision));
 
-    private static readonly IBrush NoteBrush = new SolidColorBrush(Color.Parse("#7fe0c0"));
     private static readonly IPen SelectedPen = new Pen(Brushes.White, 2, new DashStyle([2, 2], 0));
     private (int X0, int Y0, double Cell, double Ox, double Oy) _layout;
 
@@ -68,14 +67,28 @@ public sealed class MapView : Control
         }
     }
 
-    private static readonly IBrush Background = new SolidColorBrush(Color.Parse("#0b0b12"));
-    private static readonly IBrush Floor = new SolidColorBrush(Color.Parse("#2a2a3a"));
-    private static readonly IBrush PartyBrush = new SolidColorBrush(Color.Parse("#ffd75e"));
-    private static readonly IPen WallPen = new Pen(new SolidColorBrush(Color.Parse("#d8d0c0")), 2);
-    private static readonly IPen DoorPen = new Pen(new SolidColorBrush(Color.Parse("#e09040")), 3);
-    private static readonly IPen SecretPen = new Pen(new SolidColorBrush(Color.Parse("#c070ff")), 3);
-    private static readonly IPen LockPen = new Pen(new SolidColorBrush(Color.Parse("#ff4040")), 3);
-    private static readonly IPen GridPen = new Pen(new SolidColorBrush(Color.Parse("#1c1c28")), 1);
+    private static IBrush Background => Theming.Theme.Brush("MapBg");
+    private static IBrush Floor => Theming.Theme.Brush("MapFloor");
+    private static IBrush PartyBrush => Theming.Theme.Brush("MapParty");
+    private static IBrush NoteBrush => Theming.Theme.Brush("MapNote");
+    private static IPen WallPen => Pen("MapWall", 2);
+    private static IPen DoorPen => Pen("MapDoor", 3);
+    private static IPen SecretPen => Pen("MapSecret", 3);
+    private static IPen LockPen => Pen("MapLocked", 3);
+    private static IPen GridPen => Pen("MapGrid", 1);
+    private static readonly Dictionary<(string, double, Theming.ThemeKind), IPen> Pens = new();
+
+    private static IPen Pen(string key, double width)
+    {
+        // High contrast also thickens the lines.
+        var w = Theming.Theme.Kind == Theming.ThemeKind.HighContrast && width > 1 ? width + 1 : width;
+        if (!Pens.TryGetValue((key, w, Theming.Theme.Kind), out var p))
+        {
+            Pens[(key, w, Theming.Theme.Kind)] = p = new Pen(Theming.Theme.Brush(key), w);
+        }
+        return p;
+    }
+
     private static readonly Dictionary<string, IBrush> TerrainBrushes = new();
 
     static MapView()
@@ -108,13 +121,13 @@ public sealed class MapView : Control
 
     private static IBrush EventBrush(MapEventKind kind) => kind switch
     {
-        MapEventKind.Shop or MapEventKind.Inn or MapEventKind.Temple or MapEventKind.Tavern or MapEventKind.Training => TerrainBrush("#5ec8ff"),
-        MapEventKind.Teleport => TerrainBrush("#c070ff"),
-        MapEventKind.Treasure => TerrainBrush("#ffd75e"),
-        MapEventKind.Fountain => TerrainBrush("#40a0ff"),
-        MapEventKind.Quest or MapEventKind.Victory => TerrainBrush("#ff70b0"),
-        MapEventKind.Encounter => TerrainBrush("#ff5040"),
-        _ => TerrainBrush("#c0c0c0"),
+        MapEventKind.Shop or MapEventKind.Inn or MapEventKind.Temple or MapEventKind.Tavern or MapEventKind.Training => Theming.Theme.Brush("MapServices"),
+        MapEventKind.Teleport => Theming.Theme.Brush("MapPassage"),
+        MapEventKind.Treasure => Theming.Theme.Brush("MapTreasure"),
+        MapEventKind.Fountain => Theming.Theme.Brush("MapFountain"),
+        MapEventKind.Quest or MapEventKind.Victory => Theming.Theme.Brush("MapQuest"),
+        MapEventKind.Encounter => Theming.Theme.Brush("MapEncounter"),
+        _ => Theming.Theme.Brush("MapOther"),
     };
 
     /// <inheritdoc />
@@ -162,7 +175,7 @@ public sealed class MapView : Control
                 }
                 var r = CellRect(x, y);
                 var terrain = map.Terrain(x, y);
-                var brush = terrain?.MapColor is { } c ? TerrainBrush(c) : map.IsSolid(x, y) ? TerrainBrush("#6b5b4b") : Floor;
+                var brush = terrain?.MapColor is { } c ? TerrainBrush(c) : map.IsSolid(x, y) ? Theming.Theme.Brush("MapSolid") : Floor;
                 context.FillRectangle(brush, r.Deflate(map.IsSolid(x, y) ? 0 : 0.5));
                 context.DrawRectangle(GridPen, r);
             }

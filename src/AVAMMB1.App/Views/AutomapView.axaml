@@ -13,33 +13,33 @@
         <WrapPanel.Styles>
           <Style Selector="TextBlock"><Setter Property="Margin" Value="0,0,14,0" /><Setter Property="VerticalAlignment" Value="Center" /></Style>
         </WrapPanel.Styles>
-        <TextBlock Text="&#x25CF; services" Foreground="#5ec8ff" />
-        <TextBlock Text="&#x25CF; passages" Foreground="#c070ff" />
-        <TextBlock Text="&#x25CF; treasure" Foreground="#ffd75e" />
-        <TextBlock Text="&#x25CF; fountain" Foreground="#40a0ff" />
-        <TextBlock Text="&#x25CF; quest" Foreground="#ff70b0" />
-        <TextBlock Text="&#x25A0; note" Foreground="#7fe0c0" />
-        <TextBlock Text="&#x2501; door" Foreground="#e09040" />
-        <TextBlock Text="&#x2501; locked" Foreground="#ff4040" />
-        <TextBlock Text="&#x2501; secret" Foreground="#c070ff" />
+        <TextBlock Text="&#x25CF; services" Foreground="{DynamicResource MapServices}" />
+        <TextBlock Text="&#x25CF; passages" Foreground="{DynamicResource MapPassage}" />
+        <TextBlock Text="&#x25CF; treasure" Foreground="{DynamicResource MapTreasure}" />
+        <TextBlock Text="&#x25CF; fountain" Foreground="{DynamicResource MapFountain}" />
+        <TextBlock Text="&#x25CF; quest" Foreground="{DynamicResource MapQuest}" />
+        <TextBlock Text="&#x25A0; note" Foreground="{DynamicResource MapNote}" />
+        <TextBlock Text="&#x2501; door" Foreground="{DynamicResource MapDoor}" />
+        <TextBlock Text="&#x2501; locked" Foreground="{DynamicResource MapLocked}" />
+        <TextBlock Text="&#x2501; secret" Foreground="{DynamicResource MapSecret}" />
         <Button Content="Close (M)" Command="{Binding CloseCommand}" />
       </WrapPanel>
       <DockPanel DockPanel.Dock="Right" Width="270" Margin="10,0,0,0">
         <StackPanel DockPanel.Dock="Top" Spacing="4">
           <TextBlock Classes="h2" Text="Notes" />
-          <TextBlock Text="{Binding NoteLabel}" Classes="dim" FontSize="12" TextWrapping="Wrap" />
+          <TextBlock Text="{Binding NoteLabel}" Classes="dim" FontSize="{DynamicResource Font12}" TextWrapping="Wrap" />
           <TextBox x:Name="NoteBox" Text="{Binding NoteText}" AcceptsReturn="False" MaxLength="200" TextWrapping="Wrap" Height="70" Watermark="e.g. Locked door - need a key" />
           <StackPanel Orientation="Horizontal" Spacing="6">
             <Button Content="Save note" Command="{Binding SaveNoteCommand}" />
             <Button Content="Delete" Command="{Binding DeleteNoteCommand}" />
           </StackPanel>
-          <TextBlock Text="Click any square on the map to note it." Classes="dim" FontSize="12" TextWrapping="Wrap" />
+          <TextBlock Text="Click any square on the map to note it." Classes="dim" FontSize="{DynamicResource Font12}" TextWrapping="Wrap" />
         </StackPanel>
         <ScrollViewer Margin="0,8,0,0">
           <ItemsControl ItemsSource="{Binding Notes}">
             <ItemsControl.ItemTemplate>
               <DataTemplate x:DataType="x:String">
-                <TextBlock Text="{Binding}" TextWrapping="Wrap" FontSize="12" Margin="0,2" />
+                <TextBlock Text="{Binding}" TextWrapping="Wrap" FontSize="{DynamicResource Font12}" Margin="0,2" />
               </DataTemplate>
             </ItemsControl.ItemTemplate>
           </ItemsControl>

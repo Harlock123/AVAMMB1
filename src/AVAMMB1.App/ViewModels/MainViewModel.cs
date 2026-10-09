@@ -15,11 +15,17 @@ public sealed partial class MainViewModel : ViewModelBase
     {
         Services = services;
         services.Audio.SetVolumes(services.Settings.MusicVolume, services.Settings.SfxVolume, services.Settings.AmbienceVolume);
+        ApplyTheme(services.Settings);
         _currentScreen = new TitleViewModel(this);
     }
 
     /// <summary>Shared services.</summary>
     public GameServices Services { get; }
+
+    /// <summary>Applies the colour theme and text size from the settings.</summary>
+    /// <param name="settings">Settings.</param>
+    public static void ApplyTheme(AVAMMB1.Core.Persistence.GameSettings settings) =>
+        Theming.Theme.Apply(Enum.TryParse<Theming.ThemeKind>(settings.ColorTheme, out var k) ? k : Theming.ThemeKind.Standard, settings.TextScale / 100.0);
 
     /// <summary>Screen currently displayed.</summary>
     [ObservableProperty]

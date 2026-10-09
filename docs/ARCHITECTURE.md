@@ -84,6 +84,10 @@ Randomness always flows through `IRandomSource`, so tests can script dice rolls
   `MapView` draws the automap with vector primitives from the explored-cell bitmap in `GameState`.
 * **Textures**: `TextureCache` loads PNGs from Avalonia resources (`avares://AVAMMB1/Assets/...`),
   decodes them to raw pixels for the ray caster, and composites paper-doll portraits.
+* **Theming**: `Theming/Theme` holds every interface colour for the three themes and sets them, plus
+  `Font<size>` text sizes scaled by the player's choice, as application resources. Views use
+  `DynamicResource`, so a change applies immediately; custom-drawn controls (`MapView`) and log
+  lines read `Theme.Brush(key)`.
 * **Audio**: `OpenAlAudioService` (Silk.NET OpenAL + OpenAL Soft natives for every RID) decodes Ogg
   Vorbis with NVorbis; sound effects are cached buffers on a pool of sources. Music and the map's
   ambient loop are two independent `StreamChannel`s, each streaming on its own background thread

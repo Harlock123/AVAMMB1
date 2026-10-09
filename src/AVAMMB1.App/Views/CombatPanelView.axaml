@@ -9,7 +9,7 @@
         <TextBlock Classes="title" Text="Battle!" />
         <TextBlock Grid.Column="1" Text="{Binding RoundText}" Classes="dim" VerticalAlignment="Center" />
       </Grid>
-      <TextBlock Text="{Binding Prompt}" FontSize="15" Foreground="{StaticResource Gold}" TextWrapping="Wrap" />
+      <TextBlock Text="{Binding Prompt}" FontSize="{DynamicResource Font15}" Foreground="{DynamicResource Gold}" TextWrapping="Wrap" />
       <WrapPanel IsVisible="{Binding IsOpening}">
         <Button Content="Fight (F)" Command="{Binding FightCommand}" FontWeight="Bold" />
         <Button Content="{Binding RunText}" Command="{Binding FleeCommand}" />
@@ -29,8 +29,8 @@
           <Button Content="{Binding AutoLabel}" Command="{Binding ToggleAutoCommand}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"
                   ToolTip.Tip="Fight automatically with weapons and healing; pauses if anyone is badly hurt" />
         </UniformGrid>
-        <TextBlock Text="Click a monster or press 1-9 to target." Classes="dim" FontSize="12" />
-        <TextBlock Text="{Binding TargetInfo}" Foreground="#9fd0ff" FontSize="12" TextWrapping="Wrap" />
+        <TextBlock Text="Click a monster or press 1-9 to target." Classes="dim" FontSize="{DynamicResource Font12}" />
+        <TextBlock Text="{Binding TargetInfo}" Foreground="{DynamicResource Info}" FontSize="{DynamicResource Font12}" TextWrapping="Wrap" />
       </StackPanel>
       <StackPanel IsVisible="{Binding IsChoosing}" Spacing="2">
         <ItemsControl ItemsSource="{Binding Choices}">
@@ -59,11 +59,11 @@
       <Button Content="Continue (Enter)" Command="{Binding ContinueCommand}" IsVisible="{Binding IsFinished}" FontWeight="Bold" HorizontalAlignment="Left" />
       <TextBlock Classes="h2" Text="Battle log" />
     </StackPanel>
-    <ScrollViewer x:Name="LogScroller" Background="#0b0a10">
+    <ScrollViewer x:Name="LogScroller" Background="{DynamicResource ScreenBg}">
       <ItemsControl ItemsSource="{Binding Log}" Margin="6,4">
         <ItemsControl.ItemTemplate>
           <DataTemplate x:DataType="vm:MessageViewModel">
-            <TextBlock Text="{Binding Text}" Foreground="{Binding Brush}" TextWrapping="Wrap" FontSize="13" Margin="0,1" />
+            <TextBlock Text="{Binding Text}" Foreground="{Binding Brush}" TextWrapping="Wrap" FontSize="{DynamicResource Font13}" Margin="0,1" />
           </DataTemplate>
         </ItemsControl.ItemTemplate>
       </ItemsControl>

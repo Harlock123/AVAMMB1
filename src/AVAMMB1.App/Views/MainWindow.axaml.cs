@@ -110,8 +110,13 @@ public partial class MainWindow : Window
         {
             return;
         }
+        if (vm.CurrentScreen is SettingsViewModel { IsCapturingPad: true } settings)
+        {
+            settings.CapturePad(button);
+            return;
+        }
         var context = vm.CurrentScreen is GameViewModel g ? g.GamepadContext : GamepadContext.Menu;
-        var command = GamepadMapping.Map(context, button);
+        var command = GamepadMapping.Map(context, button, vm.Services.Settings.GamepadBindings);
         if (command.Action is { } action && vm.CurrentScreen is GameViewModel game)
         {
             game.Perform(action);

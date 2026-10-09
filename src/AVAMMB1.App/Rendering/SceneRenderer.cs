@@ -61,16 +61,32 @@ public sealed class SceneDescription
 /// Software ray caster producing a classic pseudo-3D grid view. Supports both thin walls between
 /// cells (doors, secret doors) and solid blocks, textured floors/ceilings, sky, fog and billboards.
 /// </summary>
-/// <param name="textures">Texture source.</param>
-public sealed class SceneRenderer(TextureCache textures)
+public sealed class SceneRenderer
 {
+    /// <summary>Classic framebuffer height (400 x 300).</summary>
+    public const int ClassicHeight = 300;
+
+    private readonly TextureCache textures;
+
+    /// <summary>Creates a renderer with a 4:3 framebuffer.</summary>
+    /// <param name="textures">Texture source.</param>
+    /// <param name="height">Framebuffer height (300 = classic 400 x 300).</param>
+    public SceneRenderer(TextureCache textures, int height = ClassicHeight)
+    {
+        this.textures = textures;
+        Height = Math.Clamp(height, 150, 1200);
+        Width = Height * 4 / 3;
+        _zBuffer = new double[Width];
+        Pixels = new uint[Width * Height];
+    }
+
     /// <summary>Framebuffer width.</summary>
-    public const int Width = 400;
+    public int Width { get; }
     /// <summary>Framebuffer height.</summary>
-    public const int Height = 300;
+    public int Height { get; }
 
     private const double PlaneLength = 0.66;
-    private readonly double[] _zBuffer = new double[Width];
+    private readonly double[] _zBuffer;
 
     private static readonly Dictionary<string, uint> Backings = new()
     {
@@ -82,7 +98,7 @@ public sealed class SceneRenderer(TextureCache textures)
     public double Time { get; set; }
 
     /// <summary>The pixel buffer (0xAARRGGBB), Width * Height.</summary>
-    public uint[] Pixels { get; } = new uint[Width * Height];
+    public uint[] Pixels { get; }
 
     private Texture Tex(string key) => textures.Get("Textures/" + key, Backings.GetValueOrDefault(key));
 

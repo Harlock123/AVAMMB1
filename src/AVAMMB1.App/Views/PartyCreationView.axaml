@@ -25,15 +25,15 @@
                 <Grid ColumnDefinitions="110,50,40,50" Margin="0,2">
                   <TextBlock Text="{Binding Name}" />
                   <TextBlock Grid.Column="1" Text="{Binding Raw}" />
-                  <TextBlock Grid.Column="2" Text="{Binding Modifier}" Foreground="#8fe08f" />
-                  <TextBlock Grid.Column="3" Text="{Binding Final}" FontWeight="Bold" Foreground="{StaticResource Gold}" />
+                  <TextBlock Grid.Column="2" Text="{Binding Modifier}" Foreground="{DynamicResource Good}" />
+                  <TextBlock Grid.Column="3" Text="{Binding Final}" FontWeight="Bold" Foreground="{DynamicResource Gold}" />
                 </Grid>
               </DataTemplate>
             </ItemsControl.ItemTemplate>
           </ItemsControl>
           <Button Content="Reroll Attributes" Command="{Binding RollCommand}" HorizontalAlignment="Left" Margin="0,8,0,0" />
           <StackPanel Orientation="Horizontal" Spacing="12" Margin="0,16,0,0">
-            <Border BorderBrush="{StaticResource PanelBorder}" BorderThickness="1" Background="#0b0a10" Padding="4">
+            <Border BorderBrush="{DynamicResource PanelBorder}" BorderThickness="1" Background="{DynamicResource ScreenBg}" Padding="4">
               <c:PixelImage Source="{Binding Portrait}" Width="96" Height="96" />
             </Border>
             <StackPanel VerticalAlignment="Center" Spacing="6">
@@ -85,13 +85,13 @@
             </ItemsControl.ItemTemplate>
           </ItemsControl>
           <TextBlock Margin="0,6,0,0" TextWrapping="Wrap">
-            <Run Text="Selected: " Foreground="{StaticResource Dim}" />
-            <Run Text="{Binding SelectedClass.Name, FallbackValue=none}" FontWeight="Bold" Foreground="{StaticResource Gold}" />
+            <Run Text="Selected: " Foreground="{DynamicResource Dim}" />
+            <Run Text="{Binding SelectedClass.Name, FallbackValue=none}" FontWeight="Bold" Foreground="{DynamicResource Gold}" />
           </TextBlock>
           <TextBlock Text="{Binding SelectedClass.Description, FallbackValue=''}" TextWrapping="Wrap" Classes="dim" />
           <TextBlock Text="{Binding Preview}" Margin="0,4,0,0" />
           <Button Content="Add Adventurer" Command="{Binding AddCharacterCommand}" HorizontalAlignment="Left" Margin="0,12,0,0" FontWeight="Bold" />
-          <TextBlock Text="{Binding Status}" Foreground="#8fe08f" TextWrapping="Wrap" />
+          <TextBlock Text="{Binding Status}" Foreground="{DynamicResource Good}" TextWrapping="Wrap" />
         </StackPanel>
       </Grid>
     </Border>
@@ -107,11 +107,11 @@
         <ItemsControl ItemsSource="{Binding Created}" Margin="0,8,0,0">
           <ItemsControl.ItemTemplate>
             <DataTemplate x:DataType="ch:Character">
-              <Border Background="#201c2c" CornerRadius="3" Padding="8,4" Margin="0,2">
+              <Border Background="{DynamicResource CardBg}" CornerRadius="3" Padding="8,4" Margin="0,2">
                 <Grid ColumnDefinitions="*,Auto">
                   <StackPanel>
                     <TextBlock Text="{Binding Name}" FontWeight="Bold" />
-                    <TextBlock Classes="dim" FontSize="12">
+                    <TextBlock Classes="dim" FontSize="{DynamicResource Font12}">
                       <Run Text="{Binding Race}" /><Run Text=" " /><Run Text="{Binding Class}" /><Run Text="  HP " /><Run Text="{Binding MaxHp}" /><Run Text="  SP " /><Run Text="{Binding MaxSp}" />
                     </TextBlock>
                   </StackPanel>

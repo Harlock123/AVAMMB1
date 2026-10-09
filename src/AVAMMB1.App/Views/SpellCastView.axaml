@@ -28,7 +28,7 @@
           </ItemsControl>
         </StackPanel>
         <Grid ColumnDefinitions="*,Auto">
-          <TextBlock Text="{Binding Feedback}" TextWrapping="Wrap" Foreground="#9fd0ff" />
+          <TextBlock Text="{Binding Feedback}" TextWrapping="Wrap" Foreground="{DynamicResource Info}" />
           <Button Grid.Column="1" Content="Close (Esc)" Command="{Binding CloseCommand}" />
         </Grid>
       </StackPanel>

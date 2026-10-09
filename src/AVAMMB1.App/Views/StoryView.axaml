@@ -5,7 +5,7 @@
   <Border Classes="dialog" MaxWidth="640" MinWidth="420">
     <StackPanel Spacing="12">
       <TextBlock Classes="title" Text="{Binding Title}" />
-      <TextBlock Text="{Binding Text}" TextWrapping="Wrap" FontSize="16" LineHeight="24" />
+      <TextBlock Text="{Binding Text}" TextWrapping="Wrap" FontSize="{DynamicResource Font16}" LineHeight="24" />
       <Button Content="Continue (Enter)" Command="{Binding OkCommand}" HorizontalAlignment="Right" FontWeight="Bold" />
     </StackPanel>
   </Border>

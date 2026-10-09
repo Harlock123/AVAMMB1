@@ -104,28 +104,56 @@ public static class GamepadMapping
     public static bool Repeats(GamepadButton button) =>
         button is GamepadButton.Up or GamepadButton.Down or GamepadButton.Left or GamepadButton.Right;
 
+    /// <summary>
+    /// Default exploring buttons, one per action (Start always opens the menu as well, so a player can
+    /// never lock themselves out). Players can rebind these in Settings.
+    /// </summary>
+    public static Dictionary<InputAction, GamepadButton> DefaultExploring() => new()
+    {
+        [InputAction.MoveForward] = GamepadButton.Up,
+        [InputAction.MoveBack] = GamepadButton.Down,
+        [InputAction.TurnLeft] = GamepadButton.Left,
+        [InputAction.TurnRight] = GamepadButton.Right,
+        [InputAction.StrafeLeft] = GamepadButton.LeftShoulder,
+        [InputAction.StrafeRight] = GamepadButton.RightShoulder,
+        [InputAction.Interact] = GamepadButton.A,
+        [InputAction.Menu] = GamepadButton.B,
+        [InputAction.Search] = GamepadButton.X,
+        [InputAction.Characters] = GamepadButton.Y,
+        [InputAction.Automap] = GamepadButton.Back,
+        [InputAction.Rest] = GamepadButton.LeftTrigger,
+        [InputAction.Cast] = GamepadButton.RightTrigger,
+    };
+
+    /// <summary>Rebinds an exploring action; another action using the same button loses it.</summary>
+    /// <param name="bindings">Bindings to change.</param>
+    /// <param name="action">Action.</param>
+    /// <param name="button">New button.</param>
+    /// <returns>The action that lost the button, if any.</returns>
+    public static InputAction? Rebind(Dictionary<InputAction, GamepadButton> bindings, InputAction action, GamepadButton button)
+    {
+        InputAction? displaced = null;
+        foreach (var (other, b) in bindings.ToList())
+        {
+            if (b == button && other != action)
+            {
+                bindings.Remove(other);
+                displaced = other;
+            }
+        }
+        bindings[action] = button;
+        return displaced;
+    }
+
     /// <summary>Maps a button press.</summary>
     /// <param name="context">Current context.</param>
     /// <param name="button">Button pressed.</param>
-    public static GamepadCommand Map(GamepadContext context, GamepadButton button) => context switch
+    /// <param name="exploring">The player's exploring bindings (defaults when null).</param>
+    public static GamepadCommand Map(GamepadContext context, GamepadButton button, IReadOnlyDictionary<InputAction, GamepadButton>? exploring = null) => context switch
     {
-        GamepadContext.Exploring => new GamepadCommand(Action: button switch
-        {
-            GamepadButton.Up => InputAction.MoveForward,
-            GamepadButton.Down => InputAction.MoveBack,
-            GamepadButton.Left => InputAction.TurnLeft,
-            GamepadButton.Right => InputAction.TurnRight,
-            GamepadButton.LeftShoulder => InputAction.StrafeLeft,
-            GamepadButton.RightShoulder => InputAction.StrafeRight,
-            GamepadButton.A => InputAction.Interact,
-            GamepadButton.B or GamepadButton.Start => InputAction.Menu,
-            GamepadButton.X => InputAction.Search,
-            GamepadButton.Y => InputAction.Characters,
-            GamepadButton.Back => InputAction.Automap,
-            GamepadButton.LeftTrigger => InputAction.Rest,
-            GamepadButton.RightTrigger => InputAction.Cast,
-            _ => null,
-        }),
+        GamepadContext.Exploring => new GamepadCommand(Action: button == GamepadButton.Start
+            ? InputAction.Menu
+            : (exploring ?? DefaultExploring()).Where(kv => kv.Value == button).Select(kv => (InputAction?)kv.Key).FirstOrDefault()),
         GamepadContext.Combat => new GamepadCommand(Combat: button switch
         {
             GamepadButton.A => CombatCommand.Primary,

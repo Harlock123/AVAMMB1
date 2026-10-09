@@ -43,7 +43,7 @@
       <Setter Property="Opacity" Value="1" />
     </Style>
     <Style Selector="Border.label.selected">
-      <Setter Property="BorderBrush" Value="#ff5040" />
+      <Setter Property="BorderBrush" Value="{DynamicResource Danger}" />
       <Setter Property="BorderThickness" Value="1" />
     </Style>
   </UserControl.Styles>
@@ -55,7 +55,7 @@
       </LinearGradientBrush>
     </Grid.Background>
     <Border Background="#aa000000" CornerRadius="0,0,6,6" Padding="14,4" HorizontalAlignment="Center" Margin="0,30,0,0">
-      <TextBlock Foreground="#ff8a7a" FontSize="18" FontWeight="Bold"><Run Text="Battle!  " /><Run Text="{Binding RoundText}" Foreground="#e8d9b0" FontWeight="Normal" /></TextBlock>
+      <TextBlock Foreground="{DynamicResource Bad}" FontSize="{DynamicResource Font18}" FontWeight="Bold"><Run Text="Battle!  " /><Run Text="{Binding RoundText}" Foreground="{DynamicResource Parchment}" FontWeight="Normal" /></TextBlock>
     </Border>
     <!-- Back rank: further away, smaller and dimmer. -->
     <ItemsControl Grid.Row="2" ItemsSource="{Binding BackRank}" HorizontalAlignment="Center" Opacity="0.82">
@@ -68,14 +68,14 @@
                 <StackPanel.Transitions>
                   <Transitions><DoubleTransition Property="Opacity" Duration="0:0:0.8" Easing="QuadraticEaseOut" /></Transitions>
                 </StackPanel.Transitions>
-                <TextBlock Text="&#x25BC;" Foreground="#ff5040" FontSize="14" HorizontalAlignment="Center" Opacity="0" Classes.on="{Binding IsSelected}" />
+                <TextBlock Text="&#x25BC;" Foreground="{DynamicResource Danger}" FontSize="{DynamicResource Font14}" HorizontalAlignment="Center" Opacity="0" Classes.on="{Binding IsSelected}" />
                 <c:PixelImage Source="{Binding Sprite}" Width="104" Height="104" HorizontalAlignment="Center"
                               Classes.idleA="{Binding IdleA}" Classes.idleB="{Binding IdleB}" />
                 <Border Background="#b0000000" CornerRadius="3" Padding="6,1" HorizontalAlignment="Center" Classes="label" Classes.selected="{Binding IsSelected}">
                   <StackPanel>
-                    <TextBlock Text="{Binding Label}" FontWeight="Bold" FontSize="12" HorizontalAlignment="Center" />
-                    <ProgressBar Minimum="0" Maximum="1" Value="{Binding HpFraction}" Foreground="{StaticResource HpBrush}" Width="90" />
-                    <TextBlock FontSize="11" HorizontalAlignment="Center" Foreground="#9fd0ff" Text="{Binding Status}" IsVisible="{Binding Status, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
+                    <TextBlock Text="{Binding Label}" FontWeight="Bold" FontSize="{DynamicResource Font12}" HorizontalAlignment="Center" />
+                    <ProgressBar Minimum="0" Maximum="1" Value="{Binding HpFraction}" Foreground="{DynamicResource HpBrush}" Width="90" />
+                    <TextBlock FontSize="{DynamicResource Font11}" HorizontalAlignment="Center" Foreground="{DynamicResource Info}" Text="{Binding Status}" IsVisible="{Binding Status, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
                   </StackPanel>
                 </Border>
               </StackPanel>
@@ -94,14 +94,14 @@
                 <StackPanel.Transitions>
                   <Transitions><DoubleTransition Property="Opacity" Duration="0:0:0.8" Easing="QuadraticEaseOut" /></Transitions>
                 </StackPanel.Transitions>
-                <TextBlock Text="&#x25BC;" Foreground="#ff5040" FontSize="20" HorizontalAlignment="Center" Opacity="0" Classes.on="{Binding IsSelected}" />
+                <TextBlock Text="&#x25BC;" Foreground="{DynamicResource Danger}" FontSize="{DynamicResource Font20}" HorizontalAlignment="Center" Opacity="0" Classes.on="{Binding IsSelected}" />
                 <c:PixelImage Source="{Binding Sprite}" Width="208" Height="208" HorizontalAlignment="Center"
                               Classes.idleA="{Binding IdleA}" Classes.idleB="{Binding IdleB}" />
                 <Border Background="#b0000000" CornerRadius="3" Padding="6,1" HorizontalAlignment="Center" Classes="label" Classes.selected="{Binding IsSelected}">
                   <StackPanel>
-                    <TextBlock Text="{Binding Label}" FontWeight="Bold" FontSize="15" HorizontalAlignment="Center" />
-                    <ProgressBar Minimum="0" Maximum="1" Value="{Binding HpFraction}" Foreground="{StaticResource HpBrush}" Width="150" />
-                    <TextBlock FontSize="11" HorizontalAlignment="Center" Foreground="#9fd0ff" Text="{Binding Status}" IsVisible="{Binding Status, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
+                    <TextBlock Text="{Binding Label}" FontWeight="Bold" FontSize="{DynamicResource Font15}" HorizontalAlignment="Center" />
+                    <ProgressBar Minimum="0" Maximum="1" Value="{Binding HpFraction}" Foreground="{DynamicResource HpBrush}" Width="150" />
+                    <TextBlock FontSize="{DynamicResource Font11}" HorizontalAlignment="Center" Foreground="{DynamicResource Info}" Text="{Binding Status}" IsVisible="{Binding Status, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
                   </StackPanel>
                 </Border>
               </StackPanel>

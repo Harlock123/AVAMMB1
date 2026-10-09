@@ -1,6 +1,7 @@
 using Avalonia;
 using Avalonia.Headless;
 using Avalonia.Threading;
+using AVAMMB1.App.Rendering;
 using AVAMMB1.App.ViewModels;
 using AVAMMB1.App.Views;
 using AVAMMB1.Core.Combat;
@@ -144,6 +145,23 @@ public static class HeadlessRunner
             throw new InvalidOperationException("Party did not move.");
         }
         _ = _window.CaptureRenderedFrame() ?? throw new InvalidOperationException("Nothing rendered.");
+
+        // 3D view cost at each resolution option (average of 30 frames, outdoors in town).
+        var scene = game.Scene ?? throw new InvalidOperationException("No scene.");
+        var times = new List<string>();
+        foreach (var h in new[] { 300, 480, 600 })
+        {
+            var r = new SceneRenderer(App.Textures, h);
+            var cam = Camera.At(scene.X, scene.Y, scene.Facing);
+            r.Render(scene, cam);
+            var sw = System.Diagnostics.Stopwatch.StartNew();
+            for (var i = 0; i < 30; i++)
+            {
+                r.Render(scene, cam with { Angle = cam.Angle + i * 0.01 });
+            }
+            times.Add($"{r.Width}x{r.Height} {sw.Elapsed.TotalMilliseconds / 30:F1} ms");
+        }
+        Console.WriteLine("Renderer: " + string.Join(", ", times));
     }
 
     /// <summary>Walks the party to a cell using the normal movement commands (turn + step), avoiding teleports.</summary>
@@ -488,6 +506,22 @@ public static class HeadlessRunner
         Face(game, s, Direction.East);
         game.Refresh();
         Capture(dir, "20-sunscar-oasis");
+
+        // Accessibility: the high-contrast theme with larger text, and the sharper 3D view.
+        var settings = vm.Services.Settings;
+        settings.ColorTheme = "HighContrast";
+        settings.TextScale = 115;
+        settings.ViewResolution = 600;
+        MainViewModel.ApplyTheme(settings);
+        game.Refresh();
+        Pump();
+        Capture(dir, "23-high-contrast");
+        settings.SmoothView = false;
+        settings.ColorTheme = "Standard";
+        settings.TextScale = 100;
+        settings.ViewResolution = 300;
+        MainViewModel.ApplyTheme(settings);
+        game.Refresh();
 
         // Show the real defaults on the settings screen (animations were only disabled for capturing).
         vm.Services.Settings.SmoothMovement = true;

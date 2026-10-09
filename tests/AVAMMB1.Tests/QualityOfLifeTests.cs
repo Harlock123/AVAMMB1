@@ -84,4 +84,54 @@ public class QualityOfLifeTests
         Assert.Equal(CombatCommand.Repeat, GamepadMapping.Map(GamepadContext.Combat, GamepadButton.LeftTrigger).Combat);
         Assert.Equal(CombatCommand.AutoFight, GamepadMapping.Map(GamepadContext.Combat, GamepadButton.RightTrigger).Combat);
     }
+
+    [Fact]
+    public void Gamepad_ExploringButtonsCanBeRebound_StartAlwaysOpensTheMenu()
+    {
+        var pad = GamepadMapping.DefaultExploring();
+        Assert.Equal(InputAction.Search, GamepadMapping.Map(GamepadContext.Exploring, GamepadButton.X, pad).Action);
+
+        // Put Search on A: Interact loses A, and A now searches.
+        var displaced = GamepadMapping.Rebind(pad, InputAction.Search, GamepadButton.A);
+        Assert.Equal(InputAction.Interact, displaced);
+        Assert.Equal(InputAction.Search, GamepadMapping.Map(GamepadContext.Exploring, GamepadButton.A, pad).Action);
+        Assert.Null(GamepadMapping.Map(GamepadContext.Exploring, GamepadButton.X, pad).Action);
+
+        pad.Clear();
+        Assert.Equal(InputAction.Menu, GamepadMapping.Map(GamepadContext.Exploring, GamepadButton.Start, pad).Action);
+        // Combat buttons are fixed.
+        Assert.Equal(CombatCommand.Primary, GamepadMapping.Map(GamepadContext.Combat, GamepadButton.A, pad).Combat);
+    }
+
+    [Fact]
+    public void Settings_NewOptionsAreNormalizedAndSaved()
+    {
+        var s = new GameSettings { TextScale = 500, ViewResolution = 512, GamepadBindings = new() };
+        s.Normalize();
+        Assert.Equal(130, s.TextScale);
+        Assert.Equal(480, s.ViewResolution);
+        Assert.Equal(GamepadMapping.DefaultExploring().Count, s.GamepadBindings.Count);
+
+        var dir = Path.Combine(Path.GetTempPath(), "avammb1-settings-" + Guid.NewGuid().ToString("N"));
+        try
+        {
+            var store = new SettingsStore(Path.Combine(dir, "settings.json"));
+            s.ColorTheme = "HighContrast";
+            s.SmoothView = true;
+            GamepadMapping.Rebind(s.GamepadBindings, InputAction.Rest, GamepadButton.Y);
+            store.Save(s);
+            var loaded = store.Load();
+            Assert.Equal("HighContrast", loaded.ColorTheme);
+            Assert.True(loaded.SmoothView);
+            Assert.Equal(GamepadButton.Y, loaded.GamepadBindings[InputAction.Rest]);
+            Assert.False(loaded.GamepadBindings.ContainsKey(InputAction.Characters));
+        }
+        finally
+        {
+            if (Directory.Exists(dir))
+            {
+                Directory.Delete(dir, recursive: true);
+            }
+        }
+    }
 }

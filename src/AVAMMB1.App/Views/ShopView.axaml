@@ -15,7 +15,7 @@
             </DataTemplate>
           </ComboBox.ItemTemplate>
         </ComboBox>
-        <TextBlock Text="{Binding SpendText}" Foreground="{StaticResource Gold}" VerticalAlignment="Center" FontWeight="Bold" />
+        <TextBlock Text="{Binding SpendText}" Foreground="{DynamicResource Gold}" VerticalAlignment="Center" FontWeight="Bold" />
       </StackPanel>
       <DockPanel Grid.Row="2">
         <TextBlock DockPanel.Dock="Top" Classes="h2" Text="For Sale" />
@@ -27,9 +27,9 @@
                   <c:PixelImage Source="{Binding Icon}" Width="32" Height="32" />
                   <StackPanel Grid.Column="1" VerticalAlignment="Center">
                     <TextBlock Text="{Binding Name}" FontWeight="SemiBold" />
-                    <TextBlock Text="{Binding Summary}" FontSize="11" Classes="dim" />
+                    <TextBlock Text="{Binding Summary}" FontSize="{DynamicResource Font11}" Classes="dim" />
                   </StackPanel>
-                  <TextBlock Grid.Column="2" Text="{Binding Price, StringFormat='{}{0} gp'}" VerticalAlignment="Center" Foreground="{StaticResource Gold}" />
+                  <TextBlock Grid.Column="2" Text="{Binding Price, StringFormat='{}{0} gp'}" VerticalAlignment="Center" Foreground="{DynamicResource Gold}" />
                   <Button Grid.Column="3" Classes="chip" Content="Buy" Command="{Binding $parent[UserControl].((vm:ShopViewModel)DataContext).BuyCommand}" CommandParameter="{Binding}" />
                 </Grid>
               </DataTemplate>
@@ -46,7 +46,7 @@
                 <Grid ColumnDefinitions="40,*,70,Auto" Margin="0,1">
                   <c:PixelImage Source="{Binding Icon}" Width="32" Height="32" />
                   <TextBlock Grid.Column="1" Text="{Binding Name}" VerticalAlignment="Center" />
-                  <TextBlock Grid.Column="2" Text="{Binding Price, StringFormat='{}{0} gp'}" VerticalAlignment="Center" Foreground="{StaticResource Gold}" />
+                  <TextBlock Grid.Column="2" Text="{Binding Price, StringFormat='{}{0} gp'}" VerticalAlignment="Center" Foreground="{DynamicResource Gold}" />
                   <Button Grid.Column="3" Classes="chip" Content="Sell" Command="{Binding $parent[UserControl].((vm:ShopViewModel)DataContext).SellCommand}" CommandParameter="{Binding}" />
                 </Grid>
               </DataTemplate>
@@ -55,7 +55,7 @@
         </ScrollViewer>
       </DockPanel>
       <Grid Grid.Row="3" Grid.ColumnSpan="3" ColumnDefinitions="*,Auto" Margin="0,8,0,0">
-        <TextBlock Text="{Binding Feedback}" TextWrapping="Wrap" Foreground="#9fd0ff" />
+        <TextBlock Text="{Binding Feedback}" TextWrapping="Wrap" Foreground="{DynamicResource Info}" />
         <Button Grid.Column="1" Content="Leave (Esc)" Command="{Binding LeaveCommand}" />
       </Grid>
     </Grid>

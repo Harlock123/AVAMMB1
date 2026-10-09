@@ -86,8 +86,13 @@ Code identifiers, the solution and executables use the name **`AVAMMB1`** (`AVAM
   executable or pass `--content DIR` to mod the game without rebuilding.
 - **Any screen size**: the interface scales to fit the window - crisp on a small laptop or a 4K
   monitor (Settings can switch back to a fixed 100% layout).
+- **Accessibility**: three colour themes (Standard, High contrast, and Colour-blind friendly, which
+  shows good news in blue and bad news in orange instead of green and red, using the Okabe-Ito
+  palette), adjustable text size (90-130%), and rebindable keys and controller buttons.
+- **3D view options**: classic 400 x 300, sharp 640 x 480 or high 800 x 600 internal resolution,
+  with optional smooth scaling.
 - **Gamepad support** (Xbox, PlayStation, Switch Pro and other SDL-supported controllers) for
-  exploring, combat and every menu.
+  exploring, combat and every menu; exploring buttons can be rebound in Settings.
 - **Save/load** (10 slots incl. quick-save, JSON) in the OS user-data directory; **settings** for
   music/effects volume, fullscreen, minimap and **rebindable keys**.
 - **Music, ambience and sound effects** via OpenAL Soft (Silk.NET) + NVorbis, bundled for all six
@@ -114,6 +119,7 @@ All screenshots are real frames rendered by the game itself (Avalonia headless +
 | ![Thornwick](docs/screenshots/17-thornwick.png) Thornwick, the mining town | ![Duskmere](docs/screenshots/18-duskmere.png) Duskmere, the marsh village |
 | ![Port Ashkar](docs/screenshots/19-port-ashkar.png) Port Ashkar on the Sunscar Coast | ![Oasis](docs/screenshots/20-sunscar-oasis.png) The oasis in the Sunscar Wastes |
 | ![Old Cistern](docs/screenshots/21-old-cistern.png) An eel in the Old Cistern's flooded reservoir | ![Journal](docs/screenshots/22-journal.png) The quest journal |
+| ![High contrast](docs/screenshots/23-high-contrast.png) High-contrast theme, 115% text, 800 x 600 view | |
 
 ## Download and install
 
@@ -172,7 +178,7 @@ Set `AVAMMB1_DATA_DIR` to use a different folder.
 
 | Context | Controls |
 |---|---|
-| Exploring | D-pad / left stick: move and turn (hold to repeat) - LB / RB: strafe - A: use - X: search - Y: party sheet - View: map - Start or B: menu - LT: rest - RT: cast |
+| Exploring (defaults; rebind in Settings > Controller) | D-pad / left stick: move and turn (hold to repeat) - LB / RB: strafe - A: use - X: search - Y: party sheet - View: map - Start or B: menu - LT: rest - RT: cast |
 | Battle | A: fight / attack (shoots from the back rank) / continue - X: cast - Y: use item - B: block - View: run - LB / RB or left / right: change target - LT: repeat last actions - RT: auto-fight |
 | Menus and dialogs | D-pad: move between buttons (left / right adjust sliders) - A: select - B: back |
 
@@ -243,7 +249,7 @@ route order from level 1 to 15 (fighting, camping, curing with spells and potion
 zone's chests, training, selling loot, buying gear and potions, reloading after a wipe) and asserts
 the pace, wipe rate and gold flow stay within tuned bounds (about 600 battles from a new party to
 level 15). It skips boss hoards and quest rewards, so real players end up with a little more gold. The UI flow title -> party creation -> town -> shop -> dungeon -> combat -> inventory ->
-automap with notes -> journal -> spells -> secret door -> Old Cistern -> Ashen Hills -> Sunscar Coast -> settings is exercised headlessly by `--screenshot`.
+automap with notes -> journal -> spells -> secret door -> Old Cistern -> Ashen Hills -> Sunscar Coast -> high-contrast theme -> settings is exercised headlessly by `--screenshot`.
 Gamepad support has been play-tested with a physical controller on Linux ARM64 (v1.4.0); on the
 other platforms CI confirms the bundled SDL2 library loads, and the button mapping is unit tested.
 The game is currently under testing.
