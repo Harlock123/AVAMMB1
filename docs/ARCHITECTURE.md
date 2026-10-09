@@ -22,6 +22,7 @@ GameSession  ---- owns GameState (party, roster, gold, position, flags, automap,
   |  Move/Turn/Rest/Interact -> StepResult (messages + sound cues, interaction, combat, story, victory)
   |  map events: message, shop, inn, temple, tavern, training, teleport, treasure,
   |              encounter, trap, fountain, quest, victory (with flag/item requirements, once-only)
+  |  hazards: spinners, magical darkness / anti-magic terrain, damage/gas/teleport/pit/alarm traps
   |  random encounters from weighted per-map tables
   +-- CombatEngine   initiative, front ranks (first three standing members / monsters),
   |                  party actions, monster AI (abilities, self-heal, smart targeting, fleeing),

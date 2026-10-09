@@ -18,6 +18,14 @@ public sealed record SpellResult(bool Success, IReadOnlyList<GameMessage> Messag
 /// <param name="rng">Random source.</param>
 public sealed class SpellCaster(Rulebook rules, IRandomSource rng)
 {
+    /// <summary>Message shown when magic is suppressed.</summary>
+    public const string SuppressedMessage = "The magic fizzles - something here smothers every spell.";
+
+    /// <summary>Returns true while the party stands where magic does not work (anti-magic squares).</summary>
+    public Func<bool>? Suppressed { get; set; }
+
+    private bool IsSuppressed => Suppressed?.Invoke() == true;
+
     /// <summary>Returns why a character cannot cast a spell now, or <c>null</c> if they can.</summary>
     /// <param name="c">Caster.</param>
     /// <param name="spell">Spell.</param>
@@ -31,6 +39,10 @@ public sealed class SpellCaster(Rulebook rules, IRandomSource rng)
         if (c.Has(Condition.Silenced))
         {
             return $"{c.Name} has been silenced!";
+        }
+        if (IsSuppressed)
+        {
+            return SuppressedMessage;
         }
         if (!rules.KnownSpells(c).Contains(spell))
         {
@@ -114,6 +126,10 @@ public sealed class SpellCaster(Rulebook rules, IRandomSource rng)
                 if (def.UseSpell is null || !rules.Content.Spells.TryGetValue(def.UseSpell, out var spell))
                 {
                     return new SpellResult(false, [new GameMessage($"{def.Name} cannot be used like that.")]);
+                }
+                if (IsSuppressed && def.Kind is ItemKind.Scroll or ItemKind.Wand)
+                {
+                    return new SpellResult(false, [new GameMessage(SuppressedMessage)]);
                 }
                 if (combat is not null && !spell.Combat || combat is null && !spell.Explore)
                 {

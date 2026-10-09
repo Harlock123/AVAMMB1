@@ -60,7 +60,7 @@ public sealed class GameSession
         Random = rng;
         Rules = new Rulebook(content);
         Inventory = new Inventory(Rules);
-        Spells = new SpellCaster(Rules, rng);
+        Spells = new SpellCaster(Rules, rng) { Suppressed = () => IsAntiMagicHere };
         Factory = new CharacterFactory(Rules);
         Town = new TownServices(this);
     }
@@ -90,7 +90,13 @@ public sealed class GameSession
     public GameMap CurrentMap => Content.Map(State.MapId);
 
     /// <summary>How many cells the party can see (light matters in dark places).</summary>
-    public int ViewDistance => CurrentMap.Def.Dark && State.LightSteps <= 0 ? 1 : CurrentMap.Def.Kind == MapKind.Outdoor ? 10 : 7;
+    public int ViewDistance => IsDarkHere ? 1 : CurrentMap.Def.Kind == MapKind.Outdoor ? 10 : 7;
+
+    /// <summary>Whether the party is in the dark: an unlit dark map, or a magical-darkness square (where no light helps).</summary>
+    public bool IsDarkHere => (CurrentMap.Def.Dark && State.LightSteps <= 0) || CurrentMap.IsDarkness(State.X, State.Y);
+
+    /// <summary>Whether magic is suppressed where the party stands.</summary>
+    public bool IsAntiMagicHere => IsActive && CurrentMap.IsAntiMagic(State.X, State.Y);
 
     /// <summary>Starts a new game with the given party.</summary>
     /// <param name="party">Party members (1-6).</param>
@@ -200,9 +206,19 @@ public sealed class GameSession
             }
         }
 
+        var wasDark = map.IsDarkness(State.X, State.Y);
+        var wasAntiMagic = map.IsAntiMagic(State.X, State.Y);
         State.X = nx;
         State.Y = ny;
         result.Moved = true;
+        if (map.IsDarkness(nx, ny) && !wasDark)
+        {
+            result.Messages.Add(new("An unnatural darkness swallows every light.", MessageKind.Bad));
+        }
+        if (map.IsAntiMagic(nx, ny) && !wasAntiMagic)
+        {
+            result.Messages.Add(new("The air turns dead and still. Your magic falls silent.", MessageKind.Bad));
+        }
         if (wall is WallKind.Door or WallKind.LockedDoor or WallKind.SecretDoor)
         {
             result.Messages.Add(new(wall == WallKind.LockedDoor ? "The lock clicks open." : "", MessageKind.Info, "door"));
@@ -555,7 +571,16 @@ public sealed class GameSession
                     break;
                 }
             case MapEventKind.Trap:
-                RunTrap(ev, result);
+                Complete(map, ev);
+                RunTrap(map, ev, result);
+                break;
+            case MapEventKind.Spinner:
+                // Classic spinner: no message, the party simply ends up facing a random way.
+                State.Facing = (Direction)Random.Next(0, 4);
+                if (!string.IsNullOrWhiteSpace(ev.Text))
+                {
+                    result.Messages.Add(new(ev.Text, MessageKind.Info));
+                }
                 Complete(map, ev);
                 break;
             case MapEventKind.Fountain:
@@ -587,7 +612,7 @@ public sealed class GameSession
 
     private string? _combatFlag;
 
-    private void RunTrap(MapEventDef ev, StepResult result)
+    private void RunTrap(GameMap map, MapEventDef ev, StepResult result)
     {
         var best = State.Party.Where(c => c.CanAct).OrderByDescending(Rules.Thievery).FirstOrDefault();
         var skill = best is null ? 0 : Rules.Thievery(best);
@@ -597,6 +622,107 @@ public sealed class GameSession
             return;
         }
         result.Messages.Add(new(ev.Text ?? "A trap is sprung!", MessageKind.Bad, "party_hurt"));
+        switch (ev.Trap)
+        {
+            case TrapEffect.Alarm:
+                {
+                    var monsters = ev.Monsters.SelectMany(fm => CombatEngine.Spawn(Content.Monster(fm.Monster), fm.Count.Roll(Random), Random)).ToList();
+                    if (monsters.Count > 0)
+                    {
+                        StartCombat(monsters, result);
+                        _combatEventKey = null;
+                    }
+                    else
+                    {
+                        TryRandomEncounter(result, 100);
+                    }
+                    return;
+                }
+            case TrapEffect.Teleport:
+                TrapTeleport(map, ev, result);
+                return;
+            case TrapEffect.Pit:
+                DamageParty(ev, result);
+                TrapTeleport(map, ev, result);
+                return;
+            default:
+                DamageParty(ev, result);
+                SleepItOff(result);
+                return;
+        }
+    }
+
+    /// <summary>
+    /// Outside combat, sleep wears off: the party loses some time (and may be ambushed while helpless),
+    /// then wakes up. Without this a party put entirely to sleep could never act again.
+    /// </summary>
+    private void SleepItOff(StepResult result)
+    {
+        if (!State.Party.Any(c => c.IsAlive && c.Has(Condition.Asleep)))
+        {
+            return;
+        }
+        PassTime(30, result.Messages);
+        TryRandomEncounter(result, Math.Min(60, CurrentMap.Def.EncounterChance * 5));
+        if (result.CombatStarted)
+        {
+            result.Messages.Add(new("Monsters fall upon the sleeping party!", MessageKind.Bad));
+            return; // sleepers wake when hit, or when the battle ends
+        }
+        foreach (var c in State.Party)
+        {
+            c.Conditions &= ~Condition.Asleep;
+        }
+        result.Messages.Add(new("Some time later, the party wakes up groggy but unharmed.", MessageKind.Info));
+    }
+
+    private void TrapTeleport(GameMap map, MapEventDef ev, StepResult result)
+    {
+        if (ev.Map is not null || ev.ToX != 0 || ev.ToY != 0)
+        {
+            var dest = ev.Map ?? map.Id;
+            result.MapChanged = dest != map.Id;
+            State.MapId = dest;
+            State.X = ev.ToX;
+            State.Y = ev.ToY;
+        }
+        else
+        {
+            // Somewhere random the party could have walked to, avoiding squares with events.
+            var options = ReachableNow().Where(p => map.EventsAt(p.X, p.Y).Count == 0 && p != (State.X, State.Y)).ToList();
+            if (options.Count > 0)
+            {
+                (State.X, State.Y) = Random.Pick(options);
+            }
+        }
+        result.Moved = true;
+        result.Messages.Add(new("The world lurches - you are somewhere else!", MessageKind.Bad, "spell"));
+        Explore();
+    }
+
+    /// <summary>Cells the party can currently walk to from where it stands (respects locks and undiscovered secret doors).</summary>
+    public IReadOnlyList<(int X, int Y)> ReachableNow()
+    {
+        var seen = new HashSet<(int, int)> { (State.X, State.Y) };
+        var queue = new Queue<(int X, int Y)>();
+        queue.Enqueue((State.X, State.Y));
+        while (queue.Count > 0)
+        {
+            var (x, y) = queue.Dequeue();
+            foreach (var d in Enum.GetValues<Direction>())
+            {
+                var n = (x + d.Dx(), y + d.Dy());
+                if (CanPass(x, y, d) && seen.Add(n))
+                {
+                    queue.Enqueue(n);
+                }
+            }
+        }
+        return seen.ToList();
+    }
+
+    private void DamageParty(MapEventDef ev, StepResult result)
+    {
         foreach (var c in State.Party.Where(c => c.IsAlive))
         {
             var dmg = ev.Damage.Roll(Random);
@@ -716,7 +842,7 @@ public sealed class GameSession
     /// <param name="result">Result to annotate.</param>
     public void StartCombat(IEnumerable<MonsterInstance> monsters, StepResult result)
     {
-        Combat = new CombatEngine(Rules, Random, State, monsters);
+        Combat = new CombatEngine(Rules, Random, State, monsters) { MagicSuppressed = () => IsAntiMagicHere };
         _combatFlag = null;
         result.CombatStarted = true;
         var names = Combat.Monsters.GroupBy(m => m.Def).Select(g => g.Count() == 1 ? $"a {g.Key.Name}" : $"{g.Count()} {g.Key.PluralName}");

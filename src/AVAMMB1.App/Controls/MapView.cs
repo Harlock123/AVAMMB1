@@ -148,7 +148,7 @@ public sealed class MapView : Control
             {
                 continue;
             }
-            if (ev.Type is MapEventKind.Trap or MapEventKind.Encounter || (ev.Type == MapEventKind.Message && ev.Feature is null))
+            if (ev.Type is MapEventKind.Trap or MapEventKind.Encounter or MapEventKind.Spinner || (ev.Type == MapEventKind.Message && ev.Feature is null))
             {
                 continue;
             }

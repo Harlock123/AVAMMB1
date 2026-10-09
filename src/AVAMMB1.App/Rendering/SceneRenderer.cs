@@ -47,6 +47,8 @@ public sealed class SceneDescription
     public required int Y { get; init; }
     /// <summary>Facing.</summary>
     public required Direction Facing { get; init; }
+    /// <summary>Whether the party is in darkness (no usable light): everything beyond arm's reach is black.</summary>
+    public bool Dark { get; init; }
     /// <summary>Visible distance in cells.</summary>
     public required int ViewDistance { get; init; }
     /// <summary>Whether the secret door on a side of a cell has been discovered (undiscovered ones draw as walls).</summary>
@@ -125,14 +127,14 @@ public sealed class SceneRenderer(TextureCache textures)
         var planeX = -dirY * PlaneLength;
         var planeY = dirX * PlaneLength;
 
-        var dark = def.Dark && scene.ViewDistance <= 1;
+        var dark = scene.Dark || (def.Dark && scene.ViewDistance <= 1);
         var skyTop = ParseColor(def.SkyColor, 0xFF3B6FB6);
         var horizon = Shade(skyTop, 1.0, 0xFFE8EEF5, 0.55);
-        var fog = def.Kind == MapKind.Dungeon ? 0xFF000000u : horizon;
+        var fog = def.Kind == MapKind.Dungeon || dark ? 0xFF000000u : horizon;
         var fogDist = dark ? 1.7 : scene.ViewDistance + 0.8;
         var maxDist = Math.Max(2.0, fogDist + 0.5);
 
-        DrawFloorAndCeiling(map, px, py, dirX, dirY, planeX, planeY, fog, fogDist, skyTop, horizon);
+        DrawFloorAndCeiling(map, px, py, dirX, dirY, planeX, planeY, fog, fogDist, skyTop, horizon, dark);
 
         for (var x = 0; x < Width; x++)
         {
@@ -239,10 +241,9 @@ public sealed class SceneRenderer(TextureCache textures)
     }
 
     private void DrawFloorAndCeiling(GameMap map, double px, double py, double dirX, double dirY, double planeX, double planeY,
-        uint fog, double fogDist, uint skyTop, uint horizon)
+        uint fog, double fogDist, uint skyTop, uint horizon, bool dark)
     {
         var def = map.Def;
-        var dark = def.Dark && fogDist < 2;
         var ceiling = def.CeilingTexture is null ? null : Tex(def.CeilingTexture);
         var floorCache = new Dictionary<string, Texture>();
         var rdx0 = dirX - planeX;
@@ -252,7 +253,7 @@ public sealed class SceneRenderer(TextureCache textures)
         var half = Height / 2;
         Array.Fill(Pixels, fog);
 
-        if (ceiling is null)
+        if (ceiling is null && !dark)
         {
             for (var y = 0; y < half; y++)
             {

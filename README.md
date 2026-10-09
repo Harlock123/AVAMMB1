@@ -23,6 +23,10 @@ Code identifiers, the solution and executables use the name **`AVAMMB1`** (`AVAM
 - **Pseudo-3D first-person view** - a software ray caster with textured walls, floors and ceilings,
   sky, distance fog, darkness that needs light, billboard sprites (trees, fountains, chests, shop
   signs), thin walls with doors, locked doors and secret doors, plus solid terrain blocks.
+- **Dungeon hazards**: spinners that silently turn the party, squares of magical darkness where no
+  light helps, anti-magic squares where neither the party nor monsters can use magic (potions still
+  work), and traps that damage, gas, teleport, drop the party down a pit or ring an alarm that
+  summons monsters. Robbers may disarm traps before they fire.
 - **Secret doors**: hidden doors look and block like walls until the party **searches** (F). The
   best searcher rolls (Intellect, Luck and a robber's thievery help); found doors appear as doors in
   the 3D view and in purple on the automap, and are remembered in save games.
@@ -224,7 +228,6 @@ More detail: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 
 - More towns and dungeons (the original scope had five towns and many more dungeon levels)
 - Per-character gold (currently shared by the party), more spells and special items
-- Spinners, darkness/anti-magic squares, more trap types
 - Proper Developer ID signing / notarization and an installer for Windows
 - Gamepad support, localization, UI scaling options
 

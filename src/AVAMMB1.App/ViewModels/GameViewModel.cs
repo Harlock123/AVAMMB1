@@ -93,7 +93,10 @@ public sealed partial class GameViewModel : ViewModelBase
     /// <summary>Party gold and gems.</summary>
     public string GoldText => $"{Session.State.Gold} gold   {Session.State.Gems} gems";
     /// <summary>Day counter and light.</summary>
-    public string TimeText => $"Day {Session.State.Day}" + (Session.State.LightSteps > 0 ? $"   Light {Session.State.LightSteps}" : Session.CurrentMap.Def.Dark ? "   (dark)" : "");
+    public string TimeText => $"Day {Session.State.Day}"
+        + (Session.CurrentMap.IsDarkness(Session.State.X, Session.State.Y) ? "   Magical darkness"
+            : Session.State.LightSteps > 0 ? $"   Light {Session.State.LightSteps}" : Session.CurrentMap.Def.Dark ? "   (dark)" : "")
+        + (Session.IsAntiMagicHere ? "   Anti-magic" : "");
     /// <summary>Whether the minimap is visible.</summary>
     public bool ShowMinimap => Services.Settings.ShowMinimap;
     /// <summary>Whether steps and turns are animated.</summary>
@@ -143,6 +146,7 @@ public sealed partial class GameViewModel : ViewModelBase
             Y = state.Y,
             Facing = state.Facing,
             ViewDistance = Session.ViewDistance,
+            Dark = Session.IsDarkHere,
             SecretFound = (x, y, d) => state.IsSecretFound(map.Id, x, y, d),
             Sprites = sprites,
         };

@@ -33,13 +33,25 @@
   "+ +-+ +-+ + + + + + +-+ + + +-+-+",
   "|.|.|.|. .|.|. . . .|. .|. . . .|",
   "+ + + + +-+-+-+-+D+-+ +-+-+-+-+ +",
-  "|.|.|.|.|. . . . . .|. . .|. . .|",
+  "|.|.|.|.|. . . . . .|. . .|d d .|",
   "+ + + + + +-+-+-+-+-+-+-+ + +-+-+",
-  "|.|.|.|. . . .|. .|. . . .|.|. .|",
+  "|.|.|.|. . . .|. .|. . . .|d|. .|",
   "+ + + +-+-+-+-+ + + + +-+-+ + + +",
-  "|.|. . . . . . .|. . . . . . .|.|",
+  "|.|. . . . . . .|. . . . d d d|.|",
   "+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+"
  ],
+ "terrain": {
+  "d": {
+   "darkness": true,
+   "name": "Magical darkness",
+   "mapColor": "#07070c"
+  },
+  "a": {
+   "antiMagic": true,
+   "name": "Anti-magic",
+   "mapColor": "#3a2050"
+  }
+ },
  "wallTexture": "wall_crypt",
  "floorTexture": "floor_tomb",
  "ceilingTexture": "wall_crypt",
@@ -254,6 +266,52 @@
     "potion_mana"
    ],
    "text": "Coins left as offerings to the dead."
+  },
+  {
+   "x": 9,
+   "y": 3,
+   "type": "spinner"
+  },
+  {
+   "x": 5,
+   "y": 13,
+   "type": "spinner"
+  },
+  {
+   "x": 10,
+   "y": 0,
+   "type": "trap",
+   "trap": "teleport",
+   "text": "A glyph on the floor flares with cold light!"
+  },
+  {
+   "x": 15,
+   "y": 7,
+   "type": "trap",
+   "id": "crypt_alarm",
+   "once": true,
+   "trap": "alarm",
+   "text": "A rusted bell clangs somewhere above - and the dead answer!",
+   "monsters": [
+    {
+     "monster": "zombie",
+     "count": "3"
+    },
+    {
+     "monster": "ghoul",
+     "count": "1"
+    }
+   ]
+  },
+  {
+   "x": 1,
+   "y": 11,
+   "type": "trap",
+   "id": "crypt_pit",
+   "once": true,
+   "trap": "pit",
+   "damage": "2d6",
+   "text": "The floor gives way! The party tumbles down a chute into another part of the crypt."
   },
   {
    "x": 6,

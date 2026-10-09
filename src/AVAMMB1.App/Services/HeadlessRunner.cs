@@ -199,7 +199,7 @@ public static class HeadlessRunner
     private static List<Direction>? FindPath(GameSession s, int sx, int sy, int tx, int ty)
     {
         var map = s.CurrentMap;
-        var blocked = map.AllEvents.Where(e => e.Type is MapEventKind.Teleport or MapEventKind.Encounter || e.Blocking)
+        var blocked = map.AllEvents.Where(e => e.Type is MapEventKind.Teleport or MapEventKind.Encounter or MapEventKind.Trap or MapEventKind.Spinner || e.Blocking)
             .Select(e => (e.X, e.Y)).ToHashSet();
         blocked.Remove((tx, ty));
         var prev = new Dictionary<(int, int), ((int, int) From, Direction Dir)>();

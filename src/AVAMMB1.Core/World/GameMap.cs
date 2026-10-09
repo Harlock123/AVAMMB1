@@ -175,6 +175,16 @@ public sealed class GameMap
         return t?.Opaque ?? IsSolid(x, y);
     }
 
+    /// <summary>Whether a cell is magically dark (light does not help there).</summary>
+    /// <param name="x">Cell X.</param>
+    /// <param name="y">Cell Y.</param>
+    public bool IsDarkness(int x, int y) => Terrain(x, y)?.Darkness == true;
+
+    /// <summary>Whether magic is suppressed in a cell.</summary>
+    /// <param name="x">Cell X.</param>
+    /// <param name="y">Cell Y.</param>
+    public bool IsAntiMagic(int x, int y) => Terrain(x, y)?.AntiMagic == true;
+
     /// <summary>Texture key used to draw a solid cell.</summary>
     /// <param name="x">Cell X.</param>
     /// <param name="y">Cell Y.</param>

@@ -19,8 +19,19 @@ All notable changes to this project are documented here. The format follows
 - Guardians of scripted encounters (chieftain, spiders, lich, ogre, Warden...) stand visibly in
   their squares, bobbing gently, until defeated. Sprites support an idle bob in the ray caster.
 
+- Dungeon hazards: `spinner` events (silent random facing), terrain flags `darkness` (light is useless:
+  view distance 1) and `antiMagic` (no spells, scrolls or wands for the party, no special abilities
+  for monsters; potions still work), with messages when entering a zone and a status-line note.
+- Trap effects: `teleport` (to a set square or a random reachable one), `pit` (damage, then a fall),
+  `alarm` (summons the listed monsters or a group from the map's table), alongside damage/gas traps.
+- Content: a spinner and a sleeping-gas trap in the cellars; two spinners, a teleport glyph, an
+  alarm, a pit and a pocket of magical darkness in the crypt; an anti-magic corridor and a dark
+  stretch in the Inner Vault.
+
 ### Fixed
 - The selected combat target's red border never showed (local values overrode the style).
+- A trap or spell that puts the whole party to sleep outside combat no longer causes a game over:
+  the party sleeps for a while (risking an ambush) and wakes up.
 
 ## [1.1.0] - 2026-10-09
 

@@ -72,6 +72,13 @@ public sealed class CombatEngine
     /// <summary>Raised when a monster takes an action (attack or ability), e.g. to animate it.</summary>
     public event Action<MonsterInstance>? MonsterActed;
 
+    /// <summary>Returns true when the battle takes place where magic is suppressed (affects both sides).</summary>
+    public Func<bool>? MagicSuppressed
+    {
+        get => _spells.Suppressed;
+        set => _spells.Suppressed = value;
+    }
+
     /// <summary>Party-wide armor class bonus from spells.</summary>
     public int ArmorBuff { get; set; }
 
@@ -479,7 +486,7 @@ public sealed class CombatEngine
             log.Add(new($"{m.Label} flees in terror!", MessageKind.Combat));
             return;
         }
-        foreach (var ability in m.Def.Abilities)
+        foreach (var ability in MagicSuppressed?.Invoke() == true ? [] : m.Def.Abilities)
         {
             if (_rng.Chance(ability.Chance) && UseAbility(m, ability, log))
             {

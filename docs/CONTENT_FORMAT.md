@@ -113,7 +113,7 @@ their maximum spell level automatically.
 |---|---|
 | `id`, `name`, `kind` | `kind`: `town`, `outdoor`, `dungeon` |
 | `format`, `width`, `height`, `grid` | See below |
-| `terrain` | Legend: character -> `{ solid, opaque, texture, floor, feature, name, mapColor }` |
+| `terrain` | Legend: character -> `{ solid, opaque, texture, floor, feature, name, mapColor, darkness, antiMagic }` |
 | `wallTexture`, `floorTexture`, `ceilingTexture` | `Graphics/Textures/<key>.png`; no ceiling = sky |
 | `skyColor` | Hex color for the sky gradient |
 | `dark` | Needs light to see further than one cell |
@@ -152,6 +152,12 @@ opening is an `S`, with a once-only `message` hint event on the cell outside it.
 
 Coordinates: `x` grows east, `y` grows south, `(0,0)` is the north-west corner.
 
+In `edges` maps the cell characters can also refer to the terrain legend, which is how special
+squares are marked. For example with `"terrain": { "d": { "darkness": true }, "a": { "antiMagic": true } }`
+a cell written as `d` is magical darkness (light sources and spells do not help: the party sees
+one square) and `a` is anti-magic (no spells, scrolls or wands for the party and no special abilities
+for monsters; potions still work). Both show their `mapColor` on the automap once explored.
+
 ### Events
 
 ```json
@@ -170,7 +176,8 @@ Coordinates: `x` grows east, `y` grows south, `(0,0)` is the north-west corner.
 | `teleport` | `map`, `toX`, `toY`, `facing` |
 | `treasure`, `quest` | `gold`, `gems`, `xp`, `items`, `consumeItem` |
 | `encounter` | `monsters: [{ "monster": "kobold", "count": "1d4" }]`; `setFlag` is set on victory |
-| `trap` | `damage`, `conditions` (robbers may disarm) |
+| `trap` | `trap` effect: `damage` (default: `damage` per member, `conditions` such as a sleeping gas), `teleport` (to `map`/`toX`/`toY`, or a random reachable square if none is given), `pit` (`damage`, then fall like a teleport), `alarm` (fights `monsters`, or a group from the map's encounter table). Robbers may disarm traps. |
+| `spinner` | No fields: silently turns the party to a random facing (optional `text`) |
 | `fountain` | `heal`, `restoreSp`, `conditions` cured |
 | `victory` | Ends the game after showing `text` |
 

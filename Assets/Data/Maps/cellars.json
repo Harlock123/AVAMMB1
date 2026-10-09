@@ -214,6 +214,21 @@
    "text": "An old chest holds coins and a journal. One page reads: 'The Lodestone of Seasons sleeps in the Inner Vault. Should it die, so does spring.'"
   },
   {
+   "x": 10,
+   "y": 13,
+   "type": "spinner"
+  },
+  {
+   "x": 15,
+   "y": 11,
+   "type": "trap",
+   "id": "cellar_gas_trap",
+   "once": true,
+   "damage": "0",
+   "conditions": "asleep",
+   "text": "A hiss of sweet-smelling gas fills the passage!"
+  },
+  {
    "x": 4,
    "y": 3,
    "type": "message",

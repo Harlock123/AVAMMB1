@@ -55,6 +55,21 @@ public enum MapEventKind
     Quest,
     /// <summary>Ends the game in victory.</summary>
     Victory,
+    /// <summary>Silently turns the party to a random facing.</summary>
+    Spinner,
+}
+
+/// <summary>What a <see cref="MapEventKind.Trap"/> does when it is not disarmed.</summary>
+public enum TrapEffect
+{
+    /// <summary>Damages every member (with a saving throw for half) and may inflict <see cref="MapEventDef.Conditions"/>.</summary>
+    Damage,
+    /// <summary>Teleports the party to <see cref="MapEventDef.Map"/>/<see cref="MapEventDef.ToX"/>/<see cref="MapEventDef.ToY"/>, or to a random open square.</summary>
+    Teleport,
+    /// <summary>Damage, then a fall to the destination (as <see cref="Teleport"/>).</summary>
+    Pit,
+    /// <summary>Summons monsters: <see cref="MapEventDef.Monsters"/>, or a group from the map's encounter table.</summary>
+    Alarm,
 }
 
 /// <summary>A fixed group of monsters for an event-driven encounter.</summary>
@@ -105,6 +120,8 @@ public sealed class MapEventDef
     public List<FixedMonsterDef> Monsters { get; set; } = new();
     /// <summary>Trap damage per member.</summary>
     public DiceExpression Damage { get; set; }
+    /// <summary>What a trap does (default: damage).</summary>
+    public TrapEffect Trap { get; set; }
     /// <summary>Condition inflicted by traps or cured by fountains.</summary>
     public Condition Conditions { get; set; }
     /// <summary>Flag that must be set for the event to fire.</summary>
@@ -150,6 +167,10 @@ public sealed class TerrainDef
     public string? Name { get; set; }
     /// <summary>Automap color hex (e.g. <c>#2a6</c>).</summary>
     public string? MapColor { get; set; }
+    /// <summary>Magical darkness: light sources and spells do nothing here.</summary>
+    public bool Darkness { get; set; }
+    /// <summary>Anti-magic: no spells, scrolls or wands work here (for monsters either).</summary>
+    public bool AntiMagic { get; set; }
 }
 
 /// <summary>A map as stored in JSON (see docs/CONTENT_FORMAT.md).</summary>
