@@ -5,6 +5,8 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+## [1.9.0] - 2026-10-09
+
 ### Added
 - Drag and drop to change the marching order: drag a party card along the bar at the bottom of the
   screen and drop it on another place (the others shift along). Works anywhere outside battle, not

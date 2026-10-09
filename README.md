@@ -14,12 +14,12 @@ the Thornwick Mines and something with four heads nests in a drowned temple.
 > sounds. All trademarks belong to their owners. All game content is original; all art and audio is
 > openly licensed (CC0) - see [ASSETS_LICENSES.md](ASSETS_LICENSES.md).
 
-**[Download AVAM&M v1.8.0](https://github.com/Harlock123/AVAMMB1/releases/tag/v1.8.0)** - Windows, Linux and macOS, x64 and ARM64
+**[Download AVAM&M v1.9.0](https://github.com/Harlock123/AVAMMB1/releases/tag/v1.9.0)** - Windows, Linux and macOS, x64 and ARM64
 (always-current link: [latest release](https://github.com/Harlock123/AVAMMB1/releases/latest); direct file links are in
 [Download and install](#download-and-install)).
 
 Code identifiers, the solution and executables use the name **`AVAMMB1`** (`AVAMMB1.sln`,
-`AVAMMB1.exe`, `AVAMMB1-1.8.0-linux-x64.tar.gz`, ...), because `&` is unsafe in paths.
+`AVAMMB1.exe`, `AVAMMB1-1.9.0-linux-x64.tar.gz`, ...), because `&` is unsafe in paths.
 
 ## Features
 
@@ -149,16 +149,16 @@ All screenshots are real frames rendered by the game itself (Avalonia headless +
 ## Download and install
 
 Download the archive for your platform from the **[latest release](https://github.com/Harlock123/AVAMMB1/releases/latest)**
-(all releases: [https://github.com/Harlock123/AVAMMB1/releases](https://github.com/Harlock123/AVAMMB1/releases)), or build it yourself (below). Direct links for v1.8.0:
+(all releases: [https://github.com/Harlock123/AVAMMB1/releases](https://github.com/Harlock123/AVAMMB1/releases)), or build it yourself (below). Direct links for v1.9.0:
 
 | Platform | Download | How to run |
 |---|---|---|
-| Windows x64 | [AVAMMB1-1.8.0-win-x64.zip](https://github.com/Harlock123/AVAMMB1/releases/download/v1.8.0/AVAMMB1-1.8.0-win-x64.zip) | Unzip, run `AVAMMB1.exe`. SmartScreen may warn about an unsigned app: *More info -> Run anyway*. |
-| Windows ARM64 | [AVAMMB1-1.8.0-win-arm64.zip](https://github.com/Harlock123/AVAMMB1/releases/download/v1.8.0/AVAMMB1-1.8.0-win-arm64.zip) | Same as above. |
-| Linux x64 | [AVAMMB1-1.8.0-linux-x64.tar.gz](https://github.com/Harlock123/AVAMMB1/releases/download/v1.8.0/AVAMMB1-1.8.0-linux-x64.tar.gz) | `tar xzf AVAMMB1-*.tar.gz && ./AVAMMB1`. Needs an X11 session (XWayland works) and the usual desktop libraries (fontconfig, libX11/libICE/libSM). |
-| Linux ARM64 | [AVAMMB1-1.8.0-linux-arm64.tar.gz](https://github.com/Harlock123/AVAMMB1/releases/download/v1.8.0/AVAMMB1-1.8.0-linux-arm64.tar.gz) | Same as above. |
-| macOS Apple Silicon | [AVAMMB1-1.8.0-osx-arm64.tar.gz](https://github.com/Harlock123/AVAMMB1/releases/download/v1.8.0/AVAMMB1-1.8.0-osx-arm64.tar.gz) | Extract, then open `AVAMMB1.app`. The app is **not notarized**: right-click -> *Open* the first time, or run `xattr -dr com.apple.quarantine AVAMMB1.app`. |
-| macOS Intel | [AVAMMB1-1.8.0-osx-x64.tar.gz](https://github.com/Harlock123/AVAMMB1/releases/download/v1.8.0/AVAMMB1-1.8.0-osx-x64.tar.gz) | Same as above. |
+| Windows x64 | [AVAMMB1-1.9.0-win-x64.zip](https://github.com/Harlock123/AVAMMB1/releases/download/v1.9.0/AVAMMB1-1.9.0-win-x64.zip) | Unzip, run `AVAMMB1.exe`. SmartScreen may warn about an unsigned app: *More info -> Run anyway*. |
+| Windows ARM64 | [AVAMMB1-1.9.0-win-arm64.zip](https://github.com/Harlock123/AVAMMB1/releases/download/v1.9.0/AVAMMB1-1.9.0-win-arm64.zip) | Same as above. |
+| Linux x64 | [AVAMMB1-1.9.0-linux-x64.tar.gz](https://github.com/Harlock123/AVAMMB1/releases/download/v1.9.0/AVAMMB1-1.9.0-linux-x64.tar.gz) | `tar xzf AVAMMB1-*.tar.gz && ./AVAMMB1`. Needs an X11 session (XWayland works) and the usual desktop libraries (fontconfig, libX11/libICE/libSM). |
+| Linux ARM64 | [AVAMMB1-1.9.0-linux-arm64.tar.gz](https://github.com/Harlock123/AVAMMB1/releases/download/v1.9.0/AVAMMB1-1.9.0-linux-arm64.tar.gz) | Same as above. |
+| macOS Apple Silicon | [AVAMMB1-1.9.0-osx-arm64.tar.gz](https://github.com/Harlock123/AVAMMB1/releases/download/v1.9.0/AVAMMB1-1.9.0-osx-arm64.tar.gz) | Extract, then open `AVAMMB1.app`. The app is **not notarized**: right-click -> *Open* the first time, or run `xattr -dr com.apple.quarantine AVAMMB1.app`. |
+| macOS Intel | [AVAMMB1-1.9.0-osx-x64.tar.gz](https://github.com/Harlock123/AVAMMB1/releases/download/v1.9.0/AVAMMB1-1.9.0-osx-x64.tar.gz) | Same as above. |
 
 **Gatekeeper / notarization:** release builds made on the macOS CI runner are ad-hoc signed
 (`codesign -s -`), which Apple Silicon requires, but they are not signed with a Developer ID or
@@ -250,7 +250,7 @@ Each target is published with `PublishSingleFile=true`, `SelfContained=true`,
 **Trimming is intentionally disabled**: Avalonia, the DI container and the toolkit rely on
 reflection that trimming can break; ReadyToRun is used instead for faster startup.
 
-### Build verification status (v1.8.0)
+### Build verification status (v1.9.0)
 
 Every release is built by [`.github/workflows/release.yml`](.github/workflows/release.yml) on
 GitHub's runners - each RID on its own operating system - after the test suite passes:
@@ -348,6 +348,11 @@ More detail: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 - **v1.8.0** - Lanterns and oil, Angband style: an equippable Brass Lantern (8 squares, warm light)
   that burns oil, flasks of oil to refill it or throw as fire bombs, the Everburning Lantern; light
   brightness tiers (torch 5, spells 6, lantern 8) and an automap that maps as far as your light reaches.
+- **v1.9.0** - Mod packs (a Mods folder, merge-by-id content, map patches, a Mods screen,
+  `--check-content`); day and night (a clock, dark nights outdoors, night-only monsters, closed
+  shops); class abilities (Guard, Lay on Hands, Aimed shot, sneak attack, lock-picking); audio polish
+  (Frostmark music, night crickets, footsteps by surface); keyboard keys for battle spell and item
+  lists; drag-and-drop marching order on the party bar.
 
 ### Planned
 
