@@ -6,7 +6,7 @@ AVAM&M is split into three projects:
 |---|---|---|
 | `AVAMMB1.Core` | .NET only | All rules and game state. No UI, no audio, no file dialogs. Fully unit tested. |
 | `AVAMMB1.App` | Core, Avalonia, Silk.NET, NVorbis | Avalonia desktop UI, rendering, audio, input, DI composition. Assembly/executable name `AVAMMB1`. |
-| `AVAMMB1.Tests` | Core, xUnit | Unit tests. |
+| `AVAMMB1.Tests` | Core, xUnit | Unit, integration and balance tests (`Balance/BalanceSimulator` plays the whole route automatically). |
 
 ## Core
 

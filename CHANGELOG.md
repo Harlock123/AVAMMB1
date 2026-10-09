@@ -25,7 +25,23 @@ All notable changes to this project are documented here. The format follows
     (Umbral Blade, Ring of the Deep).
   - 17 new monsters and 6 new items; boss balance tests cover the three new bosses.
 
+- Balance simulator (`tests/AVAMMB1.Tests/Balance`): an automated player that grinds each zone in
+  route order - fighting with simple tactics, camping, curing with its own spells, visiting town to
+  train, heal and buy gear, and reloading after a wipe - and reports battles, wipes, XP and gold flow
+  per zone. Balance tests assert every zone is reachable at its intended level within bounds
+  (about 600 battles from level 1 to 15, at most 120 per zone, almost no wipes) and that every zone
+  pays its way.
+
 ### Changed
+- Economy and pacing, tuned with the simulator (it showed training cost several hundred battles'
+  worth of gold and some zones lost money to temple cures):
+  - Training costs 12 x level^2 gold per character (was 50 x level^2).
+  - Temple cures for conditions cost 15 x level (was 40 x level); healing and raising are unchanged.
+  - Every ordinary monster now carries gold (about 2 + 1.5 x level^2 on average); bosses keep their hoards.
+  - Level 5-8 monsters give more XP, so the Ashen Hills, the Catacombs and the Sunken Temple no
+    longer need 90-130 battles per level.
+- Paralyzed characters now have a 20% chance per round to recover during a battle (monsters
+  already did), so a long fight against a paralyzing boss is no longer lost while the party is unhurt.
 - Settings: the volume sliders now share a row with their labels.
 - The headless screenshot script trains the demo party before each harder region so it no longer
   depends on lucky dice; new screenshot of the Old Cistern.

@@ -172,7 +172,7 @@ public sealed class TownServices(GameSession session)
         }
         if (c.Has(Condition.Paralyzed) || c.Has(Condition.Diseased) || c.Has(Condition.Poisoned) || c.Has(Condition.Blinded) || c.Has(Condition.Silenced))
         {
-            cost += 40 * c.Level;
+            cost += 15 * c.Level;
         }
         if (c.Hp < c.MaxHp || c.Has(Condition.Unconscious))
         {

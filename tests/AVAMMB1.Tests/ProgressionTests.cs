@@ -128,7 +128,7 @@ public class ProgressionTests
         var gold = s.State.Gold;
         var log = s.Town.Train(c, ev);
         Assert.Equal(2, c.Level);
-        Assert.Equal(gold - 50, s.State.Gold);
+        Assert.Equal(gold - 12, s.State.Gold);
         Assert.Contains(log, m => m.Text.Contains("level 2"));
         s.State.Gold = 0;
         s.Town.Train(c, ev);

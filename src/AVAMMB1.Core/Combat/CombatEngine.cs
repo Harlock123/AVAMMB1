@@ -244,6 +244,16 @@ public sealed class CombatEngine
                 log.Add(new($"{m.Label} wakes up.", MessageKind.Combat));
             }
         }
+        // Paralysis wears off for characters too (more slowly than for monsters), so a long fight
+        // against a paralyzing foe is a war of attrition rather than a guaranteed loss.
+        foreach (var c in _state.Party.Where(c => c.IsAlive && c.Has(Condition.Paralyzed)))
+        {
+            if (_rng.Chance(20))
+            {
+                c.Conditions &= ~Condition.Paralyzed;
+                log.Add(new($"{c.Name} can move again.", MessageKind.Good));
+            }
+        }
         foreach (var c in _state.Party.Where(c => c.IsAlive && c.Has(Condition.Poisoned)))
         {
             if (_rules.ApplyDamage(c, 1))

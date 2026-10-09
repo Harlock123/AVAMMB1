@@ -165,7 +165,7 @@ public sealed class Rulebook(ContentDatabase db)
 
     /// <summary>Gold cost to train from the character's current level.</summary>
     /// <param name="c">Character.</param>
-    public static int TrainingCost(Character c) => 50 * c.Level * c.Level;
+    public static int TrainingCost(Character c) => 12 * c.Level * c.Level;
 
     /// <summary>Casting level (0 for non casters or before the class's spell start level).</summary>
     /// <param name="c">Character.</param>

@@ -16,7 +16,8 @@
     "inflictChance": 5
    }
   ],
-  "description": "A rat the size of a dog."
+  "description": "A rat the size of a dog.",
+  "gold": "1d6"
  },
  {
   "id": "cave_bat",
@@ -33,7 +34,8 @@
     "damage": "1d2",
     "ranged": true
    }
-  ]
+  ],
+  "gold": "1d6"
  },
  {
   "id": "kobold",
@@ -102,7 +104,8 @@
     "verb": "bites",
     "damage": "1d4"
    }
-  ]
+  ],
+  "gold": "1d6"
  },
  {
   "id": "green_slime",
@@ -123,7 +126,8 @@
     "damage": "1d6",
     "element": "acid"
    }
-  ]
+  ],
+  "gold": "1d6+4"
  },
  {
   "id": "rattlebones",
@@ -136,7 +140,7 @@
   "speed": 9,
   "xp": 18,
   "undead": true,
-  "gold": "1d4",
+  "gold": "1d6+4",
   "resistances": {
    "cold": 50,
    "poison": 100
@@ -164,7 +168,8 @@
     "inflicts": "poisoned",
     "inflictChance": 30
    }
-  ]
+  ],
+  "gold": "1d6+4"
  },
  {
   "id": "pit_viper",
@@ -182,7 +187,8 @@
     "inflicts": "poisoned",
     "inflictChance": 40
    }
-  ]
+  ],
+  "gold": "1d6+4"
  },
  {
   "id": "kobold_chief",
@@ -246,7 +252,8 @@
     "inflicts": "diseased",
     "inflictChance": 15
    }
-  ]
+  ],
+  "gold": "3d6+5"
  },
  {
   "id": "orc_raider",
@@ -285,7 +292,7 @@
   "armorClass": 3,
   "speed": 10,
   "xp": 40,
-  "gold": "2d10",
+  "gold": "3d6+5",
   "attacks": [
    {
     "verb": "smashes",
@@ -319,7 +326,8 @@
     "inflicts": "paralyzed",
     "inflictChance": 20
    }
-  ]
+  ],
+  "gold": "3d6+5"
  },
  {
   "id": "dire_wolf",
@@ -336,7 +344,8 @@
     "verb": "mauls",
     "damage": "1d8"
    }
-  ]
+  ],
+  "gold": "3d6+5"
  },
  {
   "id": "hobgoblin",
@@ -347,7 +356,7 @@
   "armorClass": 5,
   "speed": 11,
   "xp": 50,
-  "gold": "4d10",
+  "gold": "4d6+12",
   "bribable": true,
   "attacks": [
    {
@@ -375,7 +384,7 @@
   "armorClass": 3,
   "speed": 11,
   "xp": 60,
-  "gold": "3d10",
+  "gold": "4d6+12",
   "smart": true,
   "attacks": [
    {
@@ -461,7 +470,8 @@
     "allTargets": true,
     "inflicts": "silenced"
    }
-  ]
+  ],
+  "gold": "4d6+12"
  },
  {
   "id": "ogre",
@@ -471,8 +481,8 @@
   "hitPoints": "6d8+6",
   "armorClass": 4,
   "speed": 8,
-  "xp": 120,
-  "gold": "5d10",
+  "xp": 220,
+  "gold": "10d6+21",
   "bribable": true,
   "attacks": [
    {
@@ -495,9 +505,9 @@
   "hitPoints": "7d8",
   "armorClass": 5,
   "speed": 11,
-  "xp": 200,
+  "xp": 400,
   "regenerates": 3,
-  "gold": "3d10",
+  "gold": "13d6+30",
   "resistances": {
    "fire": -50
   },
@@ -520,9 +530,9 @@
   "hitPoints": "6d8",
   "armorClass": 6,
   "speed": 12,
-  "xp": 150,
+  "xp": 220,
   "undead": true,
-  "gold": "4d10",
+  "gold": "10d6+21",
   "resistances": {
    "cold": 75,
    "poison": 100
@@ -545,7 +555,7 @@
   "hitPoints": "6d8",
   "armorClass": 7,
   "speed": 14,
-  "xp": 180,
+  "xp": 400,
   "undead": true,
   "resistances": {
    "physical": 25,
@@ -567,7 +577,8 @@
     "damage": "1d8",
     "element": "magic"
    }
-  ]
+  ],
+  "gold": "13d6+30"
  },
  {
   "id": "minotaur",
@@ -577,8 +588,8 @@
   "hitPoints": "8d8",
   "armorClass": 6,
   "speed": 12,
-  "xp": 220,
-  "gold": "4d12",
+  "xp": 400,
+  "gold": "13d6+30",
   "attacks": [
    {
     "verb": "gores",
@@ -594,8 +605,8 @@
   "hitPoints": "6d8",
   "armorClass": 4,
   "speed": 13,
-  "xp": 250,
-  "gold": "6d10",
+  "xp": 400,
+  "gold": "13d6+30",
   "smart": true,
   "attacks": [
    {
@@ -635,7 +646,7 @@
   "hitPoints": "6d8",
   "armorClass": 6,
   "speed": 9,
-  "xp": 200,
+  "xp": 220,
   "attacks": [
    {
     "verb": "bites",
@@ -648,7 +659,8 @@
     "chance": 12,
     "inflicts": "stoned"
    }
-  ]
+  ],
+  "gold": "10d6+21"
  },
  {
   "id": "manticore",
@@ -658,7 +670,7 @@
   "hitPoints": "7d8",
   "armorClass": 5,
   "speed": 13,
-  "xp": 220,
+  "xp": 400,
   "attacks": [
    {
     "verb": "claws",
@@ -669,7 +681,8 @@
     "damage": "2d6",
     "ranged": true
    }
-  ]
+  ],
+  "gold": "13d6+30"
  },
  {
   "id": "crypt_lich",
@@ -769,7 +782,7 @@
   "armorClass": 6,
   "speed": 9,
   "xp": 60,
-  "gold": "3d12",
+  "gold": "4d6+12",
   "bribable": true,
   "attacks": [
    {
@@ -796,8 +809,8 @@
   "hitPoints": "6d8+6",
   "armorClass": 5,
   "speed": 12,
-  "xp": 130,
-  "gold": "4d12",
+  "xp": 220,
+  "gold": "10d6+21",
   "attacks": [
    {
     "verb": "cleaves",
@@ -826,7 +839,8 @@
     "verb": "crushes",
     "damage": "1d8"
    }
-  ]
+  ],
+  "gold": "3d6+5"
  },
  {
   "id": "rock_troll",
@@ -836,9 +850,9 @@
   "hitPoints": "8d8+8",
   "armorClass": 7,
   "speed": 10,
-  "xp": 300,
+  "xp": 650,
   "regenerates": 4,
-  "gold": "4d12",
+  "gold": "17d6+38",
   "resistances": {
    "fire": -50
   },
@@ -910,7 +924,8 @@
     "damage": "1d6",
     "ranged": true
    }
-  ]
+  ],
+  "gold": "3d6+5"
  },
  {
   "id": "giant_leech",
@@ -928,7 +943,8 @@
     "inflicts": "diseased",
     "inflictChance": 20
    }
-  ]
+  ],
+  "gold": "3d6+5"
  },
  {
   "id": "crocodile",
@@ -938,13 +954,14 @@
   "hitPoints": "5d8",
   "armorClass": 6,
   "speed": 9,
-  "xp": 90,
+  "xp": 110,
   "attacks": [
    {
     "verb": "snaps at",
     "damage": "2d6"
    }
-  ]
+  ],
+  "gold": "7d6+15"
  },
  {
   "id": "hill_wyvern",
@@ -967,7 +984,8 @@
     "inflicts": "poisoned",
     "inflictChance": 30
    }
-  ]
+  ],
+  "gold": "7d6+15"
  },
  {
   "id": "hill_giant",
@@ -977,8 +995,8 @@
   "hitPoints": "9d8",
   "armorClass": 5,
   "speed": 9,
-  "xp": 250,
-  "gold": "6d10",
+  "xp": 400,
+  "gold": "13d6+30",
   "bribable": true,
   "attacks": [
    {
@@ -1000,8 +1018,8 @@
   "hitPoints": "6d8",
   "armorClass": 6,
   "speed": 10,
-  "xp": 140,
-  "gold": "3d10",
+  "xp": 220,
+  "gold": "10d6+21",
   "attacks": [
    {
     "verb": "strikes",
@@ -1023,8 +1041,8 @@
   "hitPoints": "7d8",
   "armorClass": 8,
   "speed": 10,
-  "xp": 180,
-  "gold": "4d10",
+  "xp": 400,
+  "gold": "13d6+30",
   "attacks": [
    {
     "verb": "slashes",
@@ -1044,8 +1062,8 @@
   "hitPoints": "6d8",
   "armorClass": 5,
   "speed": 11,
-  "xp": 220,
-  "gold": "5d10",
+  "xp": 400,
+  "gold": "13d6+30",
   "smart": true,
   "attacks": [
    {
@@ -1087,7 +1105,7 @@
   "hitPoints": "6d8",
   "armorClass": 4,
   "speed": 7,
-  "xp": 120,
+  "xp": 220,
   "undead": true,
   "resistances": {
    "poison": 100,
@@ -1100,7 +1118,8 @@
     "inflicts": "diseased",
     "inflictChance": 20
    }
-  ]
+  ],
+  "gold": "10d6+21"
  },
  {
   "id": "swamp_drake",
@@ -1110,7 +1129,7 @@
   "hitPoints": "7d8",
   "armorClass": 7,
   "speed": 12,
-  "xp": 230,
+  "xp": 400,
   "attacks": [
    {
     "verb": "bites",
@@ -1126,7 +1145,8 @@
     "element": "poison",
     "inflicts": "poisoned"
    }
-  ]
+  ],
+  "gold": "13d6+30"
  },
  {
   "id": "drowned_hydra",
@@ -1194,7 +1214,8 @@
     "inflicts": "poisoned",
     "inflictChance": 35
    }
-  ]
+  ],
+  "gold": "17d6+38"
  },
  {
   "id": "emperor_scorpion",
@@ -1220,7 +1241,8 @@
     "inflicts": "poisoned",
     "inflictChance": 40
    }
-  ]
+  ],
+  "gold": "26d6+61"
  },
  {
   "id": "efreet",
@@ -1231,7 +1253,7 @@
   "armorClass": 8,
   "speed": 14,
   "xp": 1800,
-  "gold": "6d20",
+  "gold": "31d6+75",
   "resistances": {
    "fire": 100,
    "cold": -50
@@ -1262,7 +1284,7 @@
   "armorClass": 7,
   "speed": 12,
   "xp": 1000,
-  "gold": "4d12",
+  "gold": "21d6+50",
   "resistances": {
    "fire": 100
   },
@@ -1297,7 +1319,8 @@
     "inflicts": "diseased",
     "inflictChance": 25
    }
-  ]
+  ],
+  "gold": "21d6+50"
  },
  {
   "id": "guardian_mummy",
@@ -1324,7 +1347,8 @@
     "verb": "strikes",
     "damage": "2d8"
    }
-  ]
+  ],
+  "gold": "26d6+61"
  },
  {
   "id": "mummy_priest",
@@ -1337,7 +1361,7 @@
   "xp": 2000,
   "undead": true,
   "smart": true,
-  "gold": "8d20",
+  "gold": "31d6+75",
   "resistances": {
    "fire": -25,
    "poison": 100,
@@ -1394,7 +1418,8 @@
     "verb": "sweeps a halberd at",
     "damage": "2d10"
    }
-  ]
+  ],
+  "gold": "26d6+61"
  },
  {
   "id": "tomb_wraith",
@@ -1426,7 +1451,8 @@
     "damage": "2d10",
     "element": "magic"
    }
-  ]
+  ],
+  "gold": "26d6+61"
  },
  {
   "id": "scarab",
@@ -1436,7 +1462,7 @@
   "hitPoints": "6d8+8",
   "armorClass": 10,
   "speed": 8,
-  "xp": 600,
+  "xp": 650,
   "resistances": {
    "physical": 25
   },
@@ -1445,7 +1471,8 @@
     "verb": "bites",
     "damage": "1d12"
    }
-  ]
+  ],
+  "gold": "17d6+38"
  },
  {
   "id": "sphinx",
@@ -1556,7 +1583,8 @@
    }
   ],
   "plural": "Giant Roaches",
-  "description": "A cockroach the length of your arm, glossy with sewer water."
+  "description": "A cockroach the length of your arm, glossy with sewer water.",
+  "gold": "1d6+4"
  },
  {
   "id": "cistern_toad",
@@ -1573,7 +1601,8 @@
     "damage": "1d6"
    }
   ],
-  "description": "Pale and bloated from a life without sun."
+  "description": "Pale and bloated from a life without sun.",
+  "gold": "1d6+4"
  },
  {
   "id": "brown_ooze",
@@ -1595,7 +1624,8 @@
    "physical": 25,
    "poison": 100
   },
-  "description": "A slow, hungry puddle that eats leather and boot-nails alike."
+  "description": "A slow, hungry puddle that eats leather and boot-nails alike.",
+  "gold": "3d6+5"
  },
  {
   "id": "cistern_eel",
@@ -1618,7 +1648,8 @@
   "resistances": {
    "electric": 100
   },
-  "description": "A black eel that crackles where it touches the water."
+  "description": "A black eel that crackles where it touches the water.",
+  "gold": "3d6+5"
  },
  {
   "id": "ooze_mother",
@@ -1699,7 +1730,8 @@
    "cold": 50
   },
   "description": "It has lost its legs but not its appetite.",
-  "undead": true
+  "undead": true,
+  "gold": "4d6+12"
  },
  {
   "id": "skeletal_warrior",
@@ -1709,14 +1741,14 @@
   "hitPoints": "5d8",
   "armorClass": 7,
   "speed": 11,
-  "xp": 100,
+  "xp": 110,
   "attacks": [
    {
     "verb": "slashes",
     "damage": "1d10"
    }
   ],
-  "gold": "3d10",
+  "gold": "7d6+15",
   "resistances": {
    "physical": 20,
    "cold": 50,
@@ -1733,7 +1765,7 @@
   "hitPoints": "6d8",
   "armorClass": 5,
   "speed": 13,
-  "xp": 150,
+  "xp": 220,
   "attacks": [
    {
     "verb": "bites",
@@ -1747,7 +1779,8 @@
    "cold": 50
   },
   "description": "A grey, hunched thing that feeds on the catacombs' dead - and the living.",
-  "undead": true
+  "undead": true,
+  "gold": "10d6+21"
  },
  {
   "id": "flayed_ghost",
@@ -1757,7 +1790,7 @@
   "hitPoints": "6d8",
   "armorClass": 6,
   "speed": 14,
-  "xp": 200,
+  "xp": 400,
   "attacks": [
    {
     "verb": "rakes",
@@ -1779,7 +1812,8 @@
    "poison": 100
   },
   "description": "A skinless spirit, screaming without sound.",
-  "undead": true
+  "undead": true,
+  "gold": "13d6+30"
  },
  {
   "id": "curse_skull",
@@ -1789,7 +1823,7 @@
   "hitPoints": "5d8",
   "armorClass": 8,
   "speed": 16,
-  "xp": 220,
+  "xp": 400,
   "attacks": [
    {
     "verb": "bites",
@@ -1812,7 +1846,8 @@
    "magic": 25
   },
   "description": "A floating skull, its sockets lit with green fire.",
-  "undead": true
+  "undead": true,
+  "gold": "13d6+30"
  },
  {
   "id": "wight_king",
@@ -1890,7 +1925,7 @@
     "damage": "2d8"
    }
   ],
-  "gold": "6d20",
+  "gold": "37d6+88",
   "regenerates": 5,
   "description": "A troll grown huge and grey in the dark under the world."
  },
@@ -1925,7 +1960,8 @@
    "poison": 100
   },
   "description": "A hole in the dark shaped like a person.",
-  "undead": true
+  "undead": true,
+  "gold": "37d6+88"
  },
  {
   "id": "draining_eye",
@@ -1960,7 +1996,8 @@
   "resistances": {
    "magic": 50
   },
-  "description": "A floating eye that drinks the strength of whatever it watches."
+  "description": "A floating eye that drinks the strength of whatever it watches.",
+  "gold": "44d6+102"
  },
  {
   "id": "vampire_knight",
@@ -1981,7 +2018,7 @@
     "damage": "2d8"
    }
   ],
-  "gold": "8d20",
+  "gold": "44d6+102",
   "smart": true,
   "abilities": [
    {
@@ -2031,7 +2068,8 @@
    "poison": 100
   },
   "description": "Something raised it long after it died.",
-  "undead": true
+  "undead": true,
+  "gold": "51d6+118"
  },
  {
   "id": "umbral_wyrm",

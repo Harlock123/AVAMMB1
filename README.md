@@ -224,12 +224,16 @@ The CI runners have no sound card, so on Windows and Linux the smoke test only c
 bundled OpenAL Soft library loads; on macOS (CI) and Linux ARM64 it also opens the audio device and
 loads a test sound.
 
-Gameplay verification: 150 unit and integration tests pass. They include scripted playthroughs that
-walk the party with normal movement commands from Brindlemoor to the victory event and through all
-three side quests, checks that every map is connected and every event reachable, and
-deterministic boss-balance checks (each boss beatable at its intended level, not trivial two levels
-below). The UI flow title -> party creation -> town -> shop -> dungeon -> combat -> inventory ->
-automap -> spells -> secret door -> Ashen Hills -> Sunscar Coast -> settings is exercised headlessly by `--screenshot`.
+Gameplay verification: 180 unit and integration tests pass. They include scripted playthroughs that
+walk the party with normal movement commands from Brindlemoor to the victory event, through all
+three side quests and the three deeper levels, checks that every map is connected and every event
+reachable, deterministic boss-balance checks (each boss beatable at its intended level, not trivial
+two levels below), and a **balance simulator** - an automated player that grinds every zone in
+route order from level 1 to 15 (fighting, camping, curing, training, buying gear, reloading after a
+wipe) and asserts the pace, wipe rate and gold flow stay within tuned bounds (about 600 battles from
+a new party to level 15). The simulator ignores treasure chests and quest rewards, so real players
+end up with more gold than it does. The UI flow title -> party creation -> town -> shop -> dungeon -> combat -> inventory ->
+automap -> spells -> secret door -> Old Cistern -> Ashen Hills -> Sunscar Coast -> settings is exercised headlessly by `--screenshot`.
 Gamepad support has been play-tested with a physical controller on Linux ARM64 (v1.4.0); on the
 other platforms CI confirms the bundled SDL2 library loads, and the button mapping is unit tested.
 The game is currently under testing.
@@ -288,6 +292,8 @@ More detail: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 - Region music, a boss theme and ambient sound loops, with an Ambience volume setting.
 - Three new dungeon levels with new monsters, bosses and unique items: the Old Cistern, the
   Catacombs and the post-game Sunless Deep.
+- A balance pass driven by an automated balance simulator: more gold from monsters, cheaper
+  training and temple cures, more XP in the level 5-8 zones, and paralysis that wears off in battle.
 
 ### Planned
 
