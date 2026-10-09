@@ -156,9 +156,17 @@ public sealed class GameSession
             RecallY = cfg.StartY,
         };
         State.PoolAll(); // a new party starts by pooling its gold into the purse
+        State.Difficulty = Difficulty;
+        State.Survival = Survival;
         Combat = null;
         Explore();
     }
+
+    /// <summary>Difficulty for the next new game.</summary>
+    public Difficulty Difficulty { get; set; } = Difficulty.Normal;
+
+    /// <summary>Survival mode for the next new game.</summary>
+    public bool Survival { get; set; }
 
     /// <summary>Replaces the state with a loaded one.</summary>
     /// <param name="state">Loaded state.</param>
@@ -185,6 +193,10 @@ public sealed class GameSession
         if (State.Minutes == 0 && State.Steps > 0)
         {
             State.Minutes = State.Steps * GameState.MinutesPerStep; // saves from before the clock
+        }
+        if (State.LastMealMinutes < State.Minutes - GameState.MinutesPerDay)
+        {
+            State.LastMealMinutes = State.Minutes; // saves from before survival mode: start the day fed
         }
         Combat = null;
         Explore();
@@ -329,6 +341,7 @@ public sealed class GameSession
         {
             RestCharacter(c, result.Messages, requireFood: true);
         }
+        State.LastMealMinutes = State.Minutes; // the rest's meal counts as the day's ration
         result.Messages.Insert(0, new("The party rests for eight hours and shares a meal (1 food each).", MessageKind.Info));
         return result;
     }
@@ -504,6 +517,7 @@ public sealed class GameSession
         State.Minutes += steps * GameState.MinutesPerStep;
         State.LightSteps = Math.Max(0, State.LightSteps - steps);
         BurnLantern(steps, log);
+        DailyRations(log);
         var ticks = (int)(State.Steps / 10 - before / 10);
         if (ticks <= 0)
         {
@@ -514,6 +528,42 @@ public sealed class GameSession
             if (Rules.ApplyDamage(c, ticks))
             {
                 log.Add(new(c.Has(Condition.Dead) ? $"{c.Name} dies of poison!" : $"{c.Name} collapses from poison!", MessageKind.Bad));
+            }
+        }
+    }
+
+    /// <summary>Survival mode: one food each per day on the clock since the last meal; without it, hunger.</summary>
+    private void DailyRations(List<GameMessage> log)
+    {
+        if (!State.Survival)
+        {
+            State.LastMealMinutes = State.Minutes; // switching survival on later starts the day fed
+            return;
+        }
+        while (State.Minutes - State.LastMealMinutes >= GameState.MinutesPerDay)
+        {
+            State.LastMealMinutes += GameState.MinutesPerDay;
+            var hungry = new List<string>();
+            foreach (var c in State.Party.Where(c => c.IsAlive))
+            {
+                if (c.Food > 0)
+                {
+                    c.Food--;
+                    if (c.Food == 2)
+                    {
+                        log.Add(new($"{c.Name} is down to 2 days of food.", MessageKind.Bad));
+                    }
+                    continue;
+                }
+                // Hunger wears a character down but never kills: at worst it leaves them on 1 HP.
+                var loss = Math.Min(Math.Max(1, c.MaxHp / 10), Math.Max(0, c.Hp - 1));
+                c.Hp -= loss;
+                hungry.Add(loss > 0 ? $"{c.Name} (-{loss} HP)" : c.Name);
+            }
+            log.Add(new("The party eats its daily rations.", MessageKind.Info));
+            if (hungry.Count > 0)
+            {
+                log.Add(new($"No food! Hunger gnaws at {string.Join(", ", hungry)}. Buy food at a tavern.", MessageKind.Bad));
             }
         }
     }
@@ -977,6 +1027,10 @@ public sealed class GameSession
     private void TryRandomEncounter(StepResult result, int chance)
     {
         var map = CurrentMap;
+        if (chance < 100)
+        {
+            chance = chance * DifficultyRules.Encounters(State.Difficulty) / 100;
+        }
         if (map.Def.Encounters.Count == 0 || !Random.Chance(chance))
         {
             return;

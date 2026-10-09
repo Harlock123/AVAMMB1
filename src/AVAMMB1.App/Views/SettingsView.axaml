@@ -35,6 +35,15 @@
                   </Grid>
                   <TextBlock Classes="dim" FontSize="{DynamicResource Font12}" TextWrapping="Wrap"
                              Text="High contrast uses black backgrounds and bright colours. Colour-blind friendly shows good news in blue and bad news in orange instead of green and red." />
+                  <TextBlock Classes="h2" Text="Game" />
+                  <Grid ColumnDefinitions="120,*">
+                    <TextBlock Text="Difficulty" VerticalAlignment="Center" />
+                    <ComboBox Grid.Column="1" ItemsSource="{Binding DifficultyOptions}" SelectedIndex="{Binding DifficultyIndex}" HorizontalAlignment="Stretch" />
+                  </Grid>
+                  <TextBlock Text="{Binding DifficultyText}" Classes="dim" FontSize="{DynamicResource Font12}" TextWrapping="Wrap" />
+                  <CheckBox Content="Survival mode (everyone eats 1 food a day, and goes hungry without)" IsChecked="{Binding Survival}" />
+                  <TextBlock Classes="dim" FontSize="{DynamicResource Font12}" TextWrapping="Wrap"
+                             Text="{Binding GameNote}" />
                   <TextBlock Classes="h2" Text="Data" />
                   <TextBlock Text="{Binding DataLocation}" Classes="dim" FontSize="{DynamicResource Font12}" TextWrapping="Wrap" />
                 </StackPanel>

@@ -125,6 +125,8 @@ public sealed partial class MainViewModel : ViewModelBase
     /// <param name="roster">Extra characters left at the inn.</param>
     public void StartNewGame(IReadOnlyList<Character> party, IReadOnlyList<Character> roster)
     {
+        Services.Session.Difficulty = Services.Settings.Difficulty;
+        Services.Session.Survival = Services.Settings.Survival;
         Services.Session.NewGame(party, roster);
         Game = new GameViewModel(this);
         CurrentScreen = Game;

@@ -64,6 +64,7 @@ public sealed class TownServices(GameSession session)
         }
         State.Steps += 50;
         State.AdvanceTo(7 * 60); // sleep until seven the next morning
+        State.LastMealMinutes = State.Minutes; // the inn feeds the party
         foreach (var c in State.Party.Where(c => c.IsAlive))
         {
             session.RestCharacter(c, log, requireFood: false);

@@ -256,6 +256,35 @@ public sealed partial class PartyCreationViewModel : ViewModelBase
 
     private bool CanBegin() => Created.Count > 0;
 
+    /// <summary>Difficulty choices.</summary>
+    public string[] DifficultyOptions { get; } = ["Easy", "Normal", "Hard"];
+
+    /// <summary>Difficulty for the new game (remembered in settings).</summary>
+    public int DifficultyIndex
+    {
+        get => (int)_main.Services.Settings.Difficulty;
+        set
+        {
+            _main.Services.Settings.Difficulty = (AVAMMB1.Core.Rules.Difficulty)Math.Clamp(value, 0, 2);
+            OnPropertyChanged();
+            OnPropertyChanged(nameof(DifficultyText));
+        }
+    }
+
+    /// <summary>What the chosen difficulty does.</summary>
+    public string DifficultyText => AVAMMB1.Core.Rules.DifficultyRules.Describe(_main.Services.Settings.Difficulty);
+
+    /// <summary>Survival mode for the new game (remembered in settings).</summary>
+    public bool Survival
+    {
+        get => _main.Services.Settings.Survival;
+        set
+        {
+            _main.Services.Settings.Survival = value;
+            OnPropertyChanged();
+        }
+    }
+
     /// <summary>Starts the adventure (or returns to the inn when recruiting).</summary>
     [RelayCommand(CanExecute = nameof(CanBegin))]
     private void Begin()
@@ -269,6 +298,7 @@ public sealed partial class PartyCreationViewModel : ViewModelBase
             _main.ReturnToGame();
             return;
         }
+        _main.Services.SaveSettings();
         _main.StartNewGame(Created.ToList(), Array.Empty<Character>());
     }
 

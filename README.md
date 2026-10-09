@@ -68,6 +68,9 @@ Code identifiers, the solution and executables use the name **`AVAMMB1`** (`AVAM
 - **Towns** with inns (rest, save, roster of up to 18 characters), temples (heal, cure, raise dead,
   donate), taverns (food, rumors), smithies and magic shops, training grounds, and **academies**
   where gold buys permanent statistic points (each lesson dearer than the last - a late-game gold sink).
+- **Difficulty and survival**: Easy, Normal or Hard (monster health and damage, gold, encounter
+  rate), chosen at party creation and changeable in Settings; an optional survival mode where
+  everyone eats a ration a day and goes hungry without.
 - **Drag-and-drop marching order**: drag a party card along the bar at the bottom of the screen to
   change places (anywhere but in battle); a click still opens the character sheet. Without a mouse,
   Move left / Move right on the character sheet (`[` / `]`, or the buttons with a controller).

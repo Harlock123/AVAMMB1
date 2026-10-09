@@ -52,6 +52,14 @@ public sealed class CombatEngine
         {
             m.Label = "Elite " + m.Label;
         }
+        if (state.Difficulty != Difficulty.Normal)
+        {
+            foreach (var m in Monsters)
+            {
+                m.ScaleHp(DifficultyRules.MonsterHp(state.Difficulty));
+                m.DamagePercent = DifficultyRules.MonsterDamage(state.Difficulty);
+            }
+        }
     }
 
     /// <summary>Creates monster instances for a definition, rolling hit points.</summary>
@@ -308,7 +316,7 @@ public sealed class CombatEngine
     {
         var killed = Monsters.Where(m => m.IsDead).ToList();
         var xp = killed.Sum(m => m.Def.Xp * (m.Elite ? 3 : 1));
-        var gold = killed.Sum(m => Math.Max(0, m.Def.Gold.Roll(_rng)) * (m.Elite ? 3 : 1));
+        var gold = killed.Sum(m => Math.Max(0, m.Def.Gold.Roll(_rng)) * (m.Elite ? 3 : 1)) * DifficultyRules.Gold(_state.Difficulty) / 100;
         var gems = killed.Count(m => m.Def.Level >= 3 && _rng.Chance(10));
         var items = new List<ItemInstance>();
         foreach (var m in killed.Where(m => m.Elite && _rng.Chance(50)))

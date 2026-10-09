@@ -203,6 +203,15 @@ public sealed class GameState
     /// <summary>The game clock: minutes since the adventure began.</summary>
     public long Minutes { get; set; }
 
+    /// <summary>Difficulty of this game.</summary>
+    public Difficulty Difficulty { get; set; } = Difficulty.Normal;
+
+    /// <summary>Survival mode: besides resting, everyone eats one food a day, and goes hungry without.</summary>
+    public bool Survival { get; set; }
+
+    /// <summary>Clock time of the party's last meal (a rest, a night at an inn, or a daily ration).</summary>
+    public long LastMealMinutes { get; set; }
+
     /// <summary>Minutes since midnight (0-1439).</summary>
     [System.Text.Json.Serialization.JsonIgnore]
     public int MinuteOfDay => (int)((Minutes + StartMinuteOfDay) % MinutesPerDay);

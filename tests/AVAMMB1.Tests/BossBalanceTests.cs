@@ -33,10 +33,49 @@ public class BossBalanceTests(ITestOutputHelper output)
     [InlineData("rimefang", "ice_devil", 2, 11, false)]
     public void Boss_IsChallengingButFair(string boss, string? adds, int addCount, int level, bool shouldUsuallyWin)
     {
+        var wins = Wins(boss, adds, addCount, level, Difficulty.Normal);
+        output.WriteLine($"{boss} vs level {level}: {wins}/20");
+        if (shouldUsuallyWin)
+        {
+            Assert.True(wins >= 15, $"{boss} is too hard at level {level}: party won {wins}/20");
+        }
+        else
+        {
+            Assert.True(wins <= 5, $"{boss} is too easy at level {level}: party won {wins}/20");
+        }
+    }
+
+    /// <summary>Hard stays beatable (two levels more than intended), and Easy is never harder than Normal.</summary>
+    [Theory]
+    [InlineData("vault_warden", null, 0, 7)]
+    [InlineData("stone_wyrm", "rock_beetle", 2, 8)]
+    [InlineData("drowned_hydra", null, 0, 9)]
+    [InlineData("crypt_lich", "ghoul", 2, 5)]
+    [InlineData("sphinx", null, 0, 10)]
+    [InlineData("sun_king", "guardian_mummy", 2, 12)]
+    [InlineData("ooze_mother", "brown_ooze", 2, 4)]
+    [InlineData("wight_king", "skeletal_warrior", 2, 8)]
+    [InlineData("umbral_wyrm", "shade", 2, 15)]
+    [InlineData("rimefang", "ice_devil", 2, 13)]
+    public void Boss_Difficulties(string boss, string? adds, int addCount, int level)
+    {
+        var normal = Wins(boss, adds, addCount, level, Difficulty.Normal);
+        var easy = Wins(boss, adds, addCount, level, Difficulty.Easy);
+        var hard = Wins(boss, adds, addCount, level, Difficulty.Hard);
+        var hardLater = Wins(boss, adds, addCount, level + 2, Difficulty.Hard);
+        output.WriteLine($"{boss} level {level}: easy {easy}/20, normal {normal}/20, hard {hard}/20, hard at level {level + 2}: {hardLater}/20");
+        Assert.True(easy >= normal, $"{boss}: easy ({easy}) should not be harder than normal ({normal})");
+        Assert.True(hard <= normal, $"{boss}: hard ({hard}) should not be easier than normal ({normal})");
+        Assert.True(hardLater >= 12, $"{boss} on Hard is too hard even at level {level + 2}: {hardLater}/20");
+    }
+
+    private static int Wins(string boss, string? adds, int addCount, int level, Difficulty difficulty)
+    {
         var wins = 0;
         for (var seed = 0; seed < 20; seed++)
         {
             var s = TestContent.StartedSession(seed);
+            s.State.Difficulty = difficulty;
             foreach (var c in s.State.Party)
             {
                 c.Experience = Rulebook.XpForLevel(s.Content.Class(c.Class), level);
@@ -67,14 +106,6 @@ public class BossBalanceTests(ITestOutputHelper output)
             }
             if (combat.Outcome == CombatOutcome.Victory) wins++;
         }
-        output.WriteLine($"{boss} vs level {level}: {wins}/20");
-        if (shouldUsuallyWin)
-        {
-            Assert.True(wins >= 15, $"{boss} is too hard at level {level}: party won {wins}/20");
-        }
-        else
-        {
-            Assert.True(wins <= 5, $"{boss} is too easy at level {level}: party won {wins}/20");
-        }
+        return wins;
     }
 }

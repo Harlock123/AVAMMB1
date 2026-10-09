@@ -6,6 +6,12 @@ All notable changes to this project are documented here. The format follows
 ## [Unreleased]
 
 ### Added
+- Difficulty: Easy (monsters -25% HP and damage, +25% gold, fewer encounters), Normal, or Hard
+  (+30% HP, +25% damage, -15% gold, more encounters). Chosen next to "Begin the Adventure" and
+  changeable any time in Settings > Game; saved with each game.
+- Survival mode (optional, off by default): besides resting, everyone eats 1 food per day on the
+  clock (a rest or a night at an inn counts as that day's meal). Without food a character loses a
+  tenth of their HP each day - hunger never kills, but leaves them weak. Warns at 2 days of food.
 - Change the marching order without a mouse: the character sheet has Move left / Move right buttons
   (keys `[` and `]`; a controller reaches the buttons like any other). The sheet follows the
   character as they move.

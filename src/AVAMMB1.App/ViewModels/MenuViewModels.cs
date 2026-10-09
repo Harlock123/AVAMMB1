@@ -3,6 +3,7 @@ using System.Globalization;
 using Avalonia.Input;
 using Avalonia.Platform;
 using AVAMMB1.Core.Persistence;
+using AVAMMB1.Core.Rules;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
@@ -211,6 +212,10 @@ public sealed partial class SettingsViewModel : ViewModelBase
         _resolutionIndex = Math.Max(0, Array.IndexOf(Resolutions, s.ViewResolution));
         _smoothView = s.SmoothView;
         _detailedTextures = s.DetailedTextures;
+        InGame = returnTo is GameViewModel && main.Services.Session.IsActive;
+        var state = main.Services.Session.State;
+        _difficultyIndex = (int)(InGame ? state.Difficulty : s.Difficulty);
+        _survival = InGame ? state.Survival : s.Survival;
         _pad = new Dictionary<InputAction, AVAMMB1.Core.Input.GamepadButton>(s.GamepadBindings);
         LoadPadRows();
         LoadBindings();
@@ -280,6 +285,29 @@ public sealed partial class SettingsViewModel : ViewModelBase
     /// <summary>Selected theme.</summary>
     [ObservableProperty]
     private int _themeIndex;
+
+    /// <summary>Whether a game is running (difficulty changes apply to it at once).</summary>
+    public bool InGame { get; }
+
+    /// <summary>Where the Game settings apply.</summary>
+    public string GameNote => InGame
+        ? "Changes apply to the game in progress at once, and to new games."
+        : "Used for new games; change it any time during a game here.";
+
+    /// <summary>Difficulty choices.</summary>
+    public string[] DifficultyOptions { get; } = ["Easy", "Normal", "Hard"];
+
+    /// <summary>Selected difficulty.</summary>
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(DifficultyText))]
+    private int _difficultyIndex;
+
+    /// <summary>What the selected difficulty does.</summary>
+    public string DifficultyText => DifficultyRules.Describe((Difficulty)Math.Clamp(DifficultyIndex, 0, 2));
+
+    /// <summary>Survival mode (daily rations).</summary>
+    [ObservableProperty]
+    private bool _survival;
 
     /// <summary>Selected text size.</summary>
     [ObservableProperty]
@@ -441,6 +469,22 @@ public sealed partial class SettingsViewModel : ViewModelBase
         s.SmoothView = SmoothView;
         s.DetailedTextures = DetailedTextures;
         _main.Services.Textures.Detailed = DetailedTextures;
+        s.Difficulty = (Difficulty)Math.Clamp(DifficultyIndex, 0, 2);
+        s.Survival = Survival;
+        if (InGame)
+        {
+            var state = _main.Services.Session.State;
+            if (state.Difficulty != s.Difficulty)
+            {
+                _main.Game?.AddMessage($"Difficulty is now {s.Difficulty}.");
+            }
+            if (state.Survival != Survival)
+            {
+                _main.Game?.AddMessage(Survival ? "Survival mode: the party now eats one food each a day." : "Survival mode is off: food is eaten only when resting.");
+            }
+            state.Difficulty = s.Difficulty;
+            state.Survival = Survival;
+        }
         s.GamepadBindings = new Dictionary<InputAction, AVAMMB1.Core.Input.GamepadButton>(_pad);
         PreviewTheme();
         _main.Services.SaveSettings();

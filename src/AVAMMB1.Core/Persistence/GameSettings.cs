@@ -60,6 +60,10 @@ public sealed class GameSettings
     public string LastSeenVersion { get; set; } = "";
     /// <summary>Height of the 3D view's internal image: 300 (400x300, classic), 480 (640x480) or 600 (800x600).</summary>
     public int ViewResolution { get; set; } = 300;
+    /// <summary>Difficulty for new games.</summary>
+    public Rules.Difficulty Difficulty { get; set; } = Rules.Difficulty.Normal;
+    /// <summary>Survival mode (daily rations) for new games.</summary>
+    public bool Survival { get; set; }
     /// <summary>Detailed (128 x 128) wall and floor textures where available.</summary>
     public bool DetailedTextures { get; set; }
     /// <summary>Smooth (filtered) scaling of the 3D view instead of sharp pixels.</summary>

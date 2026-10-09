@@ -44,7 +44,23 @@ public sealed class MonsterInstance(MonsterDef def, int hp)
 
     /// <summary>Damage after the elite bonus.</summary>
     /// <param name="damage">Rolled damage.</param>
-    public int ScaleDamage(int damage) => Elite ? damage * 3 / 2 : damage;
+    public int ScaleDamage(int damage)
+    {
+        var d = Elite ? damage * 3 / 2 : damage;
+        return d <= 0 || DamagePercent == 100 ? d : Math.Max(1, d * DamagePercent / 100);
+    }
+
+    /// <summary>Damage in percent of normal (difficulty).</summary>
+    public int DamagePercent { get; set; } = 100;
+
+    /// <summary>Scales hit points (difficulty); call before the battle starts.</summary>
+    /// <param name="percent">Percent of normal.</param>
+    public void ScaleHp(int percent)
+    {
+        var full = Hp >= MaxHp;
+        MaxHp = Math.Max(1, MaxHp * percent / 100);
+        Hp = full ? MaxHp : Math.Clamp(Hp * percent / 100, 1, MaxHp);
+    }
 
     /// <summary>Display label, e.g. "Goblin #2".</summary>
     public string Label { get; set; } = def.Name;
