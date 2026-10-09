@@ -218,7 +218,8 @@ public sealed partial class GameViewModel : ViewModelBase
         {
             Services.Audio.PlayMusic(map.Def.Music);
         }
-        Services.Audio.PlayAmbience(map.Def.Ambience);
+        // At night the birdsong of the green country gives way to crickets.
+        Services.Audio.PlayAmbience(Session.IsNightOutside && map.Def.Ambience == "birds" ? "night" : map.Def.Ambience);
     }
 
     /// <summary>Adds a plain message to the log.</summary>

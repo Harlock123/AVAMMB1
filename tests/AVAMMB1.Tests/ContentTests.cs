@@ -102,6 +102,7 @@ public class ContentTests
             Assert.False(string.IsNullOrEmpty(map.Def.Ambience), $"{map.Id}: no ambience");
             Assert.True(File.Exists(Path.Combine(assets, "Audio", "Ambience", map.Def.Ambience + ".ogg")), $"{map.Id}: ambience {map.Def.Ambience}");
         }
+        Assert.True(File.Exists(Path.Combine(assets, "Audio", "Ambience", "night.ogg")));
         foreach (var track in new[] { "title", "battle", "boss" })
         {
             Assert.True(File.Exists(Path.Combine(assets, "Audio", "Music", track + ".ogg")), track);

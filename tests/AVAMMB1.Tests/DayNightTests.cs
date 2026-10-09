@@ -132,4 +132,17 @@ public class DayNightTests
         s.Load(state);
         Assert.Equal(3000, s.State.Minutes);
     }
+
+    [Fact]
+    public void Footsteps_SoundLikeTheGround()
+    {
+        var db = TestContent.Content;
+        Assert.Equal("step_snow", GameSession.StepSound(db.Map("frostmark"), 10, 10));
+        Assert.Equal("step", GameSession.StepSound(db.Map("cellars"), 1, 14));
+        Assert.Equal("step_soft", GameSession.StepSound(db.Map("wilds"), 16, 16));
+        var temple = db.Map("temple");
+        var wet = Enumerable.Range(0, temple.Width).SelectMany(x => Enumerable.Range(0, temple.Height).Select(y => (x, y)))
+            .First(p => temple.FloorTexture(p.x, p.y) == "shallow_water");
+        Assert.Equal("step_water", GameSession.StepSound(temple, wet.x, wet.y));
+    }
 }

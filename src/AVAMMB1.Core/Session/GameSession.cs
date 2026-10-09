@@ -259,7 +259,7 @@ public sealed class GameSession
         }
         else
         {
-            result.Messages.Add(new("", MessageKind.Info, "step"));
+            result.Messages.Add(new("", MessageKind.Info, StepSound(map, nx, ny)));
         }
         result.Messages.RemoveAll(m => m.Text.Length == 0 && m.Sound is null);
         PassTime(1, result.Messages);
@@ -429,6 +429,22 @@ public sealed class GameSession
     private string DescribeSide(Direction d) =>
         d == State.Facing ? "front" : d == State.Facing.Opposite() ? "rear" : d == State.Facing.Left() ? "left" : "right";
 
+    /// <summary>The footstep sound for the ground at a square: water, snow, soft earth outdoors, or stone.</summary>
+    /// <param name="map">Map.</param>
+    /// <param name="x">X.</param>
+    /// <param name="y">Y.</param>
+    public static string StepSound(GameMap map, int x, int y)
+    {
+        var floor = map.FloorTexture(x, y);
+        return floor switch
+        {
+            "water" or "shallow_water" => "step_water",
+            "floor_snow" or "floor_ice" => "step_snow",
+            "floor_grass" or "floor_earth" or "floor_dirt" or "floor_bog" or "floor_sand" when map.Def.Kind != MapKind.Dungeon => "step_soft",
+            _ => "step",
+        };
+    }
+
     /// <summary>The party's best lock-picker tries a locked door (robbers); a failed try takes a few minutes.</summary>
     private void TryPickLock(GameMap map, Direction dir, StepResult result)
     {
@@ -453,7 +469,7 @@ public sealed class GameSession
         }
         else
         {
-            result.Messages.Add(new($"{picker.Name} fails to pick the lock ({chance}% chance). Try again?", MessageKind.Info, "bump"));
+            result.Messages.Add(new($"{picker.Name} fails to pick the lock ({chance}% chance). Try again?", MessageKind.Info, "lockpick"));
             TryRandomEncounter(result, map.Def.EncounterChance);
         }
     }

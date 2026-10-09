@@ -435,7 +435,7 @@ public sealed class CombatEngine
         }
         _guardedBy[target] = c;
         _blocking.Add(c);
-        log.Add(new($"{c.Name} raises a shield before {target.Name}.", MessageKind.Combat));
+        log.Add(new($"{c.Name} raises a shield before {target.Name}.", MessageKind.Combat, "guard"));
         return true;
     }
 

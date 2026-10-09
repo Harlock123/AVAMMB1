@@ -6,6 +6,10 @@ All notable changes to this project are documented here. The format follows
 ## [Unreleased]
 
 ### Added
+- Audio polish. The Frostmark and the Rime Halls have their own music ("Beyond the Frozen Veil");
+  crickets replace birdsong outdoors at night; footsteps sound like the ground underfoot (snow and
+  ice, water, grass and earth, stone); lighting a torch, filling a lantern, picking a lock and a
+  knight's guard each have a sound.
 - Class abilities. Knights: Guard a companion for the round - attacks aimed at them strike the
   knight, who counts as blocking. Paladins: Lay on Hands once per battle (heals 3 x level + 5 and
   cures poison). Archers: Aimed shot (+4 to hit, double damage, not two rounds running). Robbers:

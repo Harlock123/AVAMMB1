@@ -29,7 +29,11 @@ their code, data, maps, text, graphics, music or sounds. All trademarks belong t
 - **"8-bit Cave Loop"** - Wolfgang_ - https://opengameart.org/content/8-bit-cave-loop
 - **"Battle Theme B for RPG"** - cynicmusic - https://opengameart.org/content/battle-theme-b-for-rpg
 
+- **"Beyond the Frozen Veil"** - Synth-thetic - https://opengameart.org/content/beyond-the-frozen-veil (the Frostmark)
+
 ## Ambient sound loops (all CC0 1.0)
+
+- **"Crickets Ambient Noise - loopable"** - Wolfgang_ - https://opengameart.org/content/crickets-ambient-noise-loopable (night)
 
 - **"Wind Whoosh Loop"** - SketchMan3 - https://opengameart.org/content/wind-whoosh-loop
 - **"Dripping Water Loop"** - qubodup - https://opengameart.org/content/dripping-water-loop
@@ -41,6 +45,8 @@ their code, data, maps, text, graphics, music or sounds. All trademarks belong t
 - **RPG Audio** - Kenney (kenney.nl) - https://kenney.nl/assets/rpg-audio
 - **80 CC0 RPG SFX** - rubberduck - https://opengameart.org/content/80-cc0-rpg-sfx
 - **RPG Sound Pack** - artisticdude - https://opengameart.org/content/rpg-sound-pack
+- **42 Snow and Gravel Footsteps** - Corsica_S, extracted by Iwan Gabovitch - https://opengameart.org/node/2627
+- **Water Splash and sand footsteps** - Peludo - https://opengameart.org/content/water-splash-and-sand-footsteps
 
 ## Detailed textures (CC0 1.0)
 

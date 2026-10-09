@@ -63,7 +63,7 @@ public static class HeadlessRunner
                 }
                 var tracks = vm.Services.Content.Maps.Values.Select(m => "Music/" + m.Def.Music)
                     .Concat(vm.Services.Content.Maps.Values.Where(m => m.Def.Ambience is not null).Select(m => "Ambience/" + m.Def.Ambience))
-                    .Concat(["Music/title", "Music/battle", "Music/boss"]).Distinct().Order().ToList();
+                    .Concat(["Music/title", "Music/battle", "Music/boss", "Ambience/night"]).Distinct().Order().ToList();
                 foreach (var t in tracks)
                 {
                     OpenAlAudioService.CheckDecodes(t + ".ogg");

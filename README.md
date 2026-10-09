@@ -117,8 +117,8 @@ Code identifiers, the solution and executables use the name **`AVAMMB1`** (`AVAM
   music/effects volume, fullscreen, minimap and **rebindable keys**.
 - **Music, ambience and sound effects** via OpenAL Soft (Silk.NET) + NVorbis, bundled for all six
   platforms: region music (towns, wilds, desert, marsh, caves, dungeons), a boss theme, and ambient
-  loops (birdsong, river, wind, dripping water, deep dungeon) under the music, each with its own
-  volume. The game silently falls back to no audio if no device is available.
+  loops (birdsong, night crickets, river, wind, dripping water, deep dungeon) under the music, each
+  with its own volume, and footsteps that change with the ground (stone, snow, water, grass). The game silently falls back to no audio if no device is available.
 - **Single-file, self-contained executables** for Windows, Linux and macOS (x64 and ARM64).
 
 ## Screenshots

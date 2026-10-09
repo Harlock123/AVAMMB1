@@ -143,7 +143,7 @@ public sealed class SpellCaster(Rulebook rules, IRandomSource rng)
                 }
             case ItemKind.Torch when combat is null:
                 state.AddLight(Math.Max(10, def.LightSteps), def.LightRadius > 0 ? def.LightRadius : 5);
-                log.Add(new($"{user.Name} lights {def.Name}.", MessageKind.Good));
+                log.Add(new($"{user.Name} lights {def.Name}.", MessageKind.Good, "torch"));
                 result = new SpellResult(true, log);
                 break;
             case ItemKind.Oil when combat is null:
@@ -164,7 +164,7 @@ public sealed class SpellCaster(Rulebook rules, IRandomSource rng)
                         return new SpellResult(false, [new GameMessage($"{target.Name}'s lantern is already full.")]);
                     }
                     lantern.Charges = Math.Min(cap, lantern.Charges + Math.Max(1, def.FuelAmount));
-                    log.Add(new($"{user.Name} fills {(ReferenceEquals(target, user) ? "their" : target.Name + "'s")} lantern ({lantern.Charges}/{cap} steps of oil).", MessageKind.Good));
+                    log.Add(new($"{user.Name} fills {(ReferenceEquals(target, user) ? "their" : target.Name + "'s")} lantern ({lantern.Charges}/{cap} steps of oil).", MessageKind.Good, "pour"));
                     result = new SpellResult(true, log);
                     break;
                 }

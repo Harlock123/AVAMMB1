@@ -10,6 +10,7 @@ The game code is licensed separately under the MIT license (see [LICENSE](LICENS
 - Character portraits are composited at runtime from the unmodified race base tiles and paper-doll layer tiles.
 - All audio was transcoded to Ogg Vorbis (sound effects downmixed to mono) with ffmpeg; music tracks are otherwise unedited.
 - Ambient loops were downmixed to mono at 22 kHz; the two park ambiences were trimmed to 90 seconds with a 2-second crossfade so they loop seamlessly.
+- `Audio/Sfx/step_water.ogg` is the first 0.6 s of Peludo's splash2.wav with a fade-out.
 - `Graphics/Textures/floor_snow.png` is the DCSS `frozen_0` floor tile, lightened and desaturated to read as snow.
 - Files were renamed to describe their in-game use (original names are listed below).
 
@@ -34,6 +35,10 @@ The game code is licensed separately under the MIT license (see [LICENSE](LICENS
 | Loopable Dungeon Ambience | JaggedStone | <https://opengameart.org/content/loopable-dungeon-ambience> | CC0 1.0 |
 | Park Ambiences | Thimras | <https://opengameart.org/content/park-ambiences> | CC0 1.0 |
 | Tiny Texture Pack (128x128) | Screaming Brain Studios | <https://opengameart.org/content/tiny-texture-pack> | CC0 1.0 |
+| Beyond the Frozen Veil | Synth-thetic | <https://opengameart.org/content/beyond-the-frozen-veil> | CC0 1.0 |
+| Crickets Ambient Noise - loopable | Wolfgang_ | <https://opengameart.org/content/crickets-ambient-noise-loopable> | CC0 1.0 |
+| 42 Snow and Gravel Footsteps | Corsica_S (extracted by Iwan Gabovitch) | <https://opengameart.org/node/2627> | CC0 1.0 |
+| Water Splash and sand footsteps | Peludo | <https://opengameart.org/content/water-splash-and-sand-footsteps> | CC0 1.0 |
 
 ## Original works (made for this project)
 
@@ -49,6 +54,7 @@ The game code is licensed separately under the MIT license (see [LICENSE](LICENS
 | `Audio/Ambience/birds.ogg` | Park Ambiences | `park_ambience_birds.wav` |
 | `Audio/Ambience/deep.ogg` | Loopable Dungeon Ambience | `dungeon_ambient_1_0.ogg` |
 | `Audio/Ambience/drips.ogg` | Dripping Water Loop | `atmosbasement.mp3_.flac` |
+| `Audio/Ambience/night.ogg` | Crickets Ambient Noise - loopable | `crickets.mp3` |
 | `Audio/Ambience/river.ogg` | Park Ambiences | `park_ambience_river.wav` |
 | `Audio/Ambience/wind.ogg` | Wind Whoosh Loop | `wind woosh loop` |
 | `Audio/Music/battle.ogg` | Battle Theme A | `battleThemeA.mp3` |
@@ -56,6 +62,7 @@ The game code is licensed separately under the MIT license (see [LICENSE](LICENS
 | `Audio/Music/caves.ogg` | 8-bit Cave Loop | `8BitCave.wav` |
 | `Audio/Music/desert.ogg` | Desert Calmness and Fighting | `Negev Desert Loop` |
 | `Audio/Music/dungeon.ogg` | Dungeon Ambience | `dungeon002_0.ogg` |
+| `Audio/Music/frost.ogg` | Beyond the Frozen Veil | `Beyond the Frozen Veil (Loop).flac` |
 | `Audio/Music/marsh.ogg` | Swamp Theme Loop | `swamp_in_game.ogg` |
 | `Audio/Music/title.ogg` | 5 Chiptunes | `Juhani Junkala [Retro Game Music Pack] Title Screen.wav` |
 | `Audio/Music/town.ogg` | Town Theme RPG | `TownTheme.mp3` |
@@ -67,17 +74,24 @@ The game code is licensed separately under the MIT license (see [LICENSE](LICENS
 | `Audio/Sfx/drink.ogg` | RPG Sound Pack | `inventory/bottle.wav` |
 | `Audio/Sfx/equip.ogg` | RPG Sound Pack | `inventory/chainmail1.wav` |
 | `Audio/Sfx/fire.ogg` | 80 CC0 RPG SFX | `spell_fire_01.ogg` |
+| `Audio/Sfx/guard.ogg` | 80 CC0 RPG SFX | `metal_01.ogg` |
 | `Audio/Sfx/heal.ogg` | RPG Sound Pack | `inventory/bubble.wav` |
 | `Audio/Sfx/hit.ogg` | 80 CC0 RPG SFX | `blade_01.ogg` |
 | `Audio/Sfx/levelup.ogg` | 80 CC0 RPG SFX | `item_gem_01.ogg` |
+| `Audio/Sfx/lockpick.ogg` | 80 CC0 RPG SFX | `lock_02.ogg` |
 | `Audio/Sfx/miss.ogg` | RPG Sound Pack | `battle/swing2.wav` |
 | `Audio/Sfx/monster_die.ogg` | 80 CC0 RPG SFX | `creature_die_01.ogg` |
 | `Audio/Sfx/monster_hurt.ogg` | 80 CC0 RPG SFX | `creature_hurt_01.ogg` |
 | `Audio/Sfx/party_hurt.ogg` | RPG Sound Pack | `NPC/gutteral beast/mnstr1.wav` |
+| `Audio/Sfx/pour.ogg` | RPG Sound Pack | `inventory/bubble2.wav` |
 | `Audio/Sfx/roar.ogg` | 80 CC0 RPG SFX | `creature_roar_01.ogg` |
 | `Audio/Sfx/spell.ogg` | 80 CC0 RPG SFX | `spell_01.ogg` |
 | `Audio/Sfx/step.ogg` | RPG Audio | `footstep00.ogg` |
+| `Audio/Sfx/step_snow.ogg` | 42 Snow and Gravel Footsteps | `Corsica_S-Walking_on_snow_covered_gravel_03.flac` |
+| `Audio/Sfx/step_soft.ogg` | RPG Audio | `footstep05.ogg` |
+| `Audio/Sfx/step_water.ogg` | Water Splash and sand footsteps | `splash2.wav (first 0.6 s, faded)` |
 | `Audio/Sfx/swing.ogg` | RPG Sound Pack | `battle/swing.wav` |
+| `Audio/Sfx/torch.ogg` | 80 CC0 RPG SFX | `spell_fire_03.ogg` |
 | `Audio/Sfx/ui.ogg` | RPG Sound Pack | `interface/interface1.wav` |
 | `Graphics/Doll/body_chain.png` | Dungeon Crawl 32x32 tiles | `player/body/chainmail.png` |
 | `Graphics/Doll/body_leather_green.png` | Dungeon Crawl 32x32 tiles | `player/body/leather_green.png` |
