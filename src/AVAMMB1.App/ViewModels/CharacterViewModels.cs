@@ -133,6 +133,7 @@ public sealed partial class CharacterSheetViewModel : ViewModelBase
         OnPropertyChanged(nameof(Character));
         OnPropertyChanged(nameof(Header));
         OnPropertyChanged(nameof(Summary));
+        OnPropertyChanged(nameof(GoldLine));
     }
 
     private void Done(InventoryResult r)
@@ -142,6 +143,38 @@ public sealed partial class CharacterSheetViewModel : ViewModelBase
         _game.Refresh();
         Load();
     }
+
+    /// <summary>Gold line for the current character.</summary>
+    public string GoldLine => $"{Character.Name} carries {Character.Gold} gold. Party purse: {Session.State.Gold}.";
+
+    /// <summary>Amount for deposit / withdraw.</summary>
+    [ObservableProperty]
+    private decimal? _goldAmount = 100;
+
+    private void GoldDone(List<GameMessage> log)
+    {
+        _game.AddMessages(log);
+        Feedback = string.Join(" ", log.Select(m => m.Text));
+        _game.Refresh();
+        OnPropertyChanged(nameof(GoldLine));
+    }
+
+    private int Amount => (int)Math.Max(0, GoldAmount ?? 0);
+
+    [RelayCommand]
+    private void DepositGold() => GoldDone(Session.Town.Deposit(Character, Amount));
+
+    [RelayCommand]
+    private void DepositAllGold() => GoldDone(Session.Town.Deposit(Character, Character.Gold));
+
+    [RelayCommand]
+    private void WithdrawGold() => GoldDone(Session.Town.Withdraw(Character, Amount));
+
+    [RelayCommand]
+    private void PoolAllGold() => GoldDone(Session.Town.PoolAll());
+
+    [RelayCommand]
+    private void ShareGold() => GoldDone(Session.Town.ShareEvenly());
 
     [RelayCommand]
     private void Next() => Index = (Index + 1) % _game.Party.Count;

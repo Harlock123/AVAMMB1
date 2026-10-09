@@ -16,7 +16,7 @@ public sealed class GameState
     public List<Character> Party { get; set; } = new();
     /// <summary>Characters resting at the inn (not in the party).</summary>
     public List<Character> Roster { get; set; } = new();
-    /// <summary>Shared party gold.</summary>
+    /// <summary>The party purse: gold shared by everyone in the party (loot goes here).</summary>
     public int Gold { get; set; }
     /// <summary>Shared party gems.</summary>
     public int Gems { get; set; }
@@ -48,6 +48,93 @@ public sealed class GameState
     public int RecallY { get; set; }
     /// <summary>Whether the final objective has been completed.</summary>
     public bool Won { get; set; }
+
+    /// <summary>Purse plus the personal gold of every party member.</summary>
+    public int TotalGold => Gold + Party.Sum(c => c.Gold);
+
+    /// <summary>
+    /// Gold available for a payment: the purse plus the payer's own gold, or plus everyone's gold
+    /// for whole-party costs (<paramref name="payer"/> null).
+    /// </summary>
+    /// <param name="payer">The character being served, or null for party-wide costs.</param>
+    public int Available(Characters.Character? payer) => Gold + (payer?.Gold ?? Party.Sum(c => c.Gold));
+
+    /// <summary>
+    /// Pays a cost from the purse first, then from the payer's own gold (or, for party-wide costs,
+    /// from members' gold in marching order). Nothing is taken if the total is not enough.
+    /// </summary>
+    /// <param name="cost">Gold to pay.</param>
+    /// <param name="payer">The character being served, or null for party-wide costs.</param>
+    /// <returns>True when paid.</returns>
+    public bool TryPay(int cost, Characters.Character? payer = null)
+    {
+        if (cost <= 0)
+        {
+            return true;
+        }
+        if (Available(payer) < cost)
+        {
+            return false;
+        }
+        var fromPurse = Math.Min(Gold, cost);
+        Gold -= fromPurse;
+        cost -= fromPurse;
+        foreach (var c in payer is null ? Party : [payer])
+        {
+            var take = Math.Min(c.Gold, cost);
+            c.Gold -= take;
+            cost -= take;
+            if (cost == 0)
+            {
+                break;
+            }
+        }
+        return true;
+    }
+
+    /// <summary>Moves gold from a character into the purse.</summary>
+    /// <param name="c">Character.</param>
+    /// <param name="amount">Amount (clamped to what the character carries).</param>
+    /// <returns>Amount moved.</returns>
+    public int Deposit(Characters.Character c, int amount)
+    {
+        var moved = Math.Clamp(amount, 0, c.Gold);
+        c.Gold -= moved;
+        Gold += moved;
+        return moved;
+    }
+
+    /// <summary>Moves gold from the purse to a character.</summary>
+    /// <param name="c">Character.</param>
+    /// <param name="amount">Amount (clamped to what the purse holds).</param>
+    /// <returns>Amount moved.</returns>
+    public int Withdraw(Characters.Character c, int amount)
+    {
+        var moved = Math.Clamp(amount, 0, Gold);
+        Gold -= moved;
+        c.Gold += moved;
+        return moved;
+    }
+
+    /// <summary>Everyone puts all their gold into the purse.</summary>
+    /// <returns>Amount pooled.</returns>
+    public int PoolAll() => Party.Sum(c => Deposit(c, c.Gold));
+
+    /// <summary>Splits the purse evenly among party members (any remainder stays in the purse).</summary>
+    /// <returns>Amount each member received.</returns>
+    public int ShareEvenly()
+    {
+        if (Party.Count == 0)
+        {
+            return 0;
+        }
+        var each = Gold / Party.Count;
+        foreach (var c in Party)
+        {
+            Withdraw(c, each);
+        }
+        return each;
+    }
 
     /// <summary>Game day derived from the step counter.</summary>
     public long Day => 1 + Steps / 500;

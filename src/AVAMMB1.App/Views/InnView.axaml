@@ -33,7 +33,7 @@
             <ItemsControl.ItemTemplate>
               <DataTemplate x:DataType="ch:Character">
                 <Grid ColumnDefinitions="*,Auto" Margin="0,1">
-                  <TextBlock VerticalAlignment="Center"><Run Text="{Binding Name}" FontWeight="SemiBold" /><Run Text="  L" /><Run Text="{Binding Level}" /><Run Text=" " /><Run Text="{Binding Class}" Foreground="{StaticResource Dim}" /></TextBlock>
+                  <TextBlock VerticalAlignment="Center"><Run Text="{Binding Name}" FontWeight="SemiBold" /><Run Text="  L" /><Run Text="{Binding Level}" /><Run Text=" " /><Run Text="{Binding Class}" Foreground="{StaticResource Dim}" /><Run Text="  " /><Run Text="{Binding Gold}" Foreground="{StaticResource Gold}" /><Run Text=" gp" Foreground="{StaticResource Gold}" /></TextBlock>
                   <Button Grid.Column="1" Classes="chip" Content="Join" Command="{Binding $parent[UserControl].((vm:InnViewModel)DataContext).JoinCommand}" CommandParameter="{Binding}" />
                 </Grid>
               </DataTemplate>
@@ -41,6 +41,16 @@
           </ItemsControl>
         </StackPanel>
       </Grid>
+      <Border IsVisible="{Binding IsChoosingGold}" Background="#2a2438" CornerRadius="4" Padding="10">
+        <StackPanel Spacing="6">
+          <TextBlock Text="{Binding LeavePrompt}" TextWrapping="Wrap" />
+          <StackPanel Orientation="Horizontal" Spacing="6">
+            <NumericUpDown Value="{Binding TakeGold}" Minimum="0" Maximum="{Binding PurseGold}" Increment="10" FormatString="0" Width="150" />
+            <Button Content="Leave them here" Command="{Binding ConfirmLeaveCommand}" FontWeight="Bold" />
+            <Button Content="Cancel" Command="{Binding CancelLeaveCommand}" />
+          </StackPanel>
+        </StackPanel>
+      </Border>
       <TextBlock Text="{Binding Feedback}" TextWrapping="Wrap" Foreground="#9fd0ff" />
       <Button Content="Leave (Esc)" Command="{Binding LeaveCommand}" HorizontalAlignment="Right" />
     </StackPanel>

@@ -82,6 +82,8 @@ public sealed class ItemDef
     public List<string> Classes { get; set; } = new();
     /// <summary>Stat bonuses while equipped.</summary>
     public Dictionary<Stat, int> StatBonuses { get; set; } = new();
+    /// <summary>Spell taught by reading this item (tomes).</summary>
+    public string? TeachSpell { get; set; }
     /// <summary>Spell id cast when the item is used.</summary>
     public string? UseSpell { get; set; }
     /// <summary>Charges (0 = consumed on use for consumables).</summary>
@@ -239,6 +241,8 @@ public sealed class SpellDef
     public bool UndeadOnly { get; set; }
     /// <summary>Whether characters can learn it (false for item-only effects).</summary>
     public bool Learnable { get; set; } = true;
+    /// <summary>Learned only by reading a tome, not automatically on gaining levels.</summary>
+    public bool Tome { get; set; }
     /// <summary>Description text.</summary>
     public string Description { get; set; } = "";
 }

@@ -25,6 +25,18 @@
           </ItemsControl.ItemTemplate>
         </ItemsControl>
         <TextBlock Text="{Binding Summary}" TextWrapping="Wrap" Margin="0,8,0,0" FontSize="13" LineHeight="20" />
+        <TextBlock Classes="h2" Text="Gold" />
+        <TextBlock Text="{Binding GoldLine}" TextWrapping="Wrap" FontSize="13" Foreground="{StaticResource Gold}" />
+        <StackPanel Orientation="Horizontal" Spacing="2">
+          <NumericUpDown Value="{Binding GoldAmount}" Minimum="0" Increment="10" FormatString="0" Width="110" />
+          <Button Classes="chip" Content="Deposit" Command="{Binding DepositGoldCommand}" ToolTip.Tip="Put this much into the party purse" />
+          <Button Classes="chip" Content="Withdraw" Command="{Binding WithdrawGoldCommand}" ToolTip.Tip="Take this much from the party purse" />
+        </StackPanel>
+        <WrapPanel>
+          <Button Classes="chip" Content="Deposit all" Command="{Binding DepositAllGoldCommand}" />
+          <Button Classes="chip" Content="Pool everyone" Command="{Binding PoolAllGoldCommand}" ToolTip.Tip="Everyone puts all their gold in the purse" />
+          <Button Classes="chip" Content="Share evenly" Command="{Binding ShareGoldCommand}" ToolTip.Tip="Split the purse between all members" />
+        </WrapPanel>
       </StackPanel>
 
       <DockPanel Grid.Row="1" Grid.Column="2" Margin="0,8,0,0">

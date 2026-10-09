@@ -729,5 +729,32 @@
   "kind": "quest",
   "icon": "potion_gold",
   "description": "A pale flower that only blooms in the dark water of the Sunken Temple."
+ },
+ {
+  "id": "tome_chain",
+  "name": "Tome of Chain Lightning",
+  "kind": "tome",
+  "icon": "book",
+  "price": 3000,
+  "teachSpell": "s_chain",
+  "description": "Teaches a sorcerer (level 5 spells) Chain Lightning."
+ },
+ {
+  "id": "tome_stone_flesh",
+  "name": "Tome of Stone to Flesh",
+  "kind": "tome",
+  "icon": "book",
+  "price": 2500,
+  "teachSpell": "c_stone_flesh",
+  "description": "Teaches a cleric (level 5 spells) Stone to Flesh."
+ },
+ {
+  "id": "tome_iron_grip",
+  "name": "Tome of Iron Grip",
+  "kind": "tome",
+  "icon": "book",
+  "price": 3500,
+  "teachSpell": "s_iron_grip",
+  "description": "Teaches a sorcerer (level 6 spells) Iron Grip."
  }
 ]

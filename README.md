@@ -58,9 +58,16 @@ Code identifiers, the solution and executables use the name **`AVAMMB1`** (`AVAM
   quests in the Ashen Hills - the Thornwick Mines' Stone Wyrm and the Sunken Temple's Drowned Hydra -
   reward unique gear.
 - **Turn-based combat**: initiative order, front/back ranks for both sides, melee and missile attacks,
-  28 learnable spells across two schools plus item-only effects, potions, scrolls, wands, blocking,
-  running, bribing; monster AI with special abilities, healing, fleeing and target selection;
-  treasure, item drops and XP.
+  blocking, running, bribing; monster AI with special abilities, healing, fleeing and target
+  selection; treasure, item drops and XP.
+- **Magic**: 41 spells in two schools (cleric and sorcerer) across six spell levels - healing,
+  curing, blessings and wards, single/group/all-enemy attacks, sleep and paralysis, armor-weakening,
+  light, recall, raising the dead - plus potions, scrolls and wands. Three rare **tomes** (one sold,
+  two hidden in the Ashen Hills) teach spells that can't be learned by levelling up.
+- **Gold**: each character carries their own gold, and the party shares a **purse** that loot goes
+  into. Purchases come out of the purse first and then from the buyer's own gold. From the character
+  sheet you can deposit, withdraw, pool everyone's gold or share the purse evenly; a character who
+  stays at an inn takes their own gold - and as much from the purse as you choose - with them.
 - **Inventory and equipment**: 9 equipment slots, 12-slot backpacks, class restrictions,
   two-handed weapons, give/drop/use, charges.
 - **Data-driven content**: monsters, items, spells, races, classes, shops and maps are JSON files you
@@ -247,12 +254,14 @@ More detail: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
   the two-level Thornwick Mines and the Sunken Temple, with two side quests; new special items
   (Heartfire Ring, Lotus Amulet, Wyrmguard Blade, Wyrmscale Mail, Moonsilver Blade, Evening Star);
   boss balance tuning.
+- **Unreleased** - Per-character gold with a shared party purse (deposit, withdraw, pool, share,
+  take gold along when leaving at an inn); 13 new spells including a new spell level 6, a new
+  armor-weakening effect and Stone to Flesh; spell tomes.
 
 ### Planned
 
 - A fifth town and more dungeon levels (the original game had five towns and many more levels;
   AVAM&M now has four towns and five dungeon levels plus the vault)
-- Per-character gold (currently shared by the party) and more spells
 - Proper Developer ID signing / notarization for macOS and an installer for Windows
 - Gamepad support, localization, UI scaling options
 

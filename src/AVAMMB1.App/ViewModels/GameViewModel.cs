@@ -91,7 +91,7 @@ public sealed partial class GameViewModel : ViewModelBase
     /// <summary>Coordinates and facing.</summary>
     public string CompassText => $"{Session.State.Facing}  ({Session.State.X},{Session.State.Y})";
     /// <summary>Party gold and gems.</summary>
-    public string GoldText => $"{Session.State.Gold} gold   {Session.State.Gems} gems";
+    public string GoldText => $"Purse {Session.State.Gold}  (party {Session.State.TotalGold})   {Session.State.Gems} gems";
     /// <summary>Day counter and light.</summary>
     public string TimeText => $"Day {Session.State.Day}"
         + (Session.CurrentMap.IsDarkness(Session.State.X, Session.State.Y) ? "   Magical darkness"

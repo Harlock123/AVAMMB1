@@ -3,6 +3,22 @@
 All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses semantic versioning.
 
+## [Unreleased]
+
+### Added
+- Per-character gold with a shared party purse. Loot and sales go to the purse; costs are paid from
+  the purse first, then from the character being served (or everyone, for party-wide costs such as
+  the inn, food and bribes). Character sheet: deposit, withdraw, deposit all, pool everyone's gold,
+  share the purse evenly. Leaving a character at an inn asks how much purse gold they take along;
+  they keep their own gold and bring it back when they rejoin. New characters carry their own
+  starting gold (a new party pools it into the purse).
+- 13 new spells (41 learnable in total), including spell level 6 (at caster level 11): Cleanse
+  Fever, Searing Light, Free Movement, Greater Heal, Holy Word, Divine Restoration, Frost Needle,
+  Weaken Armor (new `debuffArmor` effect), Deep Slumber, Prismatic Ray, and the tome-only Stone to
+  Flesh, Chain Lightning and Iron Grip.
+- Spell tomes (`tome` item kind): Chain Lightning is sold in Saltreach; Stone to Flesh and Iron Grip
+  are hidden in the Sunken Temple and the Stone Wyrm's hoard.
+
 ## [1.3.0] - 2026-10-09
 
 ### Added

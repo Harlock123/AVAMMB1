@@ -58,7 +58,9 @@ unconscious, dead, stoned`. **Elements**: `physical, fire, cold, electric, acid,
 ```
 `kind`: `weapon, missile, armor, shield, helmet, gloves, boots, ring, amulet` (equippable),
 `potion, scroll, wand` (cast `useSpell` when used; wands use `charges`), `food` (`foodUnits`),
-`torch` (`lightSteps`), `quest` (cannot be sold or dropped), `misc`.
+`torch` (`lightSteps`), `tome` (reading it permanently teaches `teachSpell` to a caster of that
+school who can already cast its level; the tome is consumed), `quest` (cannot be sold or dropped),
+`misc`.
 `icon` refers to `Graphics/Items/<icon>.png`.
 
 ## monsters.json
@@ -93,12 +95,15 @@ the weakest member; `cowardly` ones may flee when badly hurt. Negative resistanc
 | `inflict` | `conditions` applied to enemies (saving throw vs caster level) |
 | `raise` | Dead ally back to 1 HP |
 | `buffArmor`, `buffHit` | `magnitude` bonus for the battle |
+| `debuffArmor` | Enemies lose `magnitude` armor class for the battle |
 | `light` | `magnitude` steps of light |
 | `locate`, `createFood` (`magnitude`), `recall` | Utility |
 
 `target`: `none, ally, party, enemy, enemyGroup` (all monsters of the chosen kind), `allEnemies`.
 `learnable: false` makes an item-only effect. Characters learn every spell of their school up to
-their maximum spell level automatically.
+their maximum spell level automatically (spell level = (caster level + 1) / 2, up to 6), except
+spells marked `"tome": true`, which are learned only by reading a `tome` item. A `cure` spell whose
+`conditions` include `stoned` can target a petrified ally.
 
 ## shops.json
 

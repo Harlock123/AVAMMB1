@@ -124,13 +124,13 @@ public sealed class CombatEngine
         {
             log.Add(new("These creatures have no interest in gold!", MessageKind.Bad));
         }
-        else if (_state.Gold < cost)
+        else if (_state.Available(null) < cost)
         {
             log.Add(new($"They demand {cost} gold, but the party cannot pay.", MessageKind.Bad));
         }
         else if (_rng.Chance(80))
         {
-            _state.Gold -= cost;
+            _state.TryPay(cost);
             Outcome = CombatOutcome.Bribed;
             log.Add(new($"The party pays {cost} gold. The monsters leave.", MessageKind.Info, "coins"));
             return log;
@@ -321,7 +321,7 @@ public sealed class CombatEngine
         var damage = 0;
         for (var i = 0; i < attacks && m.IsActive; i++)
         {
-            if (Rulebook.IsHit(_rng.Die(20), bonus, m.Def.ArmorClass))
+            if (Rulebook.IsHit(_rng.Die(20), bonus, m.ArmorClass))
             {
                 hits++;
                 damage += _rules.RollMeleeDamage(c, _rng);
@@ -343,7 +343,7 @@ public sealed class CombatEngine
         {
             return false;
         }
-        var hit = Rulebook.IsHit(_rng.Die(20), _rules.MissileAttackBonus(c) + HitBuff, m.Def.ArmorClass);
+        var hit = Rulebook.IsHit(_rng.Die(20), _rules.MissileAttackBonus(c) + HitBuff, m.ArmorClass);
         ReportAttack(c.Name, m, hit ? 1 : 0, 1, hit ? _rules.RollMissileDamage(c, _rng) : 0, "shoots at", log);
         return true;
     }

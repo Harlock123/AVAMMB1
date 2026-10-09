@@ -117,6 +117,30 @@ public sealed class SpellCaster(Rulebook rules, IRandomSource rng)
                     result = new SpellResult(true, log);
                     break;
                 }
+            case ItemKind.Tome when combat is null:
+                {
+                    if (def.TeachSpell is null || !rules.Content.Spells.TryGetValue(def.TeachSpell, out var taught))
+                    {
+                        return new SpellResult(false, [new GameMessage($"{def.Name} is written in no language anyone can read.")]);
+                    }
+                    var school = rules.Content.Class(user.Class).SpellSchool;
+                    if (school != taught.School)
+                    {
+                        return new SpellResult(false, [new GameMessage($"{user.Name} cannot make sense of {def.Name} - it holds {taught.School} magic.")]);
+                    }
+                    if (user.LearnedSpells.Contains(taught.Id))
+                    {
+                        return new SpellResult(false, [new GameMessage($"{user.Name} already knows {taught.Name}.")]);
+                    }
+                    if (rules.MaxSpellLevel(user) < taught.Level)
+                    {
+                        return new SpellResult(false, [new GameMessage($"{taught.Name} is a level {taught.Level} spell - beyond {user.Name}'s skill for now.")]);
+                    }
+                    user.LearnedSpells.Add(taught.Id);
+                    log.Add(new($"{user.Name} studies {def.Name} and learns {taught.Name}! The tome crumbles to dust.", MessageKind.Good, "levelup"));
+                    result = new SpellResult(true, log);
+                    break;
+                }
             case ItemKind.Torch when combat is null:
                 state.LightSteps += Math.Max(10, def.LightSteps);
                 log.Add(new($"{user.Name} lights {def.Name}.", MessageKind.Good));
@@ -213,7 +237,10 @@ public sealed class SpellCaster(Rulebook rules, IRandomSource rng)
                 }
             case EffectKind.Cure:
                 {
-                    var targets = spell.Target == TargetKind.Party ? party.Where(c => c.IsAlive).ToList() : Single(allyTarget);
+                    var curesStone = spell.Conditions.HasFlag(Condition.Stoned);
+                    var targets = spell.Target == TargetKind.Party
+                        ? party.Where(c => c.IsAlive || (curesStone && c.Has(Condition.Stoned) && !c.Has(Condition.Dead))).ToList()
+                        : allyTarget is not null && curesStone && allyTarget.Has(Condition.Stoned) && !allyTarget.Has(Condition.Dead) ? [allyTarget] : Single(allyTarget);
                     if (targets.Count == 0)
                     {
                         return Fail("Choose a living party member.", log);
@@ -236,6 +263,19 @@ public sealed class SpellCaster(Rulebook rules, IRandomSource rng)
                     allyTarget.Hp = 1;
                     allyTarget.Stats[Stat.Endurance] = Math.Max(3, allyTarget.BaseStat(Stat.Endurance) - 1);
                     log.Add(new($"{allyTarget.Name} draws breath once more!", MessageKind.Good, "levelup"));
+                    return new SpellResult(true, log);
+                }
+            case EffectKind.DebuffArmor:
+                {
+                    if (combat is null)
+                    {
+                        return Fail("There is nothing to target here.", log);
+                    }
+                    foreach (var m in EnemyTargets(spell.Target, combat, enemy))
+                    {
+                        m.ArmorPenalty += Math.Max(1, spell.Magnitude);
+                        log.Add(new($"{m.Label}'s defenses crumble (AC {m.ArmorClass}).", MessageKind.Combat));
+                    }
                     return new SpellResult(true, log);
                 }
             case EffectKind.BuffArmor:

@@ -68,6 +68,7 @@ public sealed class CharacterFactory(Rulebook rules)
             Alignment = alignment,
             Stats = new Dictionary<Stat, int>(finalStats),
             Food = db.Config.StartingFood,
+            Gold = db.Config.StartingGoldPerMember,
         };
         c.MaxHp = c.Hp = Rulebook.StartingHp(cls, c.BaseStat(Stat.Endurance));
         c.MaxSp = c.Sp = rules.ComputeMaxSp(c);

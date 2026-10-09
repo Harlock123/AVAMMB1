@@ -18,6 +18,12 @@ public sealed class MonsterInstance(MonsterDef def, int hp)
     public Condition Conditions { get; set; }
     /// <summary>Whether the monster ran away.</summary>
     public bool Fled { get; set; }
+    /// <summary>Armor class lost to weakening magic during this battle.</summary>
+    public int ArmorPenalty { get; set; }
+
+    /// <summary>Current armor class including penalties.</summary>
+    public int ArmorClass => Def.ArmorClass - ArmorPenalty;
+
     /// <summary>Display label, e.g. "Goblin #2".</summary>
     public string Label { get; set; } = def.Name;
 

@@ -37,6 +37,10 @@ public sealed class Character
     public int MaxSp { get; set; }
     /// <summary>Active conditions.</summary>
     public Condition Conditions { get; set; }
+    /// <summary>Gold this character carries personally (separate from the party purse).</summary>
+    public int Gold { get; set; }
+    /// <summary>Spells learned from tomes.</summary>
+    public List<string> LearnedSpells { get; set; } = new();
     /// <summary>Food units carried.</summary>
     public int Food { get; set; }
     /// <summary>Backpack contents.</summary>

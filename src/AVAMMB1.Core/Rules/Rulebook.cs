@@ -175,9 +175,12 @@ public sealed class Rulebook(ContentDatabase db)
         return cls.SpellSchool is null || c.Level < cls.SpellStartLevel ? 0 : c.Level - cls.SpellStartLevel + 1;
     }
 
-    /// <summary>Highest spell level the character may cast (0-5).</summary>
+    /// <summary>Highest spell level in the game.</summary>
+    public const int TopSpellLevel = 6;
+
+    /// <summary>Highest spell level the character may cast (0-6; level 6 at caster level 11).</summary>
     /// <param name="c">Character.</param>
-    public int MaxSpellLevel(Character c) => Math.Min(5, (CasterLevel(c) + 1) / 2);
+    public int MaxSpellLevel(Character c) => Math.Min(TopSpellLevel, (CasterLevel(c) + 1) / 2);
 
     /// <summary>The attribute that powers the character's magic.</summary>
     /// <param name="c">Character.</param>
@@ -205,7 +208,8 @@ public sealed class Rulebook(ContentDatabase db)
         var max = MaxSpellLevel(c);
         return school is null
             ? []
-            : db.Spells.Values.Where(s => s.Learnable && s.School == school && s.Level <= max).OrderBy(s => s.Level).ThenBy(s => s.Name, StringComparer.Ordinal);
+            : db.Spells.Values.Where(s => s.Learnable && s.School == school && s.Level <= max && (!s.Tome || c.LearnedSpells.Contains(s.Id)))
+                .OrderBy(s => s.Level).ThenBy(s => s.Name, StringComparer.Ordinal);
     }
 
     /// <summary>Thievery skill percentage (trap disarming, lock picking).</summary>

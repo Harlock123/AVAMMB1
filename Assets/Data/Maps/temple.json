@@ -227,10 +227,10 @@
    "name": "Sealed Reliquary",
    "gold": "10d20",
    "items": [
-    "ring_protection",
+    "tome_stone_flesh",
     "potion_vigor"
    ],
-   "text": "A dry, sealed reliquary the flood never reached."
+   "text": "A dry, sealed reliquary the flood never reached. Inside, a priest's book of rites."
   },
   {
    "x": 2,

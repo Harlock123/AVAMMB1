@@ -114,7 +114,6 @@ public sealed class GameSession
         {
             Party = members,
             Roster = roster?.ToList() ?? new List<Character>(),
-            Gold = cfg.StartingGoldPerMember * members.Count,
             MapId = cfg.StartMap,
             X = cfg.StartX,
             Y = cfg.StartY,
@@ -123,6 +122,7 @@ public sealed class GameSession
             RecallX = cfg.StartX,
             RecallY = cfg.StartY,
         };
+        State.PoolAll(); // a new party starts by pooling its gold into the purse
         Combat = null;
         Explore();
     }

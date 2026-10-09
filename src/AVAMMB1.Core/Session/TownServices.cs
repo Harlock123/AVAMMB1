@@ -14,16 +14,38 @@ public sealed class TownServices(GameSession session)
 
     private static int Price(int basePrice, double factor) => Math.Max(1, (int)Math.Round(basePrice * factor));
 
-    private bool Pay(int cost, List<GameMessage> log)
+    private bool Pay(int cost, List<GameMessage> log, Character? payer = null)
     {
-        if (State.Gold < cost)
+        if (!State.TryPay(cost, payer))
         {
-            log.Add(new($"The party cannot afford {cost} gold.", MessageKind.Bad));
+            var who = payer is null ? "The party" : $"{payer.Name} and the purse";
+            log.Add(new($"{who} cannot afford {cost} gold (only {State.Available(payer)} available).", MessageKind.Bad));
             return false;
         }
-        State.Gold -= cost;
         return true;
     }
+
+    // ---------------- Gold ----------------
+
+    /// <summary>A character puts gold into the party purse.</summary>
+    /// <param name="c">Character.</param>
+    /// <param name="amount">Amount.</param>
+    public List<GameMessage> Deposit(Character c, int amount) =>
+        [new($"{c.Name} adds {State.Deposit(c, amount)} gold to the purse.", MessageKind.Info, "coins")];
+
+    /// <summary>A character takes gold from the party purse.</summary>
+    /// <param name="c">Character.</param>
+    /// <param name="amount">Amount.</param>
+    public List<GameMessage> Withdraw(Character c, int amount) =>
+        [new($"{c.Name} takes {State.Withdraw(c, amount)} gold from the purse.", MessageKind.Info, "coins")];
+
+    /// <summary>Everyone pools their gold into the purse.</summary>
+    public List<GameMessage> PoolAll() =>
+        [new($"The party pools {State.PoolAll()} gold. The purse holds {State.Gold}.", MessageKind.Info, "coins")];
+
+    /// <summary>The purse is shared out evenly.</summary>
+    public List<GameMessage> ShareEvenly() =>
+        [new($"Each member receives {State.ShareEvenly()} gold. {State.Gold} stays in the purse.", MessageKind.Info, "coins")];
 
     // ---------------- Inn ----------------
 
@@ -51,7 +73,8 @@ public sealed class TownServices(GameSession session)
 
     /// <summary>Moves a party member to the inn roster.</summary>
     /// <param name="partyIndex">Index in the party.</param>
-    public List<GameMessage> LeaveAtInn(int partyIndex)
+    /// <param name="takeFromPurse">Gold from the purse the character takes along (on top of their own).</param>
+    public List<GameMessage> LeaveAtInn(int partyIndex, int takeFromPurse = 0)
     {
         var log = new List<GameMessage>();
         if (partyIndex < 0 || partyIndex >= State.Party.Count)
@@ -69,9 +92,12 @@ public sealed class TownServices(GameSession session)
             return log;
         }
         var c = State.Party[partyIndex];
+        var taken = State.Withdraw(c, takeFromPurse);
         State.Party.RemoveAt(partyIndex);
         State.Roster.Add(c);
-        log.Add(new($"{c.Name} takes a room at the inn.", MessageKind.Info));
+        log.Add(new(taken > 0
+            ? $"{c.Name} takes a room at the inn, keeping {c.Gold} gold ({taken} from the purse)."
+            : $"{c.Name} takes a room at the inn" + (c.Gold > 0 ? $", keeping their {c.Gold} gold." : "."), MessageKind.Info));
         return log;
     }
 
@@ -167,7 +193,7 @@ public sealed class TownServices(GameSession session)
             log.Add(new($"{c.Name} needs no healing.", MessageKind.Info));
             return log;
         }
-        if (!Pay(cost, log))
+        if (!Pay(cost, log, c))
         {
             return log;
         }
@@ -266,7 +292,7 @@ public sealed class TownServices(GameSession session)
             log.Add(new(c.IsAlive ? $"{c.Name} needs {need} more experience." : $"{c.Name} is in no state to train.", MessageKind.Info));
             return log;
         }
-        if (!Pay(TrainingCost(c, ev), log))
+        if (!Pay(TrainingCost(c, ev), log, c))
         {
             return log;
         }
@@ -309,7 +335,7 @@ public sealed class TownServices(GameSession session)
             log.Add(new($"{buyer.Name}'s pack is full.", MessageKind.Bad));
             return log;
         }
-        if (!Pay(BuyPrice(shop, item), log))
+        if (!Pay(BuyPrice(shop, item), log, buyer))
         {
             return log;
         }

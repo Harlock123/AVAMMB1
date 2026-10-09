@@ -15,7 +15,7 @@
             </DataTemplate>
           </ComboBox.ItemTemplate>
         </ComboBox>
-        <TextBlock Text="{Binding GoldText}" Foreground="{StaticResource Gold}" VerticalAlignment="Center" FontWeight="Bold" />
+        <TextBlock Text="{Binding SpendText}" Foreground="{StaticResource Gold}" VerticalAlignment="Center" FontWeight="Bold" />
       </StackPanel>
       <DockPanel Grid.Row="2">
         <TextBlock DockPanel.Dock="Top" Classes="h2" Text="For Sale" />

@@ -121,6 +121,8 @@ public enum ItemKind
     Torch,
     /// <summary>Quest object.</summary>
     Quest,
+    /// <summary>A spell tome: reading it permanently teaches a spell.</summary>
+    Tome,
     /// <summary>Anything else.</summary>
     Misc,
 }
@@ -199,6 +201,8 @@ public enum EffectKind
     Recall,
     /// <summary>Restores spell points.</summary>
     RestoreSp,
+    /// <summary>Lowers enemy armor class (by <c>magnitude</c>) for the rest of the battle.</summary>
+    DebuffArmor,
 }
 
 /// <summary>Cardinal facing on the grid.</summary>

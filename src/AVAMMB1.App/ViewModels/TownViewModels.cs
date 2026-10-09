@@ -87,7 +87,7 @@ public abstract partial class BuildingViewModel : ViewModelBase
     public ObservableCollection<PartyMemberViewModel> Members { get; }
 
     /// <summary>Gold display.</summary>
-    public string GoldText => $"Party gold: {Session.State.Gold}";
+    public string GoldText => $"Party purse: {Session.State.Gold} gold   (everyone's gold: {Session.State.TotalGold})";
 
     /// <summary>Last action feedback.</summary>
     [ObservableProperty]
@@ -280,12 +280,46 @@ public sealed partial class InnViewModel : BuildingViewModel
     [RelayCommand]
     private void SaveGame() => Game.Overlay = new SaveLoadViewModel(Game.Main, saving: true, onClose: () => Game.Overlay = this);
 
+    /// <summary>Member about to stay behind (asks how much purse gold to take).</summary>
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(IsChoosingGold), nameof(LeavePrompt))]
+    private PartyMemberViewModel? _leaving;
+
+    /// <summary>Gold from the purse the leaving member takes along.</summary>
+    [ObservableProperty]
+    private decimal? _takeGold = 0;
+
+    /// <summary>Whether the take-gold prompt is showing.</summary>
+    public bool IsChoosingGold => Leaving is not null;
+
+    /// <summary>Purse size, for the take-gold prompt.</summary>
+    public int PurseGold => Session.State.Gold;
+
+    /// <summary>Prompt text.</summary>
+    public string LeavePrompt => Leaving is null ? "" :
+        $"{Leaving.Name} keeps their own {Leaving.Character.Gold} gold. How much from the purse ({Session.State.Gold}) do they take along?";
+
     [RelayCommand]
     private void LeaveMember(PartyMemberViewModel m)
     {
-        Report(Session.Town.LeaveAtInn(m.Index));
-        Game.Refresh();
+        TakeGold = 0;
+        Leaving = m;
+        OnPropertyChanged(nameof(PurseGold));
     }
+
+    [RelayCommand]
+    private void ConfirmLeave()
+    {
+        if (Leaving is { } m)
+        {
+            Leaving = null;
+            Report(Session.Town.LeaveAtInn(m.Index, (int)Math.Clamp(TakeGold ?? 0, 0, Session.State.Gold)));
+            Game.Refresh();
+        }
+    }
+
+    [RelayCommand]
+    private void CancelLeave() => Leaving = null;
 
     [RelayCommand]
     private void MoveUp(PartyMemberViewModel m)
@@ -418,6 +452,11 @@ public sealed partial class ShopViewModel : BuildingViewModel
 
     partial void OnSelectedMemberChanged(PartyMemberViewModel? value) => RefreshRows();
 
+    /// <summary>What the selected buyer can spend.</summary>
+    public string SpendText => SelectedMember is { } m
+        ? $"Can spend {Session.State.Available(m.Character)} gold (purse {Session.State.Gold} + {m.Name}'s {m.Character.Gold})"
+        : "";
+
     /// <inheritdoc />
     protected override void RefreshRows()
     {
@@ -439,6 +478,7 @@ public sealed partial class ShopViewModel : BuildingViewModel
                 Sellable.Add(new ShopItemViewModel(d, Rulebook.SellPrice(d), tex.Bitmap("Items/" + d.Icon), true, i));
             }
         }
+        OnPropertyChanged(nameof(SpendText));
     }
 
     [RelayCommand]
