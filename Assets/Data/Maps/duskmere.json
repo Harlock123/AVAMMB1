@@ -1,0 +1,166 @@
+{
+ "id": "duskmere",
+ "name": "Duskmere",
+ "kind": "town",
+ "format": "blocks",
+ "width": 16,
+ "height": 16,
+ "grid": [
+  "################",
+  "#~~...###..###.#",
+  "#~~...###..###.#",
+  "#~.............#",
+  "#..BBB....M....#",
+  "#..BBB.~~~~....#",
+  "#......~~~~.BBB#",
+  "#M..............",
+  "#.###.......BBB#",
+  "#.###..M....BBB#",
+  "#..............#",
+  "#~~..BBB...M...#",
+  "#~~..BBB.......#",
+  "#~~~...........#",
+  "#~~~~..M....~~~#",
+  "################"
+ ],
+ "terrain": {
+  "#": {
+   "solid": true,
+   "texture": "wall_town4",
+   "name": "Building",
+   "mapColor": "#4a3a2a"
+  },
+  "B": {
+   "solid": true,
+   "texture": "wall_town2",
+   "name": "Building",
+   "mapColor": "#5a4a3a"
+  },
+  "M": {
+   "solid": true,
+   "opaque": false,
+   "feature": "mangrove",
+   "floor": "floor_bog",
+   "name": "Mangrove",
+   "mapColor": "#2f5a3a"
+  },
+  "~": {
+   "solid": true,
+   "opaque": false,
+   "floor": "water",
+   "name": "Water",
+   "mapColor": "#2a5aa8"
+  }
+ },
+ "wallTexture": "wall_town4",
+ "floorTexture": "floor_bog",
+ "skyColor": "#5a6a7a",
+ "music": "town",
+ "encounterChance": 0,
+ "events": [
+  {
+   "x": 15,
+   "y": 7,
+   "type": "teleport",
+   "name": "Causeway",
+   "feature": "entrance",
+   "map": "hills",
+   "toX": 3,
+   "toY": 12,
+   "facing": "East"
+  },
+  {
+   "x": 7,
+   "y": 3,
+   "type": "inn",
+   "name": "The Heron's Nest",
+   "feature": "shop_general",
+   "priceFactor": 1.0
+  },
+  {
+   "x": 12,
+   "y": 3,
+   "type": "temple",
+   "name": "Chapel of the Still Water",
+   "feature": "altar",
+   "priceFactor": 1.0
+  },
+  {
+   "x": 4,
+   "y": 6,
+   "type": "tavern",
+   "name": "The Leaky Punt",
+   "feature": "shop_food",
+   "priceFactor": 0.9,
+   "rumors": [
+    "Sister Ilsa wants a Moon Lotus from the drowned temple. Brave or foolish, take your pick.",
+    "The temple's guardian has four heads. Cut one off and it keeps biting with the rest.",
+    "Nagas came up out of the deep water when the temple sank. They don't like visitors.",
+    "Swamp drakes breathe a gas that rots the lungs. Bring cure potions.",
+    "Leeches in the shallows carry the marsh fever."
+   ]
+  },
+  {
+   "x": 13,
+   "y": 7,
+   "type": "shop",
+   "name": "Marsh Herbalist",
+   "shop": "duskmere_herbalist",
+   "feature": "shop_potions"
+  },
+  {
+   "x": 3,
+   "y": 10,
+   "type": "training",
+   "name": "Duskmere Practice Yard",
+   "feature": "shop_armor",
+   "priceFactor": 1.1
+  },
+  {
+   "x": 2,
+   "y": 3,
+   "type": "message",
+   "name": "Jetty",
+   "feature": "column",
+   "text": "Punts knock gently against the jetty. Far to the south-west, the roof of a drowned temple breaks the water."
+  },
+  {
+   "x": 6,
+   "y": 13,
+   "type": "quest",
+   "id": "ilsa_intro",
+   "once": true,
+   "name": "Sister Ilsa's Hut",
+   "feature": "shop_books",
+   "requiresNotFlag": "ilsa_met",
+   "setFlag": "ilsa_met",
+   "text": "An old woman stirs a pot that smells of rain. \"The Moon Lotus blooms only in the dark water of the Sunken Temple. Its petals can draw poison from a dying man. The thing that nests there will not let it go easily. Bring me one?\""
+  },
+  {
+   "x": 6,
+   "y": 13,
+   "type": "quest",
+   "id": "ilsa_reward",
+   "once": true,
+   "name": "Sister Ilsa's Hut",
+   "requiresItem": "moon_lotus",
+   "consumeItem": true,
+   "requiresFlag": "ilsa_met",
+   "setFlag": "lotus_delivered",
+   "items": [
+    "lotus_amulet",
+    "potion_vigor"
+   ],
+   "xp": 1500,
+   "text": "Ilsa cradles the pale flower. \"Still cold from the deep water. Wear this, and may the marsh never claim you.\""
+  },
+  {
+   "x": 6,
+   "y": 13,
+   "type": "message",
+   "name": "Sister Ilsa's Hut",
+   "requiresFlag": "lotus_delivered",
+   "text": "\"The lotus is steeping. Half of Duskmere will be grateful this winter.\""
+  }
+ ]
+}

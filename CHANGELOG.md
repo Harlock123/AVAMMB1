@@ -3,6 +3,27 @@
 All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses semantic versioning.
 
+## [Unreleased]
+
+### Added
+- The Ashen Hills: a second wilderness region (autumn woods, marsh, a wyvern roost), reached by a new
+  mountain pass on the west edge of the Greenvale Wilds.
+- Two new towns with full services: Thornwick (mining town, Deep Forge) and Duskmere (marsh village,
+  herbalist).
+- Three new dungeon levels: the Thornwick Mines (upper level and the Deep Delvings) and the Sunken
+  Temple (flooded halls, a secret reliquary), with spinners, darkness, traps and an alarm.
+- Two optional side quests: return the Heartstone to Foreman Halvard (slay the Stone Wyrm) and bring
+  Sister Ilsa a Moon Lotus (slay the Drowned Hydra). Rewards: Heartfire Ring, Lotus Amulet,
+  Wyrmguard Blade, Wyrmscale Mail, Moonsilver Blade, Evening Star.
+- 16 new monsters (two bosses), 9 new items, 2 new shops; new CC0 Dungeon Crawl tiles listed in
+  ASSETS_LICENSES.md. Tavern rumors and the crossroads signpost point to the new region.
+- Tests: world connectivity, a walk-through of both side quests, and deterministic boss balance
+  checks.
+
+### Changed
+- Boss balance: the Vault Warden is tougher (240 HP, AC 10) so the finale is a real fight for a
+  level 6-7 party; previously a level 5 party won every time.
+
 ## [1.2.0] - 2026-10-09
 
 ### Added

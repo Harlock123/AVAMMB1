@@ -1,0 +1,228 @@
+{
+ "id": "hills",
+ "name": "The Ashen Hills",
+ "kind": "outdoor",
+ "format": "blocks",
+ "width": 20,
+ "height": 20,
+ "grid": [
+  "^^^^^^^^^^^^^^^^^^^^",
+  "^^^^^^^^^.^^^^^^^^^^",
+  "^^^^^^^^^:^^^^^^^^^^",
+  "^^^^^^^^.:.^^^^^^^^^",
+  "^^^......:......^^^^",
+  "^^^TTTT..:..TTTT^^^^",
+  "^^^TTTT..:..TTTT^^^^",
+  "^..TTTT..:..TTTT...^",
+  "^........:..TTTT...^",
+  "^........:.........^",
+  "^~~,,,,,,:::::::::.^",
+  "^~,,M,,M,:.........^",
+  "^,,:::::::....TTTT.^",
+  "^,,,,:,,,.....TTTT.^",
+  "^,,,,:~~,..........^",
+  "^,,M,:,~,..........^",
+  "^~,,,:,,M..........^",
+  "^~~,,,M,,..........^",
+  "^~~,,,,,~..........^",
+  "^^^^^^^^^^^^^^^^^^^^"
+ ],
+ "terrain": {
+  "^": {
+   "solid": true,
+   "texture": "wall_mountain",
+   "name": "Mountains",
+   "mapColor": "#6b6b6b"
+  },
+  "T": {
+   "solid": true,
+   "opaque": false,
+   "feature": "tree_autumn",
+   "name": "Autumn woods",
+   "mapColor": "#8a4a2a"
+  },
+  "M": {
+   "solid": true,
+   "opaque": false,
+   "feature": "mangrove",
+   "floor": "floor_bog",
+   "name": "Mangroves",
+   "mapColor": "#2f5a3a"
+  },
+  "~": {
+   "solid": true,
+   "opaque": false,
+   "floor": "water",
+   "name": "Marsh water",
+   "mapColor": "#2a5aa8"
+  },
+  ",": {
+   "floor": "floor_bog",
+   "name": "Marsh",
+   "mapColor": "#3f5a3a"
+  },
+  ":": {
+   "floor": "floor_pebble",
+   "name": "Road",
+   "mapColor": "#9a7b55"
+  }
+ },
+ "wallTexture": "wall_mountain",
+ "floorTexture": "floor_dirt",
+ "skyColor": "#8a7a9a",
+ "music": "title",
+ "encounterChance": 7,
+ "encounters": [
+  {
+   "monster": "dire_wolf",
+   "count": "1d4+1",
+   "weight": 20
+  },
+  {
+   "monster": "bandit",
+   "count": "2d3",
+   "weight": 15
+  },
+  {
+   "monster": "orc_raider",
+   "count": "2d3",
+   "weight": 15
+  },
+  {
+   "monster": "hobgoblin",
+   "count": "1d4",
+   "weight": 12
+  },
+  {
+   "monster": "hill_wyvern",
+   "count": "1d2",
+   "weight": 10
+  },
+  {
+   "monster": "harpy",
+   "count": "1d3",
+   "weight": 10
+  },
+  {
+   "monster": "marsh_frog",
+   "count": "2d3",
+   "weight": 10
+  },
+  {
+   "monster": "crocodile",
+   "count": "1d2",
+   "weight": 6
+  },
+  {
+   "monster": "hill_giant",
+   "count": "1",
+   "weight": 3
+  }
+ ],
+ "events": [
+  {
+   "x": 18,
+   "y": 10,
+   "type": "teleport",
+   "name": "Pass to the Greenvale",
+   "feature": "entrance",
+   "map": "wilds",
+   "toX": 2,
+   "toY": 10,
+   "facing": "East",
+   "text": "The pass winds back down into the green valley."
+  },
+  {
+   "x": 9,
+   "y": 1,
+   "type": "teleport",
+   "name": "Thornwick",
+   "feature": "entrance",
+   "map": "thornwick",
+   "toX": 7,
+   "toY": 14,
+   "facing": "North",
+   "text": "Smoke from a hundred forges rises over Thornwick."
+  },
+  {
+   "x": 2,
+   "y": 12,
+   "type": "teleport",
+   "name": "Duskmere",
+   "feature": "entrance",
+   "map": "duskmere",
+   "toX": 14,
+   "toY": 7,
+   "facing": "West",
+   "text": "Stilt-houses rise out of the reeds: Duskmere."
+  },
+  {
+   "x": 5,
+   "y": 17,
+   "type": "teleport",
+   "name": "Sunken Temple",
+   "feature": "portal",
+   "map": "temple",
+   "toX": 7,
+   "toY": 15,
+   "facing": "North",
+   "text": "Half-drowned steps lead down into an old temple. The water is very still."
+  },
+  {
+   "x": 9,
+   "y": 10,
+   "type": "message",
+   "name": "Waystone",
+   "feature": "column",
+   "text": "East: the Greenvale pass. North: Thornwick (mines). South-west: Duskmere and the drowned temple."
+  },
+  {
+   "x": 16,
+   "y": 9,
+   "type": "treasure",
+   "id": "hills_cache",
+   "once": true,
+   "feature": "chest",
+   "name": "Prospector's Cache",
+   "gold": "6d20",
+   "items": [
+    "potion_vigor"
+   ],
+   "text": "A prospector's cache, wedged between rocks."
+  },
+  {
+   "x": 15,
+   "y": 15,
+   "type": "encounter",
+   "id": "wyvern_roost",
+   "once": true,
+   "name": "Wyvern Roost",
+   "setFlag": "wyvern_roost_clear",
+   "text": "Leathery wings unfold on the rocks above - this is a wyvern roost!",
+   "monsters": [
+    {
+     "monster": "hill_wyvern",
+     "count": "3"
+    }
+   ]
+  },
+  {
+   "x": 16,
+   "y": 16,
+   "type": "treasure",
+   "id": "wyvern_hoard",
+   "once": true,
+   "feature": "chest",
+   "name": "Roost Hoard",
+   "requiresFlag": "wyvern_roost_clear",
+   "blocking": true,
+   "failText": "Bones and glittering things are piled on the rocks. The wyverns are watching.",
+   "gold": "10d20",
+   "gems": 3,
+   "items": [
+    "ring_protection"
+   ],
+   "text": "Among the bones: coins, gems and a silver ring."
+  }
+ ]
+}

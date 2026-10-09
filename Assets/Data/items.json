@@ -1,59 +1,733 @@
 [
-  { "id": "dagger", "name": "Dagger", "kind": "weapon", "icon": "dagger", "price": 8, "damage": "1d4", "description": "A simple blade anyone can use." },
-  { "id": "club", "name": "Club", "kind": "weapon", "icon": "club", "price": 5, "damage": "1d4+1", "description": "A heavy stick." },
-  { "id": "staff", "name": "Quarterstaff", "kind": "weapon", "icon": "staff", "price": 10, "damage": "1d6", "twoHanded": true, "description": "A long oaken staff. Two-handed." },
-  { "id": "short_sword", "name": "Short Sword", "kind": "weapon", "icon": "short_sword", "price": 25, "damage": "1d6", "classes": ["knight","paladin","archer","robber"] },
-  { "id": "hand_axe", "name": "Hand Axe", "kind": "weapon", "icon": "hand_axe", "price": 20, "damage": "1d6", "classes": ["knight","paladin","archer","robber"] },
-  { "id": "mace", "name": "Mace", "kind": "weapon", "icon": "mace", "price": 30, "damage": "1d6+1", "classes": ["knight","paladin","cleric"] },
-  { "id": "spear", "name": "Spear", "kind": "weapon", "icon": "spear", "price": 40, "damage": "1d8", "classes": ["knight","paladin","archer"] },
-  { "id": "long_sword", "name": "Long Sword", "kind": "weapon", "icon": "long_sword", "price": 50, "damage": "1d8", "classes": ["knight","paladin","archer"] },
-  { "id": "flail", "name": "Flail", "kind": "weapon", "icon": "flail", "price": 60, "damage": "1d8+1", "classes": ["knight","paladin","cleric"] },
-  { "id": "broad_sword", "name": "Broadsword", "kind": "weapon", "icon": "broad_sword", "price": 120, "damage": "2d4+1", "classes": ["knight","paladin"] },
-  { "id": "morning_star", "name": "Morning Star", "kind": "weapon", "icon": "morning_star", "price": 130, "damage": "2d4+1", "classes": ["knight","paladin","cleric"] },
-  { "id": "war_hammer", "name": "War Hammer", "kind": "weapon", "icon": "war_hammer", "price": 140, "damage": "1d10", "classes": ["knight","paladin","cleric"] },
-  { "id": "battle_axe", "name": "Battle Axe", "kind": "weapon", "icon": "battle_axe", "price": 150, "damage": "1d12", "twoHanded": true, "classes": ["knight","paladin"] },
-  { "id": "halberd", "name": "Halberd", "kind": "weapon", "icon": "halberd", "price": 280, "damage": "1d12+2", "twoHanded": true, "classes": ["knight","paladin","archer"] },
-  { "id": "great_sword", "name": "Great Sword", "kind": "weapon", "icon": "great_sword", "price": 300, "damage": "2d6+1", "twoHanded": true, "classes": ["knight","paladin"] },
-  { "id": "ember_blade", "name": "Ember Blade", "kind": "weapon", "icon": "long_sword", "price": 900, "damage": "1d8+2", "hitBonus": 2, "element": "fire", "classes": ["knight","paladin","archer"], "description": "A sword whose edge glows like a coal." },
-  { "id": "rune_staff", "name": "Rune Staff", "kind": "weapon", "icon": "staff", "price": 600, "damage": "1d6+2", "hitBonus": 1, "twoHanded": true, "statBonuses": { "intellect": 1, "personality": 1 }, "description": "A staff carved with glowing runes." },
-  { "id": "sun_mace", "name": "Sun Mace", "kind": "weapon", "icon": "mace", "price": 700, "damage": "1d8+2", "hitBonus": 1, "classes": ["knight","paladin","cleric"], "description": "Warm to the touch." },
-
-  { "id": "sling", "name": "Sling", "kind": "missile", "icon": "sling", "price": 10, "damage": "1d4" },
-  { "id": "short_bow", "name": "Short Bow", "kind": "missile", "icon": "short_bow", "price": 40, "damage": "1d6", "classes": ["knight","paladin","archer","robber"] },
-  { "id": "crossbow", "name": "Crossbow", "kind": "missile", "icon": "crossbow", "price": 90, "damage": "1d8", "classes": ["knight","paladin","archer","robber"] },
-  { "id": "long_bow", "name": "Long Bow", "kind": "missile", "icon": "long_bow", "price": 150, "damage": "1d8+1", "classes": ["knight","paladin","archer"] },
-  { "id": "elven_bow", "name": "Elven Longbow", "kind": "missile", "icon": "long_bow", "price": 800, "damage": "1d10+2", "hitBonus": 2, "classes": ["knight","paladin","archer"], "description": "Light as a feather, true as starlight." },
-
-  { "id": "padded_armor", "name": "Padded Armor", "kind": "armor", "icon": "padded_armor", "price": 10, "armorClass": 1 },
-  { "id": "leather_armor", "name": "Leather Armor", "kind": "armor", "icon": "leather_armor", "price": 30, "armorClass": 2, "classes": ["knight","paladin","archer","cleric","robber"] },
-  { "id": "ring_mail", "name": "Ring Mail", "kind": "armor", "icon": "ring_mail", "price": 70, "armorClass": 3, "classes": ["knight","paladin","archer","cleric"] },
-  { "id": "chain_mail", "name": "Chain Mail", "kind": "armor", "icon": "chain_mail", "price": 150, "armorClass": 4, "classes": ["knight","paladin","archer","cleric"] },
-  { "id": "banded_mail", "name": "Banded Mail", "kind": "armor", "icon": "banded_mail", "price": 300, "armorClass": 5, "classes": ["knight","paladin","cleric"] },
-  { "id": "plate_mail", "name": "Plate Mail", "kind": "armor", "icon": "plate_mail", "price": 600, "armorClass": 7, "classes": ["knight","paladin"] },
-  { "id": "mithril_coat", "name": "Mithril Coat", "kind": "armor", "icon": "chain_mail", "price": 1200, "armorClass": 6, "statBonuses": { "speed": 1 }, "classes": ["knight","paladin","archer","robber","cleric"], "description": "Shimmering links, light as silk." },
-  { "id": "small_shield", "name": "Small Shield", "kind": "shield", "icon": "small_shield", "price": 15, "armorClass": 1, "classes": ["knight","paladin","archer","cleric","robber"] },
-  { "id": "large_shield", "name": "Large Shield", "kind": "shield", "icon": "large_shield", "price": 60, "armorClass": 2, "classes": ["knight","paladin","cleric"] },
-  { "id": "helmet", "name": "Helmet", "kind": "helmet", "icon": "helmet", "price": 40, "armorClass": 1, "classes": ["knight","paladin","archer","cleric","robber"] },
-  { "id": "gauntlets", "name": "Gauntlets", "kind": "gloves", "icon": "gauntlets", "price": 50, "armorClass": 1, "classes": ["knight","paladin","archer","cleric"] },
-  { "id": "boots", "name": "Leather Boots", "kind": "boots", "icon": "boots", "price": 30, "armorClass": 1 },
-  { "id": "ring_protection", "name": "Ring of Protection", "kind": "ring", "icon": "ring", "price": 400, "armorClass": 2, "description": "A silver band that turns aside blows." },
-  { "id": "ring_might", "name": "Ring of Might", "kind": "ring", "icon": "ring_gold", "price": 500, "statBonuses": { "might": 2 } },
-  { "id": "amulet_insight", "name": "Amulet of Insight", "kind": "amulet", "icon": "amulet", "price": 600, "statBonuses": { "intellect": 2, "personality": 2 } },
-
-  { "id": "potion_healing", "name": "Healing Potion", "kind": "potion", "icon": "potion_red", "price": 50, "useSpell": "i_heal", "description": "Restores 3d8+5 hit points." },
-  { "id": "potion_cure", "name": "Cure Potion", "kind": "potion", "icon": "potion_green", "price": 60, "useSpell": "i_cure", "description": "Cures most ailments." },
-  { "id": "potion_mana", "name": "Mana Potion", "kind": "potion", "icon": "potion_blue", "price": 120, "useSpell": "i_mana", "description": "Restores spell points." },
-  { "id": "potion_vigor", "name": "Elixir of Vigor", "kind": "potion", "icon": "potion_gold", "price": 250, "useSpell": "i_heal_party", "description": "Heals the entire party." },
-  { "id": "scroll_fire", "name": "Scroll of Flames", "kind": "scroll", "icon": "scroll", "price": 150, "useSpell": "i_fireball", "description": "Unleashes a fireball on a group of foes." },
-  { "id": "scroll_light", "name": "Scroll of Light", "kind": "scroll", "icon": "scroll_blue", "price": 25, "useSpell": "i_light", "description": "Lights the way for 300 steps." },
-  { "id": "scroll_recall", "name": "Scroll of Homeward", "kind": "scroll", "icon": "scroll_blue", "price": 200, "useSpell": "i_recall", "description": "Returns the party to the last inn." },
-  { "id": "wand_lightning", "name": "Wand of Lightning", "kind": "wand", "icon": "orb", "price": 500, "useSpell": "i_lightning", "charges": 5, "description": "Five crackling charges." },
-  { "id": "ration", "name": "Trail Rations", "kind": "food", "icon": "ration", "price": 10, "foodUnits": 10, "description": "Ten days of hard bread and jerky." },
-  { "id": "torch", "name": "Torch", "kind": "torch", "icon": "torch", "price": 5, "lightSteps": 100, "description": "Burns for 100 steps." },
-
-  { "id": "ember_shard", "name": "Ember Shard", "kind": "quest", "icon": "crystal", "description": "Half of an ancient sigil, warm and glowing red." },
-  { "id": "frost_shard", "name": "Frost Shard", "kind": "quest", "icon": "gem", "description": "Half of an ancient sigil, cold as midwinter." },
-  { "id": "crypt_key", "name": "Crypt Key", "kind": "quest", "icon": "key", "description": "A heavy iron key stamped with a skull." },
-  { "id": "vault_sigil", "name": "Vault Sigil", "kind": "quest", "icon": "orb", "description": "The rejoined sigil. It hums with power." },
-  { "id": "old_journal", "name": "Old Journal", "kind": "quest", "icon": "book", "description": "A water-stained journal mentioning 'the Lodestone of Seasons'." }
+ {
+  "id": "dagger",
+  "name": "Dagger",
+  "kind": "weapon",
+  "icon": "dagger",
+  "price": 8,
+  "damage": "1d4",
+  "description": "A simple blade anyone can use."
+ },
+ {
+  "id": "club",
+  "name": "Club",
+  "kind": "weapon",
+  "icon": "club",
+  "price": 5,
+  "damage": "1d4+1",
+  "description": "A heavy stick."
+ },
+ {
+  "id": "staff",
+  "name": "Quarterstaff",
+  "kind": "weapon",
+  "icon": "staff",
+  "price": 10,
+  "damage": "1d6",
+  "twoHanded": true,
+  "description": "A long oaken staff. Two-handed."
+ },
+ {
+  "id": "short_sword",
+  "name": "Short Sword",
+  "kind": "weapon",
+  "icon": "short_sword",
+  "price": 25,
+  "damage": "1d6",
+  "classes": [
+   "knight",
+   "paladin",
+   "archer",
+   "robber"
+  ]
+ },
+ {
+  "id": "hand_axe",
+  "name": "Hand Axe",
+  "kind": "weapon",
+  "icon": "hand_axe",
+  "price": 20,
+  "damage": "1d6",
+  "classes": [
+   "knight",
+   "paladin",
+   "archer",
+   "robber"
+  ]
+ },
+ {
+  "id": "mace",
+  "name": "Mace",
+  "kind": "weapon",
+  "icon": "mace",
+  "price": 30,
+  "damage": "1d6+1",
+  "classes": [
+   "knight",
+   "paladin",
+   "cleric"
+  ]
+ },
+ {
+  "id": "spear",
+  "name": "Spear",
+  "kind": "weapon",
+  "icon": "spear",
+  "price": 40,
+  "damage": "1d8",
+  "classes": [
+   "knight",
+   "paladin",
+   "archer"
+  ]
+ },
+ {
+  "id": "long_sword",
+  "name": "Long Sword",
+  "kind": "weapon",
+  "icon": "long_sword",
+  "price": 50,
+  "damage": "1d8",
+  "classes": [
+   "knight",
+   "paladin",
+   "archer"
+  ]
+ },
+ {
+  "id": "flail",
+  "name": "Flail",
+  "kind": "weapon",
+  "icon": "flail",
+  "price": 60,
+  "damage": "1d8+1",
+  "classes": [
+   "knight",
+   "paladin",
+   "cleric"
+  ]
+ },
+ {
+  "id": "broad_sword",
+  "name": "Broadsword",
+  "kind": "weapon",
+  "icon": "broad_sword",
+  "price": 120,
+  "damage": "2d4+1",
+  "classes": [
+   "knight",
+   "paladin"
+  ]
+ },
+ {
+  "id": "morning_star",
+  "name": "Morning Star",
+  "kind": "weapon",
+  "icon": "morning_star",
+  "price": 130,
+  "damage": "2d4+1",
+  "classes": [
+   "knight",
+   "paladin",
+   "cleric"
+  ]
+ },
+ {
+  "id": "war_hammer",
+  "name": "War Hammer",
+  "kind": "weapon",
+  "icon": "war_hammer",
+  "price": 140,
+  "damage": "1d10",
+  "classes": [
+   "knight",
+   "paladin",
+   "cleric"
+  ]
+ },
+ {
+  "id": "battle_axe",
+  "name": "Battle Axe",
+  "kind": "weapon",
+  "icon": "battle_axe",
+  "price": 150,
+  "damage": "1d12",
+  "twoHanded": true,
+  "classes": [
+   "knight",
+   "paladin"
+  ]
+ },
+ {
+  "id": "halberd",
+  "name": "Halberd",
+  "kind": "weapon",
+  "icon": "halberd",
+  "price": 280,
+  "damage": "1d12+2",
+  "twoHanded": true,
+  "classes": [
+   "knight",
+   "paladin",
+   "archer"
+  ]
+ },
+ {
+  "id": "great_sword",
+  "name": "Great Sword",
+  "kind": "weapon",
+  "icon": "great_sword",
+  "price": 300,
+  "damage": "2d6+1",
+  "twoHanded": true,
+  "classes": [
+   "knight",
+   "paladin"
+  ]
+ },
+ {
+  "id": "ember_blade",
+  "name": "Ember Blade",
+  "kind": "weapon",
+  "icon": "long_sword",
+  "price": 900,
+  "damage": "1d8+2",
+  "hitBonus": 2,
+  "element": "fire",
+  "classes": [
+   "knight",
+   "paladin",
+   "archer"
+  ],
+  "description": "A sword whose edge glows like a coal."
+ },
+ {
+  "id": "rune_staff",
+  "name": "Rune Staff",
+  "kind": "weapon",
+  "icon": "staff",
+  "price": 600,
+  "damage": "1d6+2",
+  "hitBonus": 1,
+  "twoHanded": true,
+  "statBonuses": {
+   "intellect": 1,
+   "personality": 1
+  },
+  "description": "A staff carved with glowing runes."
+ },
+ {
+  "id": "sun_mace",
+  "name": "Sun Mace",
+  "kind": "weapon",
+  "icon": "mace",
+  "price": 700,
+  "damage": "1d8+2",
+  "hitBonus": 1,
+  "classes": [
+   "knight",
+   "paladin",
+   "cleric"
+  ],
+  "description": "Warm to the touch."
+ },
+ {
+  "id": "sling",
+  "name": "Sling",
+  "kind": "missile",
+  "icon": "sling",
+  "price": 10,
+  "damage": "1d4"
+ },
+ {
+  "id": "short_bow",
+  "name": "Short Bow",
+  "kind": "missile",
+  "icon": "short_bow",
+  "price": 40,
+  "damage": "1d6",
+  "classes": [
+   "knight",
+   "paladin",
+   "archer",
+   "robber"
+  ]
+ },
+ {
+  "id": "crossbow",
+  "name": "Crossbow",
+  "kind": "missile",
+  "icon": "crossbow",
+  "price": 90,
+  "damage": "1d8",
+  "classes": [
+   "knight",
+   "paladin",
+   "archer",
+   "robber"
+  ]
+ },
+ {
+  "id": "long_bow",
+  "name": "Long Bow",
+  "kind": "missile",
+  "icon": "long_bow",
+  "price": 150,
+  "damage": "1d8+1",
+  "classes": [
+   "knight",
+   "paladin",
+   "archer"
+  ]
+ },
+ {
+  "id": "elven_bow",
+  "name": "Elven Longbow",
+  "kind": "missile",
+  "icon": "long_bow",
+  "price": 800,
+  "damage": "1d10+2",
+  "hitBonus": 2,
+  "classes": [
+   "knight",
+   "paladin",
+   "archer"
+  ],
+  "description": "Light as a feather, true as starlight."
+ },
+ {
+  "id": "padded_armor",
+  "name": "Padded Armor",
+  "kind": "armor",
+  "icon": "padded_armor",
+  "price": 10,
+  "armorClass": 1
+ },
+ {
+  "id": "leather_armor",
+  "name": "Leather Armor",
+  "kind": "armor",
+  "icon": "leather_armor",
+  "price": 30,
+  "armorClass": 2,
+  "classes": [
+   "knight",
+   "paladin",
+   "archer",
+   "cleric",
+   "robber"
+  ]
+ },
+ {
+  "id": "ring_mail",
+  "name": "Ring Mail",
+  "kind": "armor",
+  "icon": "ring_mail",
+  "price": 70,
+  "armorClass": 3,
+  "classes": [
+   "knight",
+   "paladin",
+   "archer",
+   "cleric"
+  ]
+ },
+ {
+  "id": "chain_mail",
+  "name": "Chain Mail",
+  "kind": "armor",
+  "icon": "chain_mail",
+  "price": 150,
+  "armorClass": 4,
+  "classes": [
+   "knight",
+   "paladin",
+   "archer",
+   "cleric"
+  ]
+ },
+ {
+  "id": "banded_mail",
+  "name": "Banded Mail",
+  "kind": "armor",
+  "icon": "banded_mail",
+  "price": 300,
+  "armorClass": 5,
+  "classes": [
+   "knight",
+   "paladin",
+   "cleric"
+  ]
+ },
+ {
+  "id": "plate_mail",
+  "name": "Plate Mail",
+  "kind": "armor",
+  "icon": "plate_mail",
+  "price": 600,
+  "armorClass": 7,
+  "classes": [
+   "knight",
+   "paladin"
+  ]
+ },
+ {
+  "id": "mithril_coat",
+  "name": "Mithril Coat",
+  "kind": "armor",
+  "icon": "chain_mail",
+  "price": 1200,
+  "armorClass": 6,
+  "statBonuses": {
+   "speed": 1
+  },
+  "classes": [
+   "knight",
+   "paladin",
+   "archer",
+   "robber",
+   "cleric"
+  ],
+  "description": "Shimmering links, light as silk."
+ },
+ {
+  "id": "small_shield",
+  "name": "Small Shield",
+  "kind": "shield",
+  "icon": "small_shield",
+  "price": 15,
+  "armorClass": 1,
+  "classes": [
+   "knight",
+   "paladin",
+   "archer",
+   "cleric",
+   "robber"
+  ]
+ },
+ {
+  "id": "large_shield",
+  "name": "Large Shield",
+  "kind": "shield",
+  "icon": "large_shield",
+  "price": 60,
+  "armorClass": 2,
+  "classes": [
+   "knight",
+   "paladin",
+   "cleric"
+  ]
+ },
+ {
+  "id": "helmet",
+  "name": "Helmet",
+  "kind": "helmet",
+  "icon": "helmet",
+  "price": 40,
+  "armorClass": 1,
+  "classes": [
+   "knight",
+   "paladin",
+   "archer",
+   "cleric",
+   "robber"
+  ]
+ },
+ {
+  "id": "gauntlets",
+  "name": "Gauntlets",
+  "kind": "gloves",
+  "icon": "gauntlets",
+  "price": 50,
+  "armorClass": 1,
+  "classes": [
+   "knight",
+   "paladin",
+   "archer",
+   "cleric"
+  ]
+ },
+ {
+  "id": "boots",
+  "name": "Leather Boots",
+  "kind": "boots",
+  "icon": "boots",
+  "price": 30,
+  "armorClass": 1
+ },
+ {
+  "id": "ring_protection",
+  "name": "Ring of Protection",
+  "kind": "ring",
+  "icon": "ring",
+  "price": 400,
+  "armorClass": 2,
+  "description": "A silver band that turns aside blows."
+ },
+ {
+  "id": "ring_might",
+  "name": "Ring of Might",
+  "kind": "ring",
+  "icon": "ring_gold",
+  "price": 500,
+  "statBonuses": {
+   "might": 2
+  }
+ },
+ {
+  "id": "amulet_insight",
+  "name": "Amulet of Insight",
+  "kind": "amulet",
+  "icon": "amulet",
+  "price": 600,
+  "statBonuses": {
+   "intellect": 2,
+   "personality": 2
+  }
+ },
+ {
+  "id": "potion_healing",
+  "name": "Healing Potion",
+  "kind": "potion",
+  "icon": "potion_red",
+  "price": 50,
+  "useSpell": "i_heal",
+  "description": "Restores 3d8+5 hit points."
+ },
+ {
+  "id": "potion_cure",
+  "name": "Cure Potion",
+  "kind": "potion",
+  "icon": "potion_green",
+  "price": 60,
+  "useSpell": "i_cure",
+  "description": "Cures most ailments."
+ },
+ {
+  "id": "potion_mana",
+  "name": "Mana Potion",
+  "kind": "potion",
+  "icon": "potion_blue",
+  "price": 120,
+  "useSpell": "i_mana",
+  "description": "Restores spell points."
+ },
+ {
+  "id": "potion_vigor",
+  "name": "Elixir of Vigor",
+  "kind": "potion",
+  "icon": "potion_gold",
+  "price": 250,
+  "useSpell": "i_heal_party",
+  "description": "Heals the entire party."
+ },
+ {
+  "id": "scroll_fire",
+  "name": "Scroll of Flames",
+  "kind": "scroll",
+  "icon": "scroll",
+  "price": 150,
+  "useSpell": "i_fireball",
+  "description": "Unleashes a fireball on a group of foes."
+ },
+ {
+  "id": "scroll_light",
+  "name": "Scroll of Light",
+  "kind": "scroll",
+  "icon": "scroll_blue",
+  "price": 25,
+  "useSpell": "i_light",
+  "description": "Lights the way for 300 steps."
+ },
+ {
+  "id": "scroll_recall",
+  "name": "Scroll of Homeward",
+  "kind": "scroll",
+  "icon": "scroll_blue",
+  "price": 200,
+  "useSpell": "i_recall",
+  "description": "Returns the party to the last inn."
+ },
+ {
+  "id": "wand_lightning",
+  "name": "Wand of Lightning",
+  "kind": "wand",
+  "icon": "orb",
+  "price": 500,
+  "useSpell": "i_lightning",
+  "charges": 5,
+  "description": "Five crackling charges."
+ },
+ {
+  "id": "ration",
+  "name": "Trail Rations",
+  "kind": "food",
+  "icon": "ration",
+  "price": 10,
+  "foodUnits": 10,
+  "description": "Ten days of hard bread and jerky."
+ },
+ {
+  "id": "torch",
+  "name": "Torch",
+  "kind": "torch",
+  "icon": "torch",
+  "price": 5,
+  "lightSteps": 100,
+  "description": "Burns for 100 steps."
+ },
+ {
+  "id": "ember_shard",
+  "name": "Ember Shard",
+  "kind": "quest",
+  "icon": "crystal",
+  "description": "Half of an ancient sigil, warm and glowing red."
+ },
+ {
+  "id": "frost_shard",
+  "name": "Frost Shard",
+  "kind": "quest",
+  "icon": "gem",
+  "description": "Half of an ancient sigil, cold as midwinter."
+ },
+ {
+  "id": "crypt_key",
+  "name": "Crypt Key",
+  "kind": "quest",
+  "icon": "key",
+  "description": "A heavy iron key stamped with a skull."
+ },
+ {
+  "id": "vault_sigil",
+  "name": "Vault Sigil",
+  "kind": "quest",
+  "icon": "orb",
+  "description": "The rejoined sigil. It hums with power."
+ },
+ {
+  "id": "old_journal",
+  "name": "Old Journal",
+  "kind": "quest",
+  "icon": "book",
+  "description": "A water-stained journal mentioning 'the Lodestone of Seasons'."
+ },
+ {
+  "id": "dwarven_mail",
+  "name": "Dwarven Mail",
+  "kind": "armor",
+  "icon": "dwarven_mail",
+  "price": 900,
+  "armorClass": 6,
+  "classes": [
+   "knight",
+   "paladin",
+   "archer",
+   "cleric"
+  ],
+  "description": "Heavy rings forged in Thornwick's deep forge."
+ },
+ {
+  "id": "wyrmscale_mail",
+  "name": "Wyrmscale Mail",
+  "kind": "armor",
+  "icon": "dragon_scale",
+  "price": 2500,
+  "armorClass": 8,
+  "statBonuses": {
+   "endurance": 1
+  },
+  "classes": [
+   "knight",
+   "paladin"
+  ],
+  "description": "Scales shed by the Stone Wyrm, harder than plate."
+ },
+ {
+  "id": "wyrmguard_blade",
+  "name": "Wyrmguard Blade",
+  "kind": "weapon",
+  "icon": "ancient_sword",
+  "price": 1500,
+  "damage": "2d6+2",
+  "hitBonus": 2,
+  "classes": [
+   "knight",
+   "paladin",
+   "archer"
+  ],
+  "description": "An old dwarven sword from the Wyrm's hoard."
+ },
+ {
+  "id": "moonsilver_blade",
+  "name": "Moonsilver Blade",
+  "kind": "weapon",
+  "icon": "blessed_blade",
+  "price": 2000,
+  "damage": "1d10+3",
+  "hitBonus": 3,
+  "element": "holy",
+  "classes": [
+   "knight",
+   "paladin",
+   "archer",
+   "robber"
+  ],
+  "description": "Pale as moonlight; the drowned dead fear it."
+ },
+ {
+  "id": "evening_star",
+  "name": "Evening Star",
+  "kind": "weapon",
+  "icon": "evening_star",
+  "price": 1600,
+  "damage": "2d4+3",
+  "hitBonus": 2,
+  "element": "holy",
+  "classes": [
+   "knight",
+   "paladin",
+   "cleric"
+  ],
+  "description": "A temple flail that glows at dusk."
+ },
+ {
+  "id": "ring_heartfire",
+  "name": "Heartfire Ring",
+  "kind": "ring",
+  "icon": "ring_gold",
+  "price": 1500,
+  "armorClass": 1,
+  "statBonuses": {
+   "might": 1,
+   "endurance": 2
+  },
+  "description": "Warm as a hearth. A gift from the miners of Thornwick."
+ },
+ {
+  "id": "lotus_amulet",
+  "name": "Lotus Amulet",
+  "kind": "amulet",
+  "icon": "amulet",
+  "price": 1200,
+  "armorClass": 1,
+  "statBonuses": {
+   "personality": 2,
+   "luck": 2
+  },
+  "description": "A pressed moon lotus set in silver."
+ },
+ {
+  "id": "heartstone",
+  "name": "Heartstone",
+  "kind": "quest",
+  "icon": "crystal",
+  "description": "A fist-sized crystal that glows like an ember. Thornwick's miners need it back."
+ },
+ {
+  "id": "moon_lotus",
+  "name": "Moon Lotus",
+  "kind": "quest",
+  "icon": "potion_gold",
+  "description": "A pale flower that only blooms in the dark water of the Sunken Temple."
+ }
 ]

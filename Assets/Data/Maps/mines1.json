@@ -1,0 +1,221 @@
+{
+ "id": "mines1",
+ "name": "Thornwick Mines",
+ "kind": "dungeon",
+ "format": "edges",
+ "width": 16,
+ "height": 16,
+ "grid": [
+  "+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+",
+  "|. . .|. . . .|. . . . . .|. . .|",
+  "+ + +-+ +-+ + + + +-+ + + + + + +",
+  "|. .|. . .|.|. .|. .|. .|. .|. .|",
+  "+ + + +-+-+ +-+-+ + + + +-+-+ +-+",
+  "|.|. .|. .|. .|. .|.|. .|. .|.|.|",
+  "+ + + + + +-+ +-+-+ +-+-+ +-+ + +",
+  "|.|. . .|. .|. . . .|. .|. .|.|.|",
+  "+ + +-+ + + + + +-+ + + + + + + +",
+  "|. .|.|.|. .|.|.|. . . .|. . .|.|",
+  "+-+ + + + +-+ + + +-+-+-+ +-+-+ +",
+  "|. . .|.|.|. .|.|. .|. . .|. .|.|",
+  "+ + +-+ + + +-+ +-+-+-+D+-+-+ + +",
+  "|. .|. .|. .|.|. . .|. . . .|. .|",
+  "+-+ + +-+-+-+ + +-+-+ + + + + +-+",
+  "|. . .|. . . .|.|. .|. . . .|. .|",
+  "+ +-+-+ + +-+ + + + + + + + + + +",
+  "|.|. . . . .|.|. .|.D. . . .|.|.|",
+  "+ +-+-+-+-+ +-+ +-+ + + + + + + +",
+  "|. . . . .|. . . . .|. . . .|. .|",
+  "+ +-+-+ + + +-+ + +-+-+-+-+-+ +-+",
+  "|.|. .|.|.|. .|. . .|. .|. . . .|",
+  "+ + + +-+ +-+ +-+-+ + +-+-+-+-+ +",
+  "|. .|. . .|.|. . .|.|. . . . . .|",
+  "+ +-+-+-+-+ + +-+-+ +-+-+-+ + + +",
+  "|. .|. . . . .|. . . .|. . . .|.|",
+  "+-+D+-+ +-+-+ + + +-+ + +-+-+ + +",
+  "|. . .|.|. .|.|. . .|. .|. . . .|",
+  "+ + + +-+ + +-+ +-+ +-+-+ +-+-+-+",
+  "|. . .D. . . . . . .|. . .|. .|.|",
+  "+ + + + +-+-+ +-+-+ + + +-+ + + +",
+  "|. . .|. . . . . . . . . . .|. .|",
+  "+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+"
+ ],
+ "terrain": {
+  "d": {
+   "darkness": true,
+   "name": "Magical darkness",
+   "mapColor": "#07070c"
+  },
+  "a": {
+   "antiMagic": true,
+   "name": "Anti-magic",
+   "mapColor": "#3a2050"
+  }
+ },
+ "wallTexture": "wall_mine",
+ "floorTexture": "floor_earth",
+ "ceilingTexture": "wall_deep",
+ "dark": true,
+ "music": "dungeon",
+ "encounterChance": 8,
+ "encounters": [
+  {
+   "monster": "renegade_dwarf",
+   "count": "1d3+1",
+   "weight": 25
+  },
+  {
+   "monster": "rock_beetle",
+   "count": "1d3",
+   "weight": 20
+  },
+  {
+   "monster": "kobold",
+   "count": "2d3",
+   "weight": 15
+  },
+  {
+   "monster": "gnoll_brute",
+   "count": "1d3",
+   "weight": 15
+  },
+  {
+   "monster": "giant_spider",
+   "count": "1d3",
+   "weight": 10
+  },
+  {
+   "monster": "cave_bat",
+   "count": "2d3",
+   "weight": 10
+  }
+ ],
+ "events": [
+  {
+   "x": 1,
+   "y": 14,
+   "type": "teleport",
+   "name": "Lift",
+   "feature": "mine_stairs_up",
+   "map": "thornwick",
+   "toX": 11,
+   "toY": 12,
+   "facing": "East",
+   "text": "The lift rattles back up to the mine head."
+  },
+  {
+   "x": 1,
+   "y": 13,
+   "type": "message",
+   "id": "mines1_hint",
+   "once": true,
+   "name": "Chalk Marks",
+   "text": "Chalk marks on the wall: an arrow pointing deeper, a skull, and the word 'WYRM' underlined three times."
+  },
+  {
+   "x": 11,
+   "y": 7,
+   "type": "encounter",
+   "id": "renegade_camp",
+   "once": true,
+   "name": "Renegades' Camp",
+   "setFlag": "renegades_routed",
+   "text": "Dwarves in mismatched armour leap up from a cookfire. \"Claim-jumpers! Get them!\"",
+   "monsters": [
+    {
+     "monster": "renegade_dwarf",
+     "count": "4"
+    },
+    {
+     "monster": "dwarf_berserker",
+     "count": "1"
+    }
+   ]
+  },
+  {
+   "x": 12,
+   "y": 8,
+   "type": "treasure",
+   "id": "renegade_loot",
+   "once": true,
+   "feature": "chest",
+   "name": "Renegades' Strongbox",
+   "requiresFlag": "renegades_routed",
+   "blocking": true,
+   "failText": "A strongbox sits by the fire - and so do its owners.",
+   "gold": "8d20",
+   "gems": 2,
+   "items": [
+    "potion_healing",
+    "potion_healing"
+   ],
+   "text": "The renegades' strongbox is full of stolen pay."
+  },
+  {
+   "x": 2,
+   "y": 0,
+   "type": "teleport",
+   "name": "Shaft Down",
+   "feature": "mine_stairs_down",
+   "map": "mines2",
+   "toX": 0,
+   "toY": 15,
+   "facing": "North",
+   "text": "A ladder descends into the deep delvings. Warm air rises from below."
+  },
+  {
+   "x": 4,
+   "y": 1,
+   "type": "treasure",
+   "id": "mines1_chest_a",
+   "once": true,
+   "feature": "chest",
+   "name": "Miner's Locker",
+   "gold": "4d12",
+   "items": [
+    "torch",
+    "ration"
+   ],
+   "text": "An abandoned miner's locker."
+  },
+  {
+   "x": 7,
+   "y": 2,
+   "type": "treasure",
+   "id": "mines1_chest_b",
+   "once": true,
+   "feature": "chest",
+   "name": "Ore Cart",
+   "gold": "6d12",
+   "gems": 1,
+   "text": "An overturned ore cart, with a few nuggets still inside."
+  },
+  {
+   "x": 13,
+   "y": 2,
+   "type": "treasure",
+   "id": "mines1_chest_c",
+   "once": true,
+   "feature": "chest",
+   "name": "Foreman's Cache",
+   "items": [
+    "dwarven_mail"
+   ],
+   "text": "Someone hid a fine suit of dwarven mail down here."
+  },
+  {
+   "x": 4,
+   "y": 12,
+   "type": "spinner"
+  },
+  {
+   "x": 7,
+   "y": 15,
+   "type": "trap",
+   "id": "mines1_rockfall",
+   "once": true,
+   "damage": "2d6",
+   "text": "Rocks crash down from the ceiling!"
+  }
+ ]
+}

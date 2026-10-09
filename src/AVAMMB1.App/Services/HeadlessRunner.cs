@@ -236,6 +236,23 @@ public static class HeadlessRunner
         return null;
     }
 
+    /// <summary>Walks to the exit leading to another map and takes it.</summary>
+    private static void TravelTo(GameViewModel game, GameSession s, string mapId)
+    {
+        var exit = s.CurrentMap.AllEvents.FirstOrDefault(e => e.Type == MapEventKind.Teleport && e.Map == mapId)
+            ?? throw new InvalidOperationException($"No exit to {mapId} from {s.State.MapId}.");
+        for (var attempt = 0; attempt < 5 && s.State.MapId != mapId; attempt++)
+        {
+            WalkTo(game, s, exit.X, exit.Y);
+            ResolveInterruptions(game, s);
+        }
+        if (s.State.MapId != mapId)
+        {
+            throw new InvalidOperationException($"Could not travel to {mapId}.");
+        }
+        game.Refresh();
+    }
+
     private static void Face(GameViewModel game, GameSession s, Direction d)
     {
         while (s.State.Facing != d)
@@ -382,6 +399,23 @@ public static class HeadlessRunner
         s.State.LightSteps = Math.Max(s.State.LightSteps, 50);
         game.Refresh();
         Capture(dir, "14-secret-door");
+
+        // The Ashen Hills expansion: travel there the long way, through each map's exits.
+        foreach (var stop in new[] { "brindlemoor", "wilds", "hills" })
+        {
+            TravelTo(game, s, stop);
+        }
+        WalkTo(game, s, 9, 12);
+        Face(game, s, Direction.West);
+        game.Refresh();
+        Capture(dir, "16-ashen-hills");
+        TravelTo(game, s, "thornwick");
+        Capture(dir, "17-thornwick");
+        TravelTo(game, s, "hills");
+        TravelTo(game, s, "duskmere");
+        Face(game, s, Direction.West);
+        game.Refresh();
+        Capture(dir, "18-duskmere");
 
         // Show the real defaults on the settings screen (animations were only disabled for capturing).
         vm.Services.Settings.SmoothMovement = true;

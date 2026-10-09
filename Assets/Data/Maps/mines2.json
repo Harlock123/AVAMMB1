@@ -1,0 +1,203 @@
+{
+ "id": "mines2",
+ "name": "The Deep Delvings",
+ "kind": "dungeon",
+ "format": "edges",
+ "width": 16,
+ "height": 16,
+ "grid": [
+  "+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+",
+  "|. . . . .|. . . . .|.|. . . . .|",
+  "+ +-+ +-+ + +-+ + + + + + + + + +",
+  "|. . . .|.|.|. . .|.|d|. . . . .|",
+  "+-+-+ + + +-+ +-+ + + + + + + + +",
+  "|. .|.|.|. . .|. .|d|d|. . . . .|",
+  "+ + +-+ +-+-+-+ +-+ + + + + + + +",
+  "|.|. .|.|. .|. .|d d d|. . . . .|",
+  "+ + + + + + + + + + +-+ + + + + +",
+  "|. .|. .|.|.|.|. . d|.|. . . . .|",
+  "+ + +-+-+-+ + + + +-+ +-+-+D+-+-+",
+  "|. .|. . . .|.|.|. .|. . .|. .|.|",
+  "+ +-+-+ +-+ + + +-+ + +-+-+-+ + +",
+  "|. . . .|. . . . . . . .|.|. . .|",
+  "+-+ + +-+-+-+ +-+ +-+-+ + + +-+ +",
+  "|. .|. . . .|. . .|. .|.|.|. . .|",
+  "+ +-+ + +-+ + + + + + + + +-+-+ +",
+  "|.|.|.|.|. .|. .|.|.|.|. . .|. .|",
+  "+ + + + + +-+-+-+ + + +-+ +-+ + +",
+  "|.|. . .|. . . . .|.|.|.|.|. .|.|",
+  "+ +-+-+ +-+-+-+ + + + + + + +-+ +",
+  "|. . .|. . .|. .|.|.|.|. .|. . .|",
+  "+-+-+ +-+-+-+ + + + + +-+-+ + +-+",
+  "|. .|.|. . . .|.|. .|. . .|. . .|",
+  "+ + + + +-+-+-+ +-+-+-+ + +-+ + +",
+  "|.|.|. .|. .|. .|. . . .|. .|.|.|",
+  "+ + +-+-+ + + +-+ +-+ + +-+ + + +",
+  "|.|. . . .|. .|. .|.|.|.|. .|.|.|",
+  "+ +-+-+-+-+-+-+ +-+ + +-+ +-+ + +",
+  "|. .|. . .|. . .|. .|. . .|. .|.|",
+  "+-+ + + +-+ +-+-+ + +-+-+-+-+ + +",
+  "|. .|.|. . . . . .|. . . . . . .|",
+  "+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+"
+ ],
+ "terrain": {
+  "d": {
+   "darkness": true,
+   "name": "Magical darkness",
+   "mapColor": "#07070c"
+  },
+  "a": {
+   "antiMagic": true,
+   "name": "Anti-magic",
+   "mapColor": "#3a2050"
+  }
+ },
+ "wallTexture": "wall_deep",
+ "floorTexture": "floor_earth",
+ "ceilingTexture": "wall_deep",
+ "dark": true,
+ "music": "dungeon",
+ "encounterChance": 9,
+ "encounters": [
+  {
+   "monster": "dwarf_berserker",
+   "count": "1d2",
+   "weight": 20
+  },
+  {
+   "monster": "rock_troll",
+   "count": "1",
+   "weight": 15
+  },
+  {
+   "monster": "rock_beetle",
+   "count": "2d2",
+   "weight": 20
+  },
+  {
+   "monster": "basilisk",
+   "count": "1",
+   "weight": 10
+  },
+  {
+   "monster": "minotaur",
+   "count": "1",
+   "weight": 10
+  },
+  {
+   "monster": "ogre",
+   "count": "1d2",
+   "weight": 10
+  }
+ ],
+ "events": [
+  {
+   "x": 0,
+   "y": 15,
+   "type": "teleport",
+   "name": "Ladder Up",
+   "feature": "mine_stairs_up",
+   "map": "mines1",
+   "toX": 2,
+   "toY": 0,
+   "facing": "North",
+   "text": "You climb back up to the upper mine."
+  },
+  {
+   "x": 13,
+   "y": 4,
+   "type": "encounter",
+   "id": "wyrm_fight",
+   "once": true,
+   "name": "The Wyrm's Lair",
+   "setFlag": "wyrm_slain",
+   "text": "The cavern floor heaves. A wyrm of living rock rises from its bed of rubble, the Heartstone glowing in the hoard beneath it.",
+   "monsters": [
+    {
+     "monster": "stone_wyrm",
+     "count": "1"
+    },
+    {
+     "monster": "rock_beetle",
+     "count": "2"
+    }
+   ]
+  },
+  {
+   "x": 14,
+   "y": 1,
+   "type": "treasure",
+   "id": "wyrm_hoard",
+   "once": true,
+   "feature": "chest",
+   "name": "Wyrm's Hoard",
+   "requiresFlag": "wyrm_slain",
+   "blocking": true,
+   "failText": "The hoard glitters behind the wyrm's coils.",
+   "gold": "10d20+100",
+   "gems": 4,
+   "items": [
+    "heartstone",
+    "wyrmguard_blade",
+    "wyrmscale_mail"
+   ],
+   "text": "In the rubble of the wyrm's bed: the Heartstone, an old dwarven blade, and scales shed by the beast itself."
+  },
+  {
+   "x": 10,
+   "y": 0,
+   "type": "treasure",
+   "id": "mines2_chest_a",
+   "once": true,
+   "feature": "chest",
+   "name": "Lost Expedition",
+   "gold": "8d12",
+   "items": [
+    "potion_mana",
+    "scroll_recall"
+   ],
+   "text": "The remains of a lost expedition."
+  },
+  {
+   "x": 5,
+   "y": 1,
+   "type": "treasure",
+   "id": "mines2_chest_b",
+   "once": true,
+   "feature": "chest",
+   "name": "Collapsed Gallery",
+   "gold": "10d12",
+   "gems": 2,
+   "text": "Gems glint in a collapsed gallery."
+  },
+  {
+   "x": 2,
+   "y": 2,
+   "type": "trap",
+   "id": "mines2_gas",
+   "once": true,
+   "damage": "1d6",
+   "conditions": "poisoned",
+   "text": "A pocket of foul mine gas bursts open!"
+  },
+  {
+   "x": 11,
+   "y": 8,
+   "type": "trap",
+   "id": "mines2_alarm",
+   "once": true,
+   "trap": "alarm",
+   "text": "Your boot catches a tripwire strung with tin cans!",
+   "monsters": [
+    {
+     "monster": "dwarf_berserker",
+     "count": "2"
+    },
+    {
+     "monster": "renegade_dwarf",
+     "count": "2"
+    }
+   ]
+  }
+ ]
+}

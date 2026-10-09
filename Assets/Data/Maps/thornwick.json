@@ -1,0 +1,170 @@
+{
+ "id": "thornwick",
+ "name": "Thornwick",
+ "kind": "town",
+ "format": "blocks",
+ "width": 16,
+ "height": 16,
+ "grid": [
+  "################",
+  "#....#....#....#",
+  "#.##.#.##.#.##.#",
+  "#.##...##...##.#",
+  "#..............#",
+  "#.###......###.#",
+  "#.###..TT..###.#",
+  "#..............#",
+  "##.##.####.##.##",
+  "#..............#",
+  "#.BBB......BBB.#",
+  "#.BBB......BBB.#",
+  "#..............#",
+  "#..T........T..#",
+  "#..............#",
+  "#######.########"
+ ],
+ "terrain": {
+  "#": {
+   "solid": true,
+   "texture": "wall_town3",
+   "name": "Building",
+   "mapColor": "#6a6a72"
+  },
+  "B": {
+   "solid": true,
+   "texture": "wall_town5",
+   "name": "Building",
+   "mapColor": "#5a5a62"
+  },
+  "T": {
+   "solid": true,
+   "opaque": false,
+   "feature": "tree_autumn",
+   "name": "Tree",
+   "mapColor": "#8a4a2a"
+  }
+ },
+ "wallTexture": "wall_town3",
+ "floorTexture": "floor_cobble",
+ "skyColor": "#7a7a8a",
+ "music": "town",
+ "encounterChance": 0,
+ "events": [
+  {
+   "x": 7,
+   "y": 15,
+   "type": "teleport",
+   "name": "Town Gate",
+   "feature": "entrance",
+   "map": "hills",
+   "toX": 9,
+   "toY": 2,
+   "facing": "South"
+  },
+  {
+   "x": 2,
+   "y": 4,
+   "type": "inn",
+   "name": "The Lamp & Pick",
+   "feature": "shop_general",
+   "priceFactor": 1.2
+  },
+  {
+   "x": 7,
+   "y": 4,
+   "type": "temple",
+   "name": "Shrine of the Deep Flame",
+   "feature": "altar",
+   "priceFactor": 1.1
+  },
+  {
+   "x": 3,
+   "y": 7,
+   "type": "tavern",
+   "name": "The Dusty Pickaxe",
+   "feature": "shop_food",
+   "priceFactor": 1.2,
+   "rumors": [
+    "The lower mine went quiet a month back. Then the rumbling started.",
+    "Foreman Halvard won't sleep until the Heartstone is back where it belongs.",
+    "Rock trolls heal fast. Burn them if you can.",
+    "Renegade dwarves have taken the old camp in the upper mine. They'll take a bribe, mostly.",
+    "There's a drowned temple in the marsh south-west of here. Duskmere folk won't go near it."
+   ]
+  },
+  {
+   "x": 12,
+   "y": 7,
+   "type": "shop",
+   "name": "Thornwick Deep Forge",
+   "shop": "thornwick_forge",
+   "feature": "shop_weapon"
+  },
+  {
+   "x": 3,
+   "y": 12,
+   "type": "training",
+   "name": "Thornwick Proving Hall",
+   "feature": "shop_armor",
+   "priceFactor": 1.3
+  },
+  {
+   "x": 12,
+   "y": 12,
+   "type": "teleport",
+   "name": "Mine Head",
+   "feature": "mine_stairs_down",
+   "map": "mines1",
+   "toX": 1,
+   "toY": 14,
+   "facing": "North",
+   "text": "A creaking lift lowers the party into the Thornwick Mines."
+  },
+  {
+   "x": 8,
+   "y": 14,
+   "type": "message",
+   "name": "Mine Notice",
+   "feature": "column",
+   "text": "BY ORDER OF THE FOREMAN: the lower galleries are CLOSED. Anyone who recovers the Heartstone will be well rewarded. - Halvard"
+  },
+  {
+   "x": 12,
+   "y": 4,
+   "type": "quest",
+   "id": "halvard_intro",
+   "once": true,
+   "name": "Foreman Halvard's Office",
+   "feature": "shop_books",
+   "requiresNotFlag": "halvard_met",
+   "setFlag": "halvard_met",
+   "text": "A broad, soot-stained dwarf looks up. \"Adventurers? Good. Something woke in the deep delvings - a wyrm of living stone. It took the Heartstone, the crystal that keeps the mine's air sweet and our lamps burning. Bring it back and Thornwick will not forget you.\""
+  },
+  {
+   "x": 12,
+   "y": 4,
+   "type": "quest",
+   "id": "halvard_reward",
+   "once": true,
+   "name": "Foreman Halvard's Office",
+   "requiresItem": "heartstone",
+   "consumeItem": true,
+   "requiresFlag": "halvard_met",
+   "setFlag": "heartstone_returned",
+   "items": [
+    "ring_heartfire"
+   ],
+   "xp": 1500,
+   "gold": "500",
+   "text": "Halvard holds the glowing crystal up to the lamp and laughs aloud. \"The Heartstone! Take this ring - forged by my grandmother from the first ore this mine ever gave. And the forge will always have a fire for you.\""
+  },
+  {
+   "x": 12,
+   "y": 4,
+   "type": "message",
+   "name": "Foreman Halvard's Office",
+   "requiresFlag": "heartstone_returned",
+   "text": "\"The lamps burn bright again below. Thank you, friends.\""
+  }
+ ]
+}

@@ -1,0 +1,248 @@
+{
+ "id": "temple",
+ "name": "The Sunken Temple",
+ "kind": "dungeon",
+ "format": "edges",
+ "width": 16,
+ "height": 16,
+ "grid": [
+  "+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+",
+  "|. .|. . .|. . . . . .|. . . .|.|",
+  "+ +-+ +-+ + + + + + + + + + + + +",
+  "|. . .|. .|. . . . . .|. .|.|. .|",
+  "+ +-+-+ + + + + + + + + +-+ +-+ +",
+  "|. . .|.|.|. . . . . .|.|. . .|.|",
+  "+-+-+ + +-+ + + + + + + + +-+-+ +",
+  "|. .|.|. .|. . . . . .|.|. . . .|",
+  "+ + + +-+ + + + + + + + + +-+-+-+",
+  "|.|. .S.|.|. . . . . .|.|. . . .|",
+  "+ + +-+-+ +-+-+-+D+-+-+ + + + +-+",
+  "|. . . . .|.|. .|. . .|. .|. . .|",
+  "+-+-+-+ +-+ + + + +-+-+ +-+ +-+ +",
+  "|. .|. .|. .|. .|. .|. .|. .|.|.|",
+  "+ + + +-+ +-+ + + + + + + +-+ + +",
+  "|.|. .|.|. .|.|.|. . . .|. . .|.|",
+  "+ +-+-+ +-+ + + + + + + +-+ + + +",
+  "|. .|. .|. . . .|.|.|.|. .|.|.|.|",
+  "+ + + + + +-+ +-+ + + +-+-+ + + +",
+  "|. . .|. .|. . . .|.|.|. .|. .|.|",
+  "+-+ + +-+-+ + +-+-+-+ + + + +-+ +",
+  "|. .|. d d d .|. . . .|.|. .|w .|",
+  "+ +-+-+-+-+-+ + +-+-+-+ +-+-+ +-+",
+  "|.|. .|. . .|.|. . . . . . .|w w|",
+  "+ +-+ + +-+ + +-+ +-+-+-+-+-+-+ +",
+  "|. .|.|. .|. . . .|. . . . . .|w|",
+  "+ + + + + +-+-+D+-+-+-+-+-+-+ + +",
+  "|.|.|.|.|. .|w w w w|. . . .|.|w|",
+  "+ + + + +-+-+ + + + + +-+ + + + +",
+  "|. . .|. . .|w w w w|.|. .|.|. .|",
+  "+ + + + +-+ + + + + +-+-+ + +-+ +",
+  "|. . . . . .|w w w w|. . .|. . .|",
+  "+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+"
+ ],
+ "terrain": {
+  "d": {
+   "darkness": true,
+   "name": "Magical darkness",
+   "mapColor": "#07070c"
+  },
+  "a": {
+   "antiMagic": true,
+   "name": "Anti-magic",
+   "mapColor": "#3a2050"
+  },
+  "w": {
+   "floor": "shallow_water",
+   "name": "Flooded",
+   "mapColor": "#2a4a6a"
+  }
+ },
+ "wallTexture": "wall_temple",
+ "floorTexture": "floor_limestone",
+ "ceilingTexture": "wall_marble",
+ "dark": true,
+ "music": "dungeon",
+ "encounterChance": 9,
+ "encounters": [
+  {
+   "monster": "marsh_naga",
+   "count": "1d3",
+   "weight": 20
+  },
+  {
+   "monster": "naga_warden",
+   "count": "1d2",
+   "weight": 15
+  },
+  {
+   "monster": "naga_seer",
+   "count": "1",
+   "weight": 10
+  },
+  {
+   "monster": "bog_body",
+   "count": "1d3+1",
+   "weight": 20
+  },
+  {
+   "monster": "giant_leech",
+   "count": "2d3",
+   "weight": 15
+  },
+  {
+   "monster": "swamp_drake",
+   "count": "1",
+   "weight": 10
+  }
+ ],
+ "events": [
+  {
+   "x": 7,
+   "y": 15,
+   "type": "teleport",
+   "name": "Temple Steps",
+   "feature": "stairs_up",
+   "map": "hills",
+   "toX": 5,
+   "toY": 16,
+   "facing": "North",
+   "text": "You wade back up the steps into the marsh."
+  },
+  {
+   "x": 7,
+   "y": 14,
+   "type": "message",
+   "id": "temple_hint",
+   "once": true,
+   "name": "Drowned Mosaic",
+   "text": "A mosaic under the water shows a temple garden of pale flowers - and something with many heads coiled among them."
+  },
+  {
+   "x": 8,
+   "y": 4,
+   "type": "encounter",
+   "id": "hydra_fight",
+   "once": true,
+   "name": "The Drowned Pool",
+   "setFlag": "hydra_slain",
+   "text": "The black water boils. Four heads rise from the pool, each as long as a man.",
+   "monsters": [
+    {
+     "monster": "drowned_hydra",
+     "count": "1"
+    }
+   ]
+  },
+  {
+   "x": 7,
+   "y": 1,
+   "type": "treasure",
+   "id": "lotus_garden",
+   "once": true,
+   "feature": "altar",
+   "name": "Lotus Garden",
+   "requiresFlag": "hydra_slain",
+   "blocking": true,
+   "failText": "Pale flowers float on the pool. The water around them is far too still.",
+   "gold": "10d20+80",
+   "gems": 3,
+   "items": [
+    "moon_lotus",
+    "moonsilver_blade",
+    "evening_star"
+   ],
+   "text": "Among the floating flowers you find a single perfect Moon Lotus - and the temple's last treasures, swept here by the flood."
+  },
+  {
+   "x": 4,
+   "y": 15,
+   "type": "encounter",
+   "id": "naga_ambush",
+   "once": true,
+   "name": "Naga Ambush",
+   "text": "Shapes slide out of the flooded side passages!",
+   "monsters": [
+    {
+     "monster": "marsh_naga",
+     "count": "2"
+    },
+    {
+     "monster": "naga_seer",
+     "count": "1"
+    }
+   ]
+  },
+  {
+   "x": 1,
+   "y": 0,
+   "type": "treasure",
+   "id": "temple_chest_a",
+   "once": true,
+   "feature": "chest",
+   "name": "Offering Niche",
+   "gold": "8d12",
+   "items": [
+    "potion_cure",
+    "potion_cure"
+   ],
+   "text": "Offerings, still sealed in wax."
+  },
+  {
+   "x": 15,
+   "y": 0,
+   "type": "trap",
+   "id": "temple_trap_a",
+   "once": true,
+   "damage": "2d8",
+   "text": "A spear trap fires from the wall!"
+  },
+  {
+   "x": 4,
+   "y": 2,
+   "type": "treasure",
+   "id": "temple_chest_b",
+   "once": true,
+   "feature": "chest",
+   "name": "Priest's Coffer",
+   "gold": "12d12",
+   "gems": 2,
+   "text": "A priest's coffer, its lock rusted away."
+  },
+  {
+   "x": 2,
+   "y": 4,
+   "type": "message",
+   "id": "temple_secret_hint",
+   "once": true,
+   "name": "Cracked Fresco",
+   "text": "Water trickles out of a crack in a fresco here, as if from a room beyond. (Search with F.)"
+  },
+  {
+   "x": 3,
+   "y": 4,
+   "type": "treasure",
+   "id": "temple_secret",
+   "once": true,
+   "feature": "chest",
+   "name": "Sealed Reliquary",
+   "gold": "10d20",
+   "items": [
+    "ring_protection",
+    "potion_vigor"
+   ],
+   "text": "A dry, sealed reliquary the flood never reached."
+  },
+  {
+   "x": 2,
+   "y": 2,
+   "type": "spinner"
+  },
+  {
+   "x": 4,
+   "y": 5,
+   "type": "trap",
+   "trap": "teleport",
+   "text": "A whirlpool opens beneath your feet!"
+  }
+ ]
+}

@@ -49,8 +49,11 @@ Code identifiers, the solution and executables use the name **`AVAMMB1`** (`AVAM
   silenced, poisoned, diseased, paralyzed, unconscious, dead, stoned), trap disarming, saving throws.
 - **Towns** with inns (rest, save, roster of up to 18 characters), temples (heal, cure, raise dead,
   donate), taverns (food, rumors), smithies and magic shops, and training grounds.
-- **Six maps**: two towns, a wilderness, two dungeons and the final vault, linked by a quest chain
-  with keys, quest items and flags that leads to a final boss and victory screen.
+- **Twelve maps**: four towns (Brindlemoor, Saltreach, Thornwick, Duskmere), two wilderness regions
+  (the Greenvale Wilds and the Ashen Hills), five dungeon levels plus the final vault. The main quest
+  chain (keys, quest items, flags) leads to a final boss and victory screen; two optional side
+  quests in the Ashen Hills - the Thornwick Mines' Stone Wyrm and the Sunken Temple's Drowned Hydra -
+  reward unique gear.
 - **Turn-based combat**: initiative order, front/back ranks for both sides, melee and missile attacks,
   28 learnable spells across two schools plus item-only effects, potions, scrolls, wands, blocking,
   running, bribing; monster AI with special abilities, healing, fleeing and target selection;
@@ -80,7 +83,8 @@ All screenshots are real frames rendered by the game itself (Avalonia headless +
 | ![Town automap](docs/screenshots/06-automap-town.png) Town automap | ![Spells](docs/screenshots/12-spells.png) Spellcasting |
 | ![Intro](docs/screenshots/03-intro.png) Story dialog | ![Settings](docs/screenshots/13-settings.png) Settings and key bindings |
 | ![Dungeon entrance](docs/screenshots/07-dungeon-entrance.png) Arriving in the cellars | ![Secret door](docs/screenshots/14-secret-door.png) A secret door found by searching (purple on the minimap) |
-| ![Guardian](docs/screenshots/15-guardian.png) A guardian waiting in its alcove | |
+| ![Guardian](docs/screenshots/15-guardian.png) A guardian waiting in its alcove | ![Ashen Hills](docs/screenshots/16-ashen-hills.png) The Ashen Hills marsh road |
+| ![Thornwick](docs/screenshots/17-thornwick.png) Thornwick, the mining town | ![Duskmere](docs/screenshots/18-duskmere.png) Duskmere, the marsh village |
 
 ## Download and install
 
@@ -226,7 +230,7 @@ More detail: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 
 ## Roadmap
 
-- More towns and dungeons (the original scope had five towns and many more dungeon levels)
+- Even more towns and dungeon levels (the original game had five towns and many more levels)
 - Per-character gold (currently shared by the party), more spells and special items
 - Proper Developer ID signing / notarization and an installer for Windows
 - Gamepad support, localization, UI scaling options

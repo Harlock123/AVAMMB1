@@ -182,7 +182,19 @@
    "type": "message",
    "name": "Crossroads Signpost",
    "feature": "column",
-   "text": "North: Inner Vault (sealed). North-east: Saltreach. South: Brindlemoor. South-east: Hollow Crypt."
+   "text": "North: Inner Vault (sealed). North-east: Saltreach. South: Brindlemoor. South-east: Hollow Crypt. West: the pass to the Ashen Hills."
+  },
+  {
+   "x": 1,
+   "y": 10,
+   "type": "teleport",
+   "name": "Ashen Hills Pass",
+   "feature": "entrance",
+   "map": "hills",
+   "toX": 17,
+   "toY": 10,
+   "facing": "West",
+   "text": "A steep track climbs west through the mountains into the Ashen Hills."
   },
   {
    "x": 2,
