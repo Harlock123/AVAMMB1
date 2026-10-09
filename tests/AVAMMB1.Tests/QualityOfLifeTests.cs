@@ -1,3 +1,4 @@
+using AVAMMB1.Core.Dice;
 using AVAMMB1.Core.Combat;
 using AVAMMB1.Core.Input;
 using AVAMMB1.Core.Items;
@@ -133,5 +134,24 @@ public class QualityOfLifeTests
                 Directory.Delete(dir, recursive: true);
             }
         }
+    }
+
+    [Fact]
+    public void MoveMember_ShiftsTheOthersAlong_AndNotInBattle()
+    {
+        var s = new GameSession(TestContent.Content, new DefaultRandomSource(3));
+        s.NewGame(TestContent.Content.Config.Premades.Select(s.Factory.CreatePremade));
+        var names = s.State.Party.Select(c => c.Name).ToList();
+
+        Assert.True(s.MoveMember(0, 2));
+        Assert.Equal([names[1], names[2], names[0], names[3], names[4], names[5]], s.State.Party.Select(c => c.Name));
+        Assert.True(s.MoveMember(5, 0));
+        Assert.Equal(names[5], s.State.Party[0].Name);
+        Assert.False(s.MoveMember(1, 1));
+        Assert.False(s.MoveMember(0, 6));
+
+        s.StartCombat(CombatEngine.Spawn(s.Content.Monster("cellar_rat"), 1, s.Random), new StepResult());
+        Assert.False(s.MoveMember(0, 1));
+        Assert.Equal(names[5], s.State.Party[0].Name);
     }
 }

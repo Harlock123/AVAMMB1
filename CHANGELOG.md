@@ -6,6 +6,9 @@ All notable changes to this project are documented here. The format follows
 ## [Unreleased]
 
 ### Added
+- Drag and drop to change the marching order: drag a party card along the bar at the bottom of the
+  screen and drop it on another place (the others shift along). Works anywhere outside battle, not
+  just at an inn; a click on a card still opens the character sheet.
 - Keyboard picking for battle spells and items: each entry in the list shows its key (1-9, then A-Z
   for longer spell lists) and pressing it picks that spell or item. The number pad works too, and a
   spell that cannot be cast says why (e.g. not enough SP).

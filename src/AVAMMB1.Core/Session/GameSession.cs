@@ -89,6 +89,23 @@ public sealed class GameSession
     /// <summary>The current map.</summary>
     public GameMap CurrentMap => Content.Map(State.MapId);
 
+    /// <summary>Moves a party member to another place in the marching order (not during a battle).</summary>
+    /// <param name="from">Current index.</param>
+    /// <param name="to">New index; the members in between shift along.</param>
+    /// <returns>Whether the order changed.</returns>
+    public bool MoveMember(int from, int to)
+    {
+        var party = State.Party;
+        if (Combat is not null || from == to || from < 0 || to < 0 || from >= party.Count || to >= party.Count)
+        {
+            return false;
+        }
+        var c = party[from];
+        party.RemoveAt(from);
+        party.Insert(to, c);
+        return true;
+    }
+
     /// <summary>
     /// How many cells the party can see. In dark places this is the light radius: torch 5, light
     /// spells 6, lantern 8; with no light, 1.

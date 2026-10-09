@@ -1,5 +1,8 @@
 using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Headless;
+using Avalonia.Input;
+using Avalonia.VisualTree;
 using Avalonia.Threading;
 using AVAMMB1.App.Rendering;
 using AVAMMB1.App.ViewModels;
@@ -106,6 +109,51 @@ public static class HeadlessRunner
             AvaloniaHeadlessPlatform.ForceRenderTimerTick();
         }
         Dispatcher.UIThread.RunJobs();
+    }
+
+    /// <summary>Drags the first party card onto the third with real (headless) mouse input, checks the
+    /// order changed without opening a character sheet, then drags it back.</summary>
+    private static void CheckPartyDrag(GameViewModel game, GameSession s)
+    {
+        var bar = _window.GetVisualDescendants().OfType<ItemsControl>().First(c => c.Name == "PartyBar");
+        Point Slot(int i) => bar.TranslatePoint(new Point(bar.Bounds.Width / 6 * (i + 0.5), bar.Bounds.Height / 2), _window)!.Value;
+        void Drag(int from, int to)
+        {
+            _window.MouseDown(Slot(from), MouseButton.Left);
+            _window.MouseMove(Slot(from) + new Point(20, 0));
+            _window.MouseMove(Slot(to));
+            Pump();
+            _window.MouseUp(Slot(to), MouseButton.Left);
+            Pump();
+        }
+        var before = s.State.Party.ToList();
+        var logLength = game.Messages.Count;
+        Drag(0, 2);
+        var after = s.State.Party;
+        if (!ReferenceEquals(after[2], before[0]) || !ReferenceEquals(after[0], before[1]) || game.HasOverlay)
+        {
+            throw new InvalidOperationException("Dragging a party card did not reorder the party: " + string.Join(", ", after.Select(c => c.Name)));
+        }
+        Drag(2, 0);
+        if (!s.State.Party.SequenceEqual(before))
+        {
+            throw new InvalidOperationException("Dragging the party card back did not restore the order.");
+        }
+        _window.MouseDown(Slot(1), MouseButton.Left); // a plain click still opens the sheet
+        _window.MouseUp(Slot(1), MouseButton.Left);
+        Pump();
+        if (game.Overlay is not CharacterSheetViewModel)
+        {
+            throw new InvalidOperationException("Clicking a party card no longer opens the character sheet.");
+        }
+        game.CloseOverlay();
+        while (game.Messages.Count > logLength)
+        {
+            game.Messages.RemoveAt(game.Messages.Count - 1); // keep the later screenshots' logs as they were
+        }
+        _window.MouseMove(new Point(2, 2)); // off the cards, so no tooltip lingers
+        Pump();
+        Console.WriteLine("party drag ok");
     }
 
     private static void Capture(string dir, string name)
@@ -336,6 +384,7 @@ public static class HeadlessRunner
         // Town: look up the main street from the gate.
         Daylight(game, s);
         Capture(dir, "04-town");
+        CheckPartyDrag(game, s);
 
         // Walk around town (real moves) so the automap has something to show, then visit the smithy.
         foreach (var (x, y) in new[] { (1, 13), (1, 1), (6, 1), (8, 3), (14, 1), (14, 13), (9, 10), (7, 13) })

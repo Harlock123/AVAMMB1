@@ -226,6 +226,28 @@ public sealed partial class GameViewModel : ViewModelBase
     /// <param name="text">Text.</param>
     public void AddMessage(string text) => AddMessages([new GameMessage(text)]);
 
+    /// <summary>Whether party cards can be dragged to change the marching order now.</summary>
+    public bool CanReorder => !InCombat && !HasOverlay && Party.Count > 1;
+
+    /// <summary>Moves a party member to another place (drag and drop on the party cards).</summary>
+    /// <param name="from">Current index.</param>
+    /// <param name="to">New index.</param>
+    public void MoveMember(int from, int to)
+    {
+        if (InCombat)
+        {
+            AddMessage("There is no time to change places in the middle of a battle.");
+            return;
+        }
+        if (HasOverlay || !Session.MoveMember(from, to))
+        {
+            return;
+        }
+        var c = Session.State.Party[to];
+        AddMessage($"{c.Name} moves to place {to + 1}{(to < 3 ? " (front rank)" : "")}.");
+        Refresh();
+    }
+
     /// <summary>Adds messages to the log and plays their sounds.</summary>
     /// <param name="messages">Messages.</param>
     public void AddMessages(IEnumerable<GameMessage> messages)

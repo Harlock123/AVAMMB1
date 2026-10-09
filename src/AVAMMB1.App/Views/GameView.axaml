@@ -73,14 +73,23 @@
     </Border>
 
     <!-- Party roster -->
-    <ItemsControl Grid.Row="1" Grid.ColumnSpan="2" ItemsSource="{Binding Party}">
+    <ItemsControl x:Name="PartyBar" Grid.Row="1" Grid.ColumnSpan="2" ItemsSource="{Binding Party}">
+      <ItemsControl.Styles>
+        <Style Selector="ContentPresenter.dragging Border.panel">
+          <Setter Property="BorderBrush" Value="{DynamicResource Loot}" />
+        </Style>
+        <Style Selector="ContentPresenter.droptarget Border.panel">
+          <Setter Property="BorderBrush" Value="{DynamicResource Info}" />
+          <Setter Property="Background" Value="{DynamicResource CardSelBg}" />
+        </Style>
+      </ItemsControl.Styles>
       <ItemsControl.ItemsPanel>
         <ItemsPanelTemplate><UniformGrid Columns="6" /></ItemsPanelTemplate>
       </ItemsControl.ItemsPanel>
       <ItemsControl.ItemTemplate>
         <DataTemplate x:DataType="vm:PartyMemberViewModel">
           <Button Padding="0" Margin="0,0,6,0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch"
-                  Background="Transparent" BorderThickness="0"
+                  Background="Transparent" BorderThickness="0" ToolTip.Tip="Click for the character sheet; drag to change places"
                   Command="{Binding $parent[UserControl].((vm:GameViewModel)DataContext).OpenMemberCommand}" CommandParameter="{Binding}">
             <Border Classes="panel" Padding="6" Classes.active="{Binding IsActive}" Classes.hurt="{Binding IsHurt}">
               <Border.Styles>

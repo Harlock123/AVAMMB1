@@ -68,6 +68,8 @@ Code identifiers, the solution and executables use the name **`AVAMMB1`** (`AVAM
 - **Towns** with inns (rest, save, roster of up to 18 characters), temples (heal, cure, raise dead,
   donate), taverns (food, rumors), smithies and magic shops, training grounds, and **academies**
   where gold buys permanent statistic points (each lesson dearer than the last - a late-game gold sink).
+- **Drag-and-drop marching order**: drag a party card along the bar at the bottom of the screen to
+  change places (anywhere but in battle); a click still opens the character sheet.
 - **Twenty-three maps**: six towns (Brindlemoor, Saltreach, Thornwick, Duskmere, Port Ashkar and
   Wintermere), four wilderness regions (the Greenvale Wilds, the Ashen Hills, the Sunscar Wastes and
   the Frostmark), twelve dungeon levels plus the final vault. The main quest chain (keys, quest items, flags) leads to a final boss
