@@ -3,6 +3,14 @@
 All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses semantic versioning.
 
+## [Unreleased]
+
+### Added
+- Save-game versioning and migration: save format 2 records the game version that wrote it and no
+  longer stores computed values; older saves are upgraded step by step on load (`SaveMigrations`).
+  Overwriting an older-format save keeps a backup (`slotN.json.v1.bak`). Saves from a newer game are
+  refused with a clear message. Genuine saves written by every release (1.0.0-1.4.0) are test fixtures.
+
 ## [1.4.0] - 2026-10-09
 
 ### Added

@@ -94,8 +94,12 @@ Randomness always flows through `IRandomSource`, so tests can script dice rolls
 
 ## Persistence formats
 
-* Save games: `slot<N>.json` (`SaveFile` wrapper with version, name, timestamp, summary and the full
-  `GameState`). Corrupt or newer-version files are rejected with a message instead of crashing.
+* Save games: `slot<N>.json` (`SaveFile` wrapper with format version, game version, name, timestamp,
+  summary and the full `GameState`). On load the raw JSON is upgraded step by step by
+  `SaveMigrations` (format 1 = releases 1.0-1.4, format 2 = 1.5+); corrupt files and saves from a
+  newer game are rejected with a message instead of crashing. Overwriting an older-format save keeps a
+  `.v<N>.bak` copy. Real saves from every release live in `tests/AVAMMB1.Tests/Fixtures/Saves` -
+  add one whenever the format changes.
 * Settings: `settings.json` (`GameSettings`), normalized on load (missing bindings restored).
 
 ## Build & release

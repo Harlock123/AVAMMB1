@@ -13,6 +13,10 @@
     <Using Include="Xunit" />
   </ItemGroup>
   <ItemGroup>
+    <!-- Real save files written by each released version (see SaveMigrationTests). -->
+    <None Include="Fixtures/**/*.json" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="../../src/AVAMMB1.Core/AVAMMB1.Core.csproj" />
   </ItemGroup>
 </Project>

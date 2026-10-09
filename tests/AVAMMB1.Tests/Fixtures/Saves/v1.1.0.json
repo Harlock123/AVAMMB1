@@ -1,0 +1,297 @@
+{
+  "version": 1,
+  "name": "Fixture",
+  "savedUtc": "2026-10-09T14:12:43.8133559Z",
+  "summary": "Brindlemoor (6,13) - Day 1",
+  "state": {
+    "party": [
+      {
+        "id": "a249206d055f466a9b07fc60eb58dc8b",
+        "name": "Brannoc",
+        "race": "human",
+        "class": "knight",
+        "sex": "Male",
+        "alignment": "Good",
+        "level": 1,
+        "experience": 300,
+        "stats": {
+          "Might": 17,
+          "Intellect": 9,
+          "Personality": 10,
+          "Endurance": 15,
+          "Speed": 12,
+          "Accuracy": 13,
+          "Luck": 10
+        },
+        "hp": 13,
+        "maxHp": 13,
+        "sp": 0,
+        "maxSp": 0,
+        "conditions": "None",
+        "food": 10,
+        "backpack": [],
+        "equipment": {
+          "Weapon": {
+            "itemId": "long_sword",
+            "charges": 0
+          },
+          "Armor": {
+            "itemId": "ring_mail",
+            "charges": 0
+          },
+          "Shield": {
+            "itemId": "small_shield",
+            "charges": 0
+          }
+        },
+        "isAlive": true,
+        "canAct": true,
+        "statusText": "Good",
+        "backpackFull": false
+      },
+      {
+        "id": "b53ab2b0802c480eab2ef2a98f526f7e",
+        "name": "Dorgun",
+        "race": "dwarf",
+        "class": "paladin",
+        "sex": "Male",
+        "alignment": "Good",
+        "level": 1,
+        "experience": 0,
+        "stats": {
+          "Might": 15,
+          "Intellect": 9,
+          "Personality": 14,
+          "Endurance": 17,
+          "Speed": 9,
+          "Accuracy": 12,
+          "Luck": 10
+        },
+        "hp": 12,
+        "maxHp": 12,
+        "sp": 0,
+        "maxSp": 0,
+        "conditions": "None",
+        "food": 10,
+        "backpack": [],
+        "equipment": {
+          "Weapon": {
+            "itemId": "long_sword",
+            "charges": 0
+          },
+          "Armor": {
+            "itemId": "leather_armor",
+            "charges": 0
+          },
+          "Shield": {
+            "itemId": "small_shield",
+            "charges": 0
+          }
+        },
+        "isAlive": true,
+        "canAct": true,
+        "statusText": "Good",
+        "backpackFull": false
+      },
+      {
+        "id": "342ca967e5534a58bd1033bad9b7008a",
+        "name": "Seris",
+        "race": "elf",
+        "class": "archer",
+        "sex": "Female",
+        "alignment": "Neutral",
+        "level": 1,
+        "experience": 0,
+        "stats": {
+          "Might": 11,
+          "Intellect": 15,
+          "Personality": 10,
+          "Endurance": 11,
+          "Speed": 14,
+          "Accuracy": 16,
+          "Luck": 11
+        },
+        "hp": 10,
+        "maxHp": 10,
+        "sp": 0,
+        "maxSp": 0,
+        "conditions": "None",
+        "food": 10,
+        "backpack": [
+          {
+            "itemId": "potion_healing",
+            "charges": 0
+          }
+        ],
+        "equipment": {
+          "Weapon": {
+            "itemId": "short_sword",
+            "charges": 0
+          },
+          "Missile": {
+            "itemId": "short_bow",
+            "charges": 0
+          },
+          "Armor": {
+            "itemId": "leather_armor",
+            "charges": 0
+          }
+        },
+        "isAlive": true,
+        "canAct": true,
+        "statusText": "Good",
+        "backpackFull": false
+      },
+      {
+        "id": "c236cffca3184839a6309f9e5d2ba11b",
+        "name": "Mirela",
+        "race": "human",
+        "class": "cleric",
+        "sex": "Female",
+        "alignment": "Good",
+        "level": 1,
+        "experience": 0,
+        "stats": {
+          "Might": 11,
+          "Intellect": 12,
+          "Personality": 17,
+          "Endurance": 13,
+          "Speed": 11,
+          "Accuracy": 11,
+          "Luck": 12
+        },
+        "hp": 3,
+        "maxHp": 9,
+        "sp": 5,
+        "maxSp": 5,
+        "conditions": "None",
+        "food": 10,
+        "backpack": [],
+        "equipment": {
+          "Weapon": {
+            "itemId": "mace",
+            "charges": 0
+          },
+          "Armor": {
+            "itemId": "leather_armor",
+            "charges": 0
+          },
+          "Shield": {
+            "itemId": "small_shield",
+            "charges": 0
+          }
+        },
+        "isAlive": true,
+        "canAct": true,
+        "statusText": "Good",
+        "backpackFull": false
+      },
+      {
+        "id": "cc821af855064fe3b79b5d9a27252d91",
+        "name": "Fenwick",
+        "race": "gnome",
+        "class": "robber",
+        "sex": "Male",
+        "alignment": "Neutral",
+        "level": 1,
+        "experience": 0,
+        "stats": {
+          "Might": 10,
+          "Intellect": 12,
+          "Personality": 10,
+          "Endurance": 12,
+          "Speed": 15,
+          "Accuracy": 14,
+          "Luck": 17
+        },
+        "hp": 8,
+        "maxHp": 8,
+        "sp": 0,
+        "maxSp": 0,
+        "conditions": "None",
+        "food": 10,
+        "backpack": [],
+        "equipment": {
+          "Weapon": {
+            "itemId": "short_sword",
+            "charges": 0
+          },
+          "Armor": {
+            "itemId": "leather_armor",
+            "charges": 0
+          },
+          "Missile": {
+            "itemId": "sling",
+            "charges": 0
+          }
+        },
+        "isAlive": true,
+        "canAct": true,
+        "statusText": "Good",
+        "backpackFull": false
+      },
+      {
+        "id": "bc3ab428cc5a439483b8f19f22506b75",
+        "name": "Ysolde",
+        "race": "elf",
+        "class": "sorcerer",
+        "sex": "Female",
+        "alignment": "Neutral",
+        "level": 1,
+        "experience": 0,
+        "stats": {
+          "Might": 8,
+          "Intellect": 18,
+          "Personality": 11,
+          "Endurance": 10,
+          "Speed": 13,
+          "Accuracy": 12,
+          "Luck": 10
+        },
+        "hp": 6,
+        "maxHp": 6,
+        "sp": 5,
+        "maxSp": 5,
+        "conditions": "None",
+        "food": 10,
+        "backpack": [],
+        "equipment": {
+          "Weapon": {
+            "itemId": "staff",
+            "charges": 0
+          },
+          "Armor": {
+            "itemId": "padded_armor",
+            "charges": 0
+          }
+        },
+        "isAlive": true,
+        "canAct": true,
+        "statusText": "Good",
+        "backpackFull": false
+      }
+    ],
+    "roster": [],
+    "gold": 700,
+    "gems": 0,
+    "mapId": "brindlemoor",
+    "x": 6,
+    "y": 13,
+    "facing": "West",
+    "flags": [
+      "pell_met"
+    ],
+    "completedEvents": [],
+    "explored": {
+      "brindlemoor": "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000011110000000000001111000000000000111100000000000001110000000"
+    },
+    "foundSecrets": [],
+    "steps": 2,
+    "lightSteps": 0,
+    "recallMap": "brindlemoor",
+    "recallX": 7,
+    "recallY": 14,
+    "won": false,
+    "day": 1
+  }
+}

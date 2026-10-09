@@ -53,9 +53,11 @@ public sealed class Character
     public int BaseStat(Stat stat) => Stats.TryGetValue(stat, out var v) ? v : 10;
 
     /// <summary>True unless dead or stoned.</summary>
+    [System.Text.Json.Serialization.JsonIgnore]
     public bool IsAlive => (Conditions & (Condition.Dead | Condition.Stoned)) == 0;
 
     /// <summary>True when the character can take actions this turn.</summary>
+    [System.Text.Json.Serialization.JsonIgnore]
     public bool CanAct => (Conditions & (Condition.Asleep | Condition.Paralyzed | Condition.Unconscious | Condition.Dead | Condition.Stoned)) == 0;
 
     /// <summary>Whether a given condition is present.</summary>
@@ -63,6 +65,7 @@ public sealed class Character
     public bool Has(Condition c) => (Conditions & c) != 0;
 
     /// <summary>The most severe condition, for display.</summary>
+    [System.Text.Json.Serialization.JsonIgnore]
     public string StatusText
     {
         get
@@ -84,5 +87,6 @@ public sealed class Character
     }
 
     /// <summary>Total number of items in the backpack (excluding equipment).</summary>
+    [System.Text.Json.Serialization.JsonIgnore]
     public bool BackpackFull => Backpack.Count >= BackpackSize;
 }

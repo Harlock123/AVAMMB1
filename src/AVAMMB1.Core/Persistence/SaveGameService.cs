@@ -1,4 +1,5 @@
 using System.Text.Json;
+using System.Text.Json.Nodes;
 using AVAMMB1.Core.Session;
 
 namespace AVAMMB1.Core.Persistence;
@@ -6,11 +7,16 @@ namespace AVAMMB1.Core.Persistence;
 /// <summary>On-disk save file wrapper.</summary>
 public sealed class SaveFile
 {
-    /// <summary>Current format version.</summary>
-    public const int CurrentVersion = 1;
+    /// <summary>
+    /// Current format version. History: 1 = AVAM&amp;M 1.0-1.4 (computed values were also written);
+    /// 2 = 1.5 onwards (computed values dropped, <see cref="GameVersion"/> recorded).
+    /// </summary>
+    public const int CurrentVersion = 2;
 
     /// <summary>Format version.</summary>
     public int Version { get; set; } = CurrentVersion;
+    /// <summary>Version of the game that wrote the file (informational).</summary>
+    public string GameVersion { get; set; } = typeof(SaveFile).Assembly.GetName().Version?.ToString(3) ?? "";
     /// <summary>User supplied or automatic name.</summary>
     public string Name { get; set; } = "";
     /// <summary>When the game was saved (UTC).</summary>
@@ -51,7 +57,7 @@ public sealed class SaveGameService
     /// <param name="file">Save file.</param>
     public static string Serialize(SaveFile file) => JsonSerializer.Serialize(file, GameJsonContext.Default.SaveFile);
 
-    /// <summary>Deserializes a save file from JSON.</summary>
+    /// <summary>Deserializes a save file from JSON, upgrading older formats first (see <see cref="SaveMigrations"/>).</summary>
     /// <param name="json">JSON text.</param>
     /// <exception cref="InvalidDataException">Thrown for corrupt or unsupported files.</exception>
     public static SaveFile Deserialize(string json)
@@ -59,17 +65,26 @@ public sealed class SaveGameService
         SaveFile? file;
         try
         {
-            file = JsonSerializer.Deserialize(json, GameJsonContext.Default.SaveFile);
+            var node = JsonNode.Parse(json, documentOptions: new JsonDocumentOptions { AllowTrailingCommas = true }) as JsonObject
+                ?? throw new InvalidDataException("The save file is corrupt.");
+            var version = SaveMigrations.VersionOf(node);
+            if (version > SaveFile.CurrentVersion)
+            {
+                var by = node["gameVersion"]?.GetValue<string>();
+                throw new InvalidDataException($"The save file is from a newer version of the game{(by is null ? "" : $" ({by})")}. Please update AVAM&M.");
+            }
+            SaveMigrations.Upgrade(node);
+            file = node.Deserialize(GameJsonContext.Default.SaveFile);
         }
         catch (JsonException ex)
         {
             throw new InvalidDataException("The save file is corrupt.", ex);
         }
-        if (file is null || file.Version > SaveFile.CurrentVersion)
+        catch (InvalidOperationException ex)
         {
-            throw new InvalidDataException("The save file is from a newer or unknown version.");
+            throw new InvalidDataException("The save file is corrupt.", ex);
         }
-        return file;
+        return file ?? throw new InvalidDataException("The save file is empty.");
     }
 
     /// <summary>Writes a save to a slot (atomically).</summary>
@@ -82,9 +97,32 @@ public sealed class SaveGameService
         ValidateSlot(slot);
         System.IO.Directory.CreateDirectory(Directory);
         var file = new SaveFile { Name = name, Summary = summary, SavedUtc = DateTime.UtcNow, State = state };
+        BackupIfOlderFormat(slot);
         var tmp = PathFor(slot) + ".tmp";
         File.WriteAllText(tmp, Serialize(file));
         File.Move(tmp, PathFor(slot), overwrite: true);
+    }
+
+    /// <summary>Before an older-format save is overwritten, keep a copy (e.g. <c>slot1.json.v1.bak</c>).</summary>
+    private void BackupIfOlderFormat(int slot)
+    {
+        var path = PathFor(slot);
+        if (!File.Exists(path))
+        {
+            return;
+        }
+        try
+        {
+            var version = JsonNode.Parse(File.ReadAllText(path)) is JsonObject o ? SaveMigrations.VersionOf(o) : SaveFile.CurrentVersion;
+            if (version < SaveFile.CurrentVersion && !File.Exists($"{path}.v{version}.bak"))
+            {
+                File.Copy(path, $"{path}.v{version}.bak");
+            }
+        }
+        catch (JsonException)
+        {
+            // An unreadable old file is simply replaced.
+        }
     }
 
     /// <summary>Loads the state in a slot.</summary>

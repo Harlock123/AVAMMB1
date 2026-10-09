@@ -50,6 +50,7 @@ public sealed class GameState
     public bool Won { get; set; }
 
     /// <summary>Purse plus the personal gold of every party member.</summary>
+    [System.Text.Json.Serialization.JsonIgnore]
     public int TotalGold => Gold + Party.Sum(c => c.Gold);
 
     /// <summary>
@@ -137,6 +138,7 @@ public sealed class GameState
     }
 
     /// <summary>Game day derived from the step counter.</summary>
+    [System.Text.Json.Serialization.JsonIgnore]
     public long Day => 1 + Steps / 500;
 
     /// <summary>
