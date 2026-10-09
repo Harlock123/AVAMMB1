@@ -5,7 +5,8 @@
 **Book One - Secrets of the Inner Vault.** A first-person, grid-based, turn-based party RPG in the
 spirit of the classic 1986 computer role-playing games, rebuilt from scratch with **Avalonia UI** and
 **.NET 10 (C#)**. Gather six adventurers, map the dark cellars under Brindlemoor, brave the Hollow
-Crypt and unseal the Inner Vault.
+Crypt and unseal the Inner Vault - or wander west into the Ashen Hills, where a stone wyrm stirs in
+the Thornwick Mines and something with four heads nests in a drowned temple.
 
 > **Disclaimer:** AVAM&M is an unofficial, non-commercial, clean-room fan re-implementation inspired only
 > by the *mechanics* of 1980s CRPGs. It is not affiliated with, endorsed by, or connected to any
@@ -13,10 +14,12 @@ Crypt and unseal the Inner Vault.
 > sounds. All trademarks belong to their owners. All game content is original; all art and audio is
 > openly licensed (CC0) - see [ASSETS_LICENSES.md](ASSETS_LICENSES.md).
 
-**[Download the latest release](https://github.com/Harlock123/AVAMMB1/releases/latest)** - Windows, Linux and macOS, x64 and ARM64.
+**[Download AVAM&M v1.3.0](https://github.com/Harlock123/AVAMMB1/releases/tag/v1.3.0)** - Windows, Linux and macOS, x64 and ARM64
+(always-current link: [latest release](https://github.com/Harlock123/AVAMMB1/releases/latest); direct file links are in
+[Download and install](#download-and-install)).
 
 Code identifiers, the solution and executables use the name **`AVAMMB1`** (`AVAMMB1.sln`,
-`AVAMMB1.exe`, `AVAMMB1-1.0.0-linux-x64.tar.gz`, ...), because `&` is unsafe in paths.
+`AVAMMB1.exe`, `AVAMMB1-1.3.0-linux-x64.tar.gz`, ...), because `&` is unsafe in paths.
 
 ## Features
 
@@ -176,28 +179,32 @@ Each target is published with `PublishSingleFile=true`, `SelfContained=true`,
 **Trimming is intentionally disabled**: Avalonia, the DI container and the toolkit rely on
 reflection that trimming can break; ReadyToRun is used instead for faster startup.
 
-### Build verification status (v1.0.0)
+### Build verification status (v1.3.0)
 
-Built on a Linux ARM64 (aarch64) machine with the .NET 10.0.400 SDK:
+Every release is built by [`.github/workflows/release.yml`](.github/workflows/release.yml) on
+GitHub's runners - each RID on its own operating system - after the test suite passes:
 
-| RID | Produced by `build-all.sh` | Actually executed |
+| RID | Built on | Actually executed |
 |---|---|---|
-| linux-arm64 | yes | **yes** - extracted archive passes `--smoke-test` (UI render, movement, OpenAL init); all README screenshots were captured with the published binary; the windowed game was launched on a Wayland/XWayland desktop |
-| linux-x64 | yes (cross-compiled) | no (no x86-64 environment available) |
-| win-x64, win-arm64 | yes (cross-compiled, PE32+ GUI executables) | no |
-| osx-x64, osx-arm64 | yes (cross-compiled, `.app` bundle; not code-signed when built on Linux) | no |
+| win-x64 | Windows runner | **yes** - `--smoke-test` passes in CI (UI render, movement, bundled OpenAL loads) |
+| linux-x64 | Ubuntu runner | **yes** - `--smoke-test` passes in CI |
+| osx-arm64 | macOS runner (ad-hoc signed `.app`) | **yes** - `--smoke-test` passes in CI, audio device opened |
+| linux-arm64 | Ubuntu runner (cross-compiled) | **yes** - the published release archive was downloaded and passes `--smoke-test` on an ARM64 Linux machine; the README screenshots are captured with this build |
+| win-arm64 | Windows runner (cross-compiled) | no |
+| osx-x64 | macOS runner (cross-compiled) | no |
 
-The GitHub Actions workflow builds every RID on GitHub's Windows, Ubuntu and macOS runners. For
-v1.0.0 it passed and smoke-tested `win-x64`, `linux-x64` and `osx-arm64` on those runners, each
-loading the bundled OpenAL library. `win-arm64`, `osx-x64` and the CI-built `linux-arm64` were built
-but not executed. The published `linux-arm64` release archive was downloaded and passes
-`--smoke-test` on the dev machine.
+The CI runners have no sound card, so on Windows and Linux the smoke test only checks that the
+bundled OpenAL Soft library loads; on macOS (CI) and Linux ARM64 it also opens the audio device and
+loads a test sound.
 
-Gameplay verification: 69 unit/integration tests pass, including a scripted playthrough that walks
-the party (with normal movement commands) through every map, fights all scripted battles and
-reaches the victory event, and a balance check of a lightly trained starting party against the
-first dungeon's boss. The UI flow title -> party creation -> town -> shop -> dungeon -> combat ->
-inventory -> automap -> spells -> settings is exercised headlessly by `--screenshot`.
+Gameplay verification: 101 unit and integration tests pass. They include scripted playthroughs that
+walk the party with normal movement commands from Brindlemoor to the victory event and through both
+Ashen Hills side quests, checks that every map is connected and every event reachable, and
+deterministic boss-balance checks (each boss beatable at its intended level, not trivial two levels
+below). The UI flow title -> party creation -> town -> shop -> dungeon -> combat -> inventory ->
+automap -> spells -> secret door -> Ashen Hills -> settings is exercised headlessly by `--screenshot`.
+These features have been verified through tests and captured frames; they have had little
+hands-on play testing so far.
 
 ## Project structure
 
@@ -230,9 +237,24 @@ More detail: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 
 ## Roadmap
 
-- Even more towns and dungeon levels (the original game had five towns and many more levels)
-- Per-character gold (currently shared by the party), more spells and special items
-- Proper Developer ID signing / notarization and an installer for Windows
+### Done
+
+- **v1.1.0** - Secret-door searching (Search action, hidden rooms with treasure); fixed audio on
+  machines without a system OpenAL.
+- **v1.2.0** - Smooth step/turn animation and animated monsters; monsters shown in the 3D view
+  (battles staged in the viewport, guardians visible in their squares); dungeon hazards: spinners,
+  magical darkness, anti-magic squares and teleport, pit, alarm and gas traps.
+- **v1.3.0** - More towns and dungeons: the Ashen Hills region, the towns of Thornwick and Duskmere,
+  the two-level Thornwick Mines and the Sunken Temple, with two side quests; new special items
+  (Heartfire Ring, Lotus Amulet, Wyrmguard Blade, Wyrmscale Mail, Moonsilver Blade, Evening Star);
+  boss balance tuning.
+
+### Planned
+
+- A fifth town and more dungeon levels (the original game had five towns and many more levels;
+  AVAM&M now has four towns and five dungeon levels plus the vault)
+- Per-character gold (currently shared by the party) and more spells
+- Proper Developer ID signing / notarization for macOS and an installer for Windows
 - Gamepad support, localization, UI scaling options
 
 ## License
