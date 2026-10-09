@@ -3,7 +3,7 @@
 All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses semantic versioning.
 
-## [Unreleased]
+## [1.3.0] - 2026-10-09
 
 ### Added
 - The Ashen Hills: a second wilderness region (autumn woods, marsh, a wyvern roost), reached by a new
