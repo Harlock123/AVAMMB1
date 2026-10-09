@@ -14,6 +14,7 @@
         <Button Content="Fight (F)" Command="{Binding FightCommand}" FontWeight="Bold" />
         <Button Content="{Binding RunText}" Command="{Binding FleeCommand}" />
         <Button Content="{Binding BribeLabel}" Command="{Binding BribeCommand}" IsEnabled="{Binding CanBribe}" />
+        <Button Content="{Binding AutoLabel}" Command="{Binding ToggleAutoCommand}" ToolTip.Tip="Fight automatically with weapons and healing; pauses if anyone is badly hurt" />
       </WrapPanel>
       <StackPanel IsVisible="{Binding IsAction}" Spacing="2">
         <UniformGrid Columns="3">
@@ -23,8 +24,13 @@
           <Button Content="Item (U)" Command="{Binding ShowItemsCommand}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" />
           <Button Content="Block (B)" Command="{Binding BlockCommand}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" />
           <Button Content="{Binding RunText}" Command="{Binding RunCommand}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" />
+          <Button Content="Repeat (E)" Command="{Binding RepeatCommand}" IsEnabled="{Binding CanRepeat}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"
+                  ToolTip.Tip="Everyone repeats their last action for the rest of this round" />
+          <Button Content="{Binding AutoLabel}" Command="{Binding ToggleAutoCommand}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"
+                  ToolTip.Tip="Fight automatically with weapons and healing; pauses if anyone is badly hurt" />
         </UniformGrid>
         <TextBlock Text="Click a monster or press 1-9 to target." Classes="dim" FontSize="12" />
+        <TextBlock Text="{Binding TargetInfo}" Foreground="#9fd0ff" FontSize="12" TextWrapping="Wrap" />
       </StackPanel>
       <StackPanel IsVisible="{Binding IsChoosing}" Spacing="2">
         <ItemsControl ItemsSource="{Binding Choices}">

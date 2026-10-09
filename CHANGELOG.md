@@ -5,6 +5,23 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+### Added
+- Quest journal (J, or from the game menu): the main quest and every side quest you have heard of,
+  with the story so far and the current goal; completed quests listed last. A Clues tab collects
+  the signs, inscriptions and warnings you have read. Quests are data (`quests.json`): stages are
+  reached by a story flag, an item carried or a map visited.
+- Automap notes: click any square on the automap (or press N for your own square) and write a note;
+  notes show as a small marker on the automap and minimap and are saved with the game.
+- Combat: *Repeat* (E / LT) replays every character's last action for the rest of the round,
+  choosing a new target if the old one fell; *Auto* (O / RT) fights with weapons and healing (spells
+  and potions) at a watchable pace and pauses if anyone drops below a quarter of their hit points.
+- Monster knowledge: once you have defeated a kind of monster, the combat screen shows the selected
+  target's level, HP, armor class, whether it is undead, and its immunities, resistances and
+  weaknesses.
+
+### Changed
+- The game screen's button bar has Journal and Note buttons; the message log is now headed "Log".
+
 ### Changed
 - Balance simulator plays more like a person: it opens each zone's chests, uses healing potions in
   battle and cure potions in the field, keeps a few potions in stock, equips better loot and sells

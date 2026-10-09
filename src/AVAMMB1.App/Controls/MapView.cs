@@ -1,5 +1,6 @@
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.Media;
 using AVAMMB1.App.ViewModels;
 using AVAMMB1.Core.Content;
@@ -19,6 +20,54 @@ public sealed class MapView : Control
     public static readonly StyledProperty<int> RadiusProperty =
         AvaloniaProperty.Register<MapView, int>(nameof(Radius));
 
+    /// <summary>Highlighted square (automap note editing), or null.</summary>
+    public static readonly StyledProperty<PixelPoint?> SelectedCellProperty =
+        AvaloniaProperty.Register<MapView, PixelPoint?>(nameof(SelectedCell));
+
+    /// <summary>Bumped by the owner when notes change, so the view repaints.</summary>
+    public static readonly StyledProperty<int> RevisionProperty =
+        AvaloniaProperty.Register<MapView, int>(nameof(Revision));
+
+    private static readonly IBrush NoteBrush = new SolidColorBrush(Color.Parse("#7fe0c0"));
+    private static readonly IPen SelectedPen = new Pen(Brushes.White, 2, new DashStyle([2, 2], 0));
+    private (int X0, int Y0, double Cell, double Ox, double Oy) _layout;
+
+    /// <summary>Raised when the player clicks a square (map coordinates).</summary>
+    public event EventHandler<PixelPoint>? CellClicked;
+
+    /// <summary>Selected square.</summary>
+    public PixelPoint? SelectedCell
+    {
+        get => GetValue(SelectedCellProperty);
+        set => SetValue(SelectedCellProperty, value);
+    }
+
+    /// <summary>Repaint counter.</summary>
+    public int Revision
+    {
+        get => GetValue(RevisionProperty);
+        set => SetValue(RevisionProperty, value);
+    }
+
+    /// <inheritdoc />
+    protected override void OnPointerPressed(PointerPressedEventArgs e)
+    {
+        base.OnPointerPressed(e);
+        var (x0, y0, cell, ox, oy) = _layout;
+        if (cell <= 0 || MapInfo is not { } info)
+        {
+            return;
+        }
+        var p = e.GetPosition(this);
+        var x = x0 + (int)Math.Floor((p.X - ox) / cell);
+        var y = y0 + (int)Math.Floor((p.Y - oy) / cell);
+        if (info.Session.CurrentMap.InBounds(x, y))
+        {
+            CellClicked?.Invoke(this, new PixelPoint(x, y));
+            e.Handled = true;
+        }
+    }
+
     private static readonly IBrush Background = new SolidColorBrush(Color.Parse("#0b0b12"));
     private static readonly IBrush Floor = new SolidColorBrush(Color.Parse("#2a2a3a"));
     private static readonly IBrush PartyBrush = new SolidColorBrush(Color.Parse("#ffd75e"));
@@ -31,7 +80,7 @@ public sealed class MapView : Control
 
     static MapView()
     {
-        AffectsRender<MapView>(MapInfoProperty, RadiusProperty);
+        AffectsRender<MapView>(MapInfoProperty, RadiusProperty, SelectedCellProperty, RevisionProperty);
     }
 
     /// <summary>Snapshot.</summary>
@@ -101,6 +150,7 @@ public sealed class MapView : Control
         var ox = (bounds.Width - cell * cols) / 2;
         var oy = (bounds.Height - cell * rows) / 2;
         Rect CellRect(int x, int y) => new(ox + (x - x0) * cell, oy + (y - y0) * cell, cell, cell);
+        _layout = (x0, y0, cell, ox, oy);
 
         for (var y = y0; y < y0 + rows; y++)
         {
@@ -155,6 +205,24 @@ public sealed class MapView : Control
             var r = CellRect(ev.X, ev.Y);
             var d = Math.Max(3, cell * 0.35);
             context.DrawEllipse(EventBrush(ev.Type), null, r.Center, d / 2, d / 2);
+        }
+
+        // Player notes: a small marker in the square's top-right corner.
+        for (var y = y0; y < y0 + rows; y++)
+        {
+            for (var x = x0; x < x0 + cols; x++)
+            {
+                if (map.InBounds(x, y) && state.NoteAt(map.Id, x, y) is not null)
+                {
+                    var r = CellRect(x, y);
+                    var m = Math.Max(3, cell * 0.3);
+                    context.FillRectangle(NoteBrush, new Rect(r.Right - m - 1, r.Top + 1, m, m));
+                }
+            }
+        }
+        if (SelectedCell is { } sel && sel.X >= x0 && sel.Y >= y0 && sel.X < x0 + cols && sel.Y < y0 + rows)
+        {
+            context.DrawRectangle(SelectedPen, CellRect(sel.X, sel.Y).Deflate(1));
         }
 
         // Party arrow.

@@ -106,6 +106,22 @@ their maximum spell level automatically (spell level = (caster level + 1) / 2, u
 spells marked `"tome": true`, which are learned only by reading a `tome` item. A `cure` spell whose
 `conditions` include `stoned` can target a petrified ally.
 
+## quests.json (optional)
+
+The quest journal. A quest appears once its **first** stage is reached; each stage is reached by
+exactly one of a story `flag`, an `item` carried by anyone in the party, or a map `visited`. The
+journal shows every reached stage (the last one is the current goal) and `doneText` once `doneFlag`
+is set. Nothing extra is stored in saves - the journal is rebuilt from flags, items and the automap.
+
+```json
+{ "id": "heartstone", "title": "The Heartstone of Thornwick", "main": false,
+  "doneFlag": "heartstone_returned", "doneText": "Foreman Halvard has the Heartstone back...",
+  "stages": [
+    { "flag": "halvard_met", "text": "A wyrm took the Heartstone. Bring it back." },
+    { "item": "heartstone", "text": "Return the Heartstone to Foreman Halvard." },
+    { "visited": "mines2", "text": "..." } ] }
+```
+
 ## shops.json
 
 ```json

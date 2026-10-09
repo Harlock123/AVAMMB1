@@ -868,6 +868,10 @@ public sealed class GameSession
         {
             return (CombatOutcome.Ongoing, log);
         }
+        foreach (var m in combat.Monsters.Where(m => m.IsDead))
+        {
+            State.KnownMonsters.Add(m.Def.Id);
+        }
         if (combat.Outcome == CombatOutcome.Victory && combat.Rewards is { } r)
         {
             if (r.Gold > 0)

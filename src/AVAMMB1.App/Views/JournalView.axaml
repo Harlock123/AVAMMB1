@@ -1,0 +1,62 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:AVAMMB1.App.ViewModels"
+             xmlns:s="using:AVAMMB1.Core.Session"
+             x:Class="AVAMMB1.App.Views.JournalView" x:DataType="vm:JournalViewModel">
+  <Border Classes="dialog" Width="900" Height="600">
+    <DockPanel>
+      <Grid DockPanel.Dock="Top" ColumnDefinitions="*,Auto" Margin="0,0,0,6">
+        <TextBlock Classes="title" Text="Journal" />
+        <Button Grid.Column="1" Content="Close (J)" Command="{Binding CloseCommand}" />
+      </Grid>
+      <TabControl>
+        <TabItem Header="Quests">
+          <ScrollViewer>
+            <StackPanel Spacing="12" Margin="0,6">
+              <TextBlock IsVisible="{Binding NoQuests}" Classes="dim" TextWrapping="Wrap"
+                         Text="No quests yet. Talk to the people of Brindlemoor - Archivist Pell is said to be looking for adventurers." />
+              <ItemsControl ItemsSource="{Binding Quests}">
+                <ItemsControl.ItemTemplate>
+                  <DataTemplate x:DataType="vm:JournalQuest">
+                    <StackPanel Spacing="3" Margin="0,0,0,12">
+                      <TextBlock Text="{Binding Heading}" Classes="h2" />
+                      <ItemsControl ItemsSource="{Binding Earlier}" IsVisible="{Binding HasEarlier}">
+                        <ItemsControl.ItemTemplate>
+                          <DataTemplate x:DataType="x:String">
+                            <TextBlock Text="{Binding}" Classes="dim" TextWrapping="Wrap" Margin="12,0,0,2" />
+                          </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                      </ItemsControl>
+                      <TextBlock Text="{Binding Current}" TextWrapping="Wrap" Margin="12,0,0,0" />
+                    </StackPanel>
+                  </DataTemplate>
+                </ItemsControl.ItemTemplate>
+              </ItemsControl>
+            </StackPanel>
+          </ScrollViewer>
+        </TabItem>
+        <TabItem Header="Clues">
+          <ScrollViewer>
+            <StackPanel Spacing="10" Margin="0,6">
+              <TextBlock IsVisible="{Binding NoDiscoveries}" Classes="dim" Text="Signs, inscriptions and warnings you read are collected here." />
+              <ItemsControl ItemsSource="{Binding Discoveries}">
+                <ItemsControl.ItemTemplate>
+                  <DataTemplate x:DataType="s:Discovery">
+                    <StackPanel Margin="0,0,0,10">
+                      <TextBlock>
+                        <Run Text="{Binding Name}" FontWeight="Bold" />
+                        <Run Text=" - " />
+                        <Run Text="{Binding Place}" />
+                      </TextBlock>
+                      <TextBlock Text="{Binding Text}" TextWrapping="Wrap" Margin="12,2,0,0" />
+                    </StackPanel>
+                  </DataTemplate>
+                </ItemsControl.ItemTemplate>
+              </ItemsControl>
+            </StackPanel>
+          </ScrollViewer>
+        </TabItem>
+      </TabControl>
+    </DockPanel>
+  </Border>
+</UserControl>

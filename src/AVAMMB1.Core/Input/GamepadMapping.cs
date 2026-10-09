@@ -63,6 +63,10 @@ public enum CombatCommand
     PreviousTarget,
     /// <summary>Select the next target.</summary>
     NextTarget,
+    /// <summary>Repeat each character's last action for the rest of the round.</summary>
+    Repeat,
+    /// <summary>Start or stop auto-fight.</summary>
+    AutoFight,
 }
 
 /// <summary>Menu navigation commands.</summary>
@@ -131,6 +135,8 @@ public static class GamepadMapping
             GamepadButton.Back => CombatCommand.Run,
             GamepadButton.LeftShoulder or GamepadButton.Left => CombatCommand.PreviousTarget,
             GamepadButton.RightShoulder or GamepadButton.Right => CombatCommand.NextTarget,
+            GamepadButton.LeftTrigger => CombatCommand.Repeat,
+            GamepadButton.RightTrigger => CombatCommand.AutoFight,
             _ => null,
         }),
         _ => new GamepadCommand(Menu: button switch

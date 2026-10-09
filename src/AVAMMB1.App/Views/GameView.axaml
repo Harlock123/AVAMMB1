@@ -40,11 +40,11 @@
             <Button Grid.Row="1" Grid.Column="1" Classes="nav" Content="&#x2193;" ToolTip.Tip="Back (Down / S)" Command="{Binding BackCommand}" />
             <Button Grid.Row="1" Grid.Column="2" Classes="nav" Content="&#x2192;" ToolTip.Tip="Strafe right (E)" Command="{Binding StrafeRightCommand}" />
           </Grid>
-          <UniformGrid Columns="4">
+          <UniformGrid Columns="5">
             <UniformGrid.Styles>
               <Style Selector="Button">
-                <Setter Property="Padding" Value="2,5" />
-                <Setter Property="FontSize" Value="12.5" />
+                <Setter Property="Padding" Value="0,5" />
+                <Setter Property="FontSize" Value="11.5" />
               </Style>
             </UniformGrid.Styles>
             <Button Content="Use (Spc)" Command="{Binding InteractCommand}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" />
@@ -53,10 +53,12 @@
             <Button Content="Cast (K)" Command="{Binding CastCommand}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" />
             <Button Content="Party (I)" Command="{Binding CharactersCommand}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" />
             <Button Content="Map (M)" Command="{Binding AutomapCommand}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" />
+            <Button Content="Journal (J)" Command="{Binding JournalCommand}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" ToolTip.Tip="Quests and clues" />
+            <Button Content="Note (N)" Command="{Binding NoteCommand}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" ToolTip.Tip="Write a note on this square of the automap" />
             <Button Content="Menu (Esc)" Command="{Binding MenuCommand}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" />
             <Button Content="Save (F5)" Command="{Binding QuickSaveCommand}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" />
           </UniformGrid>
-          <TextBlock Classes="h2" Text="Journal" Margin="0,4,0,0" />
+          <TextBlock Classes="h2" Text="Log" Margin="0,4,0,0" />
         </StackPanel>
         <ScrollViewer x:Name="LogScroller" Background="#0b0a10">
           <ItemsControl ItemsSource="{Binding Messages}" Margin="6,4">

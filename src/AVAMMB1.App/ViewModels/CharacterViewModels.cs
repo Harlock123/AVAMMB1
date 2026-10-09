@@ -374,22 +374,102 @@ public sealed partial class SpellCastViewModel : ViewModelBase
 
 /// <summary>Full-screen automap.</summary>
 /// <param name="game">Owner.</param>
-public sealed partial class AutomapViewModel(GameViewModel game) : ViewModelBase
+public sealed partial class AutomapViewModel : ViewModelBase
 {
+    private readonly GameViewModel _game;
+
+    /// <summary>Creates the screen.</summary>
+    /// <param name="game">Owner.</param>
+    /// <param name="editNote">Whether to start with the note box focused (the Note command).</param>
+    public AutomapViewModel(GameViewModel game, bool editNote)
+    {
+        _game = game;
+        EditNote = editNote;
+        Select(new Avalonia.PixelPoint(State.X, State.Y));
+    }
+
+    private GameState State => _game.Services.Session.State;
+    private string MapId => _game.Services.Session.CurrentMap.Id;
+
+    /// <summary>Whether the view should focus the note box when it opens.</summary>
+    public bool EditNote { get; }
     /// <summary>Map snapshot.</summary>
-    public MapSnapshot? MapInfo => game.MapInfo;
+    public MapSnapshot? MapInfo => _game.MapInfo;
     /// <summary>Map name.</summary>
-    public string Title => game.LocationText;
+    public string Title => _game.LocationText;
     /// <summary>Position.</summary>
-    public string Position => game.CompassText;
+    public string Position => _game.CompassText;
+
+    /// <summary>Square whose note is being edited.</summary>
+    [ObservableProperty]
+    private Avalonia.PixelPoint? _selectedCell;
+
+    /// <summary>Note text for the selected square.</summary>
+    [ObservableProperty]
+    private string _noteText = "";
+
+    /// <summary>Repaint counter for the map.</summary>
+    [ObservableProperty]
+    private int _revision;
+
+    /// <summary>Label above the note box.</summary>
+    public string NoteLabel => SelectedCell is { } c
+        ? (c.X == State.X && c.Y == State.Y ? $"Note for your square ({c.X},{c.Y})" : $"Note for square ({c.X},{c.Y})")
+        : "Click a square to write a note";
+
+    /// <summary>All notes on this map.</summary>
+    public ObservableCollection<string> Notes { get; } = new();
+
+    /// <summary>Selects a square (clicked on the map).</summary>
+    /// <param name="cell">Square.</param>
+    public void Select(Avalonia.PixelPoint cell)
+    {
+        SelectedCell = cell;
+        NoteText = State.NoteAt(MapId, cell.X, cell.Y) ?? "";
+        OnPropertyChanged(nameof(NoteLabel));
+        RefreshNotes();
+    }
+
+    private void RefreshNotes()
+    {
+        Notes.Clear();
+        var prefix = MapId + ":";
+        foreach (var (key, text) in State.MapNotes.Where(n => n.Key.StartsWith(prefix, StringComparison.Ordinal)).OrderBy(n => n.Key, StringComparer.Ordinal))
+        {
+            var xy = key[prefix.Length..].Replace(':', ',');
+            Notes.Add($"({xy})  {text}");
+        }
+        Revision++;
+    }
 
     [RelayCommand]
-    private void Close() => game.CloseOverlay();
+    private void SaveNote()
+    {
+        if (SelectedCell is { } c)
+        {
+            State.SetNote(MapId, c.X, c.Y, NoteText);
+            RefreshNotes();
+        }
+    }
+
+    [RelayCommand]
+    private void DeleteNote()
+    {
+        if (SelectedCell is { } c)
+        {
+            State.SetNote(MapId, c.X, c.Y, null);
+            NoteText = "";
+            RefreshNotes();
+        }
+    }
+
+    [RelayCommand]
+    private void Close() => _game.CloseOverlay();
 
     /// <inheritdoc />
     public override bool HandleKey(Key key)
     {
-        if (key is Key.M or Key.Enter)
+        if (key is Key.M or Key.N or Key.Enter)
         {
             Close();
             return true;
@@ -398,12 +478,71 @@ public sealed partial class AutomapViewModel(GameViewModel game) : ViewModelBase
     }
 }
 
+/// <summary>The quest journal: quests the party knows about, and the signs and clues it has read.</summary>
+public sealed partial class JournalViewModel : ViewModelBase
+{
+    private readonly GameViewModel _game;
+
+    /// <summary>Creates the screen.</summary>
+    /// <param name="game">Owner.</param>
+    public JournalViewModel(GameViewModel game)
+    {
+        _game = game;
+        var state = game.Services.Session.State;
+        var content = game.Services.Content;
+        Quests = QuestJournal.Quests(state, content).Select(q => new JournalQuest(q)).ToList();
+        Discoveries = QuestJournal.Discoveries(state, content);
+    }
+
+    /// <summary>Known quests.</summary>
+    public IReadOnlyList<JournalQuest> Quests { get; }
+    /// <summary>Clues read.</summary>
+    public IReadOnlyList<Discovery> Discoveries { get; }
+    /// <summary>Whether there are no quests yet.</summary>
+    public bool NoQuests => Quests.Count == 0;
+    /// <summary>Whether there are no clues yet.</summary>
+    public bool NoDiscoveries => Discoveries.Count == 0;
+
+    [RelayCommand]
+    private void Close() => _game.CloseOverlay();
+
+    /// <inheritdoc />
+    public override bool HandleKey(Key key)
+    {
+        if (key is Key.J or Key.Enter)
+        {
+            Close();
+            return true;
+        }
+        return false;
+    }
+}
+
+/// <summary>A quest row in the journal.</summary>
+/// <param name="Quest">Quest.</param>
+public sealed record JournalQuest(QuestEntry Quest)
+{
+    /// <summary>Title with status.</summary>
+    public string Heading => Quest.Title + (Quest.Done ? "  (complete)" : Quest.Main ? "  (main quest)" : "");
+    /// <summary>The current goal.</summary>
+    public string Current => Quest.Entries[^1];
+    /// <summary>Earlier entries, oldest first.</summary>
+    public IReadOnlyList<string> Earlier => Quest.Entries.Take(Quest.Entries.Count - 1).ToList();
+    /// <summary>Whether there is history to show.</summary>
+    public bool HasEarlier => Quest.Entries.Count > 1;
+    /// <summary>Whether the quest is complete.</summary>
+    public bool Done => Quest.Done;
+}
+
 /// <summary>In-game menu.</summary>
 /// <param name="game">Owner.</param>
 public sealed partial class GameMenuViewModel(GameViewModel game) : ViewModelBase
 {
     [RelayCommand]
     private void Resume() => game.CloseOverlay();
+
+    [RelayCommand]
+    private void Journal() => game.Overlay = new JournalViewModel(game);
 
     [RelayCommand]
     private void Save() => game.Overlay = new SaveLoadViewModel(game.Main, saving: true, onClose: () => game.Overlay = this);

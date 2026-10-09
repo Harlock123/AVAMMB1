@@ -1,6 +1,7 @@
 using System.Collections.ObjectModel;
 using Avalonia.Input;
 using Avalonia.Media.Imaging;
+using AVAMMB1.Core.Characters;
 using AVAMMB1.Core.Combat;
 using AVAMMB1.Core.Content;
 using AVAMMB1.Core.Rules;
@@ -100,6 +101,8 @@ public sealed partial class CombatViewModel : ViewModelBase
     private readonly HashSet<MonsterInstance> _acted = new();
     private readonly HashSet<MonsterInstance> _justDied = new();
     private readonly Dictionary<object, int> _hpSnapshot = new();
+    private readonly Dictionary<Character, CombatAction> _lastActions = new();
+    private Avalonia.Threading.DispatcherTimer? _autoTimer;
     private CombatAction? _pending;
     private bool AnimationsOn => _game.Services.Settings.AnimateMonsters;
 
@@ -229,6 +232,8 @@ public sealed partial class CombatViewModel : ViewModelBase
         OnPropertyChanged(nameof(CanMelee));
         OnPropertyChanged(nameof(CanShoot));
         OnPropertyChanged(nameof(CanCast));
+        OnPropertyChanged(nameof(CanRepeat));
+        OnPropertyChanged(nameof(TargetInfo));
     }
 
     private static void Sync(ObservableCollection<MonsterViewModel> target, IEnumerable<MonsterViewModel> wanted)
@@ -360,7 +365,132 @@ public sealed partial class CombatViewModel : ViewModelBase
                 return;
             }
         }
+        if (_combat.ActiveCharacter is { } actor && action.Kind != CombatActionKind.Run)
+        {
+            _lastActions[actor] = action;
+        }
         AfterEngine(_combat.Act(action));
+    }
+
+    /// <summary>Whether auto-fight is running.</summary>
+    [ObservableProperty]
+    private bool _isAutoFighting;
+
+    /// <summary>Label of the auto-fight button.</summary>
+    public string AutoLabel => IsAutoFighting ? "Stop auto (O)" : "Auto (O)";
+
+    partial void OnIsAutoFightingChanged(bool value) => OnPropertyChanged(nameof(AutoLabel));
+
+    /// <summary>Whether any character has an action to repeat.</summary>
+    public bool CanRepeat => _lastActions.Count > 0;
+
+    /// <summary>What the party knows about the selected target.</summary>
+    public string TargetInfo =>
+        Monsters.FirstOrDefault(c => c.Index == TargetIndex && c.Monster.IsActive) is { } t
+            ? MonsterLore.Describe(t.Monster, _game.Services.Session.State.KnownMonsters.Contains(t.Monster.Def.Id))
+            : "";
+
+    /// <summary>
+    /// Repeats each character's last action until the round ends, someone without a previous
+    /// action is up, or the battle is over. Dead targets are replaced by the current target.
+    /// </summary>
+    [RelayCommand]
+    private void Repeat()
+    {
+        if (Phase != CombatPhase.Action)
+        {
+            return;
+        }
+        var round = _combat.Round;
+        var guard = 0;
+        while (Phase == CombatPhase.Action && _combat.Round == round && guard++ < 12 &&
+               _combat.ActiveCharacter is { } c && _lastActions.TryGetValue(c, out var last))
+        {
+            Act(Usable(c, last));
+        }
+    }
+
+    /// <summary>The remembered action if it still makes sense, otherwise the auto-fight choice.</summary>
+    private CombatAction Usable(Character c, CombatAction last)
+    {
+        var session = _game.Services.Session;
+        var stale = last.Kind switch
+        {
+            CombatActionKind.Cast => last.SpellId is null || session.Spells.CanCast(c, session.Content.Spell(last.SpellId), inCombat: true) is not null,
+            CombatActionKind.UseItem => true, // the item may be used up
+            CombatActionKind.Attack => !_combat.IsInFrontRank(c),
+            CombatActionKind.Shoot => !session.Rules.HasMissileWeapon(c),
+            _ => false,
+        };
+        if (stale)
+        {
+            return AutoTactics.Choose(session.Rules, session.Spells, _combat, c, session.State.Party, offensiveSpells: false);
+        }
+        if (last.Target >= 0 && (last.Target >= _combat.Monsters.Count || !_combat.Monsters[last.Target].IsActive))
+        {
+            return last with { Target = TargetIndex };
+        }
+        return last;
+    }
+
+    /// <summary>Starts or stops auto-fight (weapons and healing; attack spells are left to the player).</summary>
+    [RelayCommand]
+    private void ToggleAuto()
+    {
+        if (IsAutoFighting)
+        {
+            StopAuto(null);
+            return;
+        }
+        if (Phase is not (CombatPhase.Action or CombatPhase.Opening))
+        {
+            return;
+        }
+        IsAutoFighting = true;
+        _autoTimer = new Avalonia.Threading.DispatcherTimer { Interval = TimeSpan.FromMilliseconds(AnimationsOn ? 320 : 120) };
+        _autoTimer.Tick += (_, _) => AutoStep();
+        _autoTimer.Start();
+        AutoStep();
+    }
+
+    private void StopAuto(string? why)
+    {
+        _autoTimer?.Stop();
+        _autoTimer = null;
+        IsAutoFighting = false;
+        if (why is not null && Phase == CombatPhase.Action)
+        {
+            Prompt = why;
+        }
+    }
+
+    private void AutoStep()
+    {
+        if (!IsAutoFighting)
+        {
+            return;
+        }
+        if (Phase == CombatPhase.Opening)
+        {
+            Fight();
+            return;
+        }
+        if (Phase != CombatPhase.Action || _combat.ActiveCharacter is not { } c)
+        {
+            StopAuto(null);
+            return;
+        }
+        var session = _game.Services.Session;
+        if (session.State.Party.FirstOrDefault(p => p.IsAlive && p.Hp * 4 < p.MaxHp) is { } hurt)
+        {
+            StopAuto($"Auto-fight paused: {hurt.Name} is badly hurt. {c.Name}'s turn.");
+            return;
+        }
+        Act(AutoTactics.Choose(session.Rules, session.Spells, _combat, c, session.State.Party, offensiveSpells: false));
+        if (Phase != CombatPhase.Action)
+        {
+            StopAuto(null);
+        }
     }
 
     [RelayCommand]
@@ -447,7 +577,7 @@ public sealed partial class CombatViewModel : ViewModelBase
         }
         var action = _pending;
         _pending = null;
-        AfterEngine(_combat.Act(action));
+        Act(action);
     }
 
     /// <summary>Picks an ally target.</summary>
@@ -461,7 +591,7 @@ public sealed partial class CombatViewModel : ViewModelBase
         }
         var action = _pending with { Ally = member.Index };
         _pending = null;
-        AfterEngine(_combat.Act(action));
+        Act(action);
         if (Phase == CombatPhase.Ally)
         {
             Phase = CombatPhase.Action;
@@ -512,6 +642,12 @@ public sealed partial class CombatViewModel : ViewModelBase
             case AVAMMB1.Core.Input.CombatCommand.Run when Phase == CombatPhase.Action:
                 Run();
                 break;
+            case AVAMMB1.Core.Input.CombatCommand.Repeat:
+                Repeat();
+                break;
+            case AVAMMB1.Core.Input.CombatCommand.AutoFight:
+                ToggleAuto();
+                break;
             case AVAMMB1.Core.Input.CombatCommand.PreviousTarget:
             case AVAMMB1.Core.Input.CombatCommand.NextTarget:
                 {
@@ -553,9 +689,12 @@ public sealed partial class CombatViewModel : ViewModelBase
             case CombatPhase.Opening:
                 if (key is Key.F or Key.Enter or Key.Space) { Fight(); return true; }
                 if (key == Key.R) { Flee(); return true; }
+                if (key == Key.O) { ToggleAuto(); return true; }
                 if (key == Key.B && CanBribe) { Bribe(); return true; }
                 return key == Key.Escape;
             case CombatPhase.Action:
+                if (key == Key.E) { Repeat(); return true; }
+                if (key == Key.O) { ToggleAuto(); return true; }
                 if (key == Key.A && CanMelee) { Attack(); return true; }
                 if (key == Key.S && CanShoot) { Shoot(); return true; }
                 if (key == Key.C && CanCast) { ShowSpells(); return true; }

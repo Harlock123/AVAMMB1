@@ -19,6 +19,9 @@ public sealed class ContentDatabase
     public IReadOnlyDictionary<string, MonsterDef> Monsters { get; private init; } = new Dictionary<string, MonsterDef>();
     /// <summary>Spells by id.</summary>
     public IReadOnlyDictionary<string, SpellDef> Spells { get; private init; } = new Dictionary<string, SpellDef>();
+    /// <summary>Journal quests in display order (optional <c>quests.json</c>).</summary>
+    public IReadOnlyList<QuestDef> Quests { get; private init; } = [];
+
     /// <summary>Shops by id.</summary>
     public IReadOnlyDictionary<string, ShopDef> Shops { get; private init; } = new Dictionary<string, ShopDef>();
     /// <summary>Global configuration.</summary>
@@ -65,6 +68,7 @@ public sealed class ContentDatabase
             Spells = Index(Read(source, "spells.json", ctx.ListSpellDef), s => s.Id, "spell"),
             Shops = Index(Read(source, "shops.json", ctx.ListShopDef), s => s.Id, "shop"),
             Config = Read(source, "game.json", ctx.GameConfigDef),
+            Quests = source.List().Contains("quests.json") ? Read(source, "quests.json", ctx.ListQuestDef) : [],
         };
         foreach (var path in source.List().Where(p => p.StartsWith("Maps/", StringComparison.Ordinal)).OrderBy(p => p, StringComparer.Ordinal))
         {
@@ -138,6 +142,17 @@ public sealed class ContentDatabase
                 Check(Items.ContainsKey(d.Item), $"monster {m.Id}: unknown drop {d.Item}");
             }
         }
+        foreach (var q in Quests)
+        {
+            Check(q.Stages.Count > 0, $"quest {q.Id}: no stages");
+            foreach (var st in q.Stages)
+            {
+                Check((st.Flag is null ? 0 : 1) + (st.Item is null ? 0 : 1) + (st.Visited is null ? 0 : 1) == 1, $"quest {q.Id}: each stage needs exactly one of flag, item, visited");
+                Check(st.Item is null || Items.ContainsKey(st.Item), $"quest {q.Id}: unknown item {st.Item}");
+                Check(st.Visited is null || _maps.ContainsKey(st.Visited), $"quest {q.Id}: unknown map {st.Visited}");
+            }
+        }
+        Check(Quests.Select(q => q.Id).Distinct().Count() == Quests.Count, "duplicate quest id");
         foreach (var s in Shops.Values)
         {
             foreach (var i in s.Stock)

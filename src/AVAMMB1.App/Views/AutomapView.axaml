@@ -3,24 +3,49 @@
              xmlns:vm="using:AVAMMB1.App.ViewModels"
              xmlns:c="using:AVAMMB1.App.Controls"
              x:Class="AVAMMB1.App.Views.AutomapView" x:DataType="vm:AutomapViewModel">
-  <Border Classes="dialog" Width="760" Height="560">
+  <Border Classes="dialog" Width="1000" Height="600">
     <DockPanel>
       <Grid DockPanel.Dock="Top" ColumnDefinitions="*,Auto" Margin="0,0,0,6">
         <TextBlock Classes="title" Text="{Binding Title}" />
         <TextBlock Grid.Column="1" Text="{Binding Position}" VerticalAlignment="Center" />
       </Grid>
-      <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" Spacing="14" Margin="0,6,0,0">
+      <WrapPanel DockPanel.Dock="Bottom" Margin="0,6,0,0">
+        <WrapPanel.Styles>
+          <Style Selector="TextBlock"><Setter Property="Margin" Value="0,0,14,0" /><Setter Property="VerticalAlignment" Value="Center" /></Style>
+        </WrapPanel.Styles>
         <TextBlock Text="&#x25CF; services" Foreground="#5ec8ff" />
         <TextBlock Text="&#x25CF; passages" Foreground="#c070ff" />
         <TextBlock Text="&#x25CF; treasure" Foreground="#ffd75e" />
         <TextBlock Text="&#x25CF; fountain" Foreground="#40a0ff" />
         <TextBlock Text="&#x25CF; quest" Foreground="#ff70b0" />
+        <TextBlock Text="&#x25A0; note" Foreground="#7fe0c0" />
         <TextBlock Text="&#x2501; door" Foreground="#e09040" />
         <TextBlock Text="&#x2501; locked" Foreground="#ff4040" />
         <TextBlock Text="&#x2501; secret" Foreground="#c070ff" />
         <Button Content="Close (M)" Command="{Binding CloseCommand}" />
-      </StackPanel>
-      <c:MapView MapInfo="{Binding MapInfo}" Radius="0" />
+      </WrapPanel>
+      <DockPanel DockPanel.Dock="Right" Width="270" Margin="10,0,0,0">
+        <StackPanel DockPanel.Dock="Top" Spacing="4">
+          <TextBlock Classes="h2" Text="Notes" />
+          <TextBlock Text="{Binding NoteLabel}" Classes="dim" FontSize="12" TextWrapping="Wrap" />
+          <TextBox x:Name="NoteBox" Text="{Binding NoteText}" AcceptsReturn="False" MaxLength="200" TextWrapping="Wrap" Height="70" Watermark="e.g. Locked door - need a key" />
+          <StackPanel Orientation="Horizontal" Spacing="6">
+            <Button Content="Save note" Command="{Binding SaveNoteCommand}" />
+            <Button Content="Delete" Command="{Binding DeleteNoteCommand}" />
+          </StackPanel>
+          <TextBlock Text="Click any square on the map to note it." Classes="dim" FontSize="12" TextWrapping="Wrap" />
+        </StackPanel>
+        <ScrollViewer Margin="0,8,0,0">
+          <ItemsControl ItemsSource="{Binding Notes}">
+            <ItemsControl.ItemTemplate>
+              <DataTemplate x:DataType="x:String">
+                <TextBlock Text="{Binding}" TextWrapping="Wrap" FontSize="12" Margin="0,2" />
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
+        </ScrollViewer>
+      </DockPanel>
+      <c:MapView x:Name="Map" MapInfo="{Binding MapInfo}" Radius="0" SelectedCell="{Binding SelectedCell}" Revision="{Binding Revision}" />
     </DockPanel>
   </Border>
 </UserControl>

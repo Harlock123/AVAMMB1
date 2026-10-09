@@ -318,3 +318,33 @@ public sealed class PremadeCharacterDef
     /// <summary>Fixed attributes.</summary>
     public Dictionary<Stat, int> Stats { get; set; } = new();
 }
+
+/// <summary>A quest shown in the journal. Stages are reached by story flags, items held or maps visited.</summary>
+public sealed class QuestDef
+{
+    /// <summary>Unique identifier.</summary>
+    public string Id { get; set; } = "";
+    /// <summary>Journal title.</summary>
+    public string Title { get; set; } = "";
+    /// <summary>Whether this is the main quest (listed first).</summary>
+    public bool Main { get; set; }
+    /// <summary>Stages in story order; the quest appears once any stage is reached.</summary>
+    public List<QuestStageDef> Stages { get; set; } = new();
+    /// <summary>Flag that marks the quest complete.</summary>
+    public string? DoneFlag { get; set; }
+    /// <summary>Journal text once complete.</summary>
+    public string DoneText { get; set; } = "";
+}
+
+/// <summary>One journal entry of a quest. Set exactly one of <see cref="Flag"/>, <see cref="Item"/> or <see cref="Visited"/>.</summary>
+public sealed class QuestStageDef
+{
+    /// <summary>Reached when this story flag is set.</summary>
+    public string? Flag { get; set; }
+    /// <summary>Reached while a party member carries this item.</summary>
+    public string? Item { get; set; }
+    /// <summary>Reached once the party has set foot on this map.</summary>
+    public string? Visited { get; set; }
+    /// <summary>Journal text.</summary>
+    public string Text { get; set; } = "";
+}

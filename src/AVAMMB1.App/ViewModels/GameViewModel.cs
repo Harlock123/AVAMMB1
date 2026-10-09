@@ -319,7 +319,11 @@ public sealed partial class GameViewModel : ViewModelBase
     [RelayCommand]
     private void OpenMember(PartyMemberViewModel member) => Overlay = new CharacterSheetViewModel(this, member.Index);
 
-    [RelayCommand] private void Automap() => Overlay = new AutomapViewModel(this);
+    [RelayCommand] private void Automap() => Overlay = new AutomapViewModel(this, editNote: false);
+
+    [RelayCommand] private void Journal() => Overlay = new JournalViewModel(this);
+
+    [RelayCommand] private void Note() => Overlay = new AutomapViewModel(this, editNote: true);
 
     [RelayCommand] private void Menu() => Overlay = new GameMenuViewModel(this);
 
@@ -407,6 +411,8 @@ public sealed partial class GameViewModel : ViewModelBase
             case InputAction.QuickSave: QuickSave(); return true;
             case InputAction.QuickLoad: QuickLoad(); return true;
             case InputAction.Menu: Menu(); return true;
+            case InputAction.Journal: Journal(); return true;
+            case InputAction.Note: Note(); return true;
             default: return false;
         }
     }

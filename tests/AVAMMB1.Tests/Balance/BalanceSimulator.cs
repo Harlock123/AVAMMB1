@@ -280,7 +280,11 @@ internal sealed class BalanceSimulator
         string? lastAction = null;
         while (combat.Outcome == CombatOutcome.Ongoing && guard++ < 3000)
         {
-            var act = ChooseAction(combat, combat.ActiveCharacter!);
+            var act = AutoTactics.Choose(_s.Rules, _s.Spells, combat, combat.ActiveCharacter!, State.Party, offensiveSpells: true);
+            if (act.Kind == CombatActionKind.UseItem && _current is not null)
+            {
+                _current.PotionsUsed++;
+            }
             lastAction = $"{combat.ActiveCharacter!.Name}({combat.ActiveCharacter.Class}) {act}";
             combat.Act(act);
         }
@@ -303,42 +307,6 @@ internal sealed class BalanceSimulator
             }
         }
         return entries[^1];
-    }
-
-    private CombatAction ChooseAction(CombatEngine combat, Character c)
-    {
-        var party = State.Party;
-        var hurt = party.Where(p => p.IsAlive && p.Hp < p.MaxHp / 2).OrderBy(p => p.Hp).FirstOrDefault();
-        var known = _s.Rules.KnownSpells(c).Where(sp => sp.Combat && _s.Spells.CanCast(c, sp, inCombat: true) is null).ToList();
-        var heal = known.Where(sp => sp.Effect == EffectKind.Heal && sp.Target == TargetKind.Ally).OrderByDescending(sp => sp.Level).FirstOrDefault();
-        if (hurt is not null && heal is not null)
-        {
-            return new CombatAction(CombatActionKind.Cast, Ally: party.IndexOf(hurt), SpellId: heal.Id);
-        }
-        var potion = c.Backpack.FindIndex(i => i.ItemId == "potion_healing");
-        if (hurt is not null && hurt.Hp * 4 < hurt.MaxHp && potion >= 0)
-        {
-            if (_current is not null)
-            {
-                _current.PotionsUsed++;
-            }
-            return new CombatAction(CombatActionKind.UseItem, Ally: party.IndexOf(hurt), ItemIndex: potion);
-        }
-        var active = combat.Monsters.Where(m => m.IsActive).ToList();
-        var nukes = known.Where(sp => sp.Effect == EffectKind.Damage && (!sp.UndeadOnly || active.Any(m => m.Def.Undead))).ToList();
-        var nuke = active.Count >= 3
-            ? nukes.OrderByDescending(sp => sp.Target != TargetKind.Enemy).ThenByDescending(sp => sp.Level).FirstOrDefault()
-            : nukes.Where(sp => sp.Target == TargetKind.Enemy).OrderByDescending(sp => sp.Level).FirstOrDefault() ?? nukes.OrderByDescending(sp => sp.Level).FirstOrDefault();
-        // Casters keep some SP in reserve for healing unless the fight is big.
-        var reserve = heal is not null && active.Count < 3 ? c.MaxSp / 3 : 0;
-        if (nuke is not null && !combat.IsInFrontRank(c) && c.Sp - nuke.Cost >= reserve && active.Count > 0)
-        {
-            var target = active.OrderBy(m => m.Hp).First();
-            return new CombatAction(CombatActionKind.Cast, Target: combat.Monsters.IndexOf(target), SpellId: nuke.Id);
-        }
-        return combat.IsInFrontRank(c) ? new CombatAction(CombatActionKind.Attack)
-            : _s.Rules.HasMissileWeapon(c) ? new CombatAction(CombatActionKind.Shoot)
-            : new CombatAction(CombatActionKind.Block);
     }
 
     // ------------------------------------------------------------------ resting and town

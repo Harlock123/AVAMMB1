@@ -6,6 +6,7 @@
     <StackPanel Spacing="4">
       <TextBlock Classes="title" Text="Game Menu" HorizontalAlignment="Center" Margin="0,0,0,8" />
       <Button Classes="big" Content="Resume" Command="{Binding ResumeCommand}" />
+      <Button Classes="big" Content="Journal" Command="{Binding JournalCommand}" />
       <Button Classes="big" Content="Save Game" Command="{Binding SaveCommand}" />
       <Button Classes="big" Content="Load Game" Command="{Binding LoadCommand}" />
       <Button Classes="big" Content="Settings" Command="{Binding SettingsCommand}" />

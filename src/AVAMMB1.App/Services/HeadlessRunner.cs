@@ -385,9 +385,23 @@ public static class HeadlessRunner
             game.TurnRightCommand.Execute(null); // face down a corridor
         }
         game.Refresh();
-        game.AutomapCommand.Execute(null);
+        s.State.SetNote("cellars", 1, 13, "Warning: kobold king in the NE hall");
+        s.State.SetNote("cellars", 7, 7, "Spring - heals and restores SP");
+        game.NoteCommand.Execute(null);
+        if (game.Overlay is AutomapViewModel notes)
+        {
+            notes.NoteText = "Dead end? Search the walls";
+        }
         Capture(dir, "11-automap-dungeon");
         game.CloseOverlay();
+
+        // The journal, as it would read after meeting Archivist Pell.
+        s.State.Flags.Add("pell_met");
+        s.State.CompletedEvents.Add("cellar_hint");
+        game.JournalCommand.Execute(null);
+        Capture(dir, "22-journal");
+        game.CloseOverlay();
+        s.State.Flags.Remove("pell_met");
 
         game.CastCommand.Execute(null);
         Capture(dir, "12-spells");

@@ -35,6 +35,10 @@ public enum InputAction
     QuickLoad,
     /// <summary>Open the game menu.</summary>
     Menu,
+    /// <summary>Open the quest journal.</summary>
+    Journal,
+    /// <summary>Write a note on the current automap square.</summary>
+    Note,
 }
 
 /// <summary>User preferences persisted between sessions.</summary>
@@ -79,6 +83,8 @@ public sealed class GameSettings
         [InputAction.QuickSave] = ["F5"],
         [InputAction.QuickLoad] = ["F9"],
         [InputAction.Menu] = ["Escape"],
+        [InputAction.Journal] = ["J"],
+        [InputAction.Note] = ["N"],
     };
 
     /// <summary>Fills in any actions missing from <see cref="KeyBindings"/> with defaults.</summary>

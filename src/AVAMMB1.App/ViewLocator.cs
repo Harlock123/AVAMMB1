@@ -23,6 +23,7 @@ public sealed class ViewLocator : IDataTemplate
         CharacterSheetViewModel => new CharacterSheetView(),
         SpellCastViewModel => new SpellCastView(),
         AutomapViewModel => new AutomapView(),
+        JournalViewModel => new JournalView(),
         GameMenuViewModel => new GameMenuView(),
         SaveLoadViewModel => new SaveLoadView(),
         SettingsViewModel => new SettingsView(),

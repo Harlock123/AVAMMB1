@@ -43,7 +43,14 @@ Code identifiers, the solution and executables use the name **`AVAMMB1`** (`AVAM
 - **Animated combat**: monsters breathe and bob while idle, lunge toward the party when they
   attack, blink and shake when hit and fade out when slain; party portraits flash red when hurt
   (Settings toggle).
-- **Automap and minimap** that record only what the party has actually seen.
+- **Automap and minimap** that record only what the party has actually seen, with your own
+  **notes** on any square.
+- **Quest journal**: every quest you have heard of, with its story so far and your current goal, plus
+  the signs, inscriptions and warnings you have read (Clues). The game menu opens it too.
+- **Combat helpers**: *Repeat* replays everyone's last action for the round (picking a new target
+  if the old one fell), *Auto* fights with weapons and healing until the battle ends or someone is
+  badly hurt, and monsters you have defeated before show their level, HP, armor class, undead-ness,
+  resistances and weaknesses.
 - **Party of up to six** with full character creation: 5 races, 6 classes (Knight, Paladin, Archer,
   Cleric, Sorcerer, Robber), 7 attributes rolled 3d6, sex, alignment, class requirements and
   class-specific paper-doll portraits. Quick Party option with six premade heroes.
@@ -106,7 +113,7 @@ All screenshots are real frames rendered by the game itself (Avalonia headless +
 | ![Guardian](docs/screenshots/15-guardian.png) A guardian waiting in its alcove | ![Ashen Hills](docs/screenshots/16-ashen-hills.png) The Ashen Hills marsh road |
 | ![Thornwick](docs/screenshots/17-thornwick.png) Thornwick, the mining town | ![Duskmere](docs/screenshots/18-duskmere.png) Duskmere, the marsh village |
 | ![Port Ashkar](docs/screenshots/19-port-ashkar.png) Port Ashkar on the Sunscar Coast | ![Oasis](docs/screenshots/20-sunscar-oasis.png) The oasis in the Sunscar Wastes |
-| ![Old Cistern](docs/screenshots/21-old-cistern.png) An eel in the Old Cistern's flooded reservoir | |
+| ![Old Cistern](docs/screenshots/21-old-cistern.png) An eel in the Old Cistern's flooded reservoir | ![Journal](docs/screenshots/22-journal.png) The quest journal |
 
 ## Download and install
 
@@ -151,19 +158,22 @@ Set `AVAMMB1_DATA_DIR` to use a different folder.
 | Cast a spell | K | *Cast* |
 | Party / inventory sheet | I / C, or 1-6 for a member | click a portrait |
 | Automap | M | *Map* |
+| Quest journal and clues | J | *Journal* |
+| Note on this automap square | N (or click any square on the automap) | *Note* |
 | Quick save / quick load | F5 / F9 | |
 | Game menu (save, load, settings) | Esc | *Menu* |
 | Fullscreen | F11 or Alt+Enter | Settings |
 | **Combat**: Fight / Run / Bribe | F, R, B | buttons |
 | **Combat**: Attack, Shoot, Cast, Use item, Block, Run | A, S, C, U, B, R | buttons |
 | **Combat**: pick target / spell / ally | 1-9 | click the monster |
+| **Combat**: repeat everyone's last action / auto-fight on-off | E, O | *Repeat*, *Auto* |
 
 **Gamepad** (any controller SDL recognises; Xbox button names shown):
 
 | Context | Controls |
 |---|---|
 | Exploring | D-pad / left stick: move and turn (hold to repeat) - LB / RB: strafe - A: use - X: search - Y: party sheet - View: map - Start or B: menu - LT: rest - RT: cast |
-| Battle | A: fight / attack (shoots from the back rank) / continue - X: cast - Y: use item - B: block - View: run - LB / RB or left / right: change target |
+| Battle | A: fight / attack (shoots from the back rank) / continue - X: cast - Y: use item - B: block - View: run - LB / RB or left / right: change target - LT: repeat last actions - RT: auto-fight |
 | Menus and dialogs | D-pad: move between buttons (left / right adjust sliders) - A: select - B: back |
 
 ## How to play
@@ -233,7 +243,7 @@ route order from level 1 to 15 (fighting, camping, curing with spells and potion
 zone's chests, training, selling loot, buying gear and potions, reloading after a wipe) and asserts
 the pace, wipe rate and gold flow stay within tuned bounds (about 600 battles from a new party to
 level 15). It skips boss hoards and quest rewards, so real players end up with a little more gold. The UI flow title -> party creation -> town -> shop -> dungeon -> combat -> inventory ->
-automap -> spells -> secret door -> Old Cistern -> Ashen Hills -> Sunscar Coast -> settings is exercised headlessly by `--screenshot`.
+automap with notes -> journal -> spells -> secret door -> Old Cistern -> Ashen Hills -> Sunscar Coast -> settings is exercised headlessly by `--screenshot`.
 Gamepad support has been play-tested with a physical controller on Linux ARM64 (v1.4.0); on the
 other platforms CI confirms the bundled SDL2 library loads, and the button mapping is unit tested.
 The game is currently under testing.

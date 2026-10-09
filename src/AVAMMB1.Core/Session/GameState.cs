@@ -36,6 +36,41 @@ public sealed class GameState
     public Dictionary<string, string> Explored { get; set; } = new(StringComparer.Ordinal);
     /// <summary>Secret doors the party has discovered (see <see cref="SecretKey"/>).</summary>
     public HashSet<string> FoundSecrets { get; set; } = new(StringComparer.Ordinal);
+    /// <summary>Monster kinds the party has defeated; the combat screen shows their statistics.</summary>
+    public HashSet<string> KnownMonsters { get; set; } = new(StringComparer.Ordinal);
+    /// <summary>Player notes on automap squares, keyed by <see cref="NoteKey"/>.</summary>
+    public Dictionary<string, string> MapNotes { get; set; } = new(StringComparer.Ordinal);
+
+    /// <summary>Key for <see cref="MapNotes"/>.</summary>
+    /// <param name="mapId">Map.</param>
+    /// <param name="x">X.</param>
+    /// <param name="y">Y.</param>
+    public static string NoteKey(string mapId, int x, int y) => $"{mapId}:{x}:{y}";
+
+    /// <summary>Sets (or, with empty text, removes) the note on a square.</summary>
+    /// <param name="mapId">Map.</param>
+    /// <param name="x">X.</param>
+    /// <param name="y">Y.</param>
+    /// <param name="text">Note text.</param>
+    public void SetNote(string mapId, int x, int y, string? text)
+    {
+        var key = NoteKey(mapId, x, y);
+        if (string.IsNullOrWhiteSpace(text))
+        {
+            MapNotes.Remove(key);
+        }
+        else
+        {
+            MapNotes[key] = text.Trim();
+        }
+    }
+
+    /// <summary>The note on a square, if any.</summary>
+    /// <param name="mapId">Map.</param>
+    /// <param name="x">X.</param>
+    /// <param name="y">Y.</param>
+    public string? NoteAt(string mapId, int x, int y) => MapNotes.GetValueOrDefault(NoteKey(mapId, x, y));
+
     /// <summary>Total steps taken (game clock).</summary>
     public long Steps { get; set; }
     /// <summary>Remaining steps of magical or torch light.</summary>
