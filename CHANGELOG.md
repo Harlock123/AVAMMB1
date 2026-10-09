@@ -5,6 +5,8 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+## [1.9.1] - 2026-10-09
+
 ### Fixed
 - Pressing Use on a lantern (or any weapon or armour) on the character sheet now equips it, instead of
   saying it "cannot be used like that". Equipping a lantern says how far it lights and how to refill it.
