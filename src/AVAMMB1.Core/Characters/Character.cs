@@ -41,6 +41,8 @@ public sealed class Character
     public int Gold { get; set; }
     /// <summary>Spells learned from tomes.</summary>
     public List<string> LearnedSpells { get; set; } = new();
+    /// <summary>Statistic points bought at an academy (each costs more than the last).</summary>
+    public int AcademyPoints { get; set; }
     /// <summary>Food units carried.</summary>
     public int Food { get; set; }
     /// <summary>Backpack contents.</summary>

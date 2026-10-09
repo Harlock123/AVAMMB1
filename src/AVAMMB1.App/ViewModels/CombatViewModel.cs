@@ -52,6 +52,8 @@ public sealed partial class MonsterViewModel : ObservableObject
     public Bitmap? Sprite { get; }
     /// <summary>Label.</summary>
     public string Label => Monster.Label;
+    /// <summary>Whether this is an elite (shown in gold).</summary>
+    public bool IsElite => Monster.Elite;
     /// <summary>HP fraction.</summary>
     public double HpFraction => Math.Clamp((double)Monster.Hp / Monster.MaxHp, 0, 1);
     /// <summary>Status text.</summary>
@@ -122,7 +124,7 @@ public sealed partial class CombatViewModel : ViewModelBase
         TakeSnapshot();
         Party = game.Party;
         game.Services.Audio.PlayMusic(combat.Monsters.Any(m => m.Def.Boss) ? "boss" : "battle");
-        var names = combat.Monsters.GroupBy(m => m.Def).Select(g => g.Count() == 1 ? $"a {g.Key.Name}" : $"{g.Count()} {g.Key.PluralName}");
+        var names = combat.Monsters.GroupBy(m => m.Def).Select(g => g.Count() == 1 ? g.Key.NameWithArticle : $"{g.Count()} {g.Key.PluralName}");
         Log.Add(new MessageViewModel(new GameMessage($"You face {string.Join(", ", names)}!", MessageKind.Bad)));
         var bribe = combat.BribeCost;
         BribeLabel = bribe is { } b ? $"Bribe ({b} gold)" : "Bribe (refused)";

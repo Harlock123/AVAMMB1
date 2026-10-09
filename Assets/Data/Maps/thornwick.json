@@ -165,6 +165,44 @@
    "name": "Foreman Halvard's Office",
    "requiresFlag": "heartstone_returned",
    "text": "\"The lamps burn bright again below. Thank you, friends.\""
+  },
+  {
+   "x": 8,
+   "y": 7,
+   "type": "quest",
+   "id": "brega_intro",
+   "once": true,
+   "name": "Brega's Smithy",
+   "feature": "shop_books",
+   "requiresNotFlag": "brega_met",
+   "setFlag": "brega_met",
+   "text": "Smith Brega bangs her hammer down. \"Renegades in the upper mines stole the town seal from our vault. Their chief wears it on his finger. Bring it back and I'll fit you out in proper dwarven mail.\""
+  },
+  {
+   "x": 8,
+   "y": 7,
+   "type": "quest",
+   "id": "brega_reward",
+   "once": true,
+   "name": "Brega's Smithy",
+   "requiresFlag": "brega_met",
+   "requiresItem": "renegade_signet",
+   "consumeItem": true,
+   "setFlag": "brega_done",
+   "items": [
+    "dwarven_mail"
+   ],
+   "xp": 3000,
+   "gold": "1200",
+   "text": "Brega slips the signet onto a chain around her neck. \"Thornwick owes you. Here - dwarven mail, made to measure.\""
+  },
+  {
+   "x": 8,
+   "y": 7,
+   "type": "message",
+   "name": "Brega's Smithy",
+   "requiresFlag": "brega_done",
+   "text": "Brega's forge roars. \"Need anything sharpened?\""
   }
  ],
  "ambience": "wind"

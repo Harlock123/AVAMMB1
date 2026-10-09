@@ -1,0 +1,37 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:AVAMMB1.App.ViewModels"
+             x:Class="AVAMMB1.App.Views.AcademyView" x:DataType="vm:AcademyViewModel">
+  <Border Classes="dialog" Width="820">
+    <StackPanel Spacing="8">
+      <TextBlock Classes="title" Text="{Binding Title}" />
+      <TextBlock Text="{Binding GoldText}" Foreground="{DynamicResource Gold}" />
+      <ItemsControl ItemsSource="{Binding Rows}">
+        <ItemsControl.ItemTemplate>
+          <DataTemplate x:DataType="vm:ServiceRowViewModel">
+            <Grid ColumnDefinitions="140,*,Auto" Margin="0,2">
+              <TextBlock Text="{Binding Member.Name}" FontWeight="SemiBold" VerticalAlignment="Center" />
+              <TextBlock Grid.Column="1" Text="{Binding Info}" VerticalAlignment="Center" />
+              <Button Grid.Column="2" Classes="chip" Content="Choose" IsEnabled="{Binding Available}"
+                      Command="{Binding $parent[UserControl].((vm:AcademyViewModel)DataContext).ChooseCommand}" CommandParameter="{Binding}" />
+            </Grid>
+          </DataTemplate>
+        </ItemsControl.ItemTemplate>
+      </ItemsControl>
+      <TextBlock Classes="h2" Text="{Binding Selected.Member.Name, StringFormat='Lessons for {0}'}" />
+      <ItemsControl ItemsSource="{Binding Lessons}">
+        <ItemsControl.ItemsPanel>
+          <ItemsPanelTemplate><UniformGrid Columns="4" /></ItemsPanelTemplate>
+        </ItemsControl.ItemsPanel>
+        <ItemsControl.ItemTemplate>
+          <DataTemplate x:DataType="vm:StatLesson">
+            <Button Content="{Binding Label}" IsEnabled="{Binding Enabled}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"
+                    Command="{Binding $parent[UserControl].((vm:AcademyViewModel)DataContext).StudyCommand}" CommandParameter="{Binding}" />
+          </DataTemplate>
+        </ItemsControl.ItemTemplate>
+      </ItemsControl>
+      <TextBlock Text="{Binding Feedback}" TextWrapping="Wrap" Foreground="{DynamicResource Info}" />
+      <Button Content="Leave (Esc)" Command="{Binding LeaveCommand}" HorizontalAlignment="Right" />
+    </StackPanel>
+  </Border>
+</UserControl>

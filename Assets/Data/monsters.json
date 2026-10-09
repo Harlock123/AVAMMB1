@@ -2133,5 +2133,295 @@
    }
   ],
   "description": "The thing that ate the light at the bottom of the world."
+ },
+ {
+  "id": "frost_warg",
+  "name": "Frost Warg",
+  "sprite": "frost_warg",
+  "level": 11,
+  "hitPoints": "10d8",
+  "armorClass": 8,
+  "speed": 16,
+  "xp": 1800,
+  "gold": "31d6+75",
+  "attacks": [
+   {
+    "verb": "bites",
+    "damage": "2d8"
+   }
+  ],
+  "resistances": {
+   "cold": 50
+  },
+  "description": "A wolf the size of a pony, its breath freezing in the air."
+ },
+ {
+  "id": "ice_bear",
+  "name": "Ice Bear",
+  "sprite": "ice_bear",
+  "level": 11,
+  "hitPoints": "11d8+11",
+  "armorClass": 7,
+  "speed": 12,
+  "xp": 1900,
+  "gold": "31d6+75",
+  "attacks": [
+   {
+    "verb": "claws",
+    "damage": "2d8"
+   },
+   {
+    "verb": "bites",
+    "damage": "2d6"
+   }
+  ],
+  "resistances": {
+   "cold": 50
+  },
+  "description": "White as the snow it hunts in."
+ },
+ {
+  "id": "white_imp",
+  "name": "White Imp",
+  "sprite": "white_imp",
+  "level": 11,
+  "hitPoints": "7d8",
+  "armorClass": 9,
+  "speed": 17,
+  "xp": 1800,
+  "gold": "31d6+75",
+  "attacks": [
+   {
+    "verb": "claws",
+    "damage": "1d8",
+    "element": "cold"
+   }
+  ],
+  "abilities": [
+   {
+    "name": "a frost bolt",
+    "chance": 35,
+    "damage": "3d8",
+    "element": "cold"
+   }
+  ],
+  "resistances": {
+   "cold": 100
+  },
+  "description": "A giggling little demon of snow and spite."
+ },
+ {
+  "id": "ice_beast",
+  "name": "Ice Beast",
+  "sprite": "ice_beast",
+  "level": 12,
+  "hitPoints": "12d8",
+  "armorClass": 9,
+  "speed": 13,
+  "xp": 2400,
+  "gold": "37d6+88",
+  "attacks": [
+   {
+    "verb": "bites",
+    "damage": "2d10",
+    "element": "cold"
+   }
+  ],
+  "abilities": [
+   {
+    "name": "freezing breath",
+    "chance": 20,
+    "allTargets": true,
+    "damage": "3d6",
+    "element": "cold"
+   }
+  ],
+  "resistances": {
+   "cold": 100,
+   "fire": -50
+  },
+  "description": "A lizard-shape of living ice."
+ },
+ {
+  "id": "ice_devil",
+  "name": "Ice Devil",
+  "sprite": "ice_devil",
+  "level": 12,
+  "hitPoints": "11d8",
+  "armorClass": 10,
+  "speed": 14,
+  "xp": 2600,
+  "gold": "37d6+88",
+  "attacks": [
+   {
+    "verb": "claws",
+    "damage": "2d8",
+    "element": "cold",
+    "inflicts": "paralyzed",
+    "inflictChance": 10
+   }
+  ],
+  "resistances": {
+   "cold": 100,
+   "fire": -50
+  },
+  "description": "A pale devil whose touch stops the blood."
+ },
+ {
+  "id": "frost_giant",
+  "name": "Frost Giant",
+  "sprite": "frost_giant",
+  "level": 13,
+  "hitPoints": "14d8+14",
+  "armorClass": 9,
+  "speed": 11,
+  "xp": 3200,
+  "gold": "44d6+102",
+  "attacks": [
+   {
+    "verb": "smashes",
+    "damage": "3d10"
+   }
+  ],
+  "abilities": [
+   {
+    "name": "a hurled block of ice",
+    "chance": 25,
+    "damage": "4d8",
+    "element": "cold"
+   }
+  ],
+  "resistances": {
+   "cold": 100,
+   "fire": -25
+  },
+  "description": "Twice the height of a man, bearded with icicles."
+ },
+ {
+  "id": "blizzard_demon",
+  "name": "Blizzard Demon",
+  "sprite": "blizzard_demon",
+  "level": 13,
+  "hitPoints": "12d8",
+  "armorClass": 10,
+  "speed": 15,
+  "xp": 3400,
+  "gold": "44d6+102",
+  "attacks": [
+   {
+    "verb": "strikes",
+    "damage": "2d8",
+    "element": "cold"
+   }
+  ],
+  "abilities": [
+   {
+    "name": "a howling blizzard",
+    "chance": 30,
+    "allTargets": true,
+    "damage": "4d8",
+    "element": "cold"
+   }
+  ],
+  "resistances": {
+   "cold": 100,
+   "physical": 20
+  },
+  "description": "A storm with a will and a hunger."
+ },
+ {
+  "id": "ice_fiend",
+  "name": "Ice Fiend",
+  "sprite": "ice_fiend",
+  "level": 14,
+  "hitPoints": "14d8",
+  "armorClass": 11,
+  "speed": 14,
+  "xp": 4200,
+  "gold": "51d6+118",
+  "attacks": [
+   {
+    "verb": "claws",
+    "damage": "2d10",
+    "element": "cold"
+   },
+   {
+    "verb": "claws",
+    "damage": "2d10",
+    "element": "cold"
+   }
+  ],
+  "abilities": [
+   {
+    "name": "an aura of killing frost",
+    "chance": 25,
+    "allTargets": true,
+    "damage": "3d8",
+    "element": "cold"
+   }
+  ],
+  "resistances": {
+   "cold": 100,
+   "physical": 20,
+   "fire": -25
+  },
+  "description": "Lord of a frozen hell, bound here long ago."
+ },
+ {
+  "id": "rimefang",
+  "name": "Rimefang",
+  "sprite": "rimefang",
+  "boss": true,
+  "level": 15,
+  "hitPoints": "490",
+  "armorClass": 13,
+  "speed": 14,
+  "xp": 22000,
+  "gold": "2500",
+  "attacks": [
+   {
+    "verb": "bites",
+    "damage": "3d10"
+   },
+   {
+    "verb": "rakes",
+    "damage": "2d10"
+   },
+   {
+    "verb": "rakes",
+    "damage": "2d10"
+   }
+  ],
+  "smart": true,
+  "abilities": [
+   {
+    "name": "a breath of endless winter",
+    "chance": 30,
+    "allTargets": true,
+    "damage": "7d8",
+    "element": "cold"
+   },
+   {
+    "name": "a buffet of its great wings",
+    "chance": 15,
+    "allTargets": true,
+    "damage": "2d8"
+   }
+  ],
+  "resistances": {
+   "cold": 100,
+   "fire": -50
+  },
+  "drops": [
+   {
+    "item": "rimefang_heart",
+    "chance": 100
+   },
+   {
+    "item": "rimescale_mail",
+    "chance": 100
+   }
+  ],
+  "description": "The ice dragon of the Frostmark. Fire is the only thing it fears."
  }
 ]

@@ -1,0 +1,235 @@
+{
+ "id": "rime2",
+ "name": "Rimefang's Lair",
+ "kind": "dungeon",
+ "format": "edges",
+ "width": 16,
+ "height": 16,
+ "grid": [
+  "+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+",
+  "|. . . . . . . . .|. . . . . . .|",
+  "+ +-+-+ +-+-+-+ + + + + + + + + +",
+  "|. . .|. . . .|. .|. . . . . . .|",
+  "+-+-+ + + +-+ + +-+ + + + + + + +",
+  "|. . .|. . .|. . .|. . . . . . .|",
+  "+ + + +-+-+-+ +-+-+ + + + + + + +",
+  "|.|.|. .|. . . .|.D. . . . . . .|",
+  "+ + + + + + +-+ + + + + + + + + +",
+  "|. .|.|. .|. .|.|.|. . . . . . .|",
+  "+ +-+ +-+-+-+ + + + + + + + + + +",
+  "|.|. .|. . . . . .|. . . . . . .|",
+  "+ + +-+ + +-+-+-+-+-+-+-+D+-+-+-+",
+  "|.|.|.S.|. .|. . .|. .|.|. . . .|",
+  "+-+ +-+-+ + + +-+ + +-+ + + + +-+",
+  "|. .|. . . .|. .|.|.|.|. .|.|. .|",
+  "+ + + +-+-+ +-+ +-+ + + + +-+-+ +",
+  "|.|.|. . .|. .|. . .|.|.|. . .|.|",
+  "+ +-+ + +-+-+ + + +-+ + +-+-+ + +",
+  "|.|. .|. .|. .|. . . .|.|. .|.|.|",
+  "+ + +-+ + + +-+-+ +-+-+ + + + + +",
+  "|.|.|.|.|.|.|. .|.|. . .|.|. .|.|",
+  "+ + + + + + + + + + + +-+ +-+ + +",
+  "|.|.|.|.|. .|. .|.|.|.|. .|. .|d|",
+  "+ + + + + +-+-+ + + +-+ +-+ + + +",
+  "|. . .|.|. . . . .|. . .|. .|d d|",
+  "+-+D+-+ + + +-+-+ +-+-+-+ + +-+ +",
+  "|. . .|.|.|. . . .|. . .|.|. .|d|",
+  "+ + + + +-+ +-+-+-+ +-+ + +-+ + +",
+  "|. . .D. . .|. . . .|.|.|.|. .|d|",
+  "+ + + +-+ + + +-+-+ + + +-+ +-+ +",
+  "|. . .|. .|. .|. . . . . . . . d|",
+  "+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+"
+ ],
+ "terrain": {
+  "d": {
+   "darkness": true,
+   "name": "Magical darkness",
+   "mapColor": "#07070c"
+  },
+  "a": {
+   "antiMagic": true,
+   "name": "Anti-magic",
+   "mapColor": "#3a2050"
+  }
+ },
+ "wallTexture": "wall_ice",
+ "floorTexture": "floor_ice",
+ "ceilingTexture": "wall_ice",
+ "dark": true,
+ "encounterChance": 9,
+ "encounters": [
+  {
+   "monster": "ice_fiend",
+   "count": "1",
+   "weight": 15
+  },
+  {
+   "monster": "frost_giant",
+   "count": "1d2",
+   "weight": 20
+  },
+  {
+   "monster": "blizzard_demon",
+   "count": "1d2",
+   "weight": 20
+  },
+  {
+   "monster": "ice_beast",
+   "count": "1d3",
+   "weight": 20
+  },
+  {
+   "monster": "ice_devil",
+   "count": "1d3",
+   "weight": 25
+  }
+ ],
+ "events": [
+  {
+   "x": 0,
+   "y": 15,
+   "type": "teleport",
+   "name": "Stair Up",
+   "feature": "stairs_up",
+   "map": "rime1",
+   "toX": 2,
+   "toY": 1,
+   "facing": "North",
+   "text": "You climb back up to the upper halls."
+  },
+  {
+   "x": 1,
+   "y": 14,
+   "type": "message",
+   "id": "rime2_hint",
+   "once": true,
+   "name": "Claw Marks",
+   "text": "Claw marks as long as a man score the ice. Every one points north-east."
+  },
+  {
+   "x": 12,
+   "y": 5,
+   "type": "encounter",
+   "id": "rimefang_fight",
+   "once": true,
+   "name": "The Dragon's Lair",
+   "setFlag": "rimefang_slain",
+   "text": "The blue glow is an eye. It opens. Rimefang uncoils from a bed of frozen treasure and breathes in.",
+   "monsters": [
+    {
+     "monster": "rimefang",
+     "count": "1"
+    },
+    {
+     "monster": "ice_devil",
+     "count": "2"
+    }
+   ]
+  },
+  {
+   "x": 13,
+   "y": 2,
+   "type": "treasure",
+   "id": "rimefang_hoard",
+   "once": true,
+   "feature": "altar",
+   "name": "The Frozen Hoard",
+   "requiresFlag": "rimefang_slain",
+   "blocking": true,
+   "failText": "Treasure lies frozen in the ice of the lair - and the dragon lies on top of it.",
+   "gold": "40d20+1500",
+   "gems": 8,
+   "items": [
+    "potion_vigor",
+    "potion_vigor"
+   ],
+   "text": "Three years of tribute, frozen solid. It will take a while to carry."
+  },
+  {
+   "x": 5,
+   "y": 2,
+   "type": "treasure",
+   "id": "rime2_chest_a",
+   "once": true,
+   "feature": "chest",
+   "name": "Drowned Sledge",
+   "gold": "30d20",
+   "gems": 3,
+   "text": "A sledge-load of trade goods that never reached Wintermere."
+  },
+  {
+   "x": 8,
+   "y": 2,
+   "type": "trap",
+   "id": "rime2_trap_a",
+   "once": true,
+   "damage": "6d8",
+   "text": "A sheet of ice gives way over freezing water!"
+  },
+  {
+   "x": 0,
+   "y": 6,
+   "type": "treasure",
+   "id": "rime2_chest_b",
+   "once": true,
+   "feature": "chest",
+   "name": "Giant's Satchel",
+   "gold": "25d20",
+   "items": [
+    "potion_vigor",
+    "potion_mana"
+   ],
+   "text": "A satchel big enough to sleep in."
+  },
+  {
+   "x": 3,
+   "y": 6,
+   "type": "message",
+   "id": "rime2_secret_hint",
+   "once": true,
+   "name": "Warm Draft",
+   "text": "A breath of warm air leaks through the ice here - the only warmth in the Halls. (Search with F.)"
+  },
+  {
+   "x": 2,
+   "y": 6,
+   "type": "treasure",
+   "id": "rime2_secret",
+   "once": true,
+   "feature": "chest",
+   "name": "Forgotten Forge",
+   "gold": "25d20+400",
+   "gems": 4,
+   "items": [
+    "runeblade"
+   ],
+   "text": "An ancient forge, its fire still smouldering under the ice - and a blade left on the anvil."
+  },
+  {
+   "x": 1,
+   "y": 11,
+   "type": "spinner"
+  },
+  {
+   "x": 6,
+   "y": 12,
+   "type": "trap",
+   "id": "rime2_alarm",
+   "once": true,
+   "trap": "alarm",
+   "text": "Your footsteps ring through the ice like a bell. Something answers.",
+   "monsters": [
+    {
+     "monster": "ice_fiend",
+     "count": "1"
+    },
+    {
+     "monster": "ice_devil",
+     "count": "2"
+    }
+   ]
+  }
+ ],
+ "music": "dungeon",
+ "ambience": "deep"
+}

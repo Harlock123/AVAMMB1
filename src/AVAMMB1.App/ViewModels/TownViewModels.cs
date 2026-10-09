@@ -219,6 +219,74 @@ public sealed partial class TrainingViewModel : BuildingViewModel
     private void Train(ServiceRowViewModel row) => Report(Session.Town.Train(row.Member.Character, _ev));
 }
 
+/// <summary>Academy: buy permanent statistic points (an expensive late-game gold sink).</summary>
+public sealed partial class AcademyViewModel : BuildingViewModel
+{
+    private readonly MapEventDef _ev;
+
+    /// <summary>Creates the dialog.</summary>
+    /// <param name="game">Owner.</param>
+    /// <param name="ev">Academy event.</param>
+    public AcademyViewModel(GameViewModel game, MapEventDef ev) : base(game, ev.Name ?? "Academy")
+    {
+        _ev = ev;
+        Rows = new ObservableCollection<ServiceRowViewModel>(game.Party.Select(m => new ServiceRowViewModel(m)));
+        _selected = Rows.FirstOrDefault();
+        RefreshRows();
+        Feedback = $"\"Talent is a gift; mastery is bought - one lesson at a time.\" Each character can learn up to {AVAMMB1.Core.Session.TownServices.AcademyMaxPoints} points, and every lesson costs more than the last.";
+    }
+
+    /// <summary>Rows.</summary>
+    public ObservableCollection<ServiceRowViewModel> Rows { get; }
+
+    /// <summary>The student.</summary>
+    [ObservableProperty]
+    private ServiceRowViewModel? _selected;
+
+    partial void OnSelectedChanged(ServiceRowViewModel? value) => RefreshRows();
+
+    /// <summary>Statistic buttons for the selected student.</summary>
+    public IReadOnlyList<StatLesson> Lessons => Selected is { } r
+        ? Enum.GetValues<Stat>().Select(st => new StatLesson(st, r.Member.Character.BaseStat(st), AVAMMB1.Core.Session.TownServices.AcademyBlock(r.Member.Character, st) is null)).ToList()
+        : [];
+
+    /// <inheritdoc />
+    protected override void RefreshRows()
+    {
+        foreach (var r in Rows)
+        {
+            var c = r.Member.Character;
+            r.Available = c.IsAlive && c.AcademyPoints < AVAMMB1.Core.Session.TownServices.AcademyMaxPoints;
+            r.Info = r.Available
+                ? $"{c.AcademyPoints}/{AVAMMB1.Core.Session.TownServices.AcademyMaxPoints} points learned - next lesson {AVAMMB1.Core.Session.TownServices.AcademyCost(c, _ev)} gold"
+                : c.IsAlive ? "Has learned all the academy can teach" : "Cannot study";
+        }
+        OnPropertyChanged(nameof(Lessons));
+    }
+
+    [RelayCommand]
+    private void Choose(ServiceRowViewModel row) => Selected = row;
+
+    [RelayCommand]
+    private void Study(StatLesson lesson)
+    {
+        if (Selected is { } r)
+        {
+            Report(Session.Town.Study(r.Member.Character, lesson.Stat, _ev));
+        }
+    }
+}
+
+/// <summary>A statistic that can be studied.</summary>
+/// <param name="Stat">Statistic.</param>
+/// <param name="Value">Current value.</param>
+/// <param name="Enabled">Whether it can be raised now.</param>
+public sealed record StatLesson(Stat Stat, int Value, bool Enabled)
+{
+    /// <summary>Button label.</summary>
+    public string Label => $"{Stat} {Value} +1";
+}
+
 /// <summary>Tavern: food, drinks and rumors.</summary>
 public sealed partial class TavernViewModel : BuildingViewModel
 {

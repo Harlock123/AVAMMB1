@@ -161,5 +161,27 @@
    "torch",
    "ration"
   ]
+ },
+ {
+  "id": "wintermere_outfitter",
+  "name": "Ingvald's Outfitters",
+  "greeting": "\"Gear for the long winter. It is not cheap, and neither is your life.\"",
+  "priceFactor": 1.0,
+  "stock": [
+   "crystal_plate",
+   "runeblade",
+   "winter_bow",
+   "crown_winter",
+   "amulet_warding",
+   "plate_mail",
+   "long_bow",
+   "potion_healing",
+   "potion_cure",
+   "potion_mana",
+   "potion_vigor",
+   "scroll_recall",
+   "ration",
+   "torch"
+  ]
  }
 ]

@@ -121,7 +121,7 @@ public sealed class MapView : Control
 
     private static IBrush EventBrush(MapEventKind kind) => kind switch
     {
-        MapEventKind.Shop or MapEventKind.Inn or MapEventKind.Temple or MapEventKind.Tavern or MapEventKind.Training => Theming.Theme.Brush("MapServices"),
+        MapEventKind.Shop or MapEventKind.Inn or MapEventKind.Temple or MapEventKind.Tavern or MapEventKind.Training or MapEventKind.Academy => Theming.Theme.Brush("MapServices"),
         MapEventKind.Teleport => Theming.Theme.Brush("MapPassage"),
         MapEventKind.Treasure => Theming.Theme.Brush("MapTreasure"),
         MapEventKind.Fountain => Theming.Theme.Brush("MapFountain"),

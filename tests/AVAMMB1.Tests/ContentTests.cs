@@ -112,8 +112,15 @@ public class ContentTests
     public void UniqueBosses_AreFlagged()
     {
         var db = TestContent.Content;
-        string[] bosses = ["kobold_chief", "crypt_lich", "vault_warden", "stone_wyrm", "drowned_hydra", "sphinx", "sun_king", "ooze_mother", "wight_king", "umbral_wyrm"];
+        string[] bosses = ["kobold_chief", "crypt_lich", "vault_warden", "stone_wyrm", "drowned_hydra", "sphinx", "sun_king", "ooze_mother", "wight_king", "umbral_wyrm", "rimefang"];
         Assert.All(bosses, id => Assert.True(db.Monster(id).Boss, id));
         Assert.Equal(bosses.Order(), db.Monsters.Values.Where(m => m.Boss).Select(m => m.Id).Order());
     }
+
+    [Theory]
+    [InlineData("kobold", "a Kobold Sneak")]
+    [InlineData("ice_beast", "an Ice Beast")]
+    [InlineData("sun_king", "The Sun King")]
+    public void MonsterNames_TakeTheRightArticle(string id, string expected) =>
+        Assert.Equal(expected, TestContent.Content.Monster(id).NameWithArticle);
 }

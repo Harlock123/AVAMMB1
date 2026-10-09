@@ -11,6 +11,23 @@ All notable changes to this project are documented here. The format follows
   from the CHANGELOG.md that ships inside the game.
 - Help screen (F1 or H, the title screen, or the game menu): how to play, plus your current keyboard
   and controller controls, including any you have rebound.
+- The Frostmark, a sixth town and region for levels 11-14, by ship from Saltreach (200 gold):
+  Wintermere (inn, temple, training, an outfitter selling top-tier gear, and an academy), the
+  Frostmark tundra and the two-level Rime Halls with the ice dragon Rimefang. Two quests: the Jarl's
+  hunt for Rimefang's heart and Scholar Aldous's lost expedition. 9 new monsters, 14 new items and
+  23 new CC0 DCSS tiles (the snow floor is a lightened DCSS tile).
+- A bounty in every older town: bring a trophy from a monster's hoard (the Greenvale ogre, the
+  wyvern roost, the renegade chief, the Barrow-King, the Emperor scorpion) for gold, experience and
+  gear. All new quests appear in the journal.
+- Academies (Wintermere and Port Ashkar): pay for permanent statistic points, 1000 x (points
+  already bought + 1) gold each, up to 10 per character - a sink for late-game gold.
+- Elite monsters: 1 random encounter in 20 is led by an elite (gold name) with double hit points,
+  +2 armor class and +50% damage, worth triple experience and gold and possibly extra loot.
+
+### Fixed
+- Encounter messages use the right article ("an Ice Beast", "The Sun King" rather than "a The Sun King").
+- The balance simulator no longer fills its backpacks with consumables it never sells (which had
+  stopped it buying gear); it now buys gear in the late game and studies at academies with gold to spare.
 
 ## [1.6.0] - 2026-10-09
 

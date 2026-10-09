@@ -45,6 +45,10 @@ public sealed class CombatEngine
             seen[m.Def.Id] = seen.GetValueOrDefault(m.Def.Id) + 1;
             m.Label = $"{m.Def.Name} #{seen[m.Def.Id]}";
         }
+        foreach (var m in Monsters.Where(m => m.Elite))
+        {
+            m.Label = "Elite " + m.Label;
+        }
     }
 
     /// <summary>Creates monster instances for a definition, rolling hit points.</summary>
@@ -283,13 +287,32 @@ public sealed class CombatEngine
         return Outcome;
     }
 
+    /// <summary>Extra loot an elite may carry, by its level.</summary>
+    /// <param name="level">Monster level.</param>
+    public static IReadOnlyList<string> EliteLoot(int level) => level switch
+    {
+        <= 3 => ["potion_healing", "potion_cure", "scroll_light"],
+        <= 7 => ["potion_vigor", "potion_mana", "ring_protection", "amulet_insight", "scroll_fire"],
+        <= 11 => ["potion_vigor", "ring_might", "wand_lightning", "scroll_recall", "lotus_amulet"],
+        _ => ["potion_vigor", "ring_heartfire", "scarab_amulet", "mithril_coat"],
+    };
+
     private CombatRewards ComputeRewards()
     {
         var killed = Monsters.Where(m => m.IsDead).ToList();
-        var xp = killed.Sum(m => m.Def.Xp);
-        var gold = killed.Sum(m => Math.Max(0, m.Def.Gold.Roll(_rng)));
+        var xp = killed.Sum(m => m.Def.Xp * (m.Elite ? 3 : 1));
+        var gold = killed.Sum(m => Math.Max(0, m.Def.Gold.Roll(_rng)) * (m.Elite ? 3 : 1));
         var gems = killed.Count(m => m.Def.Level >= 3 && _rng.Chance(10));
         var items = new List<ItemInstance>();
+        foreach (var m in killed.Where(m => m.Elite && _rng.Chance(50)))
+        {
+            var pool = EliteLoot(m.Def.Level).Where(_rules.Content.Items.ContainsKey).ToList();
+            if (pool.Count > 0)
+            {
+                var id = pool[_rng.Next(0, pool.Count)];
+                items.Add(new ItemInstance(id, _rules.Content.Item(id).Charges));
+            }
+        }
         foreach (var m in killed)
         {
             foreach (var d in m.Def.Drops)
@@ -525,7 +548,7 @@ public sealed class CombatEngine
                 log.Add(new($"{m.Label} {attack.Verb} at {target.Name} but misses.", MessageKind.Combat, "miss"));
                 continue;
             }
-            var dmg = Math.Max(1, attack.Damage.Roll(_rng));
+            var dmg = m.ScaleDamage(Math.Max(1, attack.Damage.Roll(_rng)));
             dmg = dmg * (100 - _rules.Resistance(target, attack.Element)) / 100;
             log.Add(new($"{m.Label} {attack.Verb} {target.Name} for {dmg} damage.", MessageKind.Bad, "party_hurt"));
             HurtCharacter(target, dmg, log);
@@ -563,7 +586,7 @@ public sealed class CombatEngine
         {
             if (a.Damage.Max > 0)
             {
-                var dmg = a.Damage.Roll(_rng);
+                var dmg = m.ScaleDamage(a.Damage.Roll(_rng));
                 if (_rules.SavingThrow(t, m.Def.Level, _rng))
                 {
                     dmg /= 2;

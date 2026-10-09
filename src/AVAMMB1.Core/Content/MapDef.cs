@@ -41,6 +41,8 @@ public enum MapEventKind
     Tavern,
     /// <summary>Training grounds: level up.</summary>
     Training,
+    /// <summary>Academy: pay to raise a statistic permanently.</summary>
+    Academy,
     /// <summary>Moves the party to another map or location.</summary>
     Teleport,
     /// <summary>Grants treasure.</summary>

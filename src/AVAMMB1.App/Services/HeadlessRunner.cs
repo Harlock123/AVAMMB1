@@ -510,6 +510,28 @@ public static class HeadlessRunner
         game.Refresh();
         Capture(dir, "20-sunscar-oasis");
 
+        // North by ship to Wintermere (level 11-14 country) and into the Rime Halls.
+        TrainTo(s, 14);
+        s.State.Gold = Math.Max(s.State.Gold, 1000);
+        foreach (var stop in new[] { "ashkar", "saltreach", "wintermere" })
+        {
+            TravelTo(game, s, stop);
+        }
+        WalkTo(game, s, 7, 9);
+        Face(game, s, Direction.North);
+        game.Refresh();
+        Capture(dir, "25-wintermere");
+        TravelTo(game, s, "frostmark");
+        TravelTo(game, s, "rime1");
+        WalkTo(game, s, 7, 12);
+        for (var i = 0; i < 4 && s.CurrentMap.Probe(s.State.X, s.State.Y, s.State.Facing).Wall != AVAMMB1.Core.World.WallKind.None; i++)
+        {
+            game.TurnRightCommand.Execute(null); // face down a corridor
+        }
+        s.State.LightSteps = Math.Max(s.State.LightSteps, 50);
+        game.Refresh();
+        Capture(dir, "26-rime-halls");
+
         // Accessibility: the high-contrast theme with larger text, and the sharper 3D view.
         var settings = vm.Services.Settings;
         settings.ColorTheme = "HighContrast";

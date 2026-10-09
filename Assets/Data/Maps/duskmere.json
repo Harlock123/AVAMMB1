@@ -161,6 +161,45 @@
    "name": "Sister Ilsa's Hut",
    "requiresFlag": "lotus_delivered",
    "text": "\"The lotus is steeping. Half of Duskmere will be grateful this winter.\""
+  },
+  {
+   "x": 13,
+   "y": 10,
+   "type": "quest",
+   "id": "wren_intro",
+   "once": true,
+   "name": "Old Wren's Landing",
+   "feature": "shop_books",
+   "requiresNotFlag": "wren_met",
+   "setFlag": "wren_met",
+   "text": "Old Wren the ferryman stares into the marsh fog. \"My grandfather was buried in the barrows, before the Barrow-King woke and took them. Lay that king to rest - bring me his crown, so I know it's done.\""
+  },
+  {
+   "x": 13,
+   "y": 10,
+   "type": "quest",
+   "id": "wren_reward",
+   "once": true,
+   "name": "Old Wren's Landing",
+   "requiresFlag": "wren_met",
+   "requiresItem": "barrow_crown",
+   "consumeItem": true,
+   "setFlag": "wren_done",
+   "items": [
+    "potion_vigor",
+    "potion_vigor"
+   ],
+   "xp": 8000,
+   "gold": "2500",
+   "text": "Wren drops the black crown into the deepest water of the marsh. \"There. Now the old ones can sleep. Take this - it's all I saved.\""
+  },
+  {
+   "x": 13,
+   "y": 10,
+   "type": "message",
+   "name": "Old Wren's Landing",
+   "requiresFlag": "wren_done",
+   "text": "Wren poles his ferry slowly through the reeds, humming."
   }
  ],
  "ambience": "river"

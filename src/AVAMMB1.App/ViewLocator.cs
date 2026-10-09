@@ -20,6 +20,7 @@ public sealed class ViewLocator : IDataTemplate
         TempleViewModel => new TempleView(),
         TavernViewModel => new TavernView(),
         TrainingViewModel => new TrainingView(),
+        AcademyViewModel => new AcademyView(),
         CharacterSheetViewModel => new CharacterSheetView(),
         SpellCastViewModel => new SpellCastView(),
         AutomapViewModel => new AutomapView(),

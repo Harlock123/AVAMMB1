@@ -1,63 +1,249 @@
 [
  {
-  "id": "main", "title": "The Lodestone of Seasons", "main": true,
+  "id": "main",
+  "title": "The Lodestone of Seasons",
+  "main": true,
   "stages": [
-   {"flag": "pell_met", "text": "Archivist Pell of Brindlemoor says the Sigil that opens the Inner Vault was broken in two. The kobolds in the cellars below Brindlemoor have one half, the Ember Shard. Bring it to Pell."},
-   {"item": "ember_shard", "text": "You have the Ember Shard. Take it back to Archivist Pell in Brindlemoor."},
-   {"flag": "ember_given", "text": "Pell gave you the Crypt Key. The Frost Shard lies in the Hollow Crypt in the southeast of the Greenvale Wilds. Bring it to Sage Orrin in Saltreach."},
-   {"item": "frost_shard", "text": "You hold the Frost Shard. Sage Orrin in Saltreach can rejoin the Sigil."},
-   {"flag": "sigil_forged", "text": "The Vault Sigil is whole. The Inner Vault lies in the northern mountains of the wilds. Beware its Warden."},
-   {"flag": "warden_dead", "text": "The Warden has fallen. The Lodestone of Seasons waits in the heart of the Vault."}
+   {
+    "flag": "pell_met",
+    "text": "Archivist Pell of Brindlemoor says the Sigil that opens the Inner Vault was broken in two. The kobolds in the cellars below Brindlemoor have one half, the Ember Shard. Bring it to Pell."
+   },
+   {
+    "item": "ember_shard",
+    "text": "You have the Ember Shard. Take it back to Archivist Pell in Brindlemoor."
+   },
+   {
+    "flag": "ember_given",
+    "text": "Pell gave you the Crypt Key. The Frost Shard lies in the Hollow Crypt in the southeast of the Greenvale Wilds. Bring it to Sage Orrin in Saltreach."
+   },
+   {
+    "item": "frost_shard",
+    "text": "You hold the Frost Shard. Sage Orrin in Saltreach can rejoin the Sigil."
+   },
+   {
+    "flag": "sigil_forged",
+    "text": "The Vault Sigil is whole. The Inner Vault lies in the northern mountains of the wilds. Beware its Warden."
+   },
+   {
+    "flag": "warden_dead",
+    "text": "The Warden has fallen. The Lodestone of Seasons waits in the heart of the Vault."
+   }
   ]
  },
  {
-  "id": "heartstone", "title": "The Heartstone of Thornwick", "doneFlag": "heartstone_returned",
+  "id": "heartstone",
+  "title": "The Heartstone of Thornwick",
+  "doneFlag": "heartstone_returned",
   "doneText": "Foreman Halvard has the Heartstone back, and you have his grandmother's Heartfire Ring.",
   "stages": [
-   {"flag": "halvard_met", "text": "Foreman Halvard of Thornwick: a wyrm of living stone woke in the deep delvings of the mines and took the Heartstone. Bring it back."},
-   {"flag": "wyrm_slain", "text": "The Stone Wyrm is dead. Its hoard lies in its lair in the lower mines."},
-   {"item": "heartstone", "text": "You carry the Heartstone. Return it to Foreman Halvard in Thornwick."}
+   {
+    "flag": "halvard_met",
+    "text": "Foreman Halvard of Thornwick: a wyrm of living stone woke in the deep delvings of the mines and took the Heartstone. Bring it back."
+   },
+   {
+    "flag": "wyrm_slain",
+    "text": "The Stone Wyrm is dead. Its hoard lies in its lair in the lower mines."
+   },
+   {
+    "item": "heartstone",
+    "text": "You carry the Heartstone. Return it to Foreman Halvard in Thornwick."
+   }
   ]
  },
  {
-  "id": "lotus", "title": "The Moon Lotus", "doneFlag": "lotus_delivered",
+  "id": "lotus",
+  "title": "The Moon Lotus",
+  "doneFlag": "lotus_delivered",
   "doneText": "Sister Ilsa has her Moon Lotus, and gave you the Lotus Amulet.",
   "stages": [
-   {"flag": "ilsa_met", "text": "Sister Ilsa of Duskmere wants a Moon Lotus. It blooms only in the dark water of the Sunken Temple, and the thing that nests there will not let it go easily."},
-   {"flag": "hydra_slain", "text": "The Drowned Hydra is dead. The Lotus Garden lies beyond its pool."},
-   {"item": "moon_lotus", "text": "You carry a Moon Lotus. Take it to Sister Ilsa in Duskmere."}
+   {
+    "flag": "ilsa_met",
+    "text": "Sister Ilsa of Duskmere wants a Moon Lotus. It blooms only in the dark water of the Sunken Temple, and the thing that nests there will not let it go easily."
+   },
+   {
+    "flag": "hydra_slain",
+    "text": "The Drowned Hydra is dead. The Lotus Garden lies beyond its pool."
+   },
+   {
+    "item": "moon_lotus",
+    "text": "You carry a Moon Lotus. Take it to Sister Ilsa in Duskmere."
+   }
   ]
  },
  {
-  "id": "sun_disk", "title": "The Sun Disk", "doneFlag": "sun_disk_returned",
+  "id": "sun_disk",
+  "title": "The Sun Disk",
+  "doneFlag": "sun_disk_returned",
   "doneText": "Curator Tamsin has the Sun Disk back in Ashkar's museum, and you have a golden scarab.",
   "stages": [
-   {"flag": "tamsin_met", "text": "Curator Tamsin of Port Ashkar wants the Sun Disk. It lies with the last Sun King in the tomb west across the Sunscar Wastes."},
-   {"flag": "sun_king_slain", "text": "The Sun King is dead. The Disk lies on his golden throne."},
-   {"item": "sun_disk", "text": "You carry the Sun Disk. Take it to Curator Tamsin in Port Ashkar."}
+   {
+    "flag": "tamsin_met",
+    "text": "Curator Tamsin of Port Ashkar wants the Sun Disk. It lies with the last Sun King in the tomb west across the Sunscar Wastes."
+   },
+   {
+    "flag": "sun_king_slain",
+    "text": "The Sun King is dead. The Disk lies on his golden throne."
+   },
+   {
+    "item": "sun_disk",
+    "text": "You carry the Sun Disk. Take it to Curator Tamsin in Port Ashkar."
+   }
   ]
  },
  {
-  "id": "cistern", "title": "Below the Cellars", "doneFlag": "ooze_mother_dead",
+  "id": "bounty_ogre",
+  "title": "Bounty: the Greenvale Ogre",
+  "doneFlag": "dunmore_done",
+  "doneText": "Captain Dunmore paid the town's bounty for the ogre's tusk.",
+  "stages": [
+   {
+    "flag": "dunmore_met",
+    "text": "Captain Dunmore of Brindlemoor's Watch wants the ogre that has been taking sheep in the Greenvale Wilds dead. Bring him its tusk."
+   },
+   {
+    "item": "ogre_tusk",
+    "text": "You have the ogre's tusk. Take it to Captain Dunmore at the Watch House in Brindlemoor."
+   }
+  ]
+ },
+ {
+  "id": "bounty_wyvern",
+  "title": "A Wyvern Egg",
+  "doneFlag": "quell_done",
+  "doneText": "Harbormaster Quell has his wyvern egg, and you have your share.",
+  "stages": [
+   {
+    "flag": "quell_met",
+    "text": "Harbormaster Quell of Saltreach will split a collector's fortune for a wyvern egg from the roost in the Ashen Hills."
+   },
+   {
+    "item": "wyvern_egg",
+    "text": "You carry a wyvern egg. Take it to Harbormaster Quell in Saltreach - carefully."
+   }
+  ]
+ },
+ {
+  "id": "bounty_signet",
+  "title": "The Stolen Seal",
+  "doneFlag": "brega_done",
+  "doneText": "Smith Brega has Thornwick's seal back, and you have a coat of dwarven mail.",
+  "stages": [
+   {
+    "flag": "brega_met",
+    "text": "Smith Brega of Thornwick: renegades in the upper mines stole the town seal. Their chief wears it on his finger."
+   },
+   {
+    "item": "renegade_signet",
+    "text": "You have the renegade chief's signet. Return it to Smith Brega in Thornwick."
+   }
+  ]
+ },
+ {
+  "id": "bounty_crown",
+  "title": "Rest for the Barrows",
+  "doneFlag": "wren_done",
+  "doneText": "Old Wren sank the Barrow Crown in the marsh. The old ones sleep.",
+  "stages": [
+   {
+    "flag": "wren_met",
+    "text": "Old Wren, Duskmere's ferryman, asks you to lay the Barrow-King to rest and bring back his crown. The barrows lie in the Catacombs below the Hollow Crypt."
+   },
+   {
+    "item": "barrow_crown",
+    "text": "You carry the Barrow Crown. Take it to Old Wren in Duskmere."
+   }
+  ]
+ },
+ {
+  "id": "bounty_scorpion",
+  "title": "The Emperor Scorpion",
+  "doneFlag": "rashid_done",
+  "doneText": "Captain Rashid's riders are avenged.",
+  "stages": [
+   {
+    "flag": "rashid_met",
+    "text": "Captain Rashid of the Desert Guard wants the great scorpion that nests north-east of the oasis in the Sunscar Wastes dead. Bring him its stinger."
+   },
+   {
+    "item": "scorpion_stinger",
+    "text": "You have the Emperor's Stinger. Take it to Captain Rashid in Port Ashkar."
+   }
+  ]
+ },
+ {
+  "id": "lost_expedition",
+  "title": "The Lost Expedition",
+  "doneFlag": "journal_returned",
+  "doneText": "Scholar Aldous has Mira's journal. Her last page said the dragon flinched from fire.",
+  "stages": [
+   {
+    "flag": "aldous_met",
+    "text": "Scholar Aldous of Wintermere: his apprentice Mira went north-east onto the Frostmark to chart the wargs' hunting grounds and never came back. Bring back her journal."
+   },
+   {
+    "item": "frozen_journal",
+    "text": "You found Mira's journal in her abandoned camp. Take it to Scholar Aldous in Wintermere."
+   }
+  ]
+ },
+ {
+  "id": "rimefang",
+  "title": "The Long Winter",
+  "doneFlag": "rimefang_heart_returned",
+  "doneText": "Jarl Ingrith has Rimefang's heart. The thaw has come to Wintermere.",
+  "stages": [
+   {
+    "flag": "jarl_met",
+    "text": "Jarl Ingrith of Wintermere: the ice dragon Rimefang has made the winter last three years. It lairs at the bottom of the Rime Halls, west across the Frostmark. Bring her its heart."
+   },
+   {
+    "item": "rimefang_heart",
+    "text": "You carry the Heart of Rimefang. Take it to Jarl Ingrith in Wintermere."
+   }
+  ]
+ },
+ {
+  "id": "cistern",
+  "title": "Below the Cellars",
+  "doneFlag": "ooze_mother_dead",
   "doneText": "The Mother of Oozes is dead, and the old cisterns are quiet.",
   "stages": [
-   {"visited": "cistern", "text": "Slick steps below the Brindlemoor cellars lead to the old cisterns. Scratched under a keeper's plaque: something big lives in the north-west pool."}
+   {
+    "visited": "cistern",
+    "text": "Slick steps below the Brindlemoor cellars lead to the old cisterns. Scratched under a keeper's plaque: something big lives in the north-west pool."
+   }
   ]
  },
  {
-  "id": "catacombs", "title": "The Barrow-King", "doneFlag": "wight_king_dead",
+  "id": "catacombs",
+  "title": "The Barrow-King",
+  "doneFlag": "wight_king_dead",
   "doneText": "The Wight King no longer sits his throne.",
   "stages": [
-   {"visited": "catacombs", "text": "Catacombs lie below the Hollow Crypt. A standing stone says the Barrow-King and all his house lie here - and the bone key sleeps among his people."},
-   {"item": "barrow_key", "text": "You have the Barrow Key. It opens the throne room of the Barrow-King."}
+   {
+    "visited": "catacombs",
+    "text": "Catacombs lie below the Hollow Crypt. A standing stone says the Barrow-King and all his house lie here - and the bone key sleeps among his people."
+   },
+   {
+    "item": "barrow_key",
+    "text": "You have the Barrow Key. It opens the throne room of the Barrow-King."
+   }
   ]
  },
  {
-  "id": "deep", "title": "The Sunless Deep", "doneFlag": "umbral_wyrm_slain",
+  "id": "deep",
+  "title": "The Sunless Deep",
+  "doneFlag": "umbral_wyrm_slain",
   "doneText": "The Umbral Wyrm is dead, and light creeps down into the deep for the first time in an age.",
   "stages": [
-   {"flag": "sun_king_slain", "text": "With the Sun King gone, the seal on the black stair in his chamber has crumbled. Something waits at the bottom of the world."},
-   {"visited": "deep", "text": "The Sun Kings sealed a great serpent in the Sunless Deep: it ate the light. Their last carving begs you not to wake it."}
+   {
+    "flag": "sun_king_slain",
+    "text": "With the Sun King gone, the seal on the black stair in his chamber has crumbled. Something waits at the bottom of the world."
+   },
+   {
+    "visited": "deep",
+    "text": "The Sun Kings sealed a great serpent in the Sunless Deep: it ate the light. Their last carving begs you not to wake it."
+   }
   ]
  }
 ]

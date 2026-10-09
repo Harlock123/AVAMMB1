@@ -521,6 +521,7 @@ public sealed class GameSession
             case MapEventKind.Temple:
             case MapEventKind.Tavern:
             case MapEventKind.Training:
+            case MapEventKind.Academy:
                 result.Interaction = ev;
                 break;
             case MapEventKind.Inn:
@@ -812,6 +813,9 @@ public sealed class GameSession
         }
     }
 
+    /// <summary>Percent chance that a random encounter is led by an elite monster.</summary>
+    public const int EliteChance = 5;
+
     private void TryRandomEncounter(StepResult result, int chance)
     {
         var map = CurrentMap;
@@ -827,6 +831,11 @@ public sealed class GameSession
             monsters.AddRange(CombatEngine.Spawn(Content.Monster(entry.Monster), entry.Count.Roll(Random), Random));
         }
         var ordered = monsters.Take(8).ToList();
+        // Now and then a group is led by an elite: tougher, but worth far more.
+        if (Random.Chance(EliteChance) && ordered.FirstOrDefault(m => !m.Def.Boss) is { } leader)
+        {
+            leader.MakeElite();
+        }
         StartCombat(ordered, result);
         _combatEventKey = null;
     }
@@ -854,7 +863,7 @@ public sealed class GameSession
         Combat = new CombatEngine(Rules, Random, State, monsters) { MagicSuppressed = () => IsAntiMagicHere };
         _combatFlag = null;
         result.CombatStarted = true;
-        var names = Combat.Monsters.GroupBy(m => m.Def).Select(g => g.Count() == 1 ? $"a {g.Key.Name}" : $"{g.Count()} {g.Key.PluralName}");
+        var names = Combat.Monsters.GroupBy(m => m.Def).Select(g => g.Count() == 1 ? g.Key.NameWithArticle : $"{g.Count()} {g.Key.PluralName}");
         result.Messages.Add(new($"Encounter! The party faces {string.Join(", ", names)}.", MessageKind.Bad, "roar"));
     }
 

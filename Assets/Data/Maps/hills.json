@@ -220,7 +220,8 @@
    "gold": "10d20",
    "gems": 3,
    "items": [
-    "ring_protection"
+    "ring_protection",
+    "wyvern_egg"
    ],
    "text": "Among the bones: coins, gems and a silver ring."
   }

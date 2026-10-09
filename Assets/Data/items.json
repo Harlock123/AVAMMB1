@@ -889,5 +889,159 @@
    "luck": 2
   },
   "description": "A ring of green stone from the bottom of the world."
+ },
+ {
+  "id": "ogre_tusk",
+  "name": "Ogre's Tusk",
+  "kind": "quest",
+  "icon": "horn",
+  "description": "A yellowed tusk the length of your forearm - proof the Greenvale ogre is dead."
+ },
+ {
+  "id": "wyvern_egg",
+  "name": "Wyvern Egg",
+  "kind": "quest",
+  "icon": "egg",
+  "description": "A mottled egg, still faintly warm."
+ },
+ {
+  "id": "renegade_signet",
+  "name": "Renegade Signet",
+  "kind": "quest",
+  "icon": "ring_gold",
+  "description": "The renegade chief's seal ring, stolen from Thornwick's own vaults."
+ },
+ {
+  "id": "barrow_crown",
+  "name": "Barrow Crown",
+  "kind": "quest",
+  "icon": "sun_crown",
+  "description": "The Barrow-King's crown of black iron, cold as the grave."
+ },
+ {
+  "id": "scorpion_stinger",
+  "name": "Emperor's Stinger",
+  "kind": "quest",
+  "icon": "dagger",
+  "description": "The sting of the great scorpion of the Sunscar Wastes."
+ },
+ {
+  "id": "frozen_journal",
+  "name": "Frozen Journal",
+  "kind": "quest",
+  "icon": "book",
+  "description": "Apprentice Mira's expedition journal, its pages stiff with frost."
+ },
+ {
+  "id": "rimefang_heart",
+  "name": "Heart of Rimefang",
+  "kind": "quest",
+  "icon": "crystal_heart",
+  "description": "A heart of blue crystal that never melts."
+ },
+ {
+  "id": "crystal_plate",
+  "name": "Crystal Plate",
+  "kind": "armor",
+  "icon": "crystal_plate",
+  "price": 16000,
+  "armorClass": 9,
+  "statBonuses": {
+   "endurance": 1
+  },
+  "classes": [
+   "knight",
+   "paladin"
+  ],
+  "description": "Plate grown, not forged, by the ice-smiths of Wintermere."
+ },
+ {
+  "id": "runeblade",
+  "name": "Runeblade of Wintermere",
+  "kind": "weapon",
+  "icon": "runeblade",
+  "price": 12000,
+  "damage": "3d6+3",
+  "hitBonus": 3,
+  "element": "cold",
+  "classes": [
+   "knight",
+   "paladin",
+   "archer",
+   "robber"
+  ],
+  "description": "Its runes frost over in the presence of foes."
+ },
+ {
+  "id": "winter_bow",
+  "name": "Winterwood Bow",
+  "kind": "missile",
+  "icon": "winter_bow",
+  "price": 10000,
+  "damage": "2d8+3",
+  "hitBonus": 3,
+  "classes": [
+   "knight",
+   "paladin",
+   "archer"
+  ],
+  "description": "Strung with frost-giant sinew."
+ },
+ {
+  "id": "crown_winter",
+  "name": "Crown of Winter",
+  "kind": "helmet",
+  "icon": "crown_winter",
+  "price": 9000,
+  "armorClass": 3,
+  "statBonuses": {
+   "intellect": 2,
+   "personality": 2
+  },
+  "description": "Worn by the scholars of the Collegium on high days."
+ },
+ {
+  "id": "amulet_warding",
+  "name": "Amulet of Warding",
+  "kind": "amulet",
+  "icon": "amulet",
+  "price": 11000,
+  "armorClass": 3,
+  "statBonuses": {
+   "luck": 2
+  },
+  "description": "Turns aside blows and bad luck alike."
+ },
+ {
+  "id": "ring_winter",
+  "name": "Ring of the Long Winter",
+  "kind": "ring",
+  "icon": "ring_agate",
+  "price": 9000,
+  "armorClass": 2,
+  "statBonuses": {
+   "endurance": 2,
+   "speed": 2
+  },
+  "description": "The jarls of Wintermere have worn it for three hundred winters."
+ },
+ {
+  "id": "rimescale_mail",
+  "name": "Rimescale Mail",
+  "kind": "armor",
+  "icon": "rimescale",
+  "price": 20000,
+  "armorClass": 8,
+  "statBonuses": {
+   "speed": 1
+  },
+  "classes": [
+   "knight",
+   "paladin",
+   "archer",
+   "robber",
+   "cleric"
+  ],
+  "description": "Scales from Rimefang's own hide, light and colder than steel."
  }
 ]

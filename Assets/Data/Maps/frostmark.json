@@ -1,0 +1,212 @@
+{
+ "id": "frostmark",
+ "name": "The Frostmark",
+ "kind": "outdoor",
+ "format": "blocks",
+ "width": 20,
+ "height": 20,
+ "grid": [
+  "^^^^^^^^^^^^^^^^^^^^",
+  "^^^..........^^^^^^^",
+  "^^^..............^^^",
+  "^........III.....^^^",
+  "^........III.....^^^",
+  "^........III.....^^^",
+  "^.....TTT..........^",
+  "^.....TTT.....II...^",
+  "^^^...........II...^",
+  "^^^................^",
+  "^^^................^",
+  "^^^.........TTT....^",
+  "^...........TTT....^",
+  "^....TT............^",
+  "^....TT............^",
+  "^..................^",
+  "^.....~............^",
+  "^...~~..^^^^^......^",
+  "^.......^^^^^......^",
+  "^^^^^^^^^^^^^^^^^^^^"
+ ],
+ "terrain": {
+  "^": {
+   "solid": true,
+   "texture": "wall_mountain",
+   "name": "Crag",
+   "mapColor": "#9a9aa8"
+  },
+  "T": {
+   "solid": true,
+   "opaque": false,
+   "feature": "tree",
+   "name": "Pines",
+   "mapColor": "#3a6a4a"
+  },
+  "I": {
+   "floor": "floor_ice",
+   "name": "Frozen lake",
+   "mapColor": "#6aa0c8"
+  },
+  "~": {
+   "solid": true,
+   "opaque": false,
+   "floor": "water",
+   "name": "Icy river",
+   "mapColor": "#2a5a9a"
+  }
+ },
+ "wallTexture": "wall_mountain",
+ "floorTexture": "floor_snow",
+ "skyColor": "#b8c4d4",
+ "encounterChance": 7,
+ "encounters": [
+  {
+   "monster": "frost_warg",
+   "count": "1d3+1",
+   "weight": 25
+  },
+  {
+   "monster": "ice_bear",
+   "count": "1d2",
+   "weight": 20
+  },
+  {
+   "monster": "white_imp",
+   "count": "1d2",
+   "weight": 15
+  },
+  {
+   "monster": "ice_beast",
+   "count": "1",
+   "weight": 15
+  },
+  {
+   "monster": "frost_giant",
+   "count": "1",
+   "weight": 10
+  },
+  {
+   "monster": "blizzard_demon",
+   "count": "1",
+   "weight": 5
+  }
+ ],
+ "events": [
+  {
+   "x": 18,
+   "y": 10,
+   "type": "teleport",
+   "name": "Wintermere",
+   "feature": "entrance",
+   "map": "wintermere",
+   "toX": 7,
+   "toY": 14,
+   "facing": "North",
+   "text": "The smoke of Wintermere's chimneys rises ahead."
+  },
+  {
+   "x": 3,
+   "y": 4,
+   "type": "teleport",
+   "name": "The Rime Halls",
+   "feature": "ice_cave",
+   "map": "rime1",
+   "toX": 7,
+   "toY": 15,
+   "facing": "North",
+   "text": "A mouth of blue ice opens in the mountainside. Cold pours out of it like water."
+  },
+  {
+   "x": 10,
+   "y": 14,
+   "type": "fountain",
+   "name": "Hot Spring",
+   "feature": "fountain",
+   "heal": true,
+   "restoreSp": true,
+   "conditions": "poisoned, diseased, paralyzed",
+   "text": "Steam rises from a spring in the snow. The party bathes and is restored."
+  },
+  {
+   "x": 15,
+   "y": 4,
+   "type": "encounter",
+   "id": "expedition_camp",
+   "once": true,
+   "name": "Abandoned Camp",
+   "setFlag": "expedition_camp_clear",
+   "text": "Torn tents half-buried in snow - and the wargs that tore them, still circling.",
+   "monsters": [
+    {
+     "monster": "frost_warg",
+     "count": "4"
+    },
+    {
+     "monster": "white_imp",
+     "count": "1"
+    }
+   ]
+  },
+  {
+   "x": 16,
+   "y": 3,
+   "type": "treasure",
+   "id": "expedition_cache",
+   "once": true,
+   "feature": "chest",
+   "name": "Mira's Pack",
+   "requiresFlag": "expedition_camp_clear",
+   "blocking": true,
+   "failText": "A frozen pack lies under a fallen tent. The wargs are watching it.",
+   "gold": "10d20",
+   "items": [
+    "frozen_journal",
+    "potion_vigor"
+   ],
+   "text": "Apprentice Mira's pack. Her journal is inside, frozen stiff."
+  },
+  {
+   "x": 5,
+   "y": 15,
+   "type": "encounter",
+   "id": "giants_ford",
+   "once": true,
+   "name": "Giants' Ford",
+   "setFlag": "giants_ford_clear",
+   "text": "Two frost giants wade out of the river, clubs raised.",
+   "monsters": [
+    {
+     "monster": "frost_giant",
+     "count": "2"
+    }
+   ]
+  },
+  {
+   "x": 3,
+   "y": 16,
+   "type": "treasure",
+   "id": "giants_hoard",
+   "once": true,
+   "feature": "chest",
+   "name": "Giants' Toll",
+   "requiresFlag": "giants_ford_clear",
+   "blocking": true,
+   "failText": "A heap of tolls taken from travellers lies by the ford. The giants have not finished collecting.",
+   "gold": "30d20",
+   "gems": 4,
+   "items": [
+    "winter_bow"
+   ],
+   "text": "Tolls taken from travellers - including a fine bow."
+  },
+  {
+   "x": 9,
+   "y": 9,
+   "type": "message",
+   "name": "Cairn",
+   "feature": "column",
+   "text": "A cairn of stones. Scratched on the top one: 'The Halls lie west, under the crags. Do not go without fire.'"
+  }
+ ],
+ "music": "title",
+ "ambience": "wind"
+}

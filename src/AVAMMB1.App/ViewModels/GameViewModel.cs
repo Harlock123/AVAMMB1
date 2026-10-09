@@ -272,6 +272,7 @@ public sealed partial class GameViewModel : ViewModelBase
             MapEventKind.Temple => new TempleViewModel(this, ev),
             MapEventKind.Tavern => new TavernViewModel(this, ev),
             MapEventKind.Training => new TrainingViewModel(this, ev),
+            MapEventKind.Academy => new AcademyViewModel(this, ev),
             _ => null,
         };
     }

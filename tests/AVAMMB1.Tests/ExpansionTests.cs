@@ -9,10 +9,10 @@ namespace AVAMMB1.Tests;
 public class ExpansionTests
 {
     [Fact]
-    public void World_HasFiveTownsAndEveryMapIsConnected()
+    public void World_HasSixTownsAndEveryMapIsConnected()
     {
         var db = TestContent.Content;
-        Assert.Equal(5, db.Maps.Values.Count(m => m.Def.Kind == MapKind.Town));
+        Assert.Equal(6, db.Maps.Values.Count(m => m.Def.Kind == MapKind.Town));
         Assert.True(db.Maps.Values.Count(m => m.Def.Kind == MapKind.Dungeon) >= 6);
 
         // Follow every teleport from the start map: all maps must be reachable.
@@ -118,6 +118,11 @@ public class SunscarTests
     public void Ferry_ChargesTheFare_AndRefusesWithoutGold()
     {
         var s = TestContent.StartedSession();
+        foreach (var c in s.State.Party)
+        {
+            c.Level = 10;
+            c.MaxHp = c.Hp = 300; // the walk there is not what this test is about
+        }
         var w = new Walker(s);
         w.Travel("wilds");
         w.Travel("saltreach");

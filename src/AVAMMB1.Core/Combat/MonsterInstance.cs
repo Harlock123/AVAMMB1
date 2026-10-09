@@ -13,7 +13,7 @@ public sealed class MonsterInstance(MonsterDef def, int hp)
     /// <summary>Current hit points.</summary>
     public int Hp { get; set; } = Math.Max(1, hp);
     /// <summary>Maximum hit points.</summary>
-    public int MaxHp { get; } = Math.Max(1, hp);
+    public int MaxHp { get; private set; } = Math.Max(1, hp);
     /// <summary>Conditions (only Asleep and Paralyzed are used for monsters).</summary>
     public Condition Conditions { get; set; }
     /// <summary>Whether the monster ran away.</summary>
@@ -21,8 +21,30 @@ public sealed class MonsterInstance(MonsterDef def, int hp)
     /// <summary>Armor class lost to weakening magic during this battle.</summary>
     public int ArmorPenalty { get; set; }
 
+    /// <summary>
+    /// A rare, tougher specimen: double hit points, +2 armor class, half again as much damage, and
+    /// triple experience and gold with a chance of extra loot.
+    /// </summary>
+    public bool Elite { get; private set; }
+
     /// <summary>Current armor class including penalties.</summary>
-    public int ArmorClass => Def.ArmorClass - ArmorPenalty;
+    public int ArmorClass => Def.ArmorClass + (Elite ? 2 : 0) - ArmorPenalty;
+
+    /// <summary>Turns this monster into an elite (see <see cref="Elite"/>).</summary>
+    public void MakeElite()
+    {
+        if (Elite)
+        {
+            return;
+        }
+        Elite = true;
+        MaxHp *= 2;
+        Hp = MaxHp;
+    }
+
+    /// <summary>Damage after the elite bonus.</summary>
+    /// <param name="damage">Rolled damage.</param>
+    public int ScaleDamage(int damage) => Elite ? damage * 3 / 2 : damage;
 
     /// <summary>Display label, e.g. "Goblin #2".</summary>
     public string Label { get; set; } = def.Name;

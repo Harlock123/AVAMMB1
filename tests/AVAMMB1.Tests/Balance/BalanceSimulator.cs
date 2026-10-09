@@ -33,6 +33,7 @@ internal sealed class ZoneReport
     public long SpentHealing { get; set; }
     public long SpentTraining { get; set; }
     public long SpentGear { get; set; }
+    public long SpentAcademy { get; set; }
     public long GoldAtExit { get; set; }
     /// <summary>Battles fought while someone could train but the party could not afford it.</summary>
     public int BattlesBlockedByGold { get; set; }
@@ -43,7 +44,7 @@ internal sealed class ZoneReport
     public override string ToString() =>
         $"{Zone.Map,-10} L{EntryLevel,2}->L{ExitLevel,2} (target {Zone.TargetLevel,2}) {(Reached ? "ok   " : Bankrupt ? "BROKE" : "STUCK")} " +
         $"battles {Battles,4}  wipes {Wipes,2}  deaths {Deaths,3}  town {TownTrips,3}  camps {Camps,3}  xp/battle {XpPerBattle,6}  " +
-        $"gold +{GoldEarned,7} chests +{GoldFromChests,6} potions {PotionsUsed,3} heal -{SpentHealing,6} train -{SpentTraining,7} gear -{SpentGear,6} = {GoldAtExit,7}  gold-blocked {BattlesBlockedByGold,3}";
+        $"gold +{GoldEarned,7} chests +{GoldFromChests,6} potions {PotionsUsed,3} heal -{SpentHealing,6} train -{SpentTraining,7} gear -{SpentGear,6} academy -{SpentAcademy,6} = {GoldAtExit,7}  gold-blocked {BattlesBlockedByGold,3}";
 }
 
 /// <summary>
@@ -273,7 +274,12 @@ internal sealed class BalanceSimulator
             var entry = PickWeighted(map.Def.Encounters);
             monsters.AddRange(CombatEngine.Spawn(_s.Content.Monster(entry.Monster), entry.Count.Roll(_s.Random), _s.Random));
         }
-        _s.StartCombat(monsters.Take(8), new StepResult());
+        var ordered = monsters.Take(8).ToList();
+        if (_s.Random.Chance(GameSession.EliteChance) && ordered.FirstOrDefault(m => !m.Def.Boss) is { } leader)
+        {
+            leader.MakeElite();
+        }
+        _s.StartCombat(ordered, new StepResult());
         var combat = _s.Combat!;
         combat.Advance();
         var guard = 0;
@@ -463,6 +469,10 @@ internal sealed class BalanceSimulator
         BuyPotions();
         BuyGear();
         report.SpentGear += Math.Max(0, gold - TotalGold);
+
+        gold = TotalGold;
+        Study();
+        report.SpentAcademy += Math.Max(0, gold - TotalGold);
         _s.Town.PoolAll();
         _save = Clone(State);
     }
@@ -486,17 +496,57 @@ internal sealed class BalanceSimulator
                 }
             }
         }
+        // Sell spare equipment and surplus consumables; keep quest items and a couple of each useful potion.
+        var keep = new Dictionary<string, int> { ["potion_healing"] = 2, ["potion_cure"] = 2, ["potion_vigor"] = 2, ["potion_mana"] = 2 };
         foreach (var c in State.Party)
         {
             for (var i = c.Backpack.Count - 1; i >= 0; i--)
             {
-                if (_s.Content.Item(c.Backpack[i].ItemId).Slot is not null)
+                var item = c.Backpack[i].ItemId;
+                if (_s.Content.Item(item).Kind == ItemKind.Quest)
                 {
-                    _s.Town.Sell(c, i);
+                    continue;
                 }
+                if (keep.TryGetValue(item, out var left) && left > 0)
+                {
+                    keep[item] = left - 1;
+                    continue;
+                }
+                _s.Town.Sell(c, i);
             }
         }
         _s.Town.PoolAll();
+    }
+
+    /// <summary>With gold to spare (beyond two training sessions), buys academy points in each class's key statistic.</summary>
+    private void Study()
+    {
+        var academy = _townsSeen.Select(t => TownEvent(t, MapEventKind.Academy)).OfType<MapEventDef>().OrderBy(e => e.PriceFactor).FirstOrDefault();
+        if (academy is null)
+        {
+            return;
+        }
+        var reserve = State.Party.Sum(c => (long)Rulebook.TrainingCost(c)) * 2;
+        var studied = true;
+        while (studied)
+        {
+            studied = false;
+            foreach (var c in State.Party.OrderBy(c => c.AcademyPoints))
+            {
+                var stat = c.Class switch
+                {
+                    "sorcerer" => Stat.Intellect,
+                    "cleric" => Stat.Personality,
+                    _ => c.AcademyPoints % 2 == 0 ? Stat.Might : Stat.Accuracy,
+                };
+                if (TownServices.AcademyBlock(c, stat) is null && TotalGold - TownServices.AcademyCost(c, academy) >= reserve)
+                {
+                    _s.Town.Study(c, stat, academy);
+                    _s.Town.PoolAll();
+                    studied = true;
+                }
+            }
+        }
     }
 
     /// <summary>Keeps two healing and two cure potions in stock when gold beyond the training reserve allows.</summary>

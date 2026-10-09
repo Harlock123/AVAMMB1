@@ -185,6 +185,53 @@
    "name": "Museum of Ashkar",
    "requiresFlag": "sun_disk_returned",
    "text": "The Sun Disk glows in the museum's centre case. Crowds come every day to see it."
+  },
+  {
+   "x": 5,
+   "y": 13,
+   "type": "quest",
+   "id": "rashid_intro",
+   "once": true,
+   "name": "Captain Rashid's Post",
+   "feature": "shop_books",
+   "requiresNotFlag": "rashid_met",
+   "setFlag": "rashid_met",
+   "text": "Captain Rashid of the Desert Guard folds his arms. \"A scorpion the size of a cart nests north-east of the oasis. It has killed six of my riders. Bring me its stinger.\""
+  },
+  {
+   "x": 5,
+   "y": 13,
+   "type": "quest",
+   "id": "rashid_reward",
+   "once": true,
+   "name": "Captain Rashid's Post",
+   "requiresFlag": "rashid_met",
+   "requiresItem": "scorpion_stinger",
+   "consumeItem": true,
+   "setFlag": "rashid_done",
+   "items": [
+    "potion_vigor"
+   ],
+   "xp": 12000,
+   "gold": "2500",
+   "text": "Rashid hangs the stinger above his door. \"For my riders. The Guard's bounty is yours, and the gems we took from its last victims.\"",
+   "gems": 6
+  },
+  {
+   "x": 5,
+   "y": 13,
+   "type": "message",
+   "name": "Captain Rashid's Post",
+   "requiresFlag": "rashid_done",
+   "text": "Rashid salutes as you pass."
+  },
+  {
+   "x": 12,
+   "y": 10,
+   "type": "academy",
+   "name": "House of Scholars",
+   "feature": "shop_books",
+   "priceFactor": 1.2
   }
  ],
  "ambience": "wind"

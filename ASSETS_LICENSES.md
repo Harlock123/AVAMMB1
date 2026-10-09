@@ -10,6 +10,7 @@ The game code is licensed separately under the MIT license (see [LICENSE](LICENS
 - Character portraits are composited at runtime from the unmodified race base tiles and paper-doll layer tiles.
 - All audio was transcoded to Ogg Vorbis (sound effects downmixed to mono) with ffmpeg; music tracks are otherwise unedited.
 - Ambient loops were downmixed to mono at 22 kHz; the two park ambiences were trimmed to 90 seconds with a 2-second crossfade so they loop seamlessly.
+- `Graphics/Textures/floor_snow.png` is the DCSS `frozen_0` floor tile, lightened and desaturated to read as snow.
 - Files were renamed to describe their in-game use (original names are listed below).
 
 ## Sources
@@ -113,6 +114,7 @@ The game code is licensed separately under the MIT license (see [LICENSE](LICENS
 | `Graphics/Features/column.png` | Dungeon Crawl 32x32 tiles | `dungeon/statues/crumbled_column_1.png` |
 | `Graphics/Features/entrance.png` | Dungeon Crawl 32x32 tiles | `dungeon/gateways/enter.png` |
 | `Graphics/Features/fountain.png` | Dungeon Crawl 32x32 tiles | `dungeon/blue_fountain.png` |
+| `Graphics/Features/ice_cave.png` | Dungeon Crawl 32x32 tiles | `dungeon/gateways/ice_cave_gone.png` |
 | `Graphics/Features/mangrove.png` | Dungeon Crawl 32x32 tiles | `dungeon/trees/mangrove_1.png` |
 | `Graphics/Features/mine_stairs_down.png` | Dungeon Crawl 32x32 tiles | `dungeon/gateways/rock_stairs_down.png` |
 | `Graphics/Features/mine_stairs_up.png` | Dungeon Crawl 32x32 tiles | `dungeon/gateways/rock_stairs_up.png` |
@@ -144,10 +146,14 @@ The game code is licensed separately under the MIT license (see [LICENSE](LICENS
 | `Graphics/Items/claymore.png` | Dungeon Crawl 32x32 tiles | `item/weapon/claymore.png` |
 | `Graphics/Items/club.png` | Dungeon Crawl 32x32 tiles | `item/weapon/club_new.png` |
 | `Graphics/Items/crossbow.png` | Dungeon Crawl 32x32 tiles | `item/weapon/ranged/crossbow_1.png` |
+| `Graphics/Items/crown_winter.png` | Dungeon Crawl 32x32 tiles | `item/armor/headgear/helmet_art_1.png` |
 | `Graphics/Items/crystal.png` | Dungeon Crawl 32x32 tiles | `item/misc/misc_crystal_new.png` |
+| `Graphics/Items/crystal_heart.png` | Dungeon Crawl 32x32 tiles | `item/misc/misc_crystal_new.png` |
+| `Graphics/Items/crystal_plate.png` | Dungeon Crawl 32x32 tiles | `item/armor/torso/crystal_plate_mail.png` |
 | `Graphics/Items/dagger.png` | Dungeon Crawl 32x32 tiles | `item/weapon/dagger_new.png` |
 | `Graphics/Items/dragon_scale.png` | Dungeon Crawl 32x32 tiles | `item/armor/torso/green_dragon_scale_mail.png` |
 | `Graphics/Items/dwarven_mail.png` | Dungeon Crawl 32x32 tiles | `item/armor/torso/dwarven_ringmail.png` |
+| `Graphics/Items/egg.png` | Dungeon Crawl 32x32 tiles | `item/misc/misc_stone_new.png` |
 | `Graphics/Items/evening_star.png` | Dungeon Crawl 32x32 tiles | `item/weapon/eveningstar_1_new.png` |
 | `Graphics/Items/flail.png` | Dungeon Crawl 32x32 tiles | `item/weapon/flail_1_new.png` |
 | `Graphics/Items/gauntlets.png` | Dungeon Crawl 32x32 tiles | `item/armor/hands/gauntlet_1.png` |
@@ -157,6 +163,7 @@ The game code is licensed separately under the MIT license (see [LICENSE](LICENS
 | `Graphics/Items/halberd.png` | Dungeon Crawl 32x32 tiles | `item/weapon/halberd_1.png` |
 | `Graphics/Items/hand_axe.png` | Dungeon Crawl 32x32 tiles | `item/weapon/hand_axe_1_new.png` |
 | `Graphics/Items/helmet.png` | Dungeon Crawl 32x32 tiles | `item/armor/headgear/helmet_1.png` |
+| `Graphics/Items/horn.png` | Dungeon Crawl 32x32 tiles | `item/misc/misc_horn.png` |
 | `Graphics/Items/key.png` | Dungeon Crawl 32x32 tiles | `item/misc/key.png` |
 | `Graphics/Items/large_shield.png` | Dungeon Crawl 32x32 tiles | `item/armor/shields/large_shield_1_new.png` |
 | `Graphics/Items/leather_armor.png` | Dungeon Crawl 32x32 tiles | `item/armor/torso/leather_armor_1.png` |
@@ -172,10 +179,12 @@ The game code is licensed separately under the MIT license (see [LICENSE](LICENS
 | `Graphics/Items/potion_green.png` | Dungeon Crawl 32x32 tiles | `item/potion/emerald.png` |
 | `Graphics/Items/potion_red.png` | Dungeon Crawl 32x32 tiles | `item/potion/ruby_new.png` |
 | `Graphics/Items/ration.png` | Dungeon Crawl 32x32 tiles | `item/food/bread_ration_new.png` |
+| `Graphics/Items/rimescale.png` | Dungeon Crawl 32x32 tiles | `item/armor/torso/ice_dragon_armor_new.png` |
 | `Graphics/Items/ring.png` | Dungeon Crawl 32x32 tiles | `item/ring/silver.png` |
 | `Graphics/Items/ring_agate.png` | Dungeon Crawl 32x32 tiles | `item/ring/agate.png` |
 | `Graphics/Items/ring_gold.png` | Dungeon Crawl 32x32 tiles | `item/ring/gold.png` |
 | `Graphics/Items/ring_mail.png` | Dungeon Crawl 32x32 tiles | `item/armor/torso/elven_ringmail.png` |
+| `Graphics/Items/runeblade.png` | Dungeon Crawl 32x32 tiles | `item/weapon/triple_sword_new.png` |
 | `Graphics/Items/scarab_amulet.png` | Dungeon Crawl 32x32 tiles | `item/amulet/face_1_gold.png` |
 | `Graphics/Items/scimitar.png` | Dungeon Crawl 32x32 tiles | `item/weapon/scimitar_1_new.png` |
 | `Graphics/Items/scroll.png` | Dungeon Crawl 32x32 tiles | `item/scroll/scroll-red.png` |
@@ -190,9 +199,11 @@ The game code is licensed separately under the MIT license (see [LICENSE](LICENS
 | `Graphics/Items/torch.png` | Dungeon Crawl 32x32 tiles | `item/misc/misc_lantern.png` |
 | `Graphics/Items/umbral_blade.png` | Dungeon Crawl 32x32 tiles | `item/weapon/demon_blade.png` |
 | `Graphics/Items/war_hammer.png` | Dungeon Crawl 32x32 tiles | `item/weapon/war_hammer.png` |
+| `Graphics/Items/winter_bow.png` | Dungeon Crawl 32x32 tiles | `item/weapon/ranged/longbow_3.png` |
 | `Graphics/Monsters/bandit.png` | Dungeon Crawl 32x32 tiles | `monster/human_new.png` |
 | `Graphics/Monsters/barrow_wight.png` | Dungeon Crawl 32x32 tiles | `monster/undead/wight_new.png` |
 | `Graphics/Monsters/basilisk.png` | Dungeon Crawl 32x32 tiles | `monster/animals/basilisk.png` |
+| `Graphics/Monsters/blizzard_demon.png` | Dungeon Crawl 32x32 tiles | `monster/demons/blizzard_demon.png` |
 | `Graphics/Monsters/bog_body.png` | Dungeon Crawl 32x32 tiles | `monster/undead/bog_body.png` |
 | `Graphics/Monsters/bone_dragon.png` | Dungeon Crawl 32x32 tiles | `monster/undead/bone_dragon_new.png` |
 | `Graphics/Monsters/brown_ooze.png` | Dungeon Crawl 32x32 tiles | `monster/brown_ooze.png` |
@@ -212,6 +223,8 @@ The game code is licensed separately under the MIT license (see [LICENSE](LICENS
 | `Graphics/Monsters/efreet.png` | Dungeon Crawl 32x32 tiles | `monster/demons/efreet.png` |
 | `Graphics/Monsters/emperor_scorpion.png` | Dungeon Crawl 32x32 tiles | `monster/animals/emperor_scorpion.png` |
 | `Graphics/Monsters/flayed_ghost.png` | Dungeon Crawl 32x32 tiles | `monster/undead/flayed_ghost_new.png` |
+| `Graphics/Monsters/frost_giant.png` | Dungeon Crawl 32x32 tiles | `monster/frost_giant_new.png` |
+| `Graphics/Monsters/frost_warg.png` | Dungeon Crawl 32x32 tiles | `monster/animals/warg.png` |
 | `Graphics/Monsters/ghoul.png` | Dungeon Crawl 32x32 tiles | `monster/undead/ghoul.png` |
 | `Graphics/Monsters/giant_leech.png` | Dungeon Crawl 32x32 tiles | `monster/animals/giant_leech.png` |
 | `Graphics/Monsters/giant_roach.png` | Dungeon Crawl 32x32 tiles | `monster/animals/giant_cockroach_new.png` |
@@ -225,6 +238,10 @@ The game code is licensed separately under the MIT license (see [LICENSE](LICENS
 | `Graphics/Monsters/hill_giant.png` | Dungeon Crawl 32x32 tiles | `monster/stone_giant_new.png` |
 | `Graphics/Monsters/hill_wyvern.png` | Dungeon Crawl 32x32 tiles | `monster/dragons/wyvern_new.png` |
 | `Graphics/Monsters/hobgoblin.png` | Dungeon Crawl 32x32 tiles | `monster/hobgoblin_new.png` |
+| `Graphics/Monsters/ice_bear.png` | Dungeon Crawl 32x32 tiles | `monster/animals/polar_bear.png` |
+| `Graphics/Monsters/ice_beast.png` | Dungeon Crawl 32x32 tiles | `monster/animals/ice_beast.png` |
+| `Graphics/Monsters/ice_devil.png` | Dungeon Crawl 32x32 tiles | `monster/demons/ice_devil.png` |
+| `Graphics/Monsters/ice_fiend.png` | Dungeon Crawl 32x32 tiles | `monster/demons/ice_fiend.png` |
 | `Graphics/Monsters/jackal_guard.png` | Dungeon Crawl 32x32 tiles | `monster/anubis_guard.png` |
 | `Graphics/Monsters/kobold.png` | Dungeon Crawl 32x32 tiles | `monster/kobold_new.png` |
 | `Graphics/Monsters/kobold_chief.png` | Dungeon Crawl 32x32 tiles | `monster/big_kobold_new.png` |
@@ -245,6 +262,7 @@ The game code is licensed separately under the MIT license (see [LICENSE](LICENS
 | `Graphics/Monsters/pit_viper.png` | Dungeon Crawl 32x32 tiles | `monster/animals/snake.png` |
 | `Graphics/Monsters/rattlebones.png` | Dungeon Crawl 32x32 tiles | `monster/undead/skeletons/skeleton_humanoid_small_new.png` |
 | `Graphics/Monsters/renegade_dwarf.png` | Dungeon Crawl 32x32 tiles | `monster/deep_dwarf.png` |
+| `Graphics/Monsters/rimefang.png` | Dungeon Crawl 32x32 tiles | `monster/dragons/ice_dragon_new.png` |
 | `Graphics/Monsters/rock_beetle.png` | Dungeon Crawl 32x32 tiles | `monster/animals/boulder_beetle.png` |
 | `Graphics/Monsters/rock_troll.png` | Dungeon Crawl 32x32 tiles | `monster/rock_troll.png` |
 | `Graphics/Monsters/salamander.png` | Dungeon Crawl 32x32 tiles | `monster/salamander_firebrand.png` |
@@ -260,6 +278,7 @@ The game code is licensed separately under the MIT license (see [LICENSE](LICENS
 | `Graphics/Monsters/umbral_wyrm.png` | Dungeon Crawl 32x32 tiles | `monster/dragons/shadow_dragon.png` |
 | `Graphics/Monsters/vampire_knight.png` | Dungeon Crawl 32x32 tiles | `monster/undead/vampire_knight_new.png` |
 | `Graphics/Monsters/vault_warden.png` | Dungeon Crawl 32x32 tiles | `monster/vault/vault_warden.png` |
+| `Graphics/Monsters/white_imp.png` | Dungeon Crawl 32x32 tiles | `monster/demons/white_imp.png` |
 | `Graphics/Monsters/wight_king.png` | Dungeon Crawl 32x32 tiles | `monster/undead/wight_king.png` |
 | `Graphics/Monsters/wild_dog.png` | Dungeon Crawl 32x32 tiles | `monster/animals/jackal_new.png` |
 | `Graphics/Monsters/wraith.png` | Dungeon Crawl 32x32 tiles | `monster/undead/wraith.png` |
@@ -283,11 +302,13 @@ The game code is licensed separately under the MIT license (see [LICENSE](LICENS
 | `Graphics/Textures/floor_dirt.png` | Dungeon Crawl 32x32 tiles | `dungeon/floor/grey_dirt_0_new.png` |
 | `Graphics/Textures/floor_earth.png` | Dungeon Crawl 32x32 tiles | `dungeon/floor/dirt_full_new.png` |
 | `Graphics/Textures/floor_grass.png` | Dungeon Crawl 32x32 tiles | `dungeon/floor/grass/grass_0_new.png` |
+| `Graphics/Textures/floor_ice.png` | Dungeon Crawl 32x32 tiles | `dungeon/floor/ice_0_new.png` |
 | `Graphics/Textures/floor_limestone.png` | Dungeon Crawl 32x32 tiles | `dungeon/floor/limestone_0.png` |
 | `Graphics/Textures/floor_marble.png` | Dungeon Crawl 32x32 tiles | `dungeon/floor/marble_floor_1.png` |
 | `Graphics/Textures/floor_pebble.png` | Dungeon Crawl 32x32 tiles | `dungeon/floor/pebble_brown_0_new.png` |
 | `Graphics/Textures/floor_sand.png` | Dungeon Crawl 32x32 tiles | `dungeon/floor/sand_1.png` |
 | `Graphics/Textures/floor_sandstone.png` | Dungeon Crawl 32x32 tiles | `dungeon/floor/sandstone_floor_0.png` |
+| `Graphics/Textures/floor_snow.png` | Dungeon Crawl 32x32 tiles | `dungeon/floor/frozen_0.png (lightened and desaturated)` |
 | `Graphics/Textures/floor_tomb.png` | Dungeon Crawl 32x32 tiles | `dungeon/floor/tomb_0_new.png` |
 | `Graphics/Textures/shallow_water.png` | Dungeon Crawl 32x32 tiles | `dungeon/water/shallow_water.png` |
 | `Graphics/Textures/tree.png` | Dungeon Crawl 32x32 tiles | `dungeon/trees/tree_1_yellow.png` |
@@ -298,6 +319,8 @@ The game code is licensed separately under the MIT license (see [LICENSE](LICENS
 | `Graphics/Textures/wall_deep.png` | Dungeon Crawl 32x32 tiles | `dungeon/wall/lair_0_new.png` |
 | `Graphics/Textures/wall_desert_town.png` | Dungeon Crawl 32x32 tiles | `dungeon/wall/sandstone_wall_3.png` |
 | `Graphics/Textures/wall_dungeon.png` | Dungeon Crawl 32x32 tiles | `dungeon/wall/stone_brick_1.png` |
+| `Graphics/Textures/wall_ice.png` | Dungeon Crawl 32x32 tiles | `dungeon/wall/crystal_wall_lightcyan.png` |
+| `Graphics/Textures/wall_ice_deep.png` | Dungeon Crawl 32x32 tiles | `dungeon/wall/crystal_wall_blue.png` |
 | `Graphics/Textures/wall_marble.png` | Dungeon Crawl 32x32 tiles | `dungeon/wall/marble_wall_1.png` |
 | `Graphics/Textures/wall_mine.png` | Dungeon Crawl 32x32 tiles | `dungeon/wall/pebble_red_0_new.png` |
 | `Graphics/Textures/wall_mountain.png` | Dungeon Crawl 32x32 tiles | `dungeon/wall/stone_dark_0.png` |
@@ -312,4 +335,5 @@ The game code is licensed separately under the MIT license (see [LICENSE](LICENS
 | `Graphics/Textures/wall_town4.png` | Dungeon Crawl 32x32 tiles | `dungeon/wall/brick_dark_0.png` |
 | `Graphics/Textures/wall_town5.png` | Dungeon Crawl 32x32 tiles | `dungeon/wall/stone_2_gray_0.png` |
 | `Graphics/Textures/wall_vault.png` | Dungeon Crawl 32x32 tiles | `dungeon/wall/crystal_wall_lightblue.png` |
+| `Graphics/Textures/wall_wintermere.png` | Dungeon Crawl 32x32 tiles | `dungeon/wall/stone_brick_1.png` |
 | `Graphics/Textures/water.png` | Dungeon Crawl 32x32 tiles | `dungeon/water/deep_water.png` |

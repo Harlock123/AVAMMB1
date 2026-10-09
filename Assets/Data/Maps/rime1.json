@@ -1,0 +1,258 @@
+{
+ "id": "rime1",
+ "name": "The Rime Halls",
+ "kind": "dungeon",
+ "format": "edges",
+ "width": 16,
+ "height": 16,
+ "grid": [
+  "+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+",
+  "|. . . . . . . . . . . . . . . .|",
+  "+ + +-+-+-+-+-+-+ +-+-+ + + + + +",
+  "|. .|.|. . . . .|. .|. .|.|.|. .|",
+  "+-+ + + + +-+-+ +-+-+ + + + +-+ +",
+  "|.|. .|. . . .|.|. .|.|. .|. .|.|",
+  "+ +-+ +-+ +-+ + + + + + + +-+ +-+",
+  "|.|. .|. .|. .|. .|.|. .|. .|. .|",
+  "+ + +-+ + + +-+ + + +S+-+ + + + +",
+  "|.|.|. .|.|. .|. . .|.|. .|.|. .|",
+  "+ + + +-+ +-+-+-+D+-+-+-+-+ + + +",
+  "|.|. . .|.|. . . . . .|. . . .|.|",
+  "+ + +-+ + + + + + + + +-+-+ + +-+",
+  "|.|. .|.|.|. . . . . .|. .|. . .|",
+  "+ +-+ + + + + + + + + +-+ +-+ + +",
+  "|. . .|d .|. . . . . .|. .|a a .|",
+  "+-+-+-+ +-+ + + + + + + + + +-+ +",
+  "|. . d d|.|. . . . . .|.|.|a .|.|",
+  "+ +-+-+-+ +-+-+D+-+-+-+ + + + + +",
+  "|. . . . . . . . . . . . . . .|.|",
+  "+ +-+ + +-+-+-+-+ + +-+ +-+-+ + +",
+  "|.|. .|.|. . . .|. .|. . . . .|.|",
+  "+ + +-+ + +-+-+ +-+-+-+-+-+ +-+ +",
+  "|. . .|. . . .|. . .|. .|. .|. .|",
+  "+-+ + + + +-+-+-+-+ + + + +-+ +-+",
+  "|. . .|.|.|. . .|. .|.|.|.|. .|.|",
+  "+ +-+-+ + + +-+D+ +-+ + +-+ +-+ +",
+  "|.|. .|.|.|.|. . . .|.|. . . . .|",
+  "+ +-+ + + + + + + + + +-+ +-+-+ +",
+  "|. .|.|. .|.|. . . .|.|. . .|. .|",
+  "+-+ + +-+ + + + + + + + +-+-+ +-+",
+  "|. .|. . .|.|. . . .|.|. . . . .|",
+  "+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+"
+ ],
+ "terrain": {
+  "d": {
+   "darkness": true,
+   "name": "Magical darkness",
+   "mapColor": "#07070c"
+  },
+  "a": {
+   "antiMagic": true,
+   "name": "Anti-magic",
+   "mapColor": "#3a2050"
+  }
+ },
+ "wallTexture": "wall_ice_deep",
+ "floorTexture": "floor_ice",
+ "ceilingTexture": "wall_ice_deep",
+ "dark": true,
+ "encounterChance": 8,
+ "encounters": [
+  {
+   "monster": "ice_beast",
+   "count": "1d2",
+   "weight": 20
+  },
+  {
+   "monster": "ice_devil",
+   "count": "1d2",
+   "weight": 20
+  },
+  {
+   "monster": "white_imp",
+   "count": "1d3",
+   "weight": 20
+  },
+  {
+   "monster": "frost_warg",
+   "count": "1d3+1",
+   "weight": 15
+  },
+  {
+   "monster": "frost_giant",
+   "count": "1",
+   "weight": 15
+  },
+  {
+   "monster": "blizzard_demon",
+   "count": "1",
+   "weight": 10
+  }
+ ],
+ "events": [
+  {
+   "x": 7,
+   "y": 15,
+   "type": "teleport",
+   "name": "Out to the Tundra",
+   "feature": "stairs_up",
+   "map": "frostmark",
+   "toX": 4,
+   "toY": 4,
+   "facing": "East",
+   "text": "You climb out into the grey daylight of the Frostmark."
+  },
+  {
+   "x": 7,
+   "y": 14,
+   "type": "message",
+   "id": "rime1_hint",
+   "once": true,
+   "name": "Frozen Warrior",
+   "text": "A warrior stands frozen in the ice of the wall, sword half-drawn, face turned toward the depths."
+  },
+  {
+   "x": 7,
+   "y": 7,
+   "type": "encounter",
+   "id": "rime_guard",
+   "once": true,
+   "name": "Hall of Frozen Warriors",
+   "setFlag": "rime_guard_clear",
+   "text": "The ice cracks. Things that are not warriors step out of it.",
+   "monsters": [
+    {
+     "monster": "ice_devil",
+     "count": "2"
+    },
+    {
+     "monster": "frost_giant",
+     "count": "1"
+    }
+   ]
+  },
+  {
+   "x": 6,
+   "y": 6,
+   "type": "treasure",
+   "id": "rime_guard_loot",
+   "once": true,
+   "feature": "chest",
+   "name": "Frozen Armoury",
+   "requiresFlag": "rime_guard_clear",
+   "blocking": true,
+   "failText": "Weapons glint inside the ice. The guardians stand in your way.",
+   "gold": "20d20",
+   "gems": 3,
+   "items": [
+    "potion_vigor",
+    "potion_mana"
+   ],
+   "text": "The frozen warriors' war-chest, cracked open at last."
+  },
+  {
+   "x": 2,
+   "y": 1,
+   "type": "teleport",
+   "name": "Stair of Ice",
+   "feature": "stairs_down",
+   "map": "rime2",
+   "toX": 0,
+   "toY": 15,
+   "facing": "North",
+   "text": "A spiral of ice steps winds down toward a cold blue glow."
+  },
+  {
+   "x": 9,
+   "y": 1,
+   "type": "treasure",
+   "id": "rime1_chest_a",
+   "once": true,
+   "feature": "chest",
+   "name": "Frozen Strongbox",
+   "gold": "25d20",
+   "gems": 2,
+   "text": "A strongbox frozen into the floor. It takes a while to chip free."
+  },
+  {
+   "x": 0,
+   "y": 2,
+   "type": "trap",
+   "id": "rime1_trap_a",
+   "once": true,
+   "damage": "5d8",
+   "text": "Icicles the size of spears fall from the ceiling!"
+  },
+  {
+   "x": 15,
+   "y": 2,
+   "type": "treasure",
+   "id": "rime1_chest_b",
+   "once": true,
+   "feature": "chest",
+   "name": "Lost Explorer's Pack",
+   "gold": "15d20",
+   "items": [
+    "potion_vigor",
+    "scroll_fire"
+   ],
+   "text": "Someone came this far before you."
+  },
+  {
+   "x": 6,
+   "y": 4,
+   "type": "encounter",
+   "id": "rime1_imps",
+   "once": true,
+   "name": "Imp Warren",
+   "text": "Giggling white shapes pour out of a crack in the ice.",
+   "monsters": [
+    {
+     "monster": "white_imp",
+     "count": "5"
+    }
+   ]
+  },
+  {
+   "x": 10,
+   "y": 3,
+   "type": "message",
+   "id": "rime1_secret_hint",
+   "once": true,
+   "name": "Thin Ice",
+   "text": "The wall here is thin enough to see a dark space beyond it. (Search with F.)"
+  },
+  {
+   "x": 10,
+   "y": 4,
+   "type": "treasure",
+   "id": "rime1_secret",
+   "once": true,
+   "feature": "chest",
+   "name": "Frozen Reliquary",
+   "gold": "30d20+300",
+   "gems": 5,
+   "items": [
+    "amulet_warding"
+   ],
+   "text": "A reliquary sealed in the ice long before the dragon came."
+  },
+  {
+   "x": 2,
+   "y": 13,
+   "type": "spinner"
+  },
+  {
+   "x": 15,
+   "y": 0,
+   "type": "trap",
+   "id": "rime1_pit",
+   "once": true,
+   "trap": "pit",
+   "damage": "4d6",
+   "text": "The ice floor cracks and the party slides down a frozen chute!"
+  }
+ ],
+ "music": "caves",
+ "ambience": "wind"
+}

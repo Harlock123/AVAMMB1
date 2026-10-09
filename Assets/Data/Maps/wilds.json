@@ -237,7 +237,8 @@
    "name": "Ogre's Hoard",
    "gold": "6d20",
    "items": [
-    "ring_protection"
+    "ring_protection",
+    "ogre_tusk"
    ],
    "requiresFlag": "ogre_slain",
    "blocking": false,

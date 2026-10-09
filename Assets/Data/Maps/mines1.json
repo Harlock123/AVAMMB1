@@ -147,7 +147,8 @@
    "gems": 2,
    "items": [
     "potion_healing",
-    "potion_healing"
+    "potion_healing",
+    "renegade_signet"
    ],
    "text": "The renegades' strongbox is full of stolen pay."
   },

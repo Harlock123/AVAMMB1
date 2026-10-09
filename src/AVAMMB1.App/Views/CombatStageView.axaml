@@ -4,6 +4,7 @@
              xmlns:c="using:AVAMMB1.App.Controls"
              x:Class="AVAMMB1.App.Views.CombatStageView" x:DataType="vm:CombatViewModel">
   <UserControl.Styles>
+    <Style Selector="TextBlock.elite"><Setter Property="Foreground" Value="{DynamicResource Loot}" /></Style>
     <!-- Idle "breathing": two tempos so a group doesn't move in lock-step. -->
     <Style Selector="c|PixelImage.idleA">
       <Style.Animations>
@@ -73,7 +74,7 @@
                               Classes.idleA="{Binding IdleA}" Classes.idleB="{Binding IdleB}" />
                 <Border Background="#b0000000" CornerRadius="3" Padding="6,1" HorizontalAlignment="Center" Classes="label" Classes.selected="{Binding IsSelected}">
                   <StackPanel>
-                    <TextBlock Text="{Binding Label}" FontWeight="Bold" FontSize="{DynamicResource Font12}" HorizontalAlignment="Center" />
+                    <TextBlock Text="{Binding Label}" FontWeight="Bold" FontSize="{DynamicResource Font12}" HorizontalAlignment="Center" Classes.elite="{Binding IsElite}" />
                     <ProgressBar Minimum="0" Maximum="1" Value="{Binding HpFraction}" Foreground="{DynamicResource HpBrush}" Width="90" />
                     <TextBlock FontSize="{DynamicResource Font11}" HorizontalAlignment="Center" Foreground="{DynamicResource Info}" Text="{Binding Status}" IsVisible="{Binding Status, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
                   </StackPanel>
@@ -99,7 +100,7 @@
                               Classes.idleA="{Binding IdleA}" Classes.idleB="{Binding IdleB}" />
                 <Border Background="#b0000000" CornerRadius="3" Padding="6,1" HorizontalAlignment="Center" Classes="label" Classes.selected="{Binding IsSelected}">
                   <StackPanel>
-                    <TextBlock Text="{Binding Label}" FontWeight="Bold" FontSize="{DynamicResource Font15}" HorizontalAlignment="Center" />
+                    <TextBlock Text="{Binding Label}" FontWeight="Bold" FontSize="{DynamicResource Font15}" HorizontalAlignment="Center" Classes.elite="{Binding IsElite}" />
                     <ProgressBar Minimum="0" Maximum="1" Value="{Binding HpFraction}" Foreground="{DynamicResource HpBrush}" Width="150" />
                     <TextBlock FontSize="{DynamicResource Font11}" HorizontalAlignment="Center" Foreground="{DynamicResource Info}" Text="{Binding Status}" IsVisible="{Binding Status, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
                   </StackPanel>

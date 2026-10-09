@@ -167,7 +167,8 @@
    "gold": "20d20",
    "gems": 4,
    "items": [
-    "potion_vigor"
+    "potion_vigor",
+    "scorpion_stinger"
    ],
    "text": "The packs of earlier, unluckier travellers."
   },

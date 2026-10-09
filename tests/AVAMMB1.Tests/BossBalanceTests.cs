@@ -29,6 +29,8 @@ public class BossBalanceTests(ITestOutputHelper output)
     [InlineData("wight_king", "skeletal_warrior", 2, 6, false)]
     [InlineData("umbral_wyrm", "shade", 2, 15, true)]
     [InlineData("umbral_wyrm", "shade", 2, 12, false)]
+    [InlineData("rimefang", "ice_devil", 2, 13, true)]
+    [InlineData("rimefang", "ice_devil", 2, 11, false)]
     public void Boss_IsChallengingButFair(string boss, string? adds, int addCount, int level, bool shouldUsuallyWin)
     {
         var wins = 0;

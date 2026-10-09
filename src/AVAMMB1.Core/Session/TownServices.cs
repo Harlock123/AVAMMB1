@@ -305,6 +305,48 @@ public sealed class TownServices(GameSession session)
         return log;
     }
 
+    /// <summary>Most statistic points one character can buy at academies.</summary>
+    public const int AcademyMaxPoints = 10;
+
+    /// <summary>Academy lessons cannot raise a statistic above this.</summary>
+    public const int AcademyStatCap = 25;
+
+    /// <summary>Price of a character's next academy point: 1000 x (points already bought + 1).</summary>
+    /// <param name="c">Character.</param>
+    /// <param name="ev">Academy event (price factor).</param>
+    public static int AcademyCost(Character c, MapEventDef ev) => Price(1000 * (c.AcademyPoints + 1), ev.PriceFactor);
+
+    /// <summary>Why a character cannot study a statistic now, or null if they can.</summary>
+    /// <param name="c">Character.</param>
+    /// <param name="stat">Statistic.</param>
+    public static string? AcademyBlock(Character c, Stat stat) =>
+        !c.IsAlive ? $"{c.Name} is in no state to study."
+        : c.AcademyPoints >= AcademyMaxPoints ? $"{c.Name} has learned all the academy can teach."
+        : c.BaseStat(stat) >= AcademyStatCap ? $"{c.Name}'s {stat} cannot be raised any further here."
+        : null;
+
+    /// <summary>Raises one statistic by 1 for gold.</summary>
+    /// <param name="c">Character.</param>
+    /// <param name="stat">Statistic.</param>
+    /// <param name="ev">Academy event.</param>
+    public List<GameMessage> Study(Character c, Stat stat, MapEventDef ev)
+    {
+        var log = new List<GameMessage>();
+        if (AcademyBlock(c, stat) is { } why)
+        {
+            log.Add(new(why, MessageKind.Info));
+            return log;
+        }
+        if (!Pay(AcademyCost(c, ev), log, c))
+        {
+            return log;
+        }
+        c.Stats[stat] = c.BaseStat(stat) + 1;
+        c.AcademyPoints++;
+        log.Add(new($"After long study, {c.Name}'s {stat} rises to {c.BaseStat(stat)}.", MessageKind.Good, "levelup"));
+        return log;
+    }
+
     /// <summary>Training price for a character.</summary>
     /// <param name="c">Character.</param>
     /// <param name="ev">Training event.</param>

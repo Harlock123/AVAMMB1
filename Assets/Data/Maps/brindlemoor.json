@@ -192,6 +192,44 @@
    "toX": 5,
    "toY": 16,
    "facing": "South"
+  },
+  {
+   "x": 13,
+   "y": 10,
+   "type": "quest",
+   "id": "dunmore_intro",
+   "once": true,
+   "name": "The Watch House",
+   "feature": "shop_books",
+   "requiresNotFlag": "dunmore_met",
+   "setFlag": "dunmore_met",
+   "text": "Captain Dunmore of the Watch looks up from a map of the Greenvale. \"An ogre has been taking sheep - and a shepherd - in the wilds. Bring me its tusk and the town will pay.\""
+  },
+  {
+   "x": 13,
+   "y": 10,
+   "type": "quest",
+   "id": "dunmore_reward",
+   "once": true,
+   "name": "The Watch House",
+   "requiresFlag": "dunmore_met",
+   "requiresItem": "ogre_tusk",
+   "consumeItem": true,
+   "setFlag": "dunmore_done",
+   "items": [
+    "potion_vigor"
+   ],
+   "xp": 600,
+   "gold": "300",
+   "text": "Dunmore turns the tusk over and grins. \"That's the one. Here - the town's bounty, and a little something from the Watch.\""
+  },
+  {
+   "x": 13,
+   "y": 10,
+   "type": "message",
+   "name": "The Watch House",
+   "requiresFlag": "dunmore_done",
+   "text": "Captain Dunmore nods to you. \"Quiet in the Greenvale since you came along.\""
   }
  ],
  "ambience": "birds"

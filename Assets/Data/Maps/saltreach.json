@@ -181,6 +181,58 @@
    "name": "Harbor",
    "feature": "column",
    "text": "Fishing boats bob at their moorings. A sailor mutters about storms that come earlier every year."
+  },
+  {
+   "x": 10,
+   "y": 1,
+   "type": "teleport",
+   "name": "Ship to Wintermere",
+   "feature": "entrance",
+   "map": "wintermere",
+   "toX": 7,
+   "toY": 3,
+   "facing": "South",
+   "fare": 200,
+   "failText": "The captain of the northbound ship wants two hundred gold. \"The ice doesn't care how brave you are.\"",
+   "text": "The ship sails north for days, until the sea itself turns white. Wintermere waits on the far shore."
+  },
+  {
+   "x": 10,
+   "y": 13,
+   "type": "quest",
+   "id": "quell_intro",
+   "once": true,
+   "name": "Harbormaster's Office",
+   "feature": "shop_books",
+   "requiresNotFlag": "quell_met",
+   "setFlag": "quell_met",
+   "text": "Harbormaster Quell taps a crate stamped with a wyvern. \"A collector in the south pays a fortune for wyvern eggs. There's a roost in the Ashen Hills. Bring me an egg and I'll split it with you - generously.\""
+  },
+  {
+   "x": 10,
+   "y": 13,
+   "type": "quest",
+   "id": "quell_reward",
+   "once": true,
+   "name": "Harbormaster's Office",
+   "requiresFlag": "quell_met",
+   "requiresItem": "wyvern_egg",
+   "consumeItem": true,
+   "setFlag": "quell_done",
+   "items": [
+    "ring_protection"
+   ],
+   "xp": 2500,
+   "gold": "900",
+   "text": "Quell cradles the egg like a baby. \"Careful, careful... perfect. Your share, as promised - and a ring a sailor left as a debt.\""
+  },
+  {
+   "x": 10,
+   "y": 13,
+   "type": "message",
+   "name": "Harbormaster's Office",
+   "requiresFlag": "quell_done",
+   "text": "Quell is writing letters to collectors."
   }
  ],
  "ambience": "river"

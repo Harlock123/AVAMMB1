@@ -206,6 +206,11 @@ public sealed class MonsterDef
 
     /// <summary>Gets the plural name.</summary>
     public string PluralName => Plural ?? Name + "s";
+    /// <summary>The name with "a" or "an" (none for names like "The Sun King").</summary>
+    public string NameWithArticle =>
+        Name.StartsWith("The ", StringComparison.Ordinal) ? Name
+        : "AEIOUaeiou".Contains(Name[..1], StringComparison.Ordinal) ? "an " + Name
+        : "a " + Name;
 }
 
 /// <summary>A spell definition.</summary>

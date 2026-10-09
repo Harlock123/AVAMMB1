@@ -78,7 +78,9 @@ school who can already cast its level; the tome is consumed), `quest` (cannot be
 ```
 Non-`ranged` attacks only work from the front rank (first three monsters). `smart` monsters target
 the weakest member; `cowardly` ones may flee when badly hurt. Negative resistance = vulnerability.
-`sprite` refers to `Graphics/Monsters/<sprite>.png`. Set `"boss": true` on unique bosses: any battle that
+`sprite` refers to `Graphics/Monsters/<sprite>.png`. Any non-boss monster can appear as an **elite** in a random encounter (5% of encounters): double
+hit points, +2 armor class, +50% damage, triple experience and gold, and a 50% chance of extra loot
+chosen by its level. Set `"boss": true` on unique bosses: any battle that
 includes one plays the boss theme instead of the normal battle music.
 
 ## spells.json
@@ -195,7 +197,7 @@ for monsters; potions still work). Both show their `mapColor` on the automap onc
 |---|---|
 | `message` | `text` (shown as a story dialog) |
 | `shop` | `shop` id |
-| `inn`, `temple`, `tavern`, `training` | `name`, `priceFactor`; tavern `rumors[]` |
+| `inn`, `temple`, `tavern`, `training`, `academy` | `name`, `priceFactor`; tavern `rumors[]`. An academy sells permanent statistic points: 1000 x (points already bought + 1) gold x `priceFactor`, at most 10 per character and 25 per statistic. |
 | `teleport` | `map`, `toX`, `toY`, `facing`; optional `fare` (gold the party pays, e.g. a ferry - travel fails with `failText` if it can't pay) |
 | `treasure`, `quest` | `gold`, `gems`, `xp`, `items`, `consumeItem` |
 | `encounter` | `monsters: [{ "monster": "kobold", "count": "1d4" }]`; `setFlag` is set on victory |

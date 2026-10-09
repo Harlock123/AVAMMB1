@@ -205,7 +205,8 @@
    "gems": 4,
    "items": [
     "potion_vigor",
-    "potion_mana"
+    "potion_mana",
+    "barrow_crown"
    ],
    "xp": 500,
    "text": "Grave-gold of a forgotten kingdom."

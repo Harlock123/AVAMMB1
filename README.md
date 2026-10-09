@@ -58,16 +58,22 @@ Code identifiers, the solution and executables use the name **`AVAMMB1`** (`AVAM
   experience levels with gold-paid training, food consumed when resting, conditions (asleep, blinded,
   silenced, poisoned, diseased, paralyzed, unconscious, dead, stoned), trap disarming, saving throws.
 - **Towns** with inns (rest, save, roster of up to 18 characters), temples (heal, cure, raise dead,
-  donate), taverns (food, rumors), smithies and magic shops, and training grounds.
-- **Nineteen maps**: five towns (Brindlemoor, Saltreach, Thornwick, Duskmere and Port Ashkar), three
-  wilderness regions (the Greenvale Wilds, the Ashen Hills and the Sunscar Wastes), ten dungeon
-  levels plus the final vault. The main quest chain (keys, quest items, flags) leads to a final boss
+  donate), taverns (food, rumors), smithies and magic shops, training grounds, and **academies**
+  where gold buys permanent statistic points (each lesson dearer than the last - a late-game gold sink).
+- **Twenty-three maps**: six towns (Brindlemoor, Saltreach, Thornwick, Duskmere, Port Ashkar and
+  Wintermere), four wilderness regions (the Greenvale Wilds, the Ashen Hills, the Sunscar Wastes and
+  the Frostmark), twelve dungeon levels plus the final vault. The main quest chain (keys, quest items, flags) leads to a final boss
   and victory screen; optional side quests reward unique gear: the Thornwick Mines' Stone Wyrm and
   the Sunken Temple's Drowned Hydra (levels 7-9), and - across the bay by ferry - the Tomb of the
   Sun Kings and its undying king (levels 10-12). Optional deeper levels each end in a boss: the Old
   Cistern below the Brindlemoor cellars (levels 2-4), the Catacombs below the Hollow Crypt (levels
   5-8, behind a locked throne room), and - sealed until the Sun King falls - the post-game Sunless
-  Deep (levels 13-15).
+  Deep (levels 13-15). By ship north from Saltreach lies the Frostmark (levels 11-14): the town of
+  Wintermere, a tundra of wargs and frost giants, and the two-level Rime Halls where the ice dragon
+  Rimefang lairs. Every town also posts a **bounty** - bring back a trophy from a monster's hoard.
+- **Elite monsters**: about one random encounter in twenty is led by an elite (gold name) with double
+  hit points, better armor and harder blows - worth triple experience and gold, with a chance of
+  extra loot.
 - **Turn-based combat**: initiative order, front/back ranks for both sides, melee and missile attacks,
   blocking, running, bribing; monster AI with special abilities, healing, fleeing and target
   selection; treasure, item drops and XP.
@@ -120,6 +126,7 @@ All screenshots are real frames rendered by the game itself (Avalonia headless +
 | ![Port Ashkar](docs/screenshots/19-port-ashkar.png) Port Ashkar on the Sunscar Coast | ![Oasis](docs/screenshots/20-sunscar-oasis.png) The oasis in the Sunscar Wastes |
 | ![Old Cistern](docs/screenshots/21-old-cistern.png) An eel in the Old Cistern's flooded reservoir | ![Journal](docs/screenshots/22-journal.png) The quest journal |
 | ![High contrast](docs/screenshots/23-high-contrast.png) High-contrast theme, 115% text, 800 x 600 view | ![Help](docs/screenshots/24-help.png) The in-game help |
+| ![Wintermere](docs/screenshots/25-wintermere.png) Wintermere, the northern harbour town | ![Rime Halls](docs/screenshots/26-rime-halls.png) The Rime Halls |
 
 ## Download and install
 
@@ -250,7 +257,7 @@ route order from level 1 to 15 (fighting, camping, curing with spells and potion
 zone's chests, training, selling loot, buying gear and potions, reloading after a wipe) and asserts
 the pace, wipe rate and gold flow stay within tuned bounds (about 600 battles from a new party to
 level 15). It skips boss hoards and quest rewards, so real players end up with a little more gold. The UI flow title -> party creation -> town -> shop -> dungeon -> combat -> inventory ->
-automap with notes -> journal -> spells -> secret door -> Old Cistern -> Ashen Hills -> Sunscar Coast -> high-contrast theme -> settings is exercised headlessly by `--screenshot`.
+automap with notes -> journal -> spells -> secret door -> Old Cistern -> Ashen Hills -> Sunscar Coast -> Wintermere -> Rime Halls -> high-contrast theme -> settings is exercised headlessly by `--screenshot`.
 Gamepad support has been play-tested with a physical controller on Linux ARM64 (v1.4.0); on the
 other platforms CI confirms the bundled SDL2 library loads, and the button mapping is unit tested.
 The game is currently under testing.

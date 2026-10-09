@@ -50,7 +50,8 @@ public class JournalTests
         // Every quest's flags and items exist in the game's events (no stage is unreachable).
         var db = TestContent.Content;
         var flags = db.Maps.Values.SelectMany(m => m.AllEvents).Select(e => e.SetFlag).OfType<string>().ToHashSet();
-        var items = db.Maps.Values.SelectMany(m => m.AllEvents).SelectMany(e => e.Items).ToHashSet();
+        var items = db.Maps.Values.SelectMany(m => m.AllEvents).SelectMany(e => e.Items)
+            .Concat(db.Monsters.Values.SelectMany(m => m.Drops).Select(d => d.Item)).ToHashSet();
         foreach (var q in db.Quests)
         {
             Assert.True(q.DoneFlag is null || flags.Contains(q.DoneFlag), $"{q.Id}: done flag {q.DoneFlag} is never set");

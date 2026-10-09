@@ -26,6 +26,9 @@ public class BalanceTests(ITestOutputHelper output)
         new("sunscar", "ashkar", 10),
         new("tomb1", "ashkar", 11),
         new("tomb2", "ashkar", 12),
+        new("frostmark", "wintermere", 13),
+        new("rime1", "wintermere", 13),
+        new("rime2", "wintermere", 14),
         new("deep", "ashkar", 15),
     ];
 

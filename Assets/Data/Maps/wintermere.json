@@ -1,0 +1,230 @@
+{
+ "id": "wintermere",
+ "name": "Wintermere",
+ "kind": "town",
+ "format": "blocks",
+ "width": 16,
+ "height": 16,
+ "grid": [
+  "################",
+  "#~~~~~~~~~~~~~~#",
+  "#~~~~~~~~~~~~~~#",
+  "#..............#",
+  "#.###.####.###.#",
+  "#.###.####.###.#",
+  "#..............#",
+  "#.BB..T..T..BB.#",
+  "#.BB........BB.#",
+  "#..............#",
+  "#.###......###.#",
+  "#.###..T...###.#",
+  "#..............#",
+  "#..BBB....BBB..#",
+  "#..............#",
+  "#######.########"
+ ],
+ "terrain": {
+  "#": {
+   "solid": true,
+   "texture": "wall_wintermere",
+   "name": "Building",
+   "mapColor": "#8a8a96"
+  },
+  "B": {
+   "solid": true,
+   "texture": "wall_town3",
+   "name": "Building",
+   "mapColor": "#7a6a5a"
+  },
+  "T": {
+   "solid": true,
+   "opaque": false,
+   "feature": "tree",
+   "floor": "floor_snow",
+   "name": "Pine",
+   "mapColor": "#3a6a4a"
+  },
+  "~": {
+   "solid": true,
+   "opaque": false,
+   "floor": "water",
+   "name": "Harbor",
+   "mapColor": "#3a5a8a"
+  }
+ },
+ "wallTexture": "wall_wintermere",
+ "floorTexture": "floor_snow",
+ "skyColor": "#9fb0c4",
+ "encounterChance": 0,
+ "events": [
+  {
+   "x": 7,
+   "y": 3,
+   "type": "teleport",
+   "name": "Ship to Saltreach",
+   "feature": "entrance",
+   "map": "saltreach",
+   "toX": 10,
+   "toY": 1,
+   "facing": "South",
+   "fare": 200,
+   "failText": "The captain shakes his head. \"Two hundred gold for the voyage south. The ice is hard on a hull.\"",
+   "text": "The ship carries you south through grinding pack ice to Saltreach."
+  },
+  {
+   "x": 7,
+   "y": 15,
+   "type": "teleport",
+   "name": "Town Gate",
+   "feature": "entrance",
+   "map": "frostmark",
+   "toX": 18,
+   "toY": 10,
+   "facing": "West",
+   "text": "The gate opens onto a white land under a grey sky."
+  },
+  {
+   "x": 3,
+   "y": 6,
+   "type": "inn",
+   "name": "The Hearthstone",
+   "feature": "shop_general",
+   "priceFactor": 1.4
+  },
+  {
+   "x": 7,
+   "y": 6,
+   "type": "temple",
+   "name": "Shrine of the Returning Sun",
+   "feature": "altar",
+   "priceFactor": 1.3
+  },
+  {
+   "x": 12,
+   "y": 6,
+   "type": "academy",
+   "name": "The Collegium of Frost",
+   "feature": "shop_books",
+   "priceFactor": 1.0
+  },
+  {
+   "x": 2,
+   "y": 9,
+   "type": "shop",
+   "name": "Ingvald's Outfitters",
+   "shop": "wintermere_outfitter",
+   "feature": "shop_armor"
+  },
+  {
+   "x": 13,
+   "y": 9,
+   "type": "tavern",
+   "name": "The Frozen Flagon",
+   "feature": "shop_food",
+   "priceFactor": 1.4,
+   "rumors": [
+    "Rimefang came down from the Rime Halls the winter the sea froze. It has not gone back up.",
+    "Dragons of ice hate fire. Everyone says so; nobody has lived to prove it.",
+    "Scholar Aldous sent his apprentice onto the tundra. The apprentice did not come back.",
+    "Frost giants ford the river south-west of here when the ice is thick.",
+    "There is a hot spring on the tundra. Drink, warm up, and keep moving.",
+    "The Collegium will teach anyone anything - for a price that rises with every lesson."
+   ]
+  },
+  {
+   "x": 3,
+   "y": 12,
+   "type": "training",
+   "name": "Hall of the Shieldmaidens",
+   "feature": "shop_weapon",
+   "priceFactor": 1.4
+  },
+  {
+   "x": 8,
+   "y": 12,
+   "type": "quest",
+   "id": "aldous_intro",
+   "once": true,
+   "name": "Scholar Aldous's Study",
+   "feature": "shop_books",
+   "requiresNotFlag": "aldous_met",
+   "setFlag": "aldous_met",
+   "text": "An old man in three cloaks wrings his hands. \"My apprentice Mira went north-east onto the tundra to chart the wargs' hunting grounds. She has not come back. If she... if she is gone, at least bring me her journal.\""
+  },
+  {
+   "x": 8,
+   "y": 12,
+   "type": "quest",
+   "id": "aldous_reward",
+   "once": true,
+   "name": "Scholar Aldous's Study",
+   "requiresFlag": "aldous_met",
+   "requiresItem": "frozen_journal",
+   "consumeItem": true,
+   "setFlag": "journal_returned",
+   "items": [
+    "potion_vigor",
+    "potion_vigor"
+   ],
+   "xp": 12000,
+   "gold": "3000",
+   "text": "Aldous reads the last page twice, then closes the journal gently. \"She wrote that the dragon flinched from her torch. Fire, then. Thank you - for her, and for the truth.\""
+  },
+  {
+   "x": 8,
+   "y": 12,
+   "type": "message",
+   "name": "Scholar Aldous's Study",
+   "requiresFlag": "journal_returned",
+   "text": "Aldous is copying Mira's journal into the Collegium's great book."
+  },
+  {
+   "x": 12,
+   "y": 12,
+   "type": "quest",
+   "id": "jarl_intro",
+   "once": true,
+   "name": "The Jarl's Hall",
+   "feature": "column",
+   "requiresNotFlag": "jarl_met",
+   "setFlag": "jarl_met",
+   "text": "Jarl Ingrith rises from a high seat of whale-bone. \"Rimefang has made our winter last three years. It lairs at the bottom of the Rime Halls, west across the tundra. Bring me its heart, and Wintermere will owe you everything it has.\""
+  },
+  {
+   "x": 12,
+   "y": 12,
+   "type": "quest",
+   "id": "jarl_reward",
+   "once": true,
+   "name": "The Jarl's Hall",
+   "requiresFlag": "jarl_met",
+   "requiresItem": "rimefang_heart",
+   "consumeItem": true,
+   "setFlag": "rimefang_heart_returned",
+   "items": [
+    "ring_winter"
+   ],
+   "xp": 30000,
+   "gold": "6000",
+   "text": "The Jarl holds the crystal heart up to the light, and outside, for the first time in three years, water begins to drip from the eaves. \"Take the Ring of the Long Winter. No winter will be long for you again.\""
+  },
+  {
+   "x": 12,
+   "y": 12,
+   "type": "message",
+   "name": "The Jarl's Hall",
+   "requiresFlag": "rimefang_heart_returned",
+   "text": "The hall is loud with a thaw-feast. The Jarl raises a horn to you."
+  },
+  {
+   "x": 7,
+   "y": 9,
+   "type": "message",
+   "name": "Notice",
+   "feature": "column",
+   "text": "BY ORDER OF THE JARL: the Rime Halls are closed. Whoever slays the dragon Rimefang may name their reward. - Ingrith"
+  }
+ ],
+ "music": "town",
+ "ambience": "wind"
+}
