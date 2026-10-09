@@ -480,7 +480,19 @@ public static class ItemText
         {
             parts.Add("two-handed");
         }
-        if (d.Charges > 0)
+        if (d.LightRadius > 0)
+        {
+            parts.Add($"light {d.LightRadius} squares");
+        }
+        if (d.Kind == ItemKind.Lantern)
+        {
+            parts.Add(d.FuelCapacity > 0 ? $"holds {d.FuelCapacity} steps of oil" : "never needs oil");
+        }
+        else if (d.Kind == ItemKind.Oil)
+        {
+            parts.Add($"+{d.FuelAmount} steps of lantern oil; 2d6 fire when thrown");
+        }
+        else if (d.Charges > 0)
         {
             parts.Add($"{d.Charges} charges");
         }

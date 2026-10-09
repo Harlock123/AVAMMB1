@@ -90,6 +90,12 @@ public sealed class ItemDef
     public int Charges { get; set; }
     /// <summary>Light duration in steps for torches.</summary>
     public int LightSteps { get; set; }
+    /// <summary>How far the light reaches in dark places, in squares (torches and lanterns).</summary>
+    public int LightRadius { get; set; }
+    /// <summary>Lanterns: steps of oil a full lantern holds (0 = never needs oil). Stored in the item's charges.</summary>
+    public int FuelCapacity { get; set; }
+    /// <summary>Oil: steps of light one flask adds to a lantern.</summary>
+    public int FuelAmount { get; set; }
     /// <summary>Food units provided.</summary>
     public int FoodUnits { get; set; }
     /// <summary>Element of weapon damage.</summary>
@@ -109,6 +115,7 @@ public sealed class ItemDef
         ItemKind.Boots => EquipSlot.Feet,
         ItemKind.Ring => EquipSlot.Ring,
         ItemKind.Amulet => EquipSlot.Neck,
+        ItemKind.Lantern => EquipSlot.Light,
         _ => null,
     };
 }
@@ -220,6 +227,8 @@ public sealed class SpellDef
     public string Id { get; set; } = "";
     /// <summary>Display name.</summary>
     public string Name { get; set; } = "";
+    /// <summary>Light spells: how far the light reaches, in squares.</summary>
+    public int LightRadius { get; set; } = 6;
     /// <summary>School.</summary>
     public SpellSchool School { get; set; }
     /// <summary>Spell level (1-5).</summary>

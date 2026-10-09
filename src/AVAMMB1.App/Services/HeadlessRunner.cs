@@ -428,6 +428,14 @@ public static class HeadlessRunner
         Capture(dir, "12-spells");
         game.CloseOverlay();
 
+        // A brass lantern: brighter (8 squares) and warmer than a torch or spell.
+        var brannoc = s.State.Party[0];
+        brannoc.Backpack.Add(new AVAMMB1.Core.Items.ItemInstance("lantern", s.Content.Item("lantern").Charges));
+        s.Inventory.Equip(brannoc, brannoc.Backpack.Count - 1);
+        s.State.LightSteps = 0;
+        game.Refresh();
+        Capture(dir, "28-lantern");
+
         // A guardian standing in its alcove: walk to the square before the spiders' web and look in.
         var toSpiders = FindPath(s, s.State.X, s.State.Y, 7, 2);
         if (toSpiders is { Count: > 1 })

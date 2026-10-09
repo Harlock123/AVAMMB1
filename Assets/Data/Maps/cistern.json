@@ -187,7 +187,8 @@
    "gold": "4d10",
    "items": [
     "potion_healing",
-    "torch"
+    "torch",
+    "oil_flask"
    ],
    "text": "A rusted locker of the sluice-keepers."
   },

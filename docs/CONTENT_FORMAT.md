@@ -58,7 +58,10 @@ unconscious, dead, stoned`. **Elements**: `physical, fire, cold, electric, acid,
 ```
 `kind`: `weapon, missile, armor, shield, helmet, gloves, boots, ring, amulet` (equippable),
 `potion, scroll, wand` (cast `useSpell` when used; wands use `charges`), `food` (`foodUnits`),
-`torch` (`lightSteps`), `tome` (reading it permanently teaches `teachSpell` to a caster of that
+`torch` (`lightSteps`, `lightRadius`), `lantern` (equipped in the Light slot; `lightRadius`, `fuelCapacity` steps of
+oil kept in the item's charges - set `charges` to the same value so a new lantern comes full, or `fuelCapacity` 0 for
+a lantern that never needs oil), `oil` (`fuelAmount` steps added to a lantern; give it a combat `useSpell` to make it
+throwable), `tome` (reading it permanently teaches `teachSpell` to a caster of that
 school who can already cast its level; the tome is consumed), `quest` (cannot be sold or dropped),
 `misc`.
 `icon` refers to `Graphics/Items/<icon>.png`.
@@ -99,7 +102,7 @@ includes one plays the boss theme instead of the normal battle music.
 | `raise` | Dead ally back to 1 HP |
 | `buffArmor`, `buffHit` | `magnitude` bonus for the battle |
 | `debuffArmor` | Enemies lose `magnitude` armor class for the battle |
-| `light` | `magnitude` steps of light |
+| `light` | `magnitude` steps of light, reaching `lightRadius` squares (default 6) |
 | `locate`, `createFood` (`magnitude`), `recall` | Utility |
 
 `target`: `none, ally, party, enemy, enemyGroup` (all monsters of the chosen kind), `allEnemies`.

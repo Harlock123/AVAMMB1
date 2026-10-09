@@ -166,12 +166,15 @@ The game code is licensed separately under the MIT license (see [LICENSE](LICENS
 | `Graphics/Items/helmet.png` | Dungeon Crawl 32x32 tiles | `item/armor/headgear/helmet_1.png` |
 | `Graphics/Items/horn.png` | Dungeon Crawl 32x32 tiles | `item/misc/misc_horn.png` |
 | `Graphics/Items/key.png` | Dungeon Crawl 32x32 tiles | `item/misc/key.png` |
+| `Graphics/Items/lantern.png` | Dungeon Crawl 32x32 tiles | `item/misc/misc_lamp_new.png` |
+| `Graphics/Items/lantern_everburning.png` | Dungeon Crawl 32x32 tiles | `item/misc/misc_lamp_old.png` |
 | `Graphics/Items/large_shield.png` | Dungeon Crawl 32x32 tiles | `item/armor/shields/large_shield_1_new.png` |
 | `Graphics/Items/leather_armor.png` | Dungeon Crawl 32x32 tiles | `item/armor/torso/leather_armor_1.png` |
 | `Graphics/Items/long_bow.png` | Dungeon Crawl 32x32 tiles | `item/weapon/ranged/longbow_1.png` |
 | `Graphics/Items/long_sword.png` | Dungeon Crawl 32x32 tiles | `item/weapon/long_sword_1_new.png` |
 | `Graphics/Items/mace.png` | Dungeon Crawl 32x32 tiles | `item/weapon/mace_1_new.png` |
 | `Graphics/Items/morning_star.png` | Dungeon Crawl 32x32 tiles | `item/weapon/morningstar_1_new.png` |
+| `Graphics/Items/oil_flask.png` | Dungeon Crawl 32x32 tiles | `item/potion/brown_new.png` |
 | `Graphics/Items/orb.png` | Dungeon Crawl 32x32 tiles | `item/misc/misc_orb.png` |
 | `Graphics/Items/padded_armor.png` | Dungeon Crawl 32x32 tiles | `item/armor/torso/animal_skin_1_new.png` |
 | `Graphics/Items/plate_mail.png` | Dungeon Crawl 32x32 tiles | `item/armor/torso/plate_mail_1.png` |

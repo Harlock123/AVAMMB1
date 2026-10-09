@@ -75,6 +75,20 @@ public sealed class GameState
     public long Steps { get; set; }
     /// <summary>Remaining steps of magical or torch light.</summary>
     public int LightSteps { get; set; }
+    /// <summary>Radius of the current torch or spell light (0 in saves from before 1.8 = the old 6).</summary>
+    public int LightRadius { get; set; }
+
+    /// <summary>Radius of the torch/spell light while it lasts, else 0.</summary>
+    public int TemporaryLightRadius => LightSteps > 0 ? (LightRadius > 0 ? LightRadius : 6) : 0;
+
+    /// <summary>Adds torch or spell light; the brighter of the old and new light is kept.</summary>
+    /// <param name="steps">Steps of light.</param>
+    /// <param name="radius">Radius in squares.</param>
+    public void AddLight(int steps, int radius)
+    {
+        LightRadius = Math.Max(TemporaryLightRadius, radius);
+        LightSteps += steps;
+    }
     /// <summary>Map the Recall spell returns to.</summary>
     public string RecallMap { get; set; } = "";
     /// <summary>Recall X.</summary>

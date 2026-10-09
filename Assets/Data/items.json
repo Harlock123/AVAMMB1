@@ -537,7 +537,7 @@
   "icon": "scroll_blue",
   "price": 25,
   "useSpell": "i_light",
-  "description": "Lights the way for 400 steps."
+  "description": "Lights the way for 400 steps, 6 squares ahead."
  },
  {
   "id": "scroll_recall",
@@ -574,7 +574,8 @@
   "icon": "torch",
   "price": 5,
   "lightSteps": 150,
-  "description": "Burns for 150 steps."
+  "description": "Burns for 150 steps and lights 5 squares ahead.",
+  "lightRadius": 5
  },
  {
   "id": "ember_shard",
@@ -1043,5 +1044,36 @@
    "cleric"
   ],
   "description": "Scales from Rimefang's own hide, light and colder than steel."
+ },
+ {
+  "id": "lantern",
+  "name": "Brass Lantern",
+  "kind": "lantern",
+  "icon": "lantern",
+  "price": 150,
+  "lightRadius": 8,
+  "fuelCapacity": 1500,
+  "charges": 1500,
+  "description": "Equip it to light the way 8 squares ahead. Holds 1500 steps of oil; it burns only in dark places."
+ },
+ {
+  "id": "lantern_everburning",
+  "name": "Everburning Lantern",
+  "kind": "lantern",
+  "icon": "lantern_everburning",
+  "price": 6000,
+  "lightRadius": 8,
+  "fuelCapacity": 0,
+  "description": "A lantern whose flame never gutters. It needs no oil."
+ },
+ {
+  "id": "oil_flask",
+  "name": "Flask of Oil",
+  "kind": "oil",
+  "icon": "oil_flask",
+  "price": 4,
+  "fuelAmount": 750,
+  "useSpell": "i_oil",
+  "description": "Use it to add 750 steps of oil to an equipped lantern. In battle, throw it for 2d6 fire damage."
  }
 ]

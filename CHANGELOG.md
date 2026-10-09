@@ -5,6 +5,20 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+### Added
+- Lanterns and oil (Angband style). A Brass Lantern (150 gold) is equipped in the new Light slot and
+  lights the way 8 squares ahead, with a warm glow, for the whole party. It holds 1500 steps of oil,
+  burns only in dark places, and warns when it runs low. A Flask of Oil (4 gold) adds 750 steps -
+  or is thrown in battle for 2d6 fire damage. The Everburning Lantern, which needs no oil, is hidden
+  in the Rime Halls. Oil is also found in early chests and on low-level elite monsters.
+- The character sheet shows a lantern's oil; the top-right counter shows lantern oil and torch light.
+
+### Changed
+- Brightness tiers in dark places: no light 1 square, torch 5, light spells and the Scroll of Light 6,
+  lantern 8 (before, any light showed 7). The automap now also records the corridor ahead, as far as
+  your light reaches, and updates when you turn.
+- The help's Light section covers the tiers, and a new Lanterns and oil section explains lanterns.
+
 ## [1.7.1] - 2026-10-09
 
 ### Changed

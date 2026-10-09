@@ -86,6 +86,8 @@ public enum EquipSlot
     Ring,
     /// <summary>An amulet.</summary>
     Neck,
+    /// <summary>A light source (lantern) that lights the way for the whole party.</summary>
+    Light,
 }
 
 /// <summary>Broad item categories.</summary>
@@ -125,6 +127,10 @@ public enum ItemKind
     Tome,
     /// <summary>Anything else.</summary>
     Misc,
+    /// <summary>An equippable lantern: a bright light that burns oil (see <see cref="Content.ItemDef.FuelCapacity"/>).</summary>
+    Lantern,
+    /// <summary>A flask of oil: refills a lantern, or is thrown as a fire bomb in battle.</summary>
+    Oil,
 }
 
 /// <summary>Damage elements used for resistances.</summary>

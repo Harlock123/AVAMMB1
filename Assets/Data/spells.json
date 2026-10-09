@@ -36,7 +36,8 @@
   "magnitude": 200,
   "combat": false,
   "explore": true,
-  "description": "Lights dark places for 200 steps."
+  "description": "Lights dark places for 200 steps, 6 squares ahead.",
+  "lightRadius": 6
  },
  {
   "id": "c_awaken",
@@ -220,7 +221,8 @@
   "magnitude": 250,
   "combat": false,
   "explore": true,
-  "description": "Lights dark places for 250 steps."
+  "description": "Lights dark places for 250 steps, 6 squares ahead.",
+  "lightRadius": 6
  },
  {
   "id": "s_locate",
@@ -599,7 +601,8 @@
   "target": "none",
   "magnitude": 400,
   "combat": false,
-  "explore": true
+  "explore": true,
+  "lightRadius": 6
  },
  {
   "id": "i_recall",
@@ -621,5 +624,18 @@
   "amount": "5d6",
   "element": "electric",
   "combat": true
+ },
+ {
+  "id": "i_oil",
+  "name": "Burning Oil",
+  "school": "sorcerer",
+  "learnable": false,
+  "effect": "damage",
+  "target": "enemy",
+  "amount": "2d6",
+  "element": "fire",
+  "combat": true,
+  "explore": false,
+  "description": "A thrown flask of burning oil."
  }
 ]

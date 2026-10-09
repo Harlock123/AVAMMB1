@@ -275,7 +275,8 @@
    "name": "Offering Bowl",
    "gold": "8d10",
    "items": [
-    "potion_mana"
+    "potion_mana",
+    "oil_flask"
    ],
    "text": "Coins left as offerings to the dead."
   },

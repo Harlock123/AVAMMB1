@@ -233,7 +233,8 @@
    "gold": "30d20+300",
    "gems": 5,
    "items": [
-    "amulet_warding"
+    "amulet_warding",
+    "lantern_everburning"
    ],
    "text": "A reliquary sealed in the ice long before the dragon came."
   },

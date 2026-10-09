@@ -142,10 +142,32 @@ public sealed class SpellCaster(Rulebook rules, IRandomSource rng)
                     break;
                 }
             case ItemKind.Torch when combat is null:
-                state.LightSteps += Math.Max(10, def.LightSteps);
+                state.AddLight(Math.Max(10, def.LightSteps), def.LightRadius > 0 ? def.LightRadius : 5);
                 log.Add(new($"{user.Name} lights {def.Name}.", MessageKind.Good));
                 result = new SpellResult(true, log);
                 break;
+            case ItemKind.Oil when combat is null:
+                {
+                    // Fill the chosen ally's lantern, else the user's, else the emptiest lantern in the party.
+                    var holders = state.Party.Where(p => Items.Lanterns.Refillable(rules, p)).ToList();
+                    var target = ally >= 0 && ally < state.Party.Count && holders.Contains(state.Party[ally]) ? state.Party[ally]
+                        : holders.Contains(user) ? user
+                        : holders.OrderBy(p => p.Equipment[EquipSlot.Light].Charges).FirstOrDefault();
+                    if (target is null)
+                    {
+                        return new SpellResult(false, [new GameMessage("Nobody has a lantern equipped to fill.")]);
+                    }
+                    var lantern = target.Equipment[EquipSlot.Light];
+                    var cap = rules.Def(lantern).FuelCapacity;
+                    if (lantern.Charges >= cap)
+                    {
+                        return new SpellResult(false, [new GameMessage($"{target.Name}'s lantern is already full.")]);
+                    }
+                    lantern.Charges = Math.Min(cap, lantern.Charges + Math.Max(1, def.FuelAmount));
+                    log.Add(new($"{user.Name} fills {(ReferenceEquals(target, user) ? "their" : target.Name + "'s")} lantern ({lantern.Charges}/{cap} steps of oil).", MessageKind.Good));
+                    result = new SpellResult(true, log);
+                    break;
+                }
             default:
                 if (def.UseSpell is null || !rules.Content.Spells.TryGetValue(def.UseSpell, out var spell))
                 {
@@ -295,7 +317,7 @@ public sealed class SpellCaster(Rulebook rules, IRandomSource rng)
                 log.Add(new($"The party feels blessed (to-hit +{combat.HitBuff}).", MessageKind.Good));
                 return new SpellResult(true, log);
             case EffectKind.Light:
-                state.LightSteps += Math.Max(10, spell.Magnitude);
+                state.AddLight(Math.Max(10, spell.Magnitude), spell.LightRadius);
                 log.Add(new("A soft light springs up around the party.", MessageKind.Good));
                 return new SpellResult(true, log);
             case EffectKind.Locate:

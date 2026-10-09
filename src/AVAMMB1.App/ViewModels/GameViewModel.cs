@@ -104,9 +104,35 @@ public sealed partial class GameViewModel : ViewModelBase
     public string GoldText => $"Purse {Session.State.Gold}  (party {Session.State.TotalGold})   {Session.State.Gems} gems";
     /// <summary>Day counter and light.</summary>
     public string TimeText => $"Day {Session.State.Day}"
-        + (Session.CurrentMap.IsDarkness(Session.State.X, Session.State.Y) ? "   Magical darkness"
-            : Session.State.LightSteps > 0 ? $"   Light {Session.State.LightSteps}" : Session.CurrentMap.Def.Dark ? "   (dark)" : "")
+        + (Session.CurrentMap.IsDarkness(Session.State.X, Session.State.Y) ? "   Magical darkness" : LightText)
         + (Session.IsAntiMagicHere ? "   Anti-magic" : "");
+    /// <summary>The party's light: lantern oil and torch/spell steps, or "(dark)" in an unlit dark place.</summary>
+    private string LightText
+    {
+        get
+        {
+            var parts = new List<string>();
+            if (AVAMMB1.Core.Items.Lanterns.Active(Session.Rules, Session.State.Party) is { } a)
+            {
+                var cap = Session.Rules.Def(a.Lantern).FuelCapacity;
+                parts.Add(cap == 0 ? "Lantern" : $"Lantern {a.Lantern.Charges}");
+            }
+            else if (Session.State.Party.Any(c => AVAMMB1.Core.Items.Lanterns.Refillable(Session.Rules, c)))
+            {
+                parts.Add("Lantern empty");
+            }
+            if (Session.State.LightSteps > 0)
+            {
+                parts.Add($"Light {Session.State.LightSteps}");
+            }
+            if (parts.Count == 0 && Session.CurrentMap.Def.Dark)
+            {
+                parts.Add("(dark)");
+            }
+            return parts.Count == 0 ? "" : "   " + string.Join("  ", parts);
+        }
+    }
+
     /// <summary>Whether the minimap is visible.</summary>
     public bool ShowMinimap => Services.Settings.ShowMinimap;
     /// <summary>Whether steps and turns are animated.</summary>
@@ -161,6 +187,7 @@ public sealed partial class GameViewModel : ViewModelBase
             Facing = state.Facing,
             ViewDistance = Session.ViewDistance,
             Dark = Session.IsDarkHere,
+            WarmLight = map.Def.Dark && Session.LanternLit,
             SecretFound = (x, y, d) => state.IsSecretFound(map.Id, x, y, d),
             Sprites = sprites,
         };

@@ -43,6 +43,9 @@ Code identifiers, the solution and executables use the name **`AVAMMB1`** (`AVAM
 - **Animated combat**: monsters breathe and bob while idle, lunge toward the party when they
   attack, blink and shake when hit and fade out when slain; party portraits flash red when hurt
   (Settings toggle).
+- **Light and lanterns**: dungeons are dark; torches (5 squares), light spells (6) and an equippable
+  **Brass Lantern** (8 squares, warm light) that burns oil you buy by the flask - Angband style. A
+  flask of oil can also be thrown in battle as a fire bomb.
 - **Automap and minimap** that record only what the party has actually seen, with your own
   **notes** on any square.
 - **Quest journal**: every quest you have heard of, with its story so far and your current goal, plus
@@ -129,7 +132,7 @@ All screenshots are real frames rendered by the game itself (Avalonia headless +
 | ![Old Cistern](docs/screenshots/21-old-cistern.png) An eel in the Old Cistern's flooded reservoir | ![Journal](docs/screenshots/22-journal.png) The quest journal |
 | ![High contrast](docs/screenshots/23-high-contrast.png) High-contrast theme, 115% text, 800 x 600 view | ![Help](docs/screenshots/24-help.png) The in-game help |
 | ![Wintermere](docs/screenshots/25-wintermere.png) Wintermere, the northern harbour town | ![Rime Halls](docs/screenshots/26-rime-halls.png) The Rime Halls |
-| ![Detailed textures](docs/screenshots/27-detailed-textures.png) Detailed textures at 800 x 600 (the Hollow Crypt) | |
+| ![Detailed textures](docs/screenshots/27-detailed-textures.png) Detailed textures at 800 x 600 (the Hollow Crypt) | ![Lantern](docs/screenshots/28-lantern.png) Lantern light in the cellars |
 
 ## Download and install
 
@@ -179,6 +182,7 @@ Set `AVAMMB1_DATA_DIR` to use a different folder.
 | Note on this automap square | N (or click any square on the automap) | *Note* |
 | Quick save / quick load | F5 / F9 | |
 | Game menu (save, load, settings) | Esc | *Menu* |
+| Light a torch / fill a lantern | open the sheet (I), pick the Torch or Flask of Oil, *Use* | |
 | Fullscreen | F11 or Alt+Enter | Settings |
 | **Combat**: Fight / Run / Bribe | F, R, B | buttons |
 | **Combat**: Attack, Shoot, Cast, Use item, Block, Run | A, S, C, U, B, R | buttons |

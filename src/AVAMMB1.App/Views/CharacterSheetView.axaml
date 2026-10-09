@@ -3,7 +3,7 @@
              xmlns:vm="using:AVAMMB1.App.ViewModels"
              xmlns:c="using:AVAMMB1.App.Controls"
              x:Class="AVAMMB1.App.Views.CharacterSheetView" x:DataType="vm:CharacterSheetViewModel">
-  <Border Classes="dialog" Width="1100" Height="600" Padding="14">
+  <Border Classes="dialog" Width="1100" Height="660" Padding="14">
     <Grid ColumnDefinitions="260,14,*,14,*" RowDefinitions="Auto,*,Auto">
       <Grid Grid.ColumnSpan="5" ColumnDefinitions="Auto,*,Auto">
         <c:PixelImage Source="{Binding Member.Portrait}" Width="64" Height="64" Margin="0,0,10,0" />
@@ -46,7 +46,7 @@
             <DataTemplate x:DataType="vm:ItemRow">
               <Button HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Padding="4,0" Margin="0,1" MinHeight="0"
                       Command="{Binding $parent[UserControl].((vm:CharacterSheetViewModel)DataContext).SelectCommand}" CommandParameter="{Binding}">
-                <Grid ColumnDefinitions="70,30,*" Height="34">
+                <Grid ColumnDefinitions="70,30,*" Height="32">
                   <TextBlock Text="{Binding SlotLabel}" Classes="dim" VerticalAlignment="Center" FontSize="{DynamicResource Font12}" />
                   <Image Grid.Column="1" Classes="pixel" Source="{Binding Icon}" Width="24" Height="24" />
                   <StackPanel Grid.Column="2" VerticalAlignment="Center">

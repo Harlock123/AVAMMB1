@@ -89,11 +89,21 @@ public sealed class GameSession
     /// <summary>The current map.</summary>
     public GameMap CurrentMap => Content.Map(State.MapId);
 
-    /// <summary>How many cells the party can see (light matters in dark places).</summary>
-    public int ViewDistance => IsDarkHere ? 1 : CurrentMap.Def.Kind == MapKind.Outdoor ? 10 : 7;
+    /// <summary>
+    /// How many cells the party can see. In dark places this is the light radius: torch 5, light
+    /// spells 6, lantern 8; with no light, 1.
+    /// </summary>
+    public int ViewDistance => IsDarkHere ? 1 : CurrentMap.Def.Kind == MapKind.Outdoor ? 10 : CurrentMap.Def.Dark ? LightRadius : 7;
+
+    /// <summary>Reach of the party's light: the brighter of a lit lantern and any torch or spell light (0 = none).</summary>
+    public int LightRadius => Math.Max(State.TemporaryLightRadius,
+        Items.Lanterns.Active(Rules, State.Party) is { } a ? Rules.Def(a.Lantern).LightRadius : 0);
+
+    /// <summary>Whether the lantern (rather than a torch or spell) is what lights the party now.</summary>
+    public bool LanternLit => Items.Lanterns.Active(Rules, State.Party) is { } a && Rules.Def(a.Lantern).LightRadius >= State.TemporaryLightRadius;
 
     /// <summary>Whether the party is in the dark: an unlit dark map, or a magical-darkness square (where no light helps).</summary>
-    public bool IsDarkHere => (CurrentMap.Def.Dark && State.LightSteps <= 0) || CurrentMap.IsDarkness(State.X, State.Y);
+    public bool IsDarkHere => (CurrentMap.Def.Dark && LightRadius <= 0) || CurrentMap.IsDarkness(State.X, State.Y);
 
     /// <summary>Whether magic is suppressed where the party stands.</summary>
     public bool IsAntiMagicHere => IsActive && CurrentMap.IsAntiMagic(State.X, State.Y);
@@ -157,10 +167,24 @@ public sealed class GameSession
     public string LocationSummary => $"{CurrentMap.Def.Name} ({State.X},{State.Y}) - Day {State.Day}";
 
     /// <summary>Turns the party left.</summary>
-    public void TurnLeft() => State.Facing = State.Facing.Left();
+    public void TurnLeft()
+    {
+        State.Facing = State.Facing.Left();
+        if (IsActive)
+        {
+            Explore();
+        }
+    }
 
     /// <summary>Turns the party right.</summary>
-    public void TurnRight() => State.Facing = State.Facing.Right();
+    public void TurnRight()
+    {
+        State.Facing = State.Facing.Right();
+        if (IsActive)
+        {
+            Explore();
+        }
+    }
 
     /// <summary>Moves the party.</summary>
     /// <param name="kind">Relative movement.</param>
@@ -404,6 +428,7 @@ public sealed class GameSession
         var before = State.Steps;
         State.Steps += steps;
         State.LightSteps = Math.Max(0, State.LightSteps - steps);
+        BurnLantern(steps, log);
         var ticks = (int)(State.Steps / 10 - before / 10);
         if (ticks <= 0)
         {
@@ -415,6 +440,33 @@ public sealed class GameSession
             {
                 log.Add(new(c.Has(Condition.Dead) ? $"{c.Name} dies of poison!" : $"{c.Name} collapses from poison!", MessageKind.Bad));
             }
+        }
+    }
+
+    /// <summary>Steps of oil left at which the lantern warns that it is running low.</summary>
+    public const int LanternLowWarning = 150;
+
+    /// <summary>The lantern lighting the party burns oil while the party is in a dark place.</summary>
+    private void BurnLantern(int steps, List<GameMessage> log)
+    {
+        if (!IsActive || !CurrentMap.Def.Dark || Items.Lanterns.Active(Rules, State.Party) is not { } active)
+        {
+            return;
+        }
+        var (holder, lantern) = active;
+        if (Rules.Def(lantern).FuelCapacity == 0)
+        {
+            return; // never needs oil
+        }
+        var before = lantern.Charges;
+        lantern.Charges = Math.Max(0, lantern.Charges - steps);
+        if (lantern.Charges == 0)
+        {
+            log.Add(new($"{holder.Name}'s lantern sputters and goes out. Fill it with a flask of oil.", MessageKind.Bad));
+        }
+        else if (before > LanternLowWarning && lantern.Charges <= LanternLowWarning)
+        {
+            log.Add(new($"{holder.Name}'s lantern is running low on oil ({lantern.Charges} steps left).", MessageKind.Bad));
         }
     }
 
@@ -431,6 +483,33 @@ public sealed class GameSession
             if (map.Def.Kind != MapKind.Dungeon || (wall != WallKind.Wall && !hidden))
             {
                 Mark(State.X + d.Dx(), State.Y + d.Dy());
+            }
+        }
+        if (map.Def.Kind == MapKind.Dungeon && !IsDarkHere)
+        {
+            // The party also sees down the corridor ahead, as far as its light reaches.
+            int x = State.X, y = State.Y;
+            for (var i = 1; i < ViewDistance; i++)
+            {
+                var (wall, _) = map.Probe(x, y, State.Facing);
+                if (wall != WallKind.None || !map.InBounds(x + State.Facing.Dx(), y + State.Facing.Dy()))
+                {
+                    break;
+                }
+                x += State.Facing.Dx();
+                y += State.Facing.Dy();
+                if (map.IsSolid(x, y))
+                {
+                    break;
+                }
+                Mark(x, y);
+                foreach (var side in new[] { State.Facing.Left(), State.Facing.Right() })
+                {
+                    if (map.Probe(x, y, side).Wall == WallKind.None)
+                    {
+                        Mark(x + side.Dx(), y + side.Dy());
+                    }
+                }
             }
         }
         if (map.Def.Kind != MapKind.Dungeon)

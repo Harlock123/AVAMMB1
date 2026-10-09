@@ -167,7 +167,8 @@
    "gold": "2d10",
    "items": [
     "torch",
-    "potion_healing"
+    "potion_healing",
+    "oil_flask"
    ],
    "text": "A forgotten supply crate."
   },

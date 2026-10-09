@@ -291,8 +291,8 @@ public sealed class CombatEngine
     /// <param name="level">Monster level.</param>
     public static IReadOnlyList<string> EliteLoot(int level) => level switch
     {
-        <= 3 => ["potion_healing", "potion_cure", "scroll_light"],
-        <= 7 => ["potion_vigor", "potion_mana", "ring_protection", "amulet_insight", "scroll_fire"],
+        <= 3 => ["potion_healing", "potion_cure", "scroll_light", "oil_flask"],
+        <= 7 => ["potion_vigor", "potion_mana", "ring_protection", "amulet_insight", "scroll_fire", "oil_flask"],
         <= 11 => ["potion_vigor", "ring_might", "wand_lightning", "scroll_recall", "lotus_amulet"],
         _ => ["potion_vigor", "ring_heartfire", "scarab_amulet", "mithril_coat"],
     };

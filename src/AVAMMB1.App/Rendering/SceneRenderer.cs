@@ -51,6 +51,8 @@ public sealed class SceneDescription
     public bool Dark { get; init; }
     /// <summary>Visible distance in cells.</summary>
     public required int ViewDistance { get; init; }
+    /// <summary>Whether a lantern lights the scene (gives it a warm, golden cast).</summary>
+    public bool WarmLight { get; init; }
     /// <summary>Whether the secret door on a side of a cell has been discovered (undiscovered ones draw as walls).</summary>
     public Func<int, int, Direction, bool> SecretFound { get; init; } = (_, _, _) => false;
     /// <summary>Feature billboards.</summary>
@@ -249,6 +251,23 @@ public sealed class SceneRenderer
         }
 
         DrawSprites(scene, px, py, dirX, dirY, planeX, planeY, fog, fogDist, dark);
+        if (scene.WarmLight && !dark)
+        {
+            WarmTint();
+        }
+    }
+
+    /// <summary>Lantern light: a warm, golden cast over the whole view.</summary>
+    private void WarmTint()
+    {
+        for (var i = 0; i < Pixels.Length; i++)
+        {
+            var c = Pixels[i];
+            var r = (c >> 16) & 0xFF;
+            var g = ((c >> 8) & 0xFF) * 240 / 256;
+            var b = (c & 0xFF) * 200 / 256;
+            Pixels[i] = (c & 0xFF000000u) | (r << 16) | (g << 8) | b;
+        }
     }
 
     private static double FogAmount(double dist, double fogDist, bool dark)
