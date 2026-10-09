@@ -10,6 +10,10 @@ All notable changes to this project are documented here. The format follows
   longer stores computed values; older saves are upgraded step by step on load (`SaveMigrations`).
   Overwriting an older-format save keeps a backup (`slotN.json.v1.bak`). Saves from a newer game are
   refused with a clear message. Genuine saves written by every release (1.0.0-1.4.0) are test fixtures.
+- Music and atmosphere: four new CC0 tracks (desert, marsh, caves, and a boss theme that plays
+  whenever a unique boss is in the fight) and five CC0 ambient loops (birds, river, wind, dripping
+  water, deep dungeon) that play under the music. Every town, wilderness and dungeon now has its own
+  music and ambience (`ambience` map field, `boss` monster flag). New Ambience volume slider in Settings.
 
 ## [1.4.0] - 2026-10-09
 

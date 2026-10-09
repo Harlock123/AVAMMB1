@@ -60,6 +60,14 @@ public static class HeadlessRunner
                     var detail = audio is OpenAlAudioService al ? $"{al.Status}, device open, test buffer {al.Preload("ui")}" : $"{lib} loaded; {audio.Status}";
                     Console.WriteLine("Audio: " + detail);
                 }
+                var tracks = vm.Services.Content.Maps.Values.Select(m => "Music/" + m.Def.Music)
+                    .Concat(vm.Services.Content.Maps.Values.Where(m => m.Def.Ambience is not null).Select(m => "Ambience/" + m.Def.Ambience))
+                    .Concat(["Music/title", "Music/battle", "Music/boss"]).Distinct().Order().ToList();
+                foreach (var t in tracks)
+                {
+                    OpenAlAudioService.CheckDecodes(t + ".ogg");
+                }
+                Console.WriteLine($"Streams: {tracks.Count} music/ambience files decode");
                 var pad = GamepadService.Probe();
                 if (!pad.StartsWith("bundled", StringComparison.Ordinal))
                 {

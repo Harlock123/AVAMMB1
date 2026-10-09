@@ -55,7 +55,7 @@
  "wallTexture": "wall_town4",
  "floorTexture": "floor_bog",
  "skyColor": "#5a6a7a",
- "music": "town",
+ "music": "marsh",
  "encounterChance": 0,
  "events": [
   {
@@ -162,5 +162,6 @@
    "requiresFlag": "lotus_delivered",
    "text": "\"The lotus is steeping. Half of Duskmere will be grateful this winter.\""
   }
- ]
+ ],
+ "ambience": "river"
 }

@@ -56,7 +56,7 @@
  "floorTexture": "floor_earth",
  "ceilingTexture": "wall_deep",
  "dark": true,
- "music": "dungeon",
+ "music": "caves",
  "encounterChance": 9,
  "encounters": [
   {
@@ -200,5 +200,6 @@
     }
    ]
   }
- ]
+ ],
+ "ambience": "deep"
 }

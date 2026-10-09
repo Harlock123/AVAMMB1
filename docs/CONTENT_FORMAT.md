@@ -78,7 +78,8 @@ school who can already cast its level; the tome is consumed), `quest` (cannot be
 ```
 Non-`ranged` attacks only work from the front rank (first three monsters). `smart` monsters target
 the weakest member; `cowardly` ones may flee when badly hurt. Negative resistance = vulnerability.
-`sprite` refers to `Graphics/Monsters/<sprite>.png`.
+`sprite` refers to `Graphics/Monsters/<sprite>.png`. Set `"boss": true` on unique bosses: any battle that
+includes one plays the boss theme instead of the normal battle music.
 
 ## spells.json
 
@@ -122,7 +123,8 @@ spells marked `"tome": true`, which are learned only by reading a `tome` item. A
 | `wallTexture`, `floorTexture`, `ceilingTexture` | `Graphics/Textures/<key>.png`; no ceiling = sky |
 | `skyColor` | Hex color for the sky gradient |
 | `dark` | Needs light to see further than one cell |
-| `music` | `title`, `town`, `dungeon`, `battle` (`Audio/Music/<key>.ogg`) |
+| `music` | Track key: `title`, `town`, `dungeon`, `caves`, `desert`, `marsh` (`Audio/Music/<key>.ogg`; `battle` and `boss` are used for fights) |
+| `ambience` | Optional looping ambient sound under the music: `birds`, `river`, `wind`, `drips`, `deep` (`Audio/Ambience/<key>.ogg`) |
 | `encounterChance`, `encounters` | Percent per step; weighted `{ monster, count, weight }` |
 | `lockedDoorKey`, `lockedDoorFlag` | Item or flag that opens `L` doors |
 | `events` | See below |

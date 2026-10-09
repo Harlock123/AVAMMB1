@@ -206,6 +206,8 @@ public sealed class MapDef
     public bool Dark { get; set; }
     /// <summary>Music track key.</summary>
     public string Music { get; set; } = "dungeon";
+    /// <summary>Looping ambient sound key (Assets/Audio/Ambience), or null for none.</summary>
+    public string? Ambience { get; set; }
     /// <summary>Chance per step of a random encounter (percent).</summary>
     public int EncounterChance { get; set; }
     /// <summary>Random encounter table.</summary>

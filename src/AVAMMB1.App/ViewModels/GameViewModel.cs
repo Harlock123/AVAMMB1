@@ -174,6 +174,7 @@ public sealed partial class GameViewModel : ViewModelBase
         {
             Services.Audio.PlayMusic(map.Def.Music);
         }
+        Services.Audio.PlayAmbience(map.Def.Ambience);
     }
 
     /// <summary>Adds a plain message to the log.</summary>

@@ -118,7 +118,7 @@ public sealed partial class CombatViewModel : ViewModelBase
         combat.MonsterActed += m => _acted.Add(m);
         TakeSnapshot();
         Party = game.Party;
-        game.Services.Audio.PlayMusic("battle");
+        game.Services.Audio.PlayMusic(combat.Monsters.Any(m => m.Def.Boss) ? "boss" : "battle");
         var names = combat.Monsters.GroupBy(m => m.Def).Select(g => g.Count() == 1 ? $"a {g.Key.Name}" : $"{g.Count()} {g.Key.PluralName}");
         Log.Add(new MessageViewModel(new GameMessage($"You face {string.Join(", ", names)}!", MessageKind.Bad)));
         var bribe = combat.BribeCost;

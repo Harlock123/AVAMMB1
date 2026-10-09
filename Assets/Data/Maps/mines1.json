@@ -56,7 +56,7 @@
  "floorTexture": "floor_earth",
  "ceilingTexture": "wall_deep",
  "dark": true,
- "music": "dungeon",
+ "music": "caves",
  "encounterChance": 8,
  "encounters": [
   {
@@ -217,5 +217,6 @@
    "damage": "2d6",
    "text": "Rocks crash down from the ceiling!"
   }
- ]
+ ],
+ "ambience": "drips"
 }

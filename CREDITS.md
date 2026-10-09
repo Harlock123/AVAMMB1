@@ -23,6 +23,18 @@ their code, data, maps, text, graphics, music or sounds. All trademarks belong t
 - **"Town Theme RPG"** - cynicmusic - https://opengameart.org/content/town-theme-rpg
 - **"Battle Theme A"** - cynicmusic - https://opengameart.org/content/battle-theme-a
 - **"Dungeon Ambience"** - yd - https://opengameart.org/content/dungeon-ambience
+- **"Negev Desert Loop"** from *Desert Calmness and Fighting* - Dizzy Crow
+  https://opengameart.org/content/desert-calmness-and-fighting-orchestral-141
+- **"Swamp Theme Loop"** - beardalaxy - https://opengameart.org/content/swamp-theme-loop
+- **"8-bit Cave Loop"** - Wolfgang_ - https://opengameart.org/content/8-bit-cave-loop
+- **"Battle Theme B for RPG"** - cynicmusic - https://opengameart.org/content/battle-theme-b-for-rpg
+
+## Ambient sound loops (all CC0 1.0)
+
+- **"Wind Whoosh Loop"** - SketchMan3 - https://opengameart.org/content/wind-whoosh-loop
+- **"Dripping Water Loop"** - qubodup - https://opengameart.org/content/dripping-water-loop
+- **"Loopable Dungeon Ambience"** - JaggedStone - https://opengameart.org/content/loopable-dungeon-ambience
+- **"Park Ambiences"** (birds, river) - Thimras - https://opengameart.org/content/park-ambiences
 
 ## Sound effects (all CC0 1.0)
 

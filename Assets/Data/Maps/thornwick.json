@@ -166,5 +166,6 @@
    "requiresFlag": "heartstone_returned",
    "text": "\"The lamps burn bright again below. Thank you, friends.\""
   }
- ]
+ ],
+ "ambience": "wind"
 }

@@ -215,5 +215,6 @@
    "damage": "3d6",
    "text": "A sand-filled pit swallows the party and spits it out elsewhere!"
   }
- ]
+ ],
+ "ambience": "deep"
 }

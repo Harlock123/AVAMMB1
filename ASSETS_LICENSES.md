@@ -9,6 +9,7 @@ The game code is licensed separately under the MIT license (see [LICENSE](LICENS
 - All PNG images were losslessly re-encoded to 32-bit RGBA so every rendering backend can read them; pixels are unchanged.
 - Character portraits are composited at runtime from the unmodified race base tiles and paper-doll layer tiles.
 - All audio was transcoded to Ogg Vorbis (sound effects downmixed to mono) with ffmpeg; music tracks are otherwise unedited.
+- Ambient loops were downmixed to mono at 22 kHz; the two park ambiences were trimmed to 90 seconds with a 2-second crossfade so they loop seamlessly.
 - Files were renamed to describe their in-game use (original names are listed below).
 
 ## Sources
@@ -23,6 +24,14 @@ The game code is licensed separately under the MIT license (see [LICENSE](LICENS
 | Town Theme RPG | cynicmusic | <https://opengameart.org/content/town-theme-rpg> | CC0 1.0 |
 | Battle Theme A | cynicmusic | <https://opengameart.org/content/battle-theme-a> | CC0 1.0 |
 | Dungeon Ambience | yd | <https://opengameart.org/content/dungeon-ambience> | CC0 1.0 |
+| Desert Calmness and Fighting (Orchestral 141) | Dizzy Crow | <https://opengameart.org/content/desert-calmness-and-fighting-orchestral-141> | CC0 1.0 |
+| Swamp Theme Loop | beardalaxy | <https://opengameart.org/content/swamp-theme-loop> | CC0 1.0 |
+| 8-bit Cave Loop | Wolfgang_ | <https://opengameart.org/content/8-bit-cave-loop> | CC0 1.0 |
+| Battle Theme B for RPG | cynicmusic | <https://opengameart.org/content/battle-theme-b-for-rpg> | CC0 1.0 |
+| Wind Whoosh Loop | SketchMan3 | <https://opengameart.org/content/wind-whoosh-loop> | CC0 1.0 |
+| Dripping Water Loop | qubodup | <https://opengameart.org/content/dripping-water-loop> | CC0 1.0 |
+| Loopable Dungeon Ambience | JaggedStone | <https://opengameart.org/content/loopable-dungeon-ambience> | CC0 1.0 |
+| Park Ambiences | Thimras | <https://opengameart.org/content/park-ambiences> | CC0 1.0 |
 
 ## Original works (made for this project)
 
@@ -35,8 +44,17 @@ The game code is licensed separately under the MIT license (see [LICENSE](LICENS
 
 | File in `/Assets` | Source pack | Original file |
 |---|---|---|
+| `Audio/Ambience/birds.ogg` | Park Ambiences | `park_ambience_birds.wav` |
+| `Audio/Ambience/deep.ogg` | Loopable Dungeon Ambience | `dungeon_ambient_1_0.ogg` |
+| `Audio/Ambience/drips.ogg` | Dripping Water Loop | `atmosbasement.mp3_.flac` |
+| `Audio/Ambience/river.ogg` | Park Ambiences | `park_ambience_river.wav` |
+| `Audio/Ambience/wind.ogg` | Wind Whoosh Loop | `wind woosh loop` |
 | `Audio/Music/battle.ogg` | Battle Theme A | `battleThemeA.mp3` |
+| `Audio/Music/boss.ogg` | Battle Theme B for RPG | `battleThemeB.mp3` |
+| `Audio/Music/caves.ogg` | 8-bit Cave Loop | `8BitCave.wav` |
+| `Audio/Music/desert.ogg` | Desert Calmness and Fighting | `Negev Desert Loop` |
 | `Audio/Music/dungeon.ogg` | Dungeon Ambience | `dungeon002_0.ogg` |
+| `Audio/Music/marsh.ogg` | Swamp Theme Loop | `swamp_in_game.ogg` |
 | `Audio/Music/title.ogg` | 5 Chiptunes | `Juhani Junkala [Retro Game Music Pack] Title Screen.wav` |
 | `Audio/Music/town.ogg` | Town Theme RPG | `TownTheme.mp3` |
 | `Audio/Sfx/book.ogg` | RPG Audio | `bookOpen.ogg` |

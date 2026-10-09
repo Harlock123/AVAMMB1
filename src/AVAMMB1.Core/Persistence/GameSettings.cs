@@ -44,6 +44,8 @@ public sealed class GameSettings
     public int MusicVolume { get; set; } = 60;
     /// <summary>Sound effect volume 0-100.</summary>
     public int SfxVolume { get; set; } = 80;
+    /// <summary>Ambient sound volume 0-100.</summary>
+    public int AmbienceVolume { get; set; } = 50;
     /// <summary>Run full-screen.</summary>
     public bool Fullscreen { get; set; }
     /// <summary>Scale the whole interface to fit the window (off = fixed 100% size).</summary>
@@ -84,6 +86,7 @@ public sealed class GameSettings
     {
         MusicVolume = Math.Clamp(MusicVolume, 0, 100);
         SfxVolume = Math.Clamp(SfxVolume, 0, 100);
+        AmbienceVolume = Math.Clamp(AmbienceVolume, 0, 100);
         foreach (var (action, keys) in DefaultBindings())
         {
             if (!KeyBindings.TryGetValue(action, out var existing) || existing.Count == 0)

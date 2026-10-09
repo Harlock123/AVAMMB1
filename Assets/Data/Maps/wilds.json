@@ -243,5 +243,6 @@
    "blocking": false,
    "text": "Behind the ogre's den lies a pile of gnawed bones and a silver ring."
   }
- ]
+ ],
+ "ambience": "birds"
 }

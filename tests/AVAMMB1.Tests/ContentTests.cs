@@ -81,4 +81,39 @@ public class ContentTests
         var def = new MapDef { Id = "bad", Width = 3, Height = 2, Format = MapFormat.Blocks, Grid = ["...", ".."] };
         Assert.Throws<InvalidDataException>(() => GameMap.Parse(def));
     }
+
+    private static string RepoAssets()
+    {
+        var dir = new DirectoryInfo(AppContext.BaseDirectory);
+        while (dir is not null && !File.Exists(Path.Combine(dir.FullName, "AVAMMB1.sln")))
+        {
+            dir = dir.Parent;
+        }
+        return Path.Combine(dir?.FullName ?? throw new DirectoryNotFoundException("repo root"), "Assets");
+    }
+
+    [Fact]
+    public void EveryMap_HasExistingMusicAndAmbience()
+    {
+        var assets = RepoAssets();
+        foreach (var map in TestContent.Content.Maps.Values)
+        {
+            Assert.True(File.Exists(Path.Combine(assets, "Audio", "Music", map.Def.Music + ".ogg")), $"{map.Id}: music {map.Def.Music}");
+            Assert.False(string.IsNullOrEmpty(map.Def.Ambience), $"{map.Id}: no ambience");
+            Assert.True(File.Exists(Path.Combine(assets, "Audio", "Ambience", map.Def.Ambience + ".ogg")), $"{map.Id}: ambience {map.Def.Ambience}");
+        }
+        foreach (var track in new[] { "title", "battle", "boss" })
+        {
+            Assert.True(File.Exists(Path.Combine(assets, "Audio", "Music", track + ".ogg")), track);
+        }
+    }
+
+    [Fact]
+    public void UniqueBosses_AreFlagged()
+    {
+        var db = TestContent.Content;
+        string[] bosses = ["kobold_chief", "crypt_lich", "vault_warden", "stone_wyrm", "drowned_hydra", "sphinx", "sun_king"];
+        Assert.All(bosses, id => Assert.True(db.Monster(id).Boss, id));
+        Assert.Equal(bosses.Order(), db.Monsters.Values.Where(m => m.Boss).Select(m => m.Id).Order());
+    }
 }

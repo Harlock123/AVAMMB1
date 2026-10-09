@@ -151,6 +151,7 @@ public sealed partial class SettingsViewModel : ViewModelBase
         var s = main.Services.Settings;
         _musicVolume = s.MusicVolume;
         _sfxVolume = s.SfxVolume;
+        _ambienceVolume = s.AmbienceVolume;
         _fullscreen = s.Fullscreen;
         _showMinimap = s.ShowMinimap;
         _smoothMovement = s.SmoothMovement;
@@ -177,6 +178,10 @@ public sealed partial class SettingsViewModel : ViewModelBase
     /// <summary>Effects volume.</summary>
     [ObservableProperty]
     private int _sfxVolume;
+
+    /// <summary>Ambient sound volume.</summary>
+    [ObservableProperty]
+    private int _ambienceVolume;
 
     /// <summary>Fullscreen.</summary>
     [ObservableProperty]
@@ -211,10 +216,11 @@ public sealed partial class SettingsViewModel : ViewModelBase
 
     private BindingRow? _capturing;
 
-    partial void OnMusicVolumeChanged(int value) => _main.Services.Audio.SetVolumes(value, SfxVolume);
+    partial void OnMusicVolumeChanged(int value) => _main.Services.Audio.SetVolumes(value, SfxVolume, AmbienceVolume);
+    partial void OnAmbienceVolumeChanged(int value) => _main.Services.Audio.SetVolumes(MusicVolume, SfxVolume, value);
     partial void OnSfxVolumeChanged(int value)
     {
-        _main.Services.Audio.SetVolumes(MusicVolume, value);
+        _main.Services.Audio.SetVolumes(MusicVolume, value, AmbienceVolume);
         _main.Services.Audio.PlaySfx("coins");
     }
 
@@ -253,6 +259,7 @@ public sealed partial class SettingsViewModel : ViewModelBase
         var s = _main.Services.Settings;
         s.MusicVolume = MusicVolume;
         s.SfxVolume = SfxVolume;
+        s.AmbienceVolume = AmbienceVolume;
         var fullscreenChanged = s.Fullscreen != Fullscreen;
         s.Fullscreen = Fullscreen;
         s.ShowMinimap = ShowMinimap;
@@ -373,6 +380,7 @@ public sealed partial class EndingViewModel : ViewModelBase
         Stats = $"Days in the field: {state.Day}   Gold: {state.Gold}   " +
                 string.Join("   ", state.Party.Select(c => $"{c.Name} L{c.Level}"));
         main.Services.Audio.PlayMusic(victory ? "title" : "dungeon");
+        main.Services.Audio.PlayAmbience(null);
         CanLoad = main.Services.Saves.MostRecentSlot() is not null;
     }
 

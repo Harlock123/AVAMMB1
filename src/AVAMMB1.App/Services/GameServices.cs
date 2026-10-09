@@ -53,7 +53,7 @@ public sealed class GameServices(
     public void SaveSettings()
     {
         Settings.Normalize();
-        Audio.SetVolumes(Settings.MusicVolume, Settings.SfxVolume);
+        Audio.SetVolumes(Settings.MusicVolume, Settings.SfxVolume, Settings.AmbienceVolume);
         try
         {
             SettingsStore.Save(Settings);

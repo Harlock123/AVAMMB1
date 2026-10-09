@@ -22,6 +22,10 @@ public interface IAudioService : IDisposable
     /// <summary>Stops music.</summary>
     void StopMusic();
 
+    /// <summary>Starts a looping ambient sound under the music, or stops it when <paramref name="loop"/> is null.</summary>
+    /// <param name="loop">Loop key (file name under Assets/Audio/Ambience without extension).</param>
+    void PlayAmbience(string? loop);
+
     /// <summary>Plays a one-shot sound effect.</summary>
     /// <param name="sfx">Effect key (file name under Assets/Audio/Sfx without extension).</param>
     void PlaySfx(string sfx);
@@ -29,7 +33,8 @@ public interface IAudioService : IDisposable
     /// <summary>Sets volumes (0-100).</summary>
     /// <param name="music">Music volume.</param>
     /// <param name="sfx">Effects volume.</param>
-    void SetVolumes(int music, int sfx);
+    /// <param name="ambience">Ambient sound volume.</param>
+    void SetVolumes(int music, int sfx, int ambience);
 }
 
 /// <summary>Silent implementation used when no audio device exists (CI, headless screenshots).</summary>
@@ -44,16 +49,18 @@ public sealed class NullAudioService(string reason) : IAudioService
     /// <inheritdoc />
     public void StopMusic() { }
     /// <inheritdoc />
+    public void PlayAmbience(string? loop) { }
+    /// <inheritdoc />
     public void PlaySfx(string sfx) { }
     /// <inheritdoc />
-    public void SetVolumes(int music, int sfx) { }
+    public void SetVolumes(int music, int sfx, int ambience) { }
     /// <inheritdoc />
     public void Dispose() { }
 }
 
 /// <summary>
 /// Cross-platform audio using OpenAL Soft (via Silk.NET, native libraries bundled for every RID)
-/// and NVorbis for decoding Ogg Vorbis assets. Music streams on a background thread.
+/// and NVorbis for decoding Ogg Vorbis assets. Music and ambience each stream on a background thread.
 /// </summary>
 public sealed unsafe class OpenAlAudioService : IAudioService
 {
@@ -68,12 +75,8 @@ public sealed unsafe class OpenAlAudioService : IAudioService
     private readonly Dictionary<string, uint> _sfxBuffers = new();
     private readonly uint[] _voices = new uint[SfxVoices];
     private readonly object _lock = new();
-    private uint _musicSource;
-    private readonly uint[] _musicBuffers = new uint[StreamBuffers];
-    private Thread? _musicThread;
-    private volatile bool _musicStop;
-    private string? _currentTrack;
-    private float _musicGain = 0.6f;
+    private readonly StreamChannel _music;
+    private readonly StreamChannel _ambience;
     private float _sfxGain = 0.8f;
     private int _nextVoice;
     private bool _disposed;
@@ -88,11 +91,8 @@ public sealed unsafe class OpenAlAudioService : IAudioService
         {
             _al.GenSources(SfxVoices, v);
         }
-        _musicSource = _al.GenSource();
-        fixed (uint* b = _musicBuffers)
-        {
-            _al.GenBuffers(StreamBuffers, b);
-        }
+        _music = new StreamChannel(this, "Music", 0.6f);
+        _ambience = new StreamChannel(this, "Ambience", 0.5f);
     }
 
     /// <inheritdoc />
@@ -166,6 +166,19 @@ public sealed unsafe class OpenAlAudioService : IAudioService
         handle = 0;
         detail = "OpenAL library not found";
         return false;
+    }
+
+    /// <summary>Opens a bundled Ogg file and decodes its first samples (used by <c>--smoke-test</c>).</summary>
+    /// <param name="path">Path under Assets/Audio, e.g. <c>Music/boss.ogg</c>.</param>
+    /// <exception cref="InvalidDataException">Thrown when the file decodes to nothing.</exception>
+    public static void CheckDecodes(string path)
+    {
+        using var reader = new VorbisReader(OpenAsset(path), closeOnDispose: true);
+        var buf = new float[4096 * reader.Channels];
+        if (reader.ReadSamples(buf, 0, buf.Length) <= 0)
+        {
+            throw new InvalidDataException(path + " contains no audio");
+        }
     }
 
     private static Stream OpenAsset(string path) => AssetLoader.Open(new Uri($"avares://AVAMMB1/Assets/Audio/{path}"));
@@ -248,140 +261,38 @@ public sealed unsafe class OpenAlAudioService : IAudioService
     /// <inheritdoc />
     public void PlayMusic(string track)
     {
-        if (_disposed || track == _currentTrack)
+        if (!_disposed)
+        {
+            _music.Play(track);
+        }
+    }
+
+    /// <inheritdoc />
+    public void StopMusic() => _music.Stop();
+
+    /// <inheritdoc />
+    public void PlayAmbience(string? loop)
+    {
+        if (_disposed)
         {
             return;
         }
-        StopMusic();
-        _currentTrack = track;
-        _musicStop = false;
-        _musicThread = new Thread(() => StreamLoop(track)) { IsBackground = true, Name = "AVAMMB1 music" };
-        _musicThread.Start();
-    }
-
-    private void StreamLoop(string track)
-    {
-        VorbisReader? reader = null;
-        try
+        if (string.IsNullOrEmpty(loop))
         {
-            var stream = OpenAsset($"Music/{track}.ogg");
-            reader = new VorbisReader(stream, closeOnDispose: true);
-            var format = reader.Channels == 1 ? BufferFormat.Mono16 : BufferFormat.Stereo16;
-            var floats = new float[StreamChunkFrames * reader.Channels];
-            var pcm = new short[floats.Length];
-
-            bool Fill(uint buffer)
-            {
-                var n = reader.ReadSamples(floats, 0, floats.Length);
-                if (n <= 0)
-                {
-                    reader.SamplePosition = 0; // loop
-                    n = reader.ReadSamples(floats, 0, floats.Length);
-                    if (n <= 0)
-                    {
-                        return false;
-                    }
-                }
-                for (var i = 0; i < n; i++)
-                {
-                    pcm[i] = (short)Math.Clamp(floats[i] * 32767f, short.MinValue, short.MaxValue);
-                }
-                lock (_lock)
-                {
-                    fixed (short* p = pcm)
-                    {
-                        _al.BufferData(buffer, format, p, n * 2, reader.SampleRate);
-                    }
-                    var b = buffer;
-                    _al.SourceQueueBuffers(_musicSource, 1, &b);
-                }
-                return true;
-            }
-
-            lock (_lock)
-            {
-                _al.SetSourceProperty(_musicSource, SourceFloat.Gain, _musicGain);
-            }
-            foreach (var b in _musicBuffers)
-            {
-                Fill(b);
-            }
-            lock (_lock)
-            {
-                _al.SourcePlay(_musicSource);
-            }
-            while (!_musicStop)
-            {
-                int processed;
-                lock (_lock)
-                {
-                    _al.GetSourceProperty(_musicSource, GetSourceInteger.BuffersProcessed, out processed);
-                }
-                while (processed-- > 0 && !_musicStop)
-                {
-                    uint b;
-                    lock (_lock)
-                    {
-                        _al.SourceUnqueueBuffers(_musicSource, 1, &b);
-                    }
-                    Fill(b);
-                }
-                lock (_lock)
-                {
-                    _al.GetSourceProperty(_musicSource, GetSourceInteger.SourceState, out var state);
-                    if (state != (int)SourceState.Playing && !_musicStop)
-                    {
-                        _al.SourcePlay(_musicSource); // recover from underrun
-                    }
-                }
-                Thread.Sleep(30);
-            }
+            _ambience.Stop();
         }
-        catch (Exception ex) when (ex is IOException or InvalidDataException or ArgumentException or FileNotFoundException)
+        else
         {
-            // Missing or unreadable track: play silence.
-        }
-        finally
-        {
-            reader?.Dispose();
+            _ambience.Play(loop);
         }
     }
 
     /// <inheritdoc />
-    public void StopMusic()
+    public void SetVolumes(int music, int sfx, int ambience)
     {
-        _musicStop = true;
-        _musicThread?.Join(500);
-        _musicThread = null;
-        _currentTrack = null;
-        lock (_lock)
-        {
-            if (_disposed)
-            {
-                return;
-            }
-            _al.SourceStop(_musicSource);
-            _al.GetSourceProperty(_musicSource, GetSourceInteger.BuffersQueued, out var queued);
-            while (queued-- > 0)
-            {
-                uint b;
-                _al.SourceUnqueueBuffers(_musicSource, 1, &b);
-            }
-        }
-    }
-
-    /// <inheritdoc />
-    public void SetVolumes(int music, int sfx)
-    {
-        _musicGain = Math.Clamp(music, 0, 100) / 100f;
         _sfxGain = Math.Clamp(sfx, 0, 100) / 100f;
-        lock (_lock)
-        {
-            if (!_disposed)
-            {
-                _al.SetSourceProperty(_musicSource, SourceFloat.Gain, _musicGain);
-            }
-        }
+        _music.SetGain(Math.Clamp(music, 0, 100) / 100f);
+        _ambience.SetGain(Math.Clamp(ambience, 0, 100) / 100f);
     }
 
     /// <inheritdoc />
@@ -391,7 +302,8 @@ public sealed unsafe class OpenAlAudioService : IAudioService
         {
             return;
         }
-        StopMusic();
+        _music.Stop();
+        _ambience.Stop();
         lock (_lock)
         {
             _disposed = true;
@@ -399,11 +311,8 @@ public sealed unsafe class OpenAlAudioService : IAudioService
             {
                 _al.DeleteSources(SfxVoices, v);
             }
-            _al.DeleteSource(_musicSource);
-            fixed (uint* b = _musicBuffers)
-            {
-                _al.DeleteBuffers(StreamBuffers, b);
-            }
+            _music.Delete();
+            _ambience.Delete();
             foreach (var b in _sfxBuffers.Values)
             {
                 _al.DeleteBuffer(b);
@@ -411,6 +320,179 @@ public sealed unsafe class OpenAlAudioService : IAudioService
             _alc.MakeContextCurrent(null);
             _alc.DestroyContext(_context);
             _alc.CloseDevice(_device);
+        }
+    }
+
+    /// <summary>One looping Ogg stream (music or ambience) with its own source, buffers and thread.</summary>
+    private sealed class StreamChannel
+    {
+        private readonly OpenAlAudioService _owner;
+        private readonly string _folder;
+        private readonly uint _source;
+        private readonly uint[] _buffers = new uint[StreamBuffers];
+        private Thread? _thread;
+        private volatile bool _stop;
+        private string? _current;
+        private float _gain;
+
+        public StreamChannel(OpenAlAudioService owner, string folder, float gain)
+        {
+            _owner = owner;
+            _folder = folder;
+            _gain = gain;
+            _source = owner._al.GenSource();
+            fixed (uint* b = _buffers)
+            {
+                owner._al.GenBuffers(StreamBuffers, b);
+            }
+        }
+
+        private AL Al => _owner._al;
+
+        public void Play(string key)
+        {
+            if (key == _current)
+            {
+                return;
+            }
+            Stop();
+            _current = key;
+            _stop = false;
+            _thread = new Thread(() => Loop(key)) { IsBackground = true, Name = "AVAMMB1 " + _folder.ToLowerInvariant() };
+            _thread.Start();
+        }
+
+        public void SetGain(float gain)
+        {
+            _gain = gain;
+            lock (_owner._lock)
+            {
+                if (!_owner._disposed)
+                {
+                    Al.SetSourceProperty(_source, SourceFloat.Gain, _gain);
+                }
+            }
+        }
+
+        public void Stop()
+        {
+            _stop = true;
+            _thread?.Join(500);
+            _thread = null;
+            _current = null;
+            lock (_owner._lock)
+            {
+                if (_owner._disposed)
+                {
+                    return;
+                }
+                Al.SourceStop(_source);
+                Al.GetSourceProperty(_source, GetSourceInteger.BuffersQueued, out var queued);
+                while (queued-- > 0)
+                {
+                    uint b;
+                    Al.SourceUnqueueBuffers(_source, 1, &b);
+                }
+            }
+        }
+
+        /// <summary>Releases the OpenAL objects (caller holds the lock).</summary>
+        public void Delete()
+        {
+            Al.DeleteSource(_source);
+            fixed (uint* b = _buffers)
+            {
+                Al.DeleteBuffers(StreamBuffers, b);
+            }
+        }
+
+        private void Loop(string key)
+        {
+            VorbisReader? reader = null;
+            var gate = _owner._lock;
+            try
+            {
+                var stream = OpenAsset($"{_folder}/{key}.ogg");
+                reader = new VorbisReader(stream, closeOnDispose: true);
+                var format = reader.Channels == 1 ? BufferFormat.Mono16 : BufferFormat.Stereo16;
+                var floats = new float[StreamChunkFrames * reader.Channels];
+                var pcm = new short[floats.Length];
+
+                bool Fill(uint buffer)
+                {
+                    var n = reader.ReadSamples(floats, 0, floats.Length);
+                    if (n <= 0)
+                    {
+                        reader.SamplePosition = 0; // loop
+                        n = reader.ReadSamples(floats, 0, floats.Length);
+                        if (n <= 0)
+                        {
+                            return false;
+                        }
+                    }
+                    for (var i = 0; i < n; i++)
+                    {
+                        pcm[i] = (short)Math.Clamp(floats[i] * 32767f, short.MinValue, short.MaxValue);
+                    }
+                    lock (gate)
+                    {
+                        fixed (short* p = pcm)
+                        {
+                            Al.BufferData(buffer, format, p, n * 2, reader.SampleRate);
+                        }
+                        var b = buffer;
+                        Al.SourceQueueBuffers(_source, 1, &b);
+                    }
+                    return true;
+                }
+
+                lock (gate)
+                {
+                    Al.SetSourceProperty(_source, SourceFloat.Gain, _gain);
+                }
+                foreach (var b in _buffers)
+                {
+                    Fill(b);
+                }
+                lock (gate)
+                {
+                    Al.SourcePlay(_source);
+                }
+                while (!_stop)
+                {
+                    int processed;
+                    lock (gate)
+                    {
+                        Al.GetSourceProperty(_source, GetSourceInteger.BuffersProcessed, out processed);
+                    }
+                    while (processed-- > 0 && !_stop)
+                    {
+                        uint b;
+                        lock (gate)
+                        {
+                            Al.SourceUnqueueBuffers(_source, 1, &b);
+                        }
+                        Fill(b);
+                    }
+                    lock (gate)
+                    {
+                        Al.GetSourceProperty(_source, GetSourceInteger.SourceState, out var state);
+                        if (state != (int)SourceState.Playing && !_stop)
+                        {
+                            Al.SourcePlay(_source); // recover from underrun
+                        }
+                    }
+                    Thread.Sleep(30);
+                }
+            }
+            catch (Exception ex) when (ex is IOException or InvalidDataException or ArgumentException or FileNotFoundException)
+            {
+                // Missing or unreadable file: play silence.
+            }
+            finally
+            {
+                reader?.Dispose();
+            }
         }
     }
 }

@@ -55,7 +55,7 @@
  "wallTexture": "wall_desert_town",
  "floorTexture": "floor_sand",
  "skyColor": "#d9a86a",
- "music": "town",
+ "music": "desert",
  "encounterChance": 0,
  "events": [
   {
@@ -186,5 +186,6 @@
    "requiresFlag": "sun_disk_returned",
    "text": "The Sun Disk glows in the museum's centre case. Crowds come every day to see it."
   }
- ]
+ ],
+ "ambience": "wind"
 }

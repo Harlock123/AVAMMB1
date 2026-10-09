@@ -61,7 +61,7 @@
  "floorTexture": "floor_limestone",
  "ceilingTexture": "wall_marble",
  "dark": true,
- "music": "dungeon",
+ "music": "marsh",
  "encounterChance": 9,
  "encounters": [
   {
@@ -244,5 +244,6 @@
    "trap": "teleport",
    "text": "A whirlpool opens beneath your feet!"
   }
- ]
+ ],
+ "ambience": "drips"
 }

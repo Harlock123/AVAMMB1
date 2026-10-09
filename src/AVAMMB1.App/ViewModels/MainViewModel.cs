@@ -14,7 +14,7 @@ public sealed partial class MainViewModel : ViewModelBase
     public MainViewModel(GameServices services)
     {
         Services = services;
-        services.Audio.SetVolumes(services.Settings.MusicVolume, services.Settings.SfxVolume);
+        services.Audio.SetVolumes(services.Settings.MusicVolume, services.Settings.SfxVolume, services.Settings.AmbienceVolume);
         _currentScreen = new TitleViewModel(this);
     }
 

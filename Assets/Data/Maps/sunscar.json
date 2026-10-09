@@ -58,7 +58,7 @@
  "wallTexture": "wall_sandstone",
  "floorTexture": "floor_sand",
  "skyColor": "#e0a060",
- "music": "title",
+ "music": "desert",
  "encounterChance": 7,
  "encounters": [
   {
@@ -213,5 +213,6 @@
    "feature": "column",
    "text": "A statue of a crowned king, half buried in sand, points west toward the rocks."
   }
- ]
+ ],
+ "ambience": "wind"
 }

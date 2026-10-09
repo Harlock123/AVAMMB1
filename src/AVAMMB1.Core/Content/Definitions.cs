@@ -169,6 +169,8 @@ public sealed class MonsterDef
     public string? Plural { get; set; }
     /// <summary>Sprite key (Graphics/Monsters).</summary>
     public string Sprite { get; set; } = "";
+    /// <summary>A unique boss: battles including it play the boss theme.</summary>
+    public bool Boss { get; set; }
     /// <summary>Monster level (affects to-hit and saves).</summary>
     public int Level { get; set; } = 1;
     /// <summary>Hit point dice.</summary>

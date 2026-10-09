@@ -15,6 +15,7 @@ public sealed partial class TitleViewModel : ViewModelBase
     {
         _main = main;
         main.Services.Audio.PlayMusic("title");
+        main.Services.Audio.PlayAmbience(null);
         var recent = main.Services.Saves.MostRecentSlot();
         CanContinue = recent is not null;
         _continueSlot = recent ?? 0;
