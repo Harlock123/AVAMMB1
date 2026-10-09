@@ -5,11 +5,11 @@ using AVAMMB1.App.ViewModels;
 
 namespace AVAMMB1.App.Views;
 
-/// <summary>Combat overlay view.</summary>
-public partial class CombatView : UserControl
+/// <summary>Combat controls and battle log shown in the side panel.</summary>
+public partial class CombatPanelView : UserControl
 {
     /// <summary>Creates the view.</summary>
-    public CombatView()
+    public CombatPanelView()
     {
         InitializeComponent();
         DataContextChanged += (_, _) =>

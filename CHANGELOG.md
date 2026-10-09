@@ -13,6 +13,11 @@ All notable changes to this project are documented here. The format follows
   lunges, hit flash and shake, slain monsters fading out (kept on screen, not targetable), and a red
   flash/shake on party portraits that take damage. `CombatEngine.MonsterActed` event drives it.
 - Settings toggles: *Smooth movement* and *Animated monsters in combat* (both on by default).
+- Monsters in the 3D view: battles are staged in the first-person viewport (front rank large,
+  back rank smaller behind; click a monster to target it) with the combat controls and log in the
+  side panel instead of a pop-up window. Slain monsters fade out before the next rank steps up.
+- Guardians of scripted encounters (chieftain, spiders, lich, ogre, Warden...) stand visibly in
+  their squares, bobbing gently, until defeated. Sprites support an idle bob in the ray caster.
 
 ### Fixed
 - The selected combat target's red border never showed (local values overrode the style).

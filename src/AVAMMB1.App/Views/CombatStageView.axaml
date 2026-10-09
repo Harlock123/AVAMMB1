@@ -1,0 +1,113 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:AVAMMB1.App.ViewModels"
+             xmlns:c="using:AVAMMB1.App.Controls"
+             x:Class="AVAMMB1.App.Views.CombatStageView" x:DataType="vm:CombatViewModel">
+  <UserControl.Styles>
+    <!-- Idle "breathing": two tempos so a group doesn't move in lock-step. -->
+    <Style Selector="c|PixelImage.idleA">
+      <Style.Animations>
+        <Animation Duration="0:0:1.8" IterationCount="INFINITE" Easing="SineEaseInOut">
+          <KeyFrame Cue="0%"><Setter Property="TranslateTransform.Y" Value="0" /><Setter Property="ScaleTransform.ScaleX" Value="1" /><Setter Property="ScaleTransform.ScaleY" Value="1" /></KeyFrame><KeyFrame Cue="50%"><Setter Property="TranslateTransform.Y" Value="-6" /><Setter Property="ScaleTransform.ScaleX" Value="1.03" /><Setter Property="ScaleTransform.ScaleY" Value="1.03" /></KeyFrame><KeyFrame Cue="100%"><Setter Property="TranslateTransform.Y" Value="0" /><Setter Property="ScaleTransform.ScaleX" Value="1" /><Setter Property="ScaleTransform.ScaleY" Value="1" /></KeyFrame>
+        </Animation>
+      </Style.Animations>
+    </Style>
+    <Style Selector="c|PixelImage.idleB">
+      <Style.Animations>
+        <Animation Duration="0:0:2.3" IterationCount="INFINITE" Easing="SineEaseInOut">
+          <KeyFrame Cue="0%"><Setter Property="TranslateTransform.Y" Value="-3" /><Setter Property="ScaleTransform.ScaleX" Value="1.02" /><Setter Property="ScaleTransform.ScaleY" Value="1.02" /></KeyFrame><KeyFrame Cue="50%"><Setter Property="TranslateTransform.Y" Value="3" /><Setter Property="ScaleTransform.ScaleX" Value="0.99" /><Setter Property="ScaleTransform.ScaleY" Value="0.99" /></KeyFrame><KeyFrame Cue="100%"><Setter Property="TranslateTransform.Y" Value="-3" /><Setter Property="ScaleTransform.ScaleX" Value="1.02" /><Setter Property="ScaleTransform.ScaleY" Value="1.02" /></KeyFrame>
+        </Animation>
+      </Style.Animations>
+    </Style>
+    <!-- Attack: the monster lunges toward the party (grows and drops toward the viewer). -->
+    <Style Selector="StackPanel.mon.attacking">
+      <Style.Animations>
+        <Animation Duration="0:0:0.45" Easing="CubicEaseOut">
+          <KeyFrame Cue="0%"><Setter Property="TranslateTransform.Y" Value="0" /><Setter Property="ScaleTransform.ScaleX" Value="1" /><Setter Property="ScaleTransform.ScaleY" Value="1" /></KeyFrame><KeyFrame Cue="35%"><Setter Property="TranslateTransform.Y" Value="24" /><Setter Property="ScaleTransform.ScaleX" Value="1.22" /><Setter Property="ScaleTransform.ScaleY" Value="1.22" /></KeyFrame><KeyFrame Cue="100%"><Setter Property="TranslateTransform.Y" Value="0" /><Setter Property="ScaleTransform.ScaleX" Value="1" /><Setter Property="ScaleTransform.ScaleY" Value="1" /></KeyFrame>
+        </Animation>
+      </Style.Animations>
+    </Style>
+    <!-- Hit: blink and shake. -->
+    <Style Selector="StackPanel.mon.hit">
+      <Style.Animations>
+        <Animation Duration="0:0:0.42">
+          <KeyFrame Cue="0%"><Setter Property="TranslateTransform.X" Value="0" /><Setter Property="Opacity" Value="1" /></KeyFrame><KeyFrame Cue="15%"><Setter Property="TranslateTransform.X" Value="-10" /><Setter Property="Opacity" Value="0.35" /></KeyFrame><KeyFrame Cue="35%"><Setter Property="TranslateTransform.X" Value="9" /><Setter Property="Opacity" Value="1" /></KeyFrame><KeyFrame Cue="55%"><Setter Property="TranslateTransform.X" Value="-6" /><Setter Property="Opacity" Value="0.45" /></KeyFrame><KeyFrame Cue="75%"><Setter Property="TranslateTransform.X" Value="3" /><Setter Property="Opacity" Value="1" /></KeyFrame><KeyFrame Cue="100%"><Setter Property="TranslateTransform.X" Value="0" /><Setter Property="Opacity" Value="1" /></KeyFrame>
+        </Animation>
+      </Style.Animations>
+    </Style>
+    <!-- Slain: fade out (removed from the stage on the next update). -->
+    <Style Selector="StackPanel.mon.dead">
+      <Setter Property="Opacity" Value="0.15" />
+    </Style>
+    <Style Selector="TextBlock.on">
+      <Setter Property="Opacity" Value="1" />
+    </Style>
+    <Style Selector="Border.label.selected">
+      <Setter Property="BorderBrush" Value="#ff5040" />
+      <Setter Property="BorderThickness" Value="1" />
+    </Style>
+  </UserControl.Styles>
+  <Grid RowDefinitions="Auto,*,Auto,*,Auto">
+    <Grid.Background>
+      <LinearGradientBrush StartPoint="0%,0%" EndPoint="0%,100%">
+        <GradientStop Color="#00000000" Offset="0.35" />
+        <GradientStop Color="#99000000" Offset="1" />
+      </LinearGradientBrush>
+    </Grid.Background>
+    <Border Background="#aa000000" CornerRadius="0,0,6,6" Padding="14,4" HorizontalAlignment="Center" Margin="0,30,0,0">
+      <TextBlock Foreground="#ff8a7a" FontSize="18" FontWeight="Bold"><Run Text="Battle!  " /><Run Text="{Binding RoundText}" Foreground="#e8d9b0" FontWeight="Normal" /></TextBlock>
+    </Border>
+    <!-- Back rank: further away, smaller and dimmer. -->
+    <ItemsControl Grid.Row="2" ItemsSource="{Binding BackRank}" HorizontalAlignment="Center" Opacity="0.82">
+      <ItemsControl.ItemsPanel><ItemsPanelTemplate><StackPanel Orientation="Horizontal" /></ItemsPanelTemplate></ItemsControl.ItemsPanel>
+      <ItemsControl.ItemTemplate>
+        <DataTemplate x:DataType="vm:MonsterViewModel">
+            <Button Background="Transparent" BorderThickness="0" Padding="4,0" Cursor="Hand"
+                    Command="{Binding $parent[UserControl].((vm:CombatViewModel)DataContext).TargetCommand}" CommandParameter="{Binding}">
+              <StackPanel Classes="mon" Classes.hit="{Binding IsHit}" Classes.attacking="{Binding IsAttacking}" Classes.dead="{Binding IsDead}" Spacing="2">
+                <StackPanel.Transitions>
+                  <Transitions><DoubleTransition Property="Opacity" Duration="0:0:0.8" Easing="QuadraticEaseOut" /></Transitions>
+                </StackPanel.Transitions>
+                <TextBlock Text="&#x25BC;" Foreground="#ff5040" FontSize="14" HorizontalAlignment="Center" Opacity="0" Classes.on="{Binding IsSelected}" />
+                <c:PixelImage Source="{Binding Sprite}" Width="104" Height="104" HorizontalAlignment="Center"
+                              Classes.idleA="{Binding IdleA}" Classes.idleB="{Binding IdleB}" />
+                <Border Background="#b0000000" CornerRadius="3" Padding="6,1" HorizontalAlignment="Center" Classes="label" Classes.selected="{Binding IsSelected}">
+                  <StackPanel>
+                    <TextBlock Text="{Binding Label}" FontWeight="Bold" FontSize="12" HorizontalAlignment="Center" />
+                    <ProgressBar Minimum="0" Maximum="1" Value="{Binding HpFraction}" Foreground="{StaticResource HpBrush}" Width="90" />
+                    <TextBlock FontSize="11" HorizontalAlignment="Center" Foreground="#9fd0ff" Text="{Binding Status}" IsVisible="{Binding Status, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
+                  </StackPanel>
+                </Border>
+              </StackPanel>
+            </Button>
+          </DataTemplate>
+      </ItemsControl.ItemTemplate>
+    </ItemsControl>
+    <!-- Front rank: in melee range, large. -->
+    <ItemsControl Grid.Row="4" ItemsSource="{Binding FrontRank}" HorizontalAlignment="Center" Margin="0,0,0,36">
+      <ItemsControl.ItemsPanel><ItemsPanelTemplate><StackPanel Orientation="Horizontal" Spacing="8" /></ItemsPanelTemplate></ItemsControl.ItemsPanel>
+      <ItemsControl.ItemTemplate>
+        <DataTemplate x:DataType="vm:MonsterViewModel">
+            <Button Background="Transparent" BorderThickness="0" Padding="4,0" Cursor="Hand"
+                    Command="{Binding $parent[UserControl].((vm:CombatViewModel)DataContext).TargetCommand}" CommandParameter="{Binding}">
+              <StackPanel Classes="mon" Classes.hit="{Binding IsHit}" Classes.attacking="{Binding IsAttacking}" Classes.dead="{Binding IsDead}" Spacing="2">
+                <StackPanel.Transitions>
+                  <Transitions><DoubleTransition Property="Opacity" Duration="0:0:0.8" Easing="QuadraticEaseOut" /></Transitions>
+                </StackPanel.Transitions>
+                <TextBlock Text="&#x25BC;" Foreground="#ff5040" FontSize="20" HorizontalAlignment="Center" Opacity="0" Classes.on="{Binding IsSelected}" />
+                <c:PixelImage Source="{Binding Sprite}" Width="208" Height="208" HorizontalAlignment="Center"
+                              Classes.idleA="{Binding IdleA}" Classes.idleB="{Binding IdleB}" />
+                <Border Background="#b0000000" CornerRadius="3" Padding="6,1" HorizontalAlignment="Center" Classes="label" Classes.selected="{Binding IsSelected}">
+                  <StackPanel>
+                    <TextBlock Text="{Binding Label}" FontWeight="Bold" FontSize="15" HorizontalAlignment="Center" />
+                    <ProgressBar Minimum="0" Maximum="1" Value="{Binding HpFraction}" Foreground="{StaticResource HpBrush}" Width="150" />
+                    <TextBlock FontSize="11" HorizontalAlignment="Center" Foreground="#9fd0ff" Text="{Binding Status}" IsVisible="{Binding Status, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
+                  </StackPanel>
+                </Border>
+              </StackPanel>
+            </Button>
+          </DataTemplate>
+      </ItemsControl.ItemTemplate>
+    </ItemsControl>
+  </Grid>
+</UserControl>

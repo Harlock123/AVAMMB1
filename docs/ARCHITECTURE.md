@@ -66,10 +66,13 @@ Randomness always flows through `IRandomSource`, so tests can script dice rolls
   `SceneView` interpolates a free `Camera` (fractional position, any angle) on
   `TopLevel.RequestAnimationFrame` for ~0.15 s with smoothstep easing. A new move during an
   animation starts from the previous destination, so input is never delayed.
+* **Combat layout**: `GameViewModel.Combat` (separate from dialog overlays) shows
+  `CombatStageView` over the 3D view (front/back rank collections) and `CombatPanelView` in the
+  side panel. Encounter guardians are added to the scene as bobbing billboards.
 * **Combat animation**: `CombatViewModel` compares HP snapshots and listens to
   `CombatEngine.MonsterActed` after each engine step, then pulses `IsHit` / `IsAttacking` /
   `IsHurt` flags that toggle style classes with keyframe animations (transform properties) in
-  `CombatView.axaml` and `GameView.axaml`.
+  `CombatStageView.axaml` and `GameView.axaml`.
   `MapView` draws the automap with vector primitives from the explored-cell bitmap in `GameState`.
 * **Textures**: `TextureCache` loads PNGs from Avalonia resources (`avares://AVAMMB1/Assets/...`),
   decodes them to raw pixels for the ray caster, and composites paper-doll portraits.

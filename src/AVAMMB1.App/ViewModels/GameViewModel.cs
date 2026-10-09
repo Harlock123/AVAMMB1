@@ -61,6 +61,31 @@ public sealed partial class GameViewModel : ViewModelBase
     /// <summary>Whether an overlay is open.</summary>
     public bool HasOverlay => Overlay is not null;
 
+    /// <summary>The battle in progress, shown in the 3D view and the side panel (null when exploring).</summary>
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(InCombat), nameof(Exploring))]
+    private CombatViewModel? _combat;
+
+    /// <summary>Whether a battle is in progress.</summary>
+    public bool InCombat => Combat is not null;
+
+    /// <summary>Whether the exploration side panel is shown (no battle).</summary>
+    public bool Exploring => Combat is null;
+
+    /// <summary>Whether monsters and other billboards animate.</summary>
+    public bool AnimateSprites => Services.Settings.AnimateMonsters;
+
+    /// <summary>Starts showing the current battle.</summary>
+    public void BeginCombat()
+    {
+        Overlay = null;
+        if (Session.Combat is { } engine)
+        {
+            Combat = new CombatViewModel(this, engine);
+            Refresh();
+        }
+    }
+
     /// <summary>Location name.</summary>
     public string LocationText => Session.CurrentMap.Def.Name;
     /// <summary>Coordinates and facing.</summary>
@@ -86,6 +111,18 @@ public sealed partial class GameViewModel : ViewModelBase
             if (ev.Feature is not null && !(ev.Once && state.CompletedEvents.Contains(key)))
             {
                 sprites.Add(new SceneSprite(ev.X, ev.Y, Services.Textures.Get("Features/" + ev.Feature)));
+            }
+        }
+        // Monsters guarding scripted encounters stand visibly in their square until defeated.
+        if (Session.Combat is null)
+        {
+            foreach (var ev in map.AllEvents.Where(e => e.Type == MapEventKind.Encounter && e.Monsters.Count > 0))
+            {
+                var key = ev.Id ?? $"{map.Id}:{ev.X}:{ev.Y}:{map.Def.Events.IndexOf(ev)}";
+                if (!(ev.Once && state.CompletedEvents.Contains(key)) && Services.Content.Monsters.TryGetValue(ev.Monsters[0].Monster, out var guard))
+                {
+                    sprites.Add(new SceneSprite(ev.X, ev.Y, Services.Textures.Get("Monsters/" + guard.Sprite), 0.8, 0.035));
+                }
             }
         }
         var range = Session.ViewDistance + 1;
@@ -128,7 +165,8 @@ public sealed partial class GameViewModel : ViewModelBase
         OnPropertyChanged(nameof(TimeText));
         OnPropertyChanged(nameof(ShowMinimap));
         OnPropertyChanged(nameof(SmoothMovement));
-        if (Overlay is not CombatViewModel)
+        OnPropertyChanged(nameof(AnimateSprites));
+        if (Combat is null)
         {
             Services.Audio.PlayMusic(map.Def.Music);
         }
@@ -184,11 +222,11 @@ public sealed partial class GameViewModel : ViewModelBase
         {
             if (r.StoryText is not null)
             {
-                Overlay = new StoryViewModel(this, r.StoryTitle ?? "", r.StoryText, () => Overlay = new CombatViewModel(this, Session.Combat!));
+                Overlay = new StoryViewModel(this, r.StoryTitle ?? "", r.StoryText, BeginCombat);
             }
             else
             {
-                Overlay = new CombatViewModel(this, Session.Combat);
+                BeginCombat();
             }
             return;
         }
@@ -221,6 +259,7 @@ public sealed partial class GameViewModel : ViewModelBase
     public void CombatFinished()
     {
         Overlay = null;
+        Combat = null;
         foreach (var p in Party)
         {
             p.IsActive = false;
@@ -311,6 +350,11 @@ public sealed partial class GameViewModel : ViewModelBase
     /// <inheritdoc />
     public override bool HandleKey(Key key)
     {
+        if (Overlay is null && Combat is not null)
+        {
+            Combat.HandleKey(key);
+            return true; // no exploring while fighting
+        }
         if (Overlay is not null)
         {
             if (Overlay.HandleKey(key))

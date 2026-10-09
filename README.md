@@ -29,8 +29,13 @@ Code identifiers, the solution and executables use the name **`AVAMMB1`** (`AVAM
 - **Grid movement**: step forward/back, turn 90 degrees, strafe; keyboard *and* on-screen buttons.
   Steps and turns glide smoothly (about 0.15 s, eased) instead of snapping; pressing a key mid-move
   finishes it instantly, so fast input never lags. Can be switched off in Settings for classic movement.
-- **Animated combat**: monsters breathe and bob while idle, lunge when they attack, flash and shake
-  when hit and fade out when slain; party portraits flash red when hurt (Settings toggle).
+- **Monsters in the 3D view**: battles play out in the first-person viewport - the front rank
+  stands large in front of the party, the back rank smaller behind - while the controls and battle
+  log take over the side panel. Monsters guarding scripted encounters stand visibly in their
+  squares (gently bobbing) until defeated.
+- **Animated combat**: monsters breathe and bob while idle, lunge toward the party when they
+  attack, blink and shake when hit and fade out when slain; party portraits flash red when hurt
+  (Settings toggle).
 - **Automap and minimap** that record only what the party has actually seen.
 - **Party of up to six** with full character creation: 5 races, 6 classes (Knight, Paladin, Archer,
   Cleric, Sorcerer, Robber), 7 attributes rolled 3d6, sex, alignment, class requirements and
@@ -71,6 +76,7 @@ All screenshots are real frames rendered by the game itself (Avalonia headless +
 | ![Town automap](docs/screenshots/06-automap-town.png) Town automap | ![Spells](docs/screenshots/12-spells.png) Spellcasting |
 | ![Intro](docs/screenshots/03-intro.png) Story dialog | ![Settings](docs/screenshots/13-settings.png) Settings and key bindings |
 | ![Dungeon entrance](docs/screenshots/07-dungeon-entrance.png) Arriving in the cellars | ![Secret door](docs/screenshots/14-secret-door.png) A secret door found by searching (purple on the minimap) |
+| ![Guardian](docs/screenshots/15-guardian.png) A guardian waiting in its alcove | |
 
 ## Download and install
 
@@ -216,7 +222,6 @@ More detail: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 
 ## Roadmap
 
-- Monsters visible in the 3D view (currently they appear in the combat window only)
 - More towns and dungeons (the original scope had five towns and many more dungeon levels)
 - Per-character gold (currently shared by the party), more spells and special items
 - Spinners, darkness/anti-magic squares, more trap types

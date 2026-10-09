@@ -159,7 +159,7 @@ public static class HeadlessRunner
 
     private static void ResolveInterruptions(GameViewModel game, GameSession s)
     {
-        if (game.Overlay is CombatViewModel)
+        if (game.Overlay is null && game.InCombat)
         {
             AutoBattle(s);
             game.CombatFinished();
@@ -168,7 +168,13 @@ public static class HeadlessRunner
                 Rulebook.Heal(c, c.MaxHp); // keep the demo party healthy between fights
             }
         }
-        if (game.Overlay is not null and not CombatViewModel)
+        if (game.Overlay is StoryViewModel && s.Combat is not null)
+        {
+            game.BeginCombat();
+            AutoBattle(s);
+            game.CombatFinished();
+        }
+        if (game.Overlay is not null)
         {
             game.CloseOverlay();
         }
@@ -292,8 +298,8 @@ public static class HeadlessRunner
         s.StartCombat(CombatEngine.Spawn(s.Content.Monster("kobold"), 3, s.Random)
             .Concat(CombatEngine.Spawn(s.Content.Monster("cellar_rat"), 2, s.Random)), result);
         game.AddMessages(result.Messages);
-        var combatVm = new CombatViewModel(game, s.Combat!);
-        game.Overlay = combatVm;
+        game.BeginCombat();
+        var combatVm = game.Combat!;
         combatVm.FightCommand.Execute(null);
         for (var i = 0; i < 3 && combatVm.IsAction; i++)
         {
@@ -341,6 +347,22 @@ public static class HeadlessRunner
         game.CastCommand.Execute(null);
         Capture(dir, "12-spells");
         game.CloseOverlay();
+
+        // A guardian standing in its alcove: walk to the square before the spiders' web and look in.
+        var toSpiders = FindPath(s, s.State.X, s.State.Y, 7, 2);
+        if (toSpiders is { Count: > 1 })
+        {
+            foreach (var d in toSpiders.Take(toSpiders.Count - 2))
+            {
+                Face(game, s, d);
+                game.ForwardCommand.Execute(null);
+                ResolveInterruptions(game, s);
+            }
+            Face(game, s, toSpiders[^1]);
+            s.State.LightSteps = Math.Max(s.State.LightSteps, 50);
+            game.Refresh();
+            Capture(dir, "15-guardian");
+        }
 
         // Find the cellars' hidden room: walk to the drafty wall and search until the door shows up.
         WalkTo(game, s, 4, 3);

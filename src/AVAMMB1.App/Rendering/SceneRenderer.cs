@@ -9,7 +9,8 @@ namespace AVAMMB1.App.Rendering;
 /// <param name="Y">Cell Y.</param>
 /// <param name="Texture">Feature texture.</param>
 /// <param name="Scale">Height relative to a wall (1 = full height).</param>
-public readonly record struct SceneSprite(int X, int Y, Texture Texture, double Scale = 0.5);
+/// <param name="Bob">Idle bobbing amplitude as a fraction of the sprite height (0 = static).</param>
+public readonly record struct SceneSprite(int X, int Y, Texture Texture, double Scale = 0.5, double Bob = 0);
 
 /// <summary>A free camera: position in cell units (cell centers are at +0.5) and view angle in radians
 /// (0 = east, pi/2 = south, since y grows southwards).</summary>
@@ -74,6 +75,9 @@ public sealed class SceneRenderer(TextureCache textures)
         ["tree"] = 0xFF2D5A27,
         ["water"] = 0xFF1E3F7A,
     };
+
+    /// <summary>Animation clock in seconds (drives sprite bobbing).</summary>
+    public double Time { get; set; }
 
     /// <summary>The pixel buffer (0xAARRGGBB), Width * Height.</summary>
     public uint[] Pixels { get; } = new uint[Width * Height];
@@ -321,6 +325,12 @@ public sealed class SceneRenderer(TextureCache textures)
             var screenX = (int)(Width / 2.0 * (1 + tX / tY));
             var size = (int)Math.Abs(Height / tY * sprite.Scale);
             var floorY = (int)(Height / 2.0 + Height / (2.0 * tY));
+            if (sprite.Bob > 0)
+            {
+                // Each sprite gets its own phase so neighbours don't bob in lock-step.
+                var phase = (sprite.X * 7 + sprite.Y * 13) % 10 / 10.0 * 2 * Math.PI;
+                floorY -= (int)((Math.Sin(Time * 2 * Math.PI / 1.7 + phase) * 0.5 + 0.5) * sprite.Bob * size);
+            }
             var top = floorY - size;
             var left = screenX - size / 2;
             var fogAmount = FogAmount(tY, fogDist, dark);

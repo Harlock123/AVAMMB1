@@ -14,7 +14,6 @@ public sealed class ViewLocator : IDataTemplate
         TitleViewModel => new TitleView(),
         PartyCreationViewModel => new PartyCreationView(),
         GameViewModel => new GameView(),
-        CombatViewModel => new CombatView(),
         StoryViewModel => new StoryView(),
         ShopViewModel => new ShopView(),
         InnViewModel => new InnView(),

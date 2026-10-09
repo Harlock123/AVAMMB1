@@ -98,6 +98,7 @@ public sealed partial class CombatViewModel : ViewModelBase
     private readonly GameViewModel _game;
     private readonly CombatEngine _combat;
     private readonly HashSet<MonsterInstance> _acted = new();
+    private readonly HashSet<MonsterInstance> _justDied = new();
     private readonly Dictionary<object, int> _hpSnapshot = new();
     private CombatAction? _pending;
     private bool AnimationsOn => _game.Services.Settings.AnimateMonsters;
@@ -126,8 +127,14 @@ public sealed partial class CombatViewModel : ViewModelBase
         RefreshAll();
     }
 
-    /// <summary>Monster cards (alive ones).</summary>
+    /// <summary>All monster cards (including slain ones, for keyboard targeting order).</summary>
     public ObservableCollection<MonsterViewModel> Monsters { get; } = new();
+
+    /// <summary>Monsters standing in melee range, drawn large in the 3D view.</summary>
+    public ObservableCollection<MonsterViewModel> FrontRank { get; } = new();
+
+    /// <summary>Monsters behind the front rank, drawn smaller.</summary>
+    public ObservableCollection<MonsterViewModel> BackRank { get; } = new();
     /// <summary>Party.</summary>
     public ObservableCollection<PartyMemberViewModel> Party { get; }
     /// <summary>Battle log.</summary>
@@ -208,6 +215,10 @@ public sealed partial class CombatViewModel : ViewModelBase
         {
             m.IsSelected = m.Index == TargetIndex;
         }
+        // Stage: the first three monsters still standing (or just slain) form the front rank.
+        var onStage = Monsters.Where(m => m.Monster.IsActive || _justDied.Contains(m.Monster)).ToList();
+        Sync(FrontRank, onStage.Take(Core.Combat.CombatEngine.FrontRank));
+        Sync(BackRank, onStage.Skip(Core.Combat.CombatEngine.FrontRank));
         foreach (var p in Party)
         {
             p.IsActive = ReferenceEquals(p.Character, _combat.ActiveCharacter);
@@ -218,6 +229,19 @@ public sealed partial class CombatViewModel : ViewModelBase
         OnPropertyChanged(nameof(CanMelee));
         OnPropertyChanged(nameof(CanShoot));
         OnPropertyChanged(nameof(CanCast));
+    }
+
+    private static void Sync(ObservableCollection<MonsterViewModel> target, IEnumerable<MonsterViewModel> wanted)
+    {
+        var list = wanted.ToList();
+        if (!target.SequenceEqual(list))
+        {
+            target.Clear(); // only rebuilt when membership changes, so running animations aren't reset
+            foreach (var m in list)
+            {
+                target.Add(m);
+            }
+        }
     }
 
     private void TakeSnapshot()
@@ -243,6 +267,14 @@ public sealed partial class CombatViewModel : ViewModelBase
     /// <summary>Plays hit, lunge and hurt animations for what changed since the last update.</summary>
     private void Animate()
     {
+        _justDied.Clear();
+        foreach (var card in Monsters)
+        {
+            if (_hpSnapshot.TryGetValue(card.Monster, out var before) && before > 0 && card.Monster.IsDead)
+            {
+                _justDied.Add(card.Monster); // keep it on stage for one update so it can fade out
+            }
+        }
         if (AnimationsOn)
         {
             foreach (var card in Monsters)

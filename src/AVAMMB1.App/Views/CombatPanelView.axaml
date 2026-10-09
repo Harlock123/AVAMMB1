@@ -1,0 +1,66 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:AVAMMB1.App.ViewModels"
+             xmlns:c="using:AVAMMB1.App.Controls"
+             x:Class="AVAMMB1.App.Views.CombatPanelView" x:DataType="vm:CombatViewModel">
+  <DockPanel>
+    <StackPanel DockPanel.Dock="Top" Spacing="6">
+      <Grid ColumnDefinitions="*,Auto">
+        <TextBlock Classes="title" Text="Battle!" />
+        <TextBlock Grid.Column="1" Text="{Binding RoundText}" Classes="dim" VerticalAlignment="Center" />
+      </Grid>
+      <TextBlock Text="{Binding Prompt}" FontSize="15" Foreground="{StaticResource Gold}" TextWrapping="Wrap" />
+      <WrapPanel IsVisible="{Binding IsOpening}">
+        <Button Content="Fight (F)" Command="{Binding FightCommand}" FontWeight="Bold" />
+        <Button Content="{Binding RunText}" Command="{Binding FleeCommand}" />
+        <Button Content="{Binding BribeLabel}" Command="{Binding BribeCommand}" IsEnabled="{Binding CanBribe}" />
+      </WrapPanel>
+      <StackPanel IsVisible="{Binding IsAction}" Spacing="2">
+        <UniformGrid Columns="3">
+          <Button Content="Attack (A)" Command="{Binding AttackCommand}" IsEnabled="{Binding CanMelee}" FontWeight="Bold" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" />
+          <Button Content="Shoot (S)" Command="{Binding ShootCommand}" IsEnabled="{Binding CanShoot}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" />
+          <Button Content="Cast (C)" Command="{Binding ShowSpellsCommand}" IsEnabled="{Binding CanCast}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" />
+          <Button Content="Item (U)" Command="{Binding ShowItemsCommand}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" />
+          <Button Content="Block (B)" Command="{Binding BlockCommand}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" />
+          <Button Content="{Binding RunText}" Command="{Binding RunCommand}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" />
+        </UniformGrid>
+        <TextBlock Text="Click a monster or press 1-9 to target." Classes="dim" FontSize="12" />
+      </StackPanel>
+      <StackPanel IsVisible="{Binding IsChoosing}" Spacing="2">
+        <ItemsControl ItemsSource="{Binding Choices}">
+          <ItemsControl.ItemTemplate>
+            <DataTemplate x:DataType="vm:CombatChoice">
+              <Button Content="{Binding Label}" IsEnabled="{Binding Enabled}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left"
+                      Command="{Binding $parent[UserControl].((vm:CombatViewModel)DataContext).ChooseCommand}" CommandParameter="{Binding}" />
+            </DataTemplate>
+          </ItemsControl.ItemTemplate>
+        </ItemsControl>
+        <Button Content="Cancel (Esc)" Command="{Binding CancelCommand}" HorizontalAlignment="Left" />
+      </StackPanel>
+      <StackPanel IsVisible="{Binding IsAlly}" Spacing="2">
+        <ItemsControl ItemsSource="{Binding Party}">
+          <ItemsControl.ItemTemplate>
+            <DataTemplate x:DataType="vm:PartyMemberViewModel">
+              <Button HorizontalAlignment="Stretch" HorizontalContentAlignment="Left"
+                      Command="{Binding $parent[UserControl].((vm:CombatViewModel)DataContext).ChooseAllyCommand}" CommandParameter="{Binding}">
+                <TextBlock><Run Text="{Binding Slot}" /><Run Text=". " /><Run Text="{Binding Name}" /><Run Text="  " /><Run Text="{Binding HpText}" /></TextBlock>
+              </Button>
+            </DataTemplate>
+          </ItemsControl.ItemTemplate>
+        </ItemsControl>
+        <Button Content="Cancel (Esc)" Command="{Binding CancelCommand}" HorizontalAlignment="Left" />
+      </StackPanel>
+      <Button Content="Continue (Enter)" Command="{Binding ContinueCommand}" IsVisible="{Binding IsFinished}" FontWeight="Bold" HorizontalAlignment="Left" />
+      <TextBlock Classes="h2" Text="Battle log" />
+    </StackPanel>
+    <ScrollViewer x:Name="LogScroller" Background="#0b0a10">
+      <ItemsControl ItemsSource="{Binding Log}" Margin="6,4">
+        <ItemsControl.ItemTemplate>
+          <DataTemplate x:DataType="vm:MessageViewModel">
+            <TextBlock Text="{Binding Text}" Foreground="{Binding Brush}" TextWrapping="Wrap" FontSize="13" Margin="0,1" />
+          </DataTemplate>
+        </ItemsControl.ItemTemplate>
+      </ItemsControl>
+    </ScrollViewer>
+  </DockPanel>
+</UserControl>

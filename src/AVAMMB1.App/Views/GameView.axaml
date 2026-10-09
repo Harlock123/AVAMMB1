@@ -2,13 +2,15 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:AVAMMB1.App.ViewModels"
              xmlns:c="using:AVAMMB1.App.Controls"
+             xmlns:v="using:AVAMMB1.App.Views"
              x:Class="AVAMMB1.App.Views.GameView"
              x:DataType="vm:GameViewModel">
   <Grid RowDefinitions="*,Auto" ColumnDefinitions="*,380" Margin="8">
     <!-- First-person view -->
     <Border Classes="panel" Padding="4" Margin="0,0,8,8">
       <Grid>
-        <c:SceneView Scene="{Binding Scene}" Animate="{Binding SmoothMovement}" />
+        <c:SceneView Scene="{Binding Scene}" Animate="{Binding SmoothMovement}" AnimateSprites="{Binding AnimateSprites}" />
+        <v:CombatStageView DataContext="{Binding Combat}" IsVisible="{Binding $parent[UserControl].((vm:GameViewModel)DataContext).InCombat}" />
         <Border VerticalAlignment="Top" HorizontalAlignment="Center" Background="#aa000000" CornerRadius="0,0,6,6" Padding="14,4">
           <TextBlock Text="{Binding LocationText}" Foreground="{StaticResource Gold}" FontSize="18" FontWeight="Bold" />
         </Border>
@@ -20,7 +22,9 @@
 
     <!-- Side panel -->
     <Border Grid.Column="1" Classes="panel" Margin="0,0,0,8" Padding="8">
-      <DockPanel>
+      <Grid>
+      <v:CombatPanelView DataContext="{Binding Combat}" IsVisible="{Binding $parent[UserControl].((vm:GameViewModel)DataContext).InCombat}" />
+      <DockPanel IsVisible="{Binding Exploring}">
         <StackPanel DockPanel.Dock="Top" Spacing="6">
           <c:MapView MapInfo="{Binding MapInfo}" Radius="5" Height="200" IsVisible="{Binding ShowMinimap}" />
           <Grid ColumnDefinitions="*,Auto">
@@ -64,6 +68,7 @@
           </ItemsControl>
         </ScrollViewer>
       </DockPanel>
+      </Grid>
     </Border>
 
     <!-- Party roster -->
