@@ -501,7 +501,21 @@ public static class HeadlessRunner
         // A brass lantern: brighter (8 squares) and warmer than a torch or spell.
         var brannoc = s.State.Party[0];
         brannoc.Backpack.Add(new AVAMMB1.Core.Items.ItemInstance("lantern", s.Content.Item("lantern").Charges));
-        s.Inventory.Equip(brannoc, brannoc.Backpack.Count - 1);
+        // Through the character sheet, as a player would: select it in the backpack and press Use.
+        var logLength = game.Messages.Count;
+        game.OpenMemberCommand.Execute(game.Party[0]);
+        var sheet = (CharacterSheetViewModel)game.Overlay!;
+        sheet.SelectCommand.Execute(sheet.Backpack.Last());
+        sheet.UseCommand.Execute(null);
+        if (!brannoc.Equipment.TryGetValue(EquipSlot.Light, out var lit) || lit.ItemId != "lantern")
+        {
+            throw new InvalidOperationException("Pressing Use on a lantern did not equip it: " + sheet.Feedback);
+        }
+        game.CloseOverlay();
+        while (game.Messages.Count > logLength)
+        {
+            game.Messages.RemoveAt(game.Messages.Count - 1);
+        }
         s.State.LightSteps = 0;
         game.Refresh();
         Capture(dir, "28-lantern");

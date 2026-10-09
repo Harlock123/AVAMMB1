@@ -153,15 +153,22 @@ public sealed class SpellCaster(Rulebook rules, IRandomSource rng)
                     var target = ally >= 0 && ally < state.Party.Count && holders.Contains(state.Party[ally]) ? state.Party[ally]
                         : holders.Contains(user) ? user
                         : holders.OrderBy(p => p.Equipment[EquipSlot.Light].Charges).FirstOrDefault();
+                    // No lantern equipped: fill one still in a backpack (the user's first), so oil is never wasted on a technicality.
+                    var lantern = target?.Equipment[EquipSlot.Light];
                     if (target is null)
                     {
-                        return new SpellResult(false, [new GameMessage("Nobody has a lantern equipped to fill.")]);
+                        (target, lantern) = state.Party.OrderBy(p => ReferenceEquals(p, user) ? 0 : 1)
+                            .SelectMany(p => p.Backpack.Where(b => rules.Def(b) is { Kind: ItemKind.Lantern, FuelCapacity: > 0 } d && b.Charges < d.FuelCapacity).Select(b => (p, b)))
+                            .FirstOrDefault();
                     }
-                    var lantern = target.Equipment[EquipSlot.Light];
+                    if (target is null || lantern is null)
+                    {
+                        return new SpellResult(false, [new GameMessage("There is no lantern to fill - buy a Brass Lantern and equip it in the Light slot.")]);
+                    }
                     var cap = rules.Def(lantern).FuelCapacity;
                     if (lantern.Charges >= cap)
                     {
-                        return new SpellResult(false, [new GameMessage($"{target.Name}'s lantern is already full.")]);
+                        return new SpellResult(false, [new GameMessage($"{target.Name}'s lantern is already full ({lantern.Charges}/{cap} steps of oil) - keep the flask until it burns down.")]);
                     }
                     lantern.Charges = Math.Min(cap, lantern.Charges + Math.Max(1, def.FuelAmount));
                     log.Add(new($"{user.Name} fills {(ReferenceEquals(target, user) ? "their" : target.Name + "'s")} lantern ({lantern.Charges}/{cap} steps of oil).", MessageKind.Good, "pour"));

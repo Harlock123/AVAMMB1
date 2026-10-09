@@ -73,7 +73,9 @@ public sealed class Inventory(Rulebook rules)
         }
         c.Equipment[slot] = item;
         RefreshSp(c);
-        return InventoryResult.Ok($"{c.Name} equips {def.Name}.");
+        return InventoryResult.Ok(def.Kind == ItemKind.Lantern
+            ? $"{c.Name} equips {def.Name}. It lights the way {def.LightRadius} squares ahead in dark places{(def.FuelCapacity > 0 ? " while it has oil - use a Flask of Oil to top it up" : "")}."
+            : $"{c.Name} equips {def.Name}.");
     }
 
     /// <summary>Moves an equipped item back into the backpack.</summary>

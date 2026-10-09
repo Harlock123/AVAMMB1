@@ -5,6 +5,14 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+### Fixed
+- Pressing Use on a lantern (or any weapon or armour) on the character sheet now equips it, instead of
+  saying it "cannot be used like that". Equipping a lantern says how far it lights and how to refill it.
+- A Flask of Oil also fills a lantern that is still in a backpack (not only an equipped one), and a
+  full lantern explains that the flask should be kept until it burns down.
+- The rest message and in-game help now say when food is eaten (1 unit per character per rest;
+  travelling and inn stays use none).
+
 ## [1.9.0] - 2026-10-09
 
 ### Added

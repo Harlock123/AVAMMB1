@@ -127,6 +127,21 @@ public class LanternTests
     }
 
     [Fact]
+    public void Oil_FillsALanternStillInABackpack()
+    {
+        var s = InCellars();
+        var owner = s.State.Party[2];
+        var lantern = new ItemInstance("lantern", 200);
+        owner.Backpack.Add(lantern);
+        var user = s.State.Party[0];
+        user.Backpack.Add(new ItemInstance("oil_flask"));
+        var r = s.Spells.UseItem(user, user.Backpack.Count - 1, s.State, null, -1, null);
+        Assert.True(r.Success);
+        Assert.Equal(950, lantern.Charges);
+        Assert.Contains(owner.Name, r.Messages[0].Text, StringComparison.Ordinal);
+    }
+
+    [Fact]
     public void EverburningLantern_NeverRunsOut()
     {
         var s = InCellars();

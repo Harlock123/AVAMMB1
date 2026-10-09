@@ -204,6 +204,12 @@ public sealed partial class CharacterSheetViewModel : ViewModelBase
         {
             return;
         }
+        if (Session.Rules.Def(Character.Backpack[Selected.Index]) is { Slot: not null, UseSpell: null })
+        {
+            // "Using" a lantern, a weapon or armour means putting it on.
+            Done(Session.Inventory.Equip(Character, Selected.Index));
+            return;
+        }
         var result = Session.Spells.UseItem(Character, Selected.Index, Session.State, null, Index, null);
         var step = Session.AfterExploreMagic(result);
         _game.AddMessages(step.Messages);

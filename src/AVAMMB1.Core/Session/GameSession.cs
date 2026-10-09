@@ -329,7 +329,7 @@ public sealed class GameSession
         {
             RestCharacter(c, result.Messages, requireFood: true);
         }
-        result.Messages.Insert(0, new("The party rests for eight hours.", MessageKind.Info));
+        result.Messages.Insert(0, new("The party rests for eight hours and shares a meal (1 food each).", MessageKind.Info));
         return result;
     }
 
