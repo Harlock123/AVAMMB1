@@ -5,6 +5,8 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+## [1.5.0] - 2026-10-09
+
 ### Added
 - Save-game versioning and migration: save format 2 records the game version that wrote it and no
   longer stores computed values; older saves are upgraded step by step on load (`SaveMigrations`).
