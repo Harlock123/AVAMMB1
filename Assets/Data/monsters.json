@@ -253,7 +253,7 @@
     "inflictChance": 15
    }
   ],
-  "gold": "3d6+5"
+  "gold": "4d6+8"
  },
  {
   "id": "orc_raider",
@@ -264,7 +264,7 @@
   "armorClass": 4,
   "speed": 10,
   "xp": 35,
-  "gold": "3d10",
+  "gold": "4d6+8",
   "bribable": true,
   "attacks": [
    {
@@ -292,7 +292,7 @@
   "armorClass": 3,
   "speed": 10,
   "xp": 40,
-  "gold": "3d6+5",
+  "gold": "4d6+8",
   "attacks": [
    {
     "verb": "smashes",
@@ -327,7 +327,7 @@
     "inflictChance": 20
    }
   ],
-  "gold": "3d6+5"
+  "gold": "4d6+8"
  },
  {
   "id": "dire_wolf",
@@ -345,7 +345,7 @@
     "damage": "1d8"
    }
   ],
-  "gold": "3d6+5"
+  "gold": "4d6+8"
  },
  {
   "id": "hobgoblin",
@@ -356,7 +356,7 @@
   "armorClass": 5,
   "speed": 11,
   "xp": 50,
-  "gold": "4d6+12",
+  "gold": "6d6+15",
   "bribable": true,
   "attacks": [
    {
@@ -384,7 +384,7 @@
   "armorClass": 3,
   "speed": 11,
   "xp": 60,
-  "gold": "4d6+12",
+  "gold": "6d6+15",
   "smart": true,
   "attacks": [
    {
@@ -471,7 +471,7 @@
     "inflicts": "silenced"
    }
   ],
-  "gold": "4d6+12"
+  "gold": "6d6+15"
  },
  {
   "id": "ogre",
@@ -482,7 +482,7 @@
   "armorClass": 4,
   "speed": 8,
   "xp": 220,
-  "gold": "10d6+21",
+  "gold": "13d6+33",
   "bribable": true,
   "attacks": [
    {
@@ -507,7 +507,7 @@
   "speed": 11,
   "xp": 400,
   "regenerates": 3,
-  "gold": "13d6+30",
+  "gold": "18d6+43",
   "resistances": {
    "fire": -50
   },
@@ -532,7 +532,7 @@
   "speed": 12,
   "xp": 220,
   "undead": true,
-  "gold": "10d6+21",
+  "gold": "13d6+33",
   "resistances": {
    "cold": 75,
    "poison": 100
@@ -578,7 +578,7 @@
     "element": "magic"
    }
   ],
-  "gold": "13d6+30"
+  "gold": "18d6+43"
  },
  {
   "id": "minotaur",
@@ -589,7 +589,7 @@
   "armorClass": 6,
   "speed": 12,
   "xp": 400,
-  "gold": "13d6+30",
+  "gold": "18d6+43",
   "attacks": [
    {
     "verb": "gores",
@@ -606,7 +606,7 @@
   "armorClass": 4,
   "speed": 13,
   "xp": 400,
-  "gold": "13d6+30",
+  "gold": "18d6+43",
   "smart": true,
   "attacks": [
    {
@@ -660,7 +660,7 @@
     "inflicts": "stoned"
    }
   ],
-  "gold": "10d6+21"
+  "gold": "13d6+33"
  },
  {
   "id": "manticore",
@@ -682,7 +682,7 @@
     "ranged": true
    }
   ],
-  "gold": "13d6+30"
+  "gold": "18d6+43"
  },
  {
   "id": "crypt_lich",
@@ -782,7 +782,7 @@
   "armorClass": 6,
   "speed": 9,
   "xp": 60,
-  "gold": "4d6+12",
+  "gold": "6d6+15",
   "bribable": true,
   "attacks": [
    {
@@ -810,7 +810,7 @@
   "armorClass": 5,
   "speed": 12,
   "xp": 220,
-  "gold": "10d6+21",
+  "gold": "13d6+33",
   "attacks": [
    {
     "verb": "cleaves",
@@ -840,7 +840,7 @@
     "damage": "1d8"
    }
   ],
-  "gold": "3d6+5"
+  "gold": "4d6+8"
  },
  {
   "id": "rock_troll",
@@ -852,7 +852,7 @@
   "speed": 10,
   "xp": 650,
   "regenerates": 4,
-  "gold": "17d6+38",
+  "gold": "20d6+48",
   "resistances": {
    "fire": -50
   },
@@ -925,7 +925,7 @@
     "ranged": true
    }
   ],
-  "gold": "3d6+5"
+  "gold": "4d6+8"
  },
  {
   "id": "giant_leech",
@@ -944,7 +944,7 @@
     "inflictChance": 20
    }
   ],
-  "gold": "3d6+5"
+  "gold": "4d6+8"
  },
  {
   "id": "crocodile",
@@ -961,7 +961,7 @@
     "damage": "2d6"
    }
   ],
-  "gold": "7d6+15"
+  "gold": "9d6+24"
  },
  {
   "id": "hill_wyvern",
@@ -985,7 +985,7 @@
     "inflictChance": 30
    }
   ],
-  "gold": "7d6+15"
+  "gold": "9d6+24"
  },
  {
   "id": "hill_giant",
@@ -996,7 +996,7 @@
   "armorClass": 5,
   "speed": 9,
   "xp": 400,
-  "gold": "13d6+30",
+  "gold": "18d6+43",
   "bribable": true,
   "attacks": [
    {
@@ -1019,7 +1019,7 @@
   "armorClass": 6,
   "speed": 10,
   "xp": 220,
-  "gold": "10d6+21",
+  "gold": "13d6+33",
   "attacks": [
    {
     "verb": "strikes",
@@ -1042,7 +1042,7 @@
   "armorClass": 8,
   "speed": 10,
   "xp": 400,
-  "gold": "13d6+30",
+  "gold": "18d6+43",
   "attacks": [
    {
     "verb": "slashes",
@@ -1063,7 +1063,7 @@
   "armorClass": 5,
   "speed": 11,
   "xp": 400,
-  "gold": "13d6+30",
+  "gold": "18d6+43",
   "smart": true,
   "attacks": [
    {
@@ -1119,7 +1119,7 @@
     "inflictChance": 20
    }
   ],
-  "gold": "10d6+21"
+  "gold": "13d6+33"
  },
  {
   "id": "swamp_drake",
@@ -1146,7 +1146,7 @@
     "inflicts": "poisoned"
    }
   ],
-  "gold": "13d6+30"
+  "gold": "18d6+43"
  },
  {
   "id": "drowned_hydra",
@@ -1215,7 +1215,7 @@
     "inflictChance": 35
    }
   ],
-  "gold": "17d6+38"
+  "gold": "20d6+48"
  },
  {
   "id": "emperor_scorpion",
@@ -1284,7 +1284,7 @@
   "armorClass": 7,
   "speed": 12,
   "xp": 1000,
-  "gold": "21d6+50",
+  "gold": "25d6+61",
   "resistances": {
    "fire": 100
   },
@@ -1320,7 +1320,7 @@
     "inflictChance": 25
    }
   ],
-  "gold": "21d6+50"
+  "gold": "25d6+61"
  },
  {
   "id": "guardian_mummy",
@@ -1472,7 +1472,7 @@
     "damage": "1d12"
    }
   ],
-  "gold": "17d6+38"
+  "gold": "20d6+48"
  },
  {
   "id": "sphinx",
@@ -1625,7 +1625,7 @@
    "poison": 100
   },
   "description": "A slow, hungry puddle that eats leather and boot-nails alike.",
-  "gold": "3d6+5"
+  "gold": "4d6+8"
  },
  {
   "id": "cistern_eel",
@@ -1649,7 +1649,7 @@
    "electric": 100
   },
   "description": "A black eel that crackles where it touches the water.",
-  "gold": "3d6+5"
+  "gold": "4d6+8"
  },
  {
   "id": "ooze_mother",
@@ -1731,7 +1731,7 @@
   },
   "description": "It has lost its legs but not its appetite.",
   "undead": true,
-  "gold": "4d6+12"
+  "gold": "6d6+15"
  },
  {
   "id": "skeletal_warrior",
@@ -1748,7 +1748,7 @@
     "damage": "1d10"
    }
   ],
-  "gold": "7d6+15",
+  "gold": "9d6+24",
   "resistances": {
    "physical": 20,
    "cold": 50,
@@ -1780,7 +1780,7 @@
   },
   "description": "A grey, hunched thing that feeds on the catacombs' dead - and the living.",
   "undead": true,
-  "gold": "10d6+21"
+  "gold": "13d6+33"
  },
  {
   "id": "flayed_ghost",
@@ -1813,7 +1813,7 @@
   },
   "description": "A skinless spirit, screaming without sound.",
   "undead": true,
-  "gold": "13d6+30"
+  "gold": "18d6+43"
  },
  {
   "id": "curse_skull",
@@ -1847,7 +1847,7 @@
   },
   "description": "A floating skull, its sockets lit with green fire.",
   "undead": true,
-  "gold": "13d6+30"
+  "gold": "18d6+43"
  },
  {
   "id": "wight_king",

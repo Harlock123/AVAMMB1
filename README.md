@@ -215,9 +215,9 @@ GitHub's runners - each RID on its own operating system - after the test suite p
 |---|---|---|
 | win-x64 | Windows runner | **yes** - `--smoke-test` passes in CI (UI render, movement, bundled OpenAL loads) |
 | linux-x64 | Ubuntu runner | **yes** - `--smoke-test` passes in CI |
-| osx-arm64 | macOS runner (ad-hoc signed `.app`) | **yes** - `--smoke-test` passes in CI, audio device opened |
+| osx-arm64 | macOS runner (ad-hoc signed `.app`) | **yes** - `--smoke-test` passes in CI, audio device opened; play-tested by the maintainer |
 | linux-arm64 | Ubuntu runner (cross-compiled) | **yes** - the published release archive was downloaded and passes `--smoke-test` on an ARM64 Linux machine; the README screenshots are captured with this build |
-| win-arm64 | Windows runner (cross-compiled) | no |
+| win-arm64 | Windows runner (cross-compiled) | **yes** - play-tested by the maintainer on Windows on ARM |
 | osx-x64 | macOS runner (cross-compiled) | no |
 
 The CI runners have no sound card, so on Windows and Linux the smoke test only checks that the
@@ -229,10 +229,10 @@ walk the party with normal movement commands from Brindlemoor to the victory eve
 three side quests and the three deeper levels, checks that every map is connected and every event
 reachable, deterministic boss-balance checks (each boss beatable at its intended level, not trivial
 two levels below), and a **balance simulator** - an automated player that grinds every zone in
-route order from level 1 to 15 (fighting, camping, curing, training, buying gear, reloading after a
-wipe) and asserts the pace, wipe rate and gold flow stay within tuned bounds (about 600 battles from
-a new party to level 15). The simulator ignores treasure chests and quest rewards, so real players
-end up with more gold than it does. The UI flow title -> party creation -> town -> shop -> dungeon -> combat -> inventory ->
+route order from level 1 to 15 (fighting, camping, curing with spells and potions, opening the
+zone's chests, training, selling loot, buying gear and potions, reloading after a wipe) and asserts
+the pace, wipe rate and gold flow stay within tuned bounds (about 600 battles from a new party to
+level 15). It skips boss hoards and quest rewards, so real players end up with a little more gold. The UI flow title -> party creation -> town -> shop -> dungeon -> combat -> inventory ->
 automap -> spells -> secret door -> Old Cistern -> Ashen Hills -> Sunscar Coast -> settings is exercised headlessly by `--screenshot`.
 Gamepad support has been play-tested with a physical controller on Linux ARM64 (v1.4.0); on the
 other platforms CI confirms the bundled SDL2 library loads, and the button mapping is unit tested.

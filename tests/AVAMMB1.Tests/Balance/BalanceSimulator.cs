@@ -27,6 +27,9 @@ internal sealed class ZoneReport
     public int Camps { get; set; }
     public long XpPerBattle { get; set; }
     public long GoldEarned { get; set; }
+    /// <summary>Gold from the zone's freely available chests (looted once, on the first visit).</summary>
+    public long GoldFromChests { get; set; }
+    public int PotionsUsed { get; set; }
     public long SpentHealing { get; set; }
     public long SpentTraining { get; set; }
     public long SpentGear { get; set; }
@@ -40,7 +43,7 @@ internal sealed class ZoneReport
     public override string ToString() =>
         $"{Zone.Map,-10} L{EntryLevel,2}->L{ExitLevel,2} (target {Zone.TargetLevel,2}) {(Reached ? "ok   " : Bankrupt ? "BROKE" : "STUCK")} " +
         $"battles {Battles,4}  wipes {Wipes,2}  deaths {Deaths,3}  town {TownTrips,3}  camps {Camps,3}  xp/battle {XpPerBattle,6}  " +
-        $"gold +{GoldEarned,7} heal -{SpentHealing,6} train -{SpentTraining,7} gear -{SpentGear,6} = {GoldAtExit,7}  gold-blocked {BattlesBlockedByGold,3}";
+        $"gold +{GoldEarned,7} chests +{GoldFromChests,6} potions {PotionsUsed,3} heal -{SpentHealing,6} train -{SpentTraining,7} gear -{SpentGear,6} = {GoldAtExit,7}  gold-blocked {BattlesBlockedByGold,3}";
 }
 
 /// <summary>
@@ -54,6 +57,8 @@ internal sealed class BalanceSimulator
     private readonly GameSession _s;
     private readonly HashSet<string> _townsSeen = new();
     private GameState _save;
+    private readonly HashSet<string> _looted = new();
+    private ZoneReport? _current;
     private bool _profiling;
 
     public BalanceSimulator(int seed)
@@ -90,9 +95,11 @@ internal sealed class BalanceSimulator
     {
         _townsSeen.Add(zone.Town);
         var report = new ZoneReport { Zone = zone, EntryLevel = MinLevel };
+        _current = report;
         long xp = 0;
         Town(report);
         PlaceAtEntrance(zone.Map);
+        LootChests(report);
         while (MinLevel < zone.TargetLevel && report.Battles < maxBattles)
         {
             if (State.Party.All(c => !c.IsAlive))
@@ -119,6 +126,7 @@ internal sealed class BalanceSimulator
             xp += Math.Max(0, State.Party[0].Experience - before);
             report.Deaths += State.Party.Count(c => c.Has(Condition.Dead));
             SelfCure();
+            CureWithPotions();
             if (NeedsTown())
             {
                 Town(report);
@@ -201,6 +209,49 @@ internal sealed class BalanceSimulator
         State.Gold = keep;
     }
 
+    /// <summary>
+    /// A player exploring the zone opens its chests once: every treasure event with no flag or item
+    /// requirement (boss hoards and quest rewards are not counted).
+    /// </summary>
+    private void LootChests(ZoneReport report)
+    {
+        var map = _s.CurrentMap;
+        if (!_looted.Add(map.Id))
+        {
+            return;
+        }
+        var log = new List<GameMessage>();
+        foreach (var ev in map.AllEvents.Where(e => e.Type == MapEventKind.Treasure && e.RequiresFlag is null && e.RequiresItem is null))
+        {
+            var gold = Math.Max(0, ev.Gold.Roll(_s.Random));
+            State.Gold += gold;
+            State.Gems += ev.Gems;
+            report.GoldFromChests += gold;
+            foreach (var id in ev.Items)
+            {
+                _s.GiveItem(new ItemInstance(id, _s.Content.Item(id).Charges), log);
+            }
+            foreach (var c in State.Party.Where(c => c.IsAlive))
+            {
+                c.Experience += ev.Xp;
+            }
+        }
+        _save = Clone(State);
+    }
+
+    private (Character Owner, int Index)? FindItem(string itemId)
+    {
+        foreach (var c in State.Party.Where(c => c.CanAct))
+        {
+            var i = c.Backpack.FindIndex(it => it.ItemId == itemId);
+            if (i >= 0)
+            {
+                return (c, i);
+            }
+        }
+        return null;
+    }
+
     private void PlaceAtEntrance(string mapId)
     {
         var map = _s.Content.Map(mapId);
@@ -264,6 +315,15 @@ internal sealed class BalanceSimulator
         {
             return new CombatAction(CombatActionKind.Cast, Ally: party.IndexOf(hurt), SpellId: heal.Id);
         }
+        var potion = c.Backpack.FindIndex(i => i.ItemId == "potion_healing");
+        if (hurt is not null && hurt.Hp * 4 < hurt.MaxHp && potion >= 0)
+        {
+            if (_current is not null)
+            {
+                _current.PotionsUsed++;
+            }
+            return new CombatAction(CombatActionKind.UseItem, Ally: party.IndexOf(hurt), ItemIndex: potion);
+        }
         var active = combat.Monsters.Where(m => m.IsActive).ToList();
         var nukes = known.Where(sp => sp.Effect == EffectKind.Damage && (!sp.UndeadOnly || active.Any(m => m.Def.Undead))).ToList();
         var nuke = active.Count >= 3
@@ -320,6 +380,23 @@ internal sealed class BalanceSimulator
 
     /// <summary>Disease alone only slows healing, so a player would rest it off rather than walk back.</summary>
     private static bool Urgent(Character c) => Afflicted(c) && (c.Conditions & ~Condition.Diseased & ~Condition.Unconscious) != Condition.None;
+
+    /// <summary>Cure potions for what the casters could not fix (poison, paralysis and the like).</summary>
+    private void CureWithPotions()
+    {
+        foreach (var target in State.Party.Where(c => Urgent(c) && !c.Has(Condition.Dead) && !c.Has(Condition.Stoned)).ToList())
+        {
+            if (FindItem("potion_cure") is not { } found)
+            {
+                return;
+            }
+            var r = _s.Spells.UseItem(found.Owner, found.Index, State, null, State.Party.IndexOf(target), null);
+            if (r.Success && _current is not null)
+            {
+                _current.PotionsUsed++;
+            }
+        }
+    }
 
     private bool NeedsTown() =>
         State.Party.Any(Urgent) || State.Party.Any(c => _s.Rules.CanLevelUp(c)) && CanAffordAnyTraining();
@@ -411,10 +488,75 @@ internal sealed class BalanceSimulator
         report.SpentHealing += Math.Max(0, gold - TotalGold);
 
         gold = TotalGold;
+        EquipAndSellLoot();
+        report.GoldEarned += Math.Max(0, TotalGold - gold);
+
+        gold = TotalGold;
+        BuyPotions();
         BuyGear();
         report.SpentGear += Math.Max(0, gold - TotalGold);
         _s.Town.PoolAll();
         _save = Clone(State);
+    }
+
+    /// <summary>Equips loot that beats what a character wears, then sells every other piece of equipment.</summary>
+    private void EquipAndSellLoot()
+    {
+        foreach (var c in State.Party)
+        {
+            for (var i = c.Backpack.Count - 1; i >= 0; i--)
+            {
+                var d = _s.Content.Item(c.Backpack[i].ItemId);
+                if (d.Slot is not { } slot || !Rulebook.CanUse(c, d))
+                {
+                    continue;
+                }
+                var current = c.Equipment.TryGetValue(slot, out var cur) ? Score(_s.Content.Item(cur.ItemId)) : 0;
+                if (Score(d) > current + 0.4)
+                {
+                    _s.Inventory.Equip(c, i);
+                }
+            }
+        }
+        foreach (var c in State.Party)
+        {
+            for (var i = c.Backpack.Count - 1; i >= 0; i--)
+            {
+                if (_s.Content.Item(c.Backpack[i].ItemId).Slot is not null)
+                {
+                    _s.Town.Sell(c, i);
+                }
+            }
+        }
+        _s.Town.PoolAll();
+    }
+
+    /// <summary>Keeps two healing and two cure potions in stock when gold beyond the training reserve allows.</summary>
+    private void BuyPotions()
+    {
+        var reserve = State.Party.Sum(c => (long)Rulebook.TrainingCost(c));
+        var shops = _townsSeen.SelectMany(t => _s.Content.Map(t).AllEvents.Where(e => e.Type == MapEventKind.Shop && e.Shop is not null)
+            .Select(e => _s.Content.Shops[e.Shop!])).Distinct().ToList();
+        foreach (var id in new[] { "potion_cure", "potion_healing" })
+        {
+            var shop = shops.Where(sh => sh.Stock.Contains(id)).OrderBy(sh => sh.PriceFactor).FirstOrDefault();
+            if (shop is null)
+            {
+                continue;
+            }
+            var price = TownServices.BuyPrice(shop, _s.Content.Item(id));
+            var have = State.Party.Sum(c => c.Backpack.Count(i => i.ItemId == id));
+            for (var n = have; n < 2 && TotalGold - price >= reserve; n++)
+            {
+                var buyer = State.Party.Where(c => c.Backpack.Count < Character.BackpackSize).OrderBy(c => c.Backpack.Count).FirstOrDefault();
+                if (buyer is null)
+                {
+                    return;
+                }
+                _s.Town.Buy(shop, id, buyer);
+                _s.Town.PoolAll();
+            }
+        }
     }
 
     /// <summary>Gear value used to compare items for a slot (AC, average damage, stat bonuses).</summary>

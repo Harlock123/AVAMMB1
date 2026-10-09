@@ -5,6 +5,17 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+### Changed
+- Balance simulator plays more like a person: it opens each zone's chests, uses healing potions in
+  battle and cure potions in the field, keeps a few potions in stock, equips better loot and sells
+  the rest. Its findings: chests add only 100-500 gold per zone, and from level 3 to 9 training ate
+  all battle gold, leaving nothing for gear - so ordinary monsters of level 3-7 now carry 40% more
+  gold and those of level 8-9 20% more.
+
+### Fixed
+- The README's verification table now records the maintainer's play-tests of the Windows ARM64
+  and macOS Apple Silicon builds.
+
 ## [1.5.0] - 2026-10-09
 
 ### Added
