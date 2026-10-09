@@ -35,7 +35,13 @@ public sealed class SaveFile
 /// <param name="Name">Save name.</param>
 /// <param name="SavedUtc">Save time.</param>
 /// <param name="Summary">Description.</param>
-public sealed record SaveSlotInfo(int Slot, bool Exists, string Name, DateTime SavedUtc, string Summary);
+/// <param name="PlayTime">Time played (zero for saves from before it was tracked).</param>
+/// <param name="ThumbnailPath">Picture of the view when saved, if any.</param>
+public sealed record SaveSlotInfo(int Slot, bool Exists, string Name, DateTime SavedUtc, string Summary, TimeSpan PlayTime = default, string? ThumbnailPath = null)
+{
+    /// <summary>Whether this is one of the rotating autosave slots.</summary>
+    public bool IsAuto => Slot >= SaveGameService.SlotCount;
+}
 
 /// <summary>Saves and loads games as JSON files in a directory.</summary>
 public sealed class SaveGameService
@@ -56,7 +62,32 @@ public sealed class SaveGameService
     /// <summary>Mod packs active in this session (written into new saves).</summary>
     public IReadOnlyList<string> ActiveMods { get; set; } = [];
 
-    private string PathFor(int slot) => Path.Combine(Directory, $"slot{slot}.json");
+    private string PathFor(int slot) => Path.Combine(Directory, slot >= SlotCount ? $"auto{slot - SlotCount + 1}.json" : $"slot{slot}.json");
+
+    /// <summary>Number of rotating autosave slots (numbered after the manual ones).</summary>
+    public const int AutoSlotCount = 3;
+
+    /// <summary>All slots, manual and automatic.</summary>
+    public const int TotalSlots = SlotCount + AutoSlotCount;
+
+    /// <summary>Where a slot's thumbnail picture is kept.</summary>
+    /// <param name="slot">Slot number.</param>
+    public string ThumbnailFor(int slot) => Path.ChangeExtension(PathFor(slot), ".png");
+
+    /// <summary>Writes an autosave into the oldest (or an empty) autosave slot.</summary>
+    /// <param name="summary">Description.</param>
+    /// <param name="state">State to save.</param>
+    /// <param name="thumbnail">PNG of the view, if any.</param>
+    /// <returns>The slot written.</returns>
+    public int AutoSave(string summary, GameState state, byte[]? thumbnail = null)
+    {
+        var slot = Enumerable.Range(SlotCount, AutoSlotCount)
+            .OrderBy(s => File.Exists(PathFor(s)) ? File.GetLastWriteTimeUtc(PathFor(s)) : DateTime.MinValue)
+            .ThenBy(s => s)
+            .First();
+        Save(slot, "Autosave", summary, state, thumbnail);
+        return slot;
+    }
 
     /// <summary>Serializes a state to a JSON string.</summary>
     /// <param name="file">Save file.</param>
@@ -97,7 +128,8 @@ public sealed class SaveGameService
     /// <param name="name">Save name.</param>
     /// <param name="summary">Description.</param>
     /// <param name="state">State to save.</param>
-    public void Save(int slot, string name, string summary, GameState state)
+    /// <param name="thumbnail">PNG of the view, if any (otherwise an old picture is removed).</param>
+    public void Save(int slot, string name, string summary, GameState state, byte[]? thumbnail = null)
     {
         ValidateSlot(slot);
         System.IO.Directory.CreateDirectory(Directory);
@@ -106,6 +138,15 @@ public sealed class SaveGameService
         var tmp = PathFor(slot) + ".tmp";
         File.WriteAllText(tmp, Serialize(file));
         File.Move(tmp, PathFor(slot), overwrite: true);
+        var pic = ThumbnailFor(slot);
+        if (thumbnail is { Length: > 0 })
+        {
+            File.WriteAllBytes(pic, thumbnail);
+        }
+        else if (File.Exists(pic))
+        {
+            File.Delete(pic);
+        }
     }
 
     /// <summary>Before an older-format save is overwritten, keep a copy (e.g. <c>slot1.json.v1.bak</c>).</summary>
@@ -152,14 +193,15 @@ public sealed class SaveGameService
     public IReadOnlyList<SaveSlotInfo> List()
     {
         var list = new List<SaveSlotInfo>();
-        for (var i = 0; i < SlotCount; i++)
+        for (var i = 0; i < TotalSlots; i++)
         {
             try
             {
                 if (Exists(i))
                 {
                     var f = Load(i);
-                    list.Add(new SaveSlotInfo(i, true, f.Name, f.SavedUtc, f.Summary));
+                    var pic = ThumbnailFor(i);
+                    list.Add(new SaveSlotInfo(i, true, f.Name, f.SavedUtc, f.Summary, TimeSpan.FromSeconds(f.State.PlaySeconds), File.Exists(pic) ? pic : null));
                     continue;
                 }
             }
@@ -179,7 +221,7 @@ public sealed class SaveGameService
 
     private static void ValidateSlot(int slot)
     {
-        if (slot < 0 || slot >= SlotCount)
+        if (slot < 0 || slot >= TotalSlots)
         {
             throw new ArgumentOutOfRangeException(nameof(slot));
         }

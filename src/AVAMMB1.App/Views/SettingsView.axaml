@@ -44,6 +44,7 @@
                   <CheckBox Content="Survival mode (everyone eats 1 food a day, and goes hungry without)" IsChecked="{Binding Survival}" />
                   <TextBlock Classes="dim" FontSize="{DynamicResource Font12}" TextWrapping="Wrap"
                              Text="{Binding GameNote}" />
+                  <CheckBox Content="Autosave (entering a new area and before boss fights; 3 rotating slots)" IsChecked="{Binding Autosave}" />
                   <TextBlock Classes="h2" Text="Data" />
                   <TextBlock Text="{Binding DataLocation}" Classes="dim" FontSize="{DynamicResource Font12}" TextWrapping="Wrap" />
                 </StackPanel>

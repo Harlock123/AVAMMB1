@@ -2,22 +2,30 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:AVAMMB1.App.ViewModels"
              x:Class="AVAMMB1.App.Views.SaveLoadView" x:DataType="vm:SaveLoadViewModel">
-  <Border Classes="dialog" Width="760" HorizontalAlignment="Center" VerticalAlignment="Center">
+  <Border Classes="dialog" Width="820" HorizontalAlignment="Center" VerticalAlignment="Center">
     <StackPanel Spacing="6">
       <TextBlock Classes="title" Text="{Binding Title}" />
-      <ItemsControl ItemsSource="{Binding Slots}">
-        <ItemsControl.ItemTemplate>
-          <DataTemplate x:DataType="vm:SlotRow">
-            <Button HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" Margin="0,1"
-                    Command="{Binding $parent[UserControl].((vm:SaveLoadViewModel)DataContext).PickCommand}" CommandParameter="{Binding}">
-              <Grid ColumnDefinitions="70,*">
-                <TextBlock Text="{Binding Label}" FontWeight="Bold" Foreground="{DynamicResource Gold}" />
-                <TextBlock Grid.Column="1" Text="{Binding Description}" TextTrimming="CharacterEllipsis" />
-              </Grid>
-            </Button>
-          </DataTemplate>
-        </ItemsControl.ItemTemplate>
-      </ItemsControl>
+      <ScrollViewer MaxHeight="470">
+        <ItemsControl ItemsSource="{Binding Slots}">
+          <ItemsControl.ItemTemplate>
+            <DataTemplate x:DataType="vm:SlotRow">
+              <Button HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Margin="0,1,12,1" Padding="6,2" MinHeight="46"
+                      Command="{Binding $parent[UserControl].((vm:SaveLoadViewModel)DataContext).PickCommand}" CommandParameter="{Binding}">
+                <Grid ColumnDefinitions="70,64,*">
+                  <TextBlock Text="{Binding Label}" FontWeight="Bold" Foreground="{DynamicResource Gold}" VerticalAlignment="Center" />
+                  <Border Grid.Column="1" Width="56" Height="42" Background="{DynamicResource ScreenBg}" CornerRadius="2" HorizontalAlignment="Left" IsVisible="{Binding Info.Exists}">
+                    <Image Source="{Binding Picture}" IsVisible="{Binding HasPicture}" Stretch="Uniform" RenderOptions.BitmapInterpolationMode="LowQuality" />
+                  </Border>
+                  <StackPanel Grid.Column="2" VerticalAlignment="Center">
+                    <TextBlock Text="{Binding Description}" TextTrimming="CharacterEllipsis" />
+                    <TextBlock Text="{Binding Details}" Classes="dim" FontSize="{DynamicResource Font12}" IsVisible="{Binding Info.Exists}" />
+                  </StackPanel>
+                </Grid>
+              </Button>
+            </DataTemplate>
+          </ItemsControl.ItemTemplate>
+        </ItemsControl>
+      </ScrollViewer>
       <TextBlock Text="{Binding Feedback}" Foreground="{DynamicResource Info}" />
       <TextBlock Text="{Binding Location, StringFormat='Saves are stored in: {0}'}" Classes="dim" FontSize="{DynamicResource Font11}" TextWrapping="Wrap" />
       <Button Content="Back (Esc)" Command="{Binding BackCommand}" HorizontalAlignment="Right" />

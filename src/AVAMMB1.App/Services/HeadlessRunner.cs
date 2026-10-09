@@ -679,6 +679,13 @@ public static class HeadlessRunner
         settings.ViewResolution = 300;
         game.Refresh();
 
+        // The load screen: autosaves (some written on the way here, one now) and a quick save, with pictures.
+        game.AutoSave("screenshot");
+        game.QuickSaveCommand.Execute(null);
+        game.Overlay = new SaveLoadViewModel(vm, saving: false, onClose: game.CloseOverlay);
+        Pump();
+        Capture(dir, "31-load-game");
+        game.CloseOverlay();
 
         // Show the real defaults on the settings screen (animations were only disabled for capturing).
         vm.Services.Settings.SmoothMovement = true;

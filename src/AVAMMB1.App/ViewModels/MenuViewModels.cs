@@ -11,14 +11,25 @@ namespace AVAMMB1.App.ViewModels;
 
 /// <summary>A save slot row.</summary>
 /// <param name="Info">Slot info.</param>
-public sealed record SlotRow(SaveSlotInfo Info)
+/// <param name="Picture">Thumbnail of the view when saved, if any.</param>
+public sealed record SlotRow(SaveSlotInfo Info, Avalonia.Media.Imaging.Bitmap? Picture)
 {
     /// <summary>Slot label.</summary>
-    public string Label => Info.Slot == 0 ? "Quick" : $"Slot {Info.Slot}";
+    public string Label => Info.IsAuto ? $"Auto {Info.Slot - SaveGameService.SlotCount + 1}" : Info.Slot == 0 ? "Quick" : $"Slot {Info.Slot}";
     /// <summary>Description.</summary>
     public string Description => Info.Exists
-        ? $"{Info.Name} - {Info.Summary} - {Info.SavedUtc.ToLocalTime().ToString("g", CultureInfo.CurrentCulture)}"
-        : "(empty)";
+        ? $"{Info.Name} - {Info.Summary}"
+        : Info.IsAuto ? "(empty - written automatically)" : "(empty)";
+    /// <summary>When saved and how long played.</summary>
+    public string Details => !Info.Exists ? ""
+        : Info.SavedUtc.ToLocalTime().ToString("g", CultureInfo.CurrentCulture) + (Info.PlayTime > TimeSpan.Zero ? $"  -  played {PlayTimeText(Info.PlayTime)}" : "");
+    /// <summary>Whether there is a thumbnail.</summary>
+    public bool HasPicture => Picture is not null;
+
+    /// <summary>"3h 05m" / "12m".</summary>
+    /// <param name="t">Play time.</param>
+    public static string PlayTimeText(TimeSpan t) =>
+        t.TotalHours >= 1 ? $"{(int)t.TotalHours}h {t.Minutes:00}m" : $"{Math.Max(1, t.Minutes)}m";
 }
 
 /// <summary>Save / load slot picker.</summary>
@@ -37,7 +48,8 @@ public sealed partial class SaveLoadViewModel : ViewModelBase
         Saving = saving;
         _onClose = onClose;
         Reload();
-        Feedback = saving ? "Choose a slot to save into." : "Choose a saved game to load.";
+        Feedback = saving ? "Choose a slot to save into. (Autosaves are kept separately - see Load.)"
+            : Slots.Count == 0 ? "There are no saved games yet." : "Choose a saved game to load (newest first).";
         Location = main.Services.Saves.Directory;
     }
 
@@ -57,9 +69,21 @@ public sealed partial class SaveLoadViewModel : ViewModelBase
     private void Reload()
     {
         Slots.Clear();
-        foreach (var s in _main.Services.Saves.List())
+        var all = _main.Services.Saves.List();
+        // Saving: the quick and manual slots in order. Loading: only real saves, newest first.
+        var shown = Saving ? all.Where(s => !s.IsAuto) : all.Where(s => s.Exists).OrderByDescending(s => s.SavedUtc);
+        foreach (var s in shown)
         {
-            Slots.Add(new SlotRow(s));
+            Avalonia.Media.Imaging.Bitmap? pic = null;
+            try
+            {
+                pic = s.ThumbnailPath is { } path ? new Avalonia.Media.Imaging.Bitmap(path) : null;
+            }
+            catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or ArgumentException)
+            {
+                // A missing or damaged picture is simply not shown.
+            }
+            Slots.Add(new SlotRow(s, pic));
         }
     }
 
@@ -72,7 +96,8 @@ public sealed partial class SaveLoadViewModel : ViewModelBase
             try
             {
                 var name = $"{session.State.Party.FirstOrDefault()?.Name ?? "Party"}'s party";
-                _main.Services.Saves.Save(row.Info.Slot, name, session.LocationSummary, session.State);
+                _main.Game?.CountPlayTime();
+                _main.Services.Saves.Save(row.Info.Slot, name, session.LocationSummary, session.State, _main.Game?.Thumbnail());
                 _main.Services.Audio.PlaySfx("book");
                 Feedback = $"Saved to {row.Label}.";
                 Reload();
@@ -216,6 +241,7 @@ public sealed partial class SettingsViewModel : ViewModelBase
         var state = main.Services.Session.State;
         _difficultyIndex = (int)(InGame ? state.Difficulty : s.Difficulty);
         _survival = InGame ? state.Survival : s.Survival;
+        _autosave = s.Autosave;
         _pad = new Dictionary<InputAction, AVAMMB1.Core.Input.GamepadButton>(s.GamepadBindings);
         LoadPadRows();
         LoadBindings();
@@ -308,6 +334,10 @@ public sealed partial class SettingsViewModel : ViewModelBase
     /// <summary>Survival mode (daily rations).</summary>
     [ObservableProperty]
     private bool _survival;
+
+    /// <summary>Autosave on entering new areas and before boss fights.</summary>
+    [ObservableProperty]
+    private bool _autosave;
 
     /// <summary>Selected text size.</summary>
     [ObservableProperty]
@@ -471,6 +501,7 @@ public sealed partial class SettingsViewModel : ViewModelBase
         _main.Services.Textures.Detailed = DetailedTextures;
         s.Difficulty = (Difficulty)Math.Clamp(DifficultyIndex, 0, 2);
         s.Survival = Survival;
+        s.Autosave = Autosave;
         if (InGame)
         {
             var state = _main.Services.Session.State;

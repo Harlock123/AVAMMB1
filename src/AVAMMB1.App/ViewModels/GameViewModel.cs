@@ -39,6 +39,44 @@ public sealed partial class GameViewModel : ViewModelBase
         };
         _main = main;
         Refresh();
+        _autosavedMap = Session.State.MapId;
+    }
+
+    private readonly System.Diagnostics.Stopwatch _played = System.Diagnostics.Stopwatch.StartNew();
+    private string _autosavedMap;
+
+    /// <summary>Adds the real time played since the last call to the game's play time (before saving).</summary>
+    public void CountPlayTime()
+    {
+        var seconds = (long)_played.Elapsed.TotalSeconds;
+        if (seconds > 0)
+        {
+            Session.State.PlaySeconds += seconds;
+            _played.Restart();
+        }
+    }
+
+    /// <summary>A small picture of the current view for a save slot.</summary>
+    public byte[]? Thumbnail() => SaveThumbnail.Render(Scene);
+
+    /// <summary>Saves into the rotating autosave slots (if autosave is on).</summary>
+    /// <param name="why">Shown in the log, e.g. "entering Brindlemoor Cellars".</param>
+    public void AutoSave(string why)
+    {
+        if (!Services.Settings.Autosave || !Session.IsActive)
+        {
+            return;
+        }
+        try
+        {
+            CountPlayTime();
+            Services.Saves.AutoSave(Session.LocationSummary, Session.State, Thumbnail());
+            AddMessages([new GameMessage($"Autosaved ({why}).", MessageKind.Info)]);
+        }
+        catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
+        {
+            AddMessages([new GameMessage("Autosave failed: " + ex.Message, MessageKind.Bad)]);
+        }
     }
 
     /// <summary>Services.</summary>
@@ -296,6 +334,10 @@ public sealed partial class GameViewModel : ViewModelBase
         }
         if (r.CombatStarted && Session.Combat is not null)
         {
+            if (Session.Combat.Monsters.FirstOrDefault(m => m.Def.Boss) is { } boss)
+            {
+                AutoSave("before facing " + boss.Def.Name);
+            }
             if (r.StoryText is not null)
             {
                 Overlay = new StoryViewModel(this, r.StoryTitle ?? "", r.StoryText, BeginCombat);
@@ -305,6 +347,11 @@ public sealed partial class GameViewModel : ViewModelBase
                 BeginCombat();
             }
             return;
+        }
+        if (Session.State.MapId != _autosavedMap)
+        {
+            _autosavedMap = Session.State.MapId;
+            AutoSave("entering " + Session.CurrentMap.Def.Name);
         }
         if (r.Interaction is { } ev)
         {
@@ -406,7 +453,8 @@ public sealed partial class GameViewModel : ViewModelBase
     {
         try
         {
-            Services.Saves.Save(0, "Quick Save", Session.LocationSummary, Session.State);
+            CountPlayTime();
+            Services.Saves.Save(0, "Quick Save", Session.LocationSummary, Session.State, Thumbnail());
             AddMessages([new GameMessage("Game saved to the quick-save slot.", MessageKind.Good, "book")]);
         }
         catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)

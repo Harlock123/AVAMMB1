@@ -133,7 +133,7 @@ public class SessionTests
             saves.Save(1, "Test", s.LocationSummary, s.State);
             Assert.True(saves.Exists(1));
             var list = saves.List();
-            Assert.Equal(SaveGameService.SlotCount, list.Count);
+            Assert.Equal(SaveGameService.TotalSlots, list.Count);
             Assert.Equal("Test", list[1].Name);
             Assert.Equal(1, saves.MostRecentSlot());
 

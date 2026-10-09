@@ -203,6 +203,9 @@ public sealed class GameState
     /// <summary>The game clock: minutes since the adventure began.</summary>
     public long Minutes { get; set; }
 
+    /// <summary>Seconds of real time played (counted by the app; shown with saves).</summary>
+    public long PlaySeconds { get; set; }
+
     /// <summary>Difficulty of this game.</summary>
     public Difficulty Difficulty { get; set; } = Difficulty.Normal;
 
