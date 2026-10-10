@@ -507,9 +507,11 @@ public sealed class ShopItemViewModel
     /// <param name="compare">How it compares with what the shopper wears ("" for non-gear).</param>
     /// <param name="upgrade">Whether it would be an upgrade for the shopper.</param>
     /// <param name="junk">Whether nobody in the party needs it (sell rows).</param>
-    public ShopItemViewModel(ItemDef def, int price, Bitmap? icon, bool usable, int index = -1, string compare = "", bool upgrade = false, bool junk = false)
+    /// <param name="name">Name to show (e.g. "Long Sword +2"), if not the item's own.</param>
+    public ShopItemViewModel(ItemDef def, int price, Bitmap? icon, bool usable, int index = -1, string compare = "", bool upgrade = false, bool junk = false, string? name = null)
     {
         Def = def;
+        _name = name;
         Price = price;
         Icon = icon;
         Usable = usable;
@@ -530,8 +532,9 @@ public sealed class ShopItemViewModel
 
     /// <summary>Item.</summary>
     public ItemDef Def { get; }
+    private readonly string? _name;
     /// <summary>Name.</summary>
-    public string Name => Def.Name;
+    public string Name => _name ?? Def.Name;
     /// <summary>Price.</summary>
     public int Price { get; }
     /// <summary>Icon.</summary>
@@ -544,14 +547,28 @@ public sealed class ShopItemViewModel
     public string Summary => ItemText.Describe(Def) + (Usable ? "" : "  (cannot use)");
 }
 
+/// <summary>A piece of gear the smith can improve.</summary>
+/// <param name="Item">The item.</param>
+/// <param name="Name">"Long Sword +1".</param>
+/// <param name="Where">"worn" or "pack".</param>
+/// <param name="Cost">"to +2: 1,000 gold, 2 gems".</param>
+/// <param name="CanUpgrade">Whether another step is possible.</param>
+/// <param name="Icon">Picture.</param>
+public sealed record UpgradeRow(AVAMMB1.Core.Items.ItemInstance Item, string Name, string Where, string Cost, bool CanUpgrade, Bitmap? Icon);
+
 /// <summary>Formats item descriptions.</summary>
 public static class ItemText
 {
     /// <summary>Short stats description.</summary>
     /// <param name="d">Item.</param>
-    public static string Describe(ItemDef d)
+    /// <param name="plus">Smithy upgrade.</param>
+    public static string Describe(ItemDef d, int plus = 0)
     {
         var parts = new List<string>();
+        if (plus > 0)
+        {
+            parts.Add(d.Kind is ItemKind.Weapon or ItemKind.Missile ? $"smithed +{plus} to hit and damage" : $"smithed +{plus} AC");
+        }
         if (d.Kind is ItemKind.Weapon or ItemKind.Missile)
         {
             parts.Add($"Dmg {d.Damage}");
@@ -648,13 +665,32 @@ public sealed partial class ShopViewModel : BuildingViewModel
         {
             for (var i = 0; i < c.Backpack.Count; i++)
             {
-                var d = Session.Rules.Def(c.Backpack[i]);
-                Sellable.Add(new ShopItemViewModel(d, Rulebook.SellPrice(d), tex.Bitmap("Items/" + d.Icon), true, i,
-                    junk: ItemCompare.IsJunk(Session.Rules, Session.State.Party, d)));
+                var inst = c.Backpack[i];
+                var d = Session.Rules.Def(inst);
+                Sellable.Add(new ShopItemViewModel(d, Session.Rules.SellPrice(inst), tex.Bitmap("Items/" + d.Icon), true, i,
+                    junk: ItemCompare.IsJunk(Session.Rules, Session.State.Party, d, inst.Plus), name: Session.Rules.ItemName(inst)));
             }
         }
+        Upgrades.Clear();
+        if (c is not null && _shop.Smithy)
+        {
+            var items = c.Equipment.Values.Select(i => (Item: i, Where: "worn")).Concat(c.Backpack.Select(i => (Item: i, Where: "pack")));
+            foreach (var (item, where) in items)
+            {
+                var d = Session.Rules.Def(item);
+                if (!Rulebook.Upgradable(d))
+                {
+                    continue;
+                }
+                var next = item.Plus + 1;
+                var cost = item.Plus >= Rulebook.MaxPlus ? "the finest a smith can make"
+                    : $"to +{next}: {Rulebook.UpgradeGold(d, next):N0} gold, {Rulebook.UpgradeGems(next)} gem{(next > 1 ? "s" : "")}";
+                Upgrades.Add(new UpgradeRow(item, Session.Rules.ItemName(item), where, cost, item.Plus < Rulebook.MaxPlus, tex.Bitmap("Items/" + d.Icon)));
+            }
+        }
+        OnPropertyChanged(nameof(GemsText));
         var junk = Session.Town.Junk();
-        JunkText = junk.Count == 0 ? "Sell junk" : $"Sell junk ({junk.Count}, {junk.Sum(j => Rulebook.SellPrice(j.Def))} gp)";
+        JunkText = junk.Count == 0 ? "Sell junk" : $"Sell junk ({junk.Count}, {junk.Sum(j => Session.Rules.SellPrice(j.Item))} gp)";
         JunkTip = junk.Count == 0
             ? "Nobody in the party carries gear they could not use as an upgrade."
             : "Sells every backpack weapon, armour, ring or amulet that nobody in the party could use as an upgrade: " + string.Join(", ", junk.Select(j => $"{j.Def.Name} ({j.Owner.Name})"));
@@ -683,6 +719,38 @@ public sealed partial class ShopViewModel : BuildingViewModel
 
     [RelayCommand]
     private void SellJunk() => Report(Session.Town.SellJunk());
+
+    /// <summary>Whether this shop's smith upgrades gear.</summary>
+    public bool IsSmithy => _shop.Smithy;
+
+    /// <summary>Showing the smithing list instead of the sell list.</summary>
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(RightTitle), nameof(SmithingLabel))]
+    private bool _showSmithing;
+
+    /// <summary>Right-hand column title.</summary>
+    public string RightTitle => ShowSmithing ? "Smithing (+1 to +5)" : "Sell from backpack (half price)";
+
+    /// <summary>Toggle button text.</summary>
+    public string SmithingLabel => ShowSmithing ? "Back to selling" : "Smithing";
+
+    /// <summary>Gems available for smithing.</summary>
+    public string GemsText => $"The party has {Session.State.Gems} gem{(Session.State.Gems == 1 ? "" : "s")}. Each step costs more gold - and one more gem - than the last.";
+
+    /// <summary>The shopper's gear the smith can improve.</summary>
+    public ObservableCollection<UpgradeRow> Upgrades { get; } = new();
+
+    [RelayCommand]
+    private void ToggleSmithing() => ShowSmithing = !ShowSmithing;
+
+    [RelayCommand]
+    private void UpgradeItem(UpgradeRow row)
+    {
+        if (SelectedMember is { } m)
+        {
+            Report(Session.Town.Upgrade(_shop, m.Character, row.Item));
+        }
+    }
 
     [RelayCommand]
     private void Sell(ShopItemViewModel item)

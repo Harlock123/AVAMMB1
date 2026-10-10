@@ -22,4 +22,7 @@ public sealed class ItemInstance
 
     /// <summary>Remaining charges for wands and similar items.</summary>
     public int Charges { get; set; }
+
+    /// <summary>Smithy upgrade: +1 to +5 (to-hit and damage for weapons, armor class for armor).</summary>
+    public int Plus { get; set; }
 }

@@ -289,6 +289,8 @@ public sealed class ShopDef
     public List<string> Stock { get; set; } = new();
     /// <summary>Price multiplier applied to item prices.</summary>
     public double PriceFactor { get; set; } = 1.0;
+    /// <summary>Whether the shop's smith upgrades weapons and armor (+1 to +5).</summary>
+    public bool Smithy { get; set; }
 }
 
 /// <summary>Global game configuration (start location, starting gold...).</summary>

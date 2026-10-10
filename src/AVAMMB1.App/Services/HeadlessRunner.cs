@@ -435,6 +435,9 @@ public static class HeadlessRunner
         if (game.Overlay is ShopViewModel shop)
         {
             shop.SellJunkCommand.Execute(null);
+            shop.ToggleSmithingCommand.Execute(null);
+            Capture(dir, "39-smithing");
+            shop.ToggleSmithingCommand.Execute(null);
         }
         seller.Backpack.RemoveAll(i => i.ItemId is "club" or "padded_armor" or "dagger");
         game.CloseOverlay();

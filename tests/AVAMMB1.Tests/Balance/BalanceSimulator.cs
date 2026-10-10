@@ -34,6 +34,7 @@ internal sealed class ZoneReport
     public long SpentTraining { get; set; }
     public long SpentGear { get; set; }
     public long SpentAcademy { get; set; }
+    public long SpentSmithing { get; set; }
     public long GoldAtExit { get; set; }
     /// <summary>Battles fought while someone could train but the party could not afford it.</summary>
     public int BattlesBlockedByGold { get; set; }
@@ -44,7 +45,7 @@ internal sealed class ZoneReport
     public override string ToString() =>
         $"{Zone.Map,-10} L{EntryLevel,2}->L{ExitLevel,2} (target {Zone.TargetLevel,2}) {(Reached ? "ok   " : Bankrupt ? "BROKE" : "STUCK")} " +
         $"battles {Battles,4}  wipes {Wipes,2}  deaths {Deaths,3}  town {TownTrips,3}  camps {Camps,3}  xp/battle {XpPerBattle,6}  " +
-        $"gold +{GoldEarned,7} chests +{GoldFromChests,6} potions {PotionsUsed,3} heal -{SpentHealing,6} train -{SpentTraining,7} gear -{SpentGear,6} academy -{SpentAcademy,6} = {GoldAtExit,7}  gold-blocked {BattlesBlockedByGold,3}";
+        $"gold +{GoldEarned,7} chests +{GoldFromChests,6} potions {PotionsUsed,3} heal -{SpentHealing,6} train -{SpentTraining,7} gear -{SpentGear,6} academy -{SpentAcademy,6} smith -{SpentSmithing,6} = {GoldAtExit,7}  gold-blocked {BattlesBlockedByGold,3}";
 }
 
 /// <summary>
@@ -474,6 +475,10 @@ internal sealed class BalanceSimulator
         gold = TotalGold;
         Study();
         report.SpentAcademy += Math.Max(0, gold - TotalGold);
+
+        gold = TotalGold;
+        Smith(town);
+        report.SpentSmithing += Math.Max(0, gold - TotalGold);
         _s.Town.PoolAll();
         _save = Clone(State);
     }
@@ -520,6 +525,33 @@ internal sealed class BalanceSimulator
     }
 
     /// <summary>With gold to spare (beyond two training sessions), buys academy points in each class's key statistic.</summary>
+    /// <summary>Spends gold beyond the training reserve (and gems) on the cheapest smithy upgrades of worn gear.</summary>
+    private void Smith(string town)
+    {
+        var smithy = _s.Content.Map(town).AllEvents.Where(e => e.Type == MapEventKind.Shop && e.Shop is not null)
+            .Select(e => _s.Content.Shops[e.Shop!]).FirstOrDefault(sh => sh.Smithy);
+        if (smithy is null)
+        {
+            return;
+        }
+        var reserve = State.Party.Sum(c => (long)Rulebook.TrainingCost(c)) * 2;
+        while (true)
+        {
+            var best = State.Party.Where(c => c.IsAlive)
+                .SelectMany(c => c.Equipment.Values.Select(i => (Owner: c, Item: i, Def: _s.Rules.Def(i))))
+                .Where(x => Rulebook.Upgradable(x.Def) && x.Item.Plus < Rulebook.MaxPlus)
+                .OrderBy(x => Rulebook.UpgradeGold(x.Def, x.Item.Plus + 1))
+                .FirstOrDefault();
+            if (best.Item is null || State.Gems < Rulebook.UpgradeGems(best.Item.Plus + 1)
+                || TotalGold - Rulebook.UpgradeGold(best.Def, best.Item.Plus + 1) < reserve)
+            {
+                return;
+            }
+            _s.Town.PoolAll();
+            _s.Town.Upgrade(smithy, best.Owner, best.Item);
+        }
+    }
+
     private void Study()
     {
         var academy = _townsSeen.Select(t => TownEvent(t, MapEventKind.Academy)).OfType<MapEventDef>().OrderBy(e => e.PriceFactor).FirstOrDefault();

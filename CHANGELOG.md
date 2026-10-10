@@ -5,6 +5,13 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+### Added
+- Smithing: the smithies of Brindlemoor, Saltreach, Thornwick, Port Ashkar and Wintermere improve
+  weapons (+1 to hit and damage per step) and armor, shields, helmets, gloves and boots (+1 AC per
+  step), up to +5. Each step costs gold - (price + 200) x step squared - and as many gems as the step,
+  giving late-game gold and gems a use. Improved items show their bonus ("Long Sword +2"), count in
+  shop comparisons and sell for more. Shops have a Smithing list next to selling.
+
 ### Changed
 - Code: the game session (about 1,400 lines) is split by area into partial-class files - core state,
   movement and time, map events, quests, puzzles, and combat - with no change in behaviour.

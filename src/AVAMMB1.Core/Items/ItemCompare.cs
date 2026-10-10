@@ -9,7 +9,10 @@ public static class ItemCompare
 {
     /// <summary>A rough worth of a piece of gear (higher is better) for comparing items in the same slot.</summary>
     /// <param name="d">Item.</param>
-    public static double Score(ItemDef d)
+    /// <param name="plus">Smithy upgrade.</param>
+    public static double Score(ItemDef d, int plus = 0) => BaseScore(d) + plus * (d.Kind is ItemKind.Weapon or ItemKind.Missile ? 1.5 : 1);
+
+    private static double BaseScore(ItemDef d)
     {
         var extras = d.HitBonus * 0.5 + d.StatBonuses.Values.Sum() * 0.5 + (d.Element != Element.Physical ? 1 : 0);
         return d.Kind switch
@@ -23,10 +26,10 @@ public static class ItemCompare
     /// <summary>The worth of what a character now has in the slot an item would take (a two-handed weapon also replaces the shield).</summary>
     private static double Current(Rulebook rules, Character c, ItemDef d)
     {
-        var score = c.Equipment.TryGetValue(d.Slot!.Value, out var worn) ? Score(rules.Def(worn)) : 0;
+        var score = c.Equipment.TryGetValue(d.Slot!.Value, out var worn) ? Score(rules.Def(worn), worn.Plus) : 0;
         if (d.TwoHanded && c.Equipment.TryGetValue(EquipSlot.Shield, out var shield))
         {
-            score += Score(rules.Def(shield));
+            score += Score(rules.Def(shield), shield.Plus);
         }
         return score;
     }
@@ -35,8 +38,9 @@ public static class ItemCompare
     /// <param name="rules">Rulebook.</param>
     /// <param name="c">Character.</param>
     /// <param name="d">Item.</param>
-    public static bool IsUpgradeFor(Rulebook rules, Character c, ItemDef d) =>
-        d.Slot is not null && Rulebook.CanUse(c, d) && Score(d) > Current(rules, c, d) + 0.01;
+    /// <param name="plus">Its smithy upgrade.</param>
+    public static bool IsUpgradeFor(Rulebook rules, Character c, ItemDef d, int plus = 0) =>
+        d.Slot is not null && Rulebook.CanUse(c, d) && Score(d, plus) > Current(rules, c, d) + 0.01;
 
     /// <summary>"Better than Long Sword (Dmg 1d8 -> 2d6)", "Worse than ...", "Nothing worn" - or "" for non-gear.</summary>
     /// <param name="rules">Rulebook.</param>
@@ -58,6 +62,7 @@ public static class ItemCompare
         }
         var worn = rules.Def(wornItem);
         var diff = Score(d) - Current(rules, c, d);
+        var wornName = rules.ItemName(wornItem);
         var verdict = diff > 0.01 ? "Better than" : diff < -0.01 ? "Worse than" : "About the same as";
         var changes = new List<string>();
         if (d.Kind is ItemKind.Weapon or ItemKind.Missile)
@@ -80,7 +85,7 @@ public static class ItemCompare
         {
             changes.Add("two-handed: the shield comes off");
         }
-        return $"{verdict} {c.Name}'s {worn.Name}" + (changes.Count > 0 ? $" ({string.Join(", ", changes)})" : "");
+        return $"{verdict} {c.Name}'s {wornName}" + (changes.Count > 0 ? $" ({string.Join(", ", changes)})" : "");
     }
 
     /// <summary>
@@ -90,7 +95,8 @@ public static class ItemCompare
     /// <param name="rules">Rulebook.</param>
     /// <param name="party">Party.</param>
     /// <param name="d">Item.</param>
-    public static bool IsJunk(Rulebook rules, IEnumerable<Character> party, ItemDef d) =>
+    /// <param name="plus">Its smithy upgrade.</param>
+    public static bool IsJunk(Rulebook rules, IEnumerable<Character> party, ItemDef d, int plus = 0) =>
         d.Slot is not null && d.Kind is not (ItemKind.Lantern or ItemKind.Quest)
-        && !party.Any(c => c.IsAlive && IsUpgradeFor(rules, c, d));
+        && !party.Any(c => c.IsAlive && IsUpgradeFor(rules, c, d, plus));
 }

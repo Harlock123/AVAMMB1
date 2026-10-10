@@ -413,10 +413,45 @@ public sealed class TownServices(GameSession session)
         return log;
     }
 
+    /// <summary>Has a smithy improve a weapon or piece of armor by one step (+1 to +5): gold and gems.</summary>
+    /// <param name="shop">The shop (must be a smithy).</param>
+    /// <param name="owner">Who carries or wears the item (and pays first from their own gold).</param>
+    /// <param name="item">The item (equipped or in the backpack).</param>
+    public List<GameMessage> Upgrade(ShopDef shop, Character owner, ItemInstance item)
+    {
+        var log = new List<GameMessage>();
+        var def = session.Rules.Def(item);
+        if (!shop.Smithy || !Rulebook.Upgradable(def) || !owner.Equipment.ContainsValue(item) && !owner.Backpack.Contains(item))
+        {
+            log.Add(new("The smith shakes her head. \"I can't work that.\"", MessageKind.Bad));
+            return log;
+        }
+        if (item.Plus >= Rulebook.MaxPlus)
+        {
+            log.Add(new($"{session.Rules.ItemName(item)} is as fine as any smith can make it.", MessageKind.Info));
+            return log;
+        }
+        var next = item.Plus + 1;
+        var gems = Rulebook.UpgradeGems(next);
+        if (State.Gems < gems)
+        {
+            log.Add(new($"The smith needs {gems} gem{(gems > 1 ? "s" : "")} for the inlay - the party has {State.Gems}.", MessageKind.Bad));
+            return log;
+        }
+        if (!Pay(Rulebook.UpgradeGold(def, next), log, owner))
+        {
+            return log;
+        }
+        State.Gems -= gems;
+        item.Plus = next;
+        log.Add(new($"The smith hammers, quenches and polishes: {owner.Name}'s {session.Rules.ItemName(item)} is ready.", MessageKind.Good, "equip"));
+        return log;
+    }
+
     /// <summary>The party's junk: backpack gear nobody could use as an upgrade (see <see cref="ItemCompare.IsJunk"/>).</summary>
     public List<(Character Owner, ItemInstance Item, ItemDef Def)> Junk() =>
         State.Party.SelectMany(c => c.Backpack.Select(i => (Owner: c, Item: i, Def: session.Rules.Def(i))))
-            .Where(x => ItemCompare.IsJunk(session.Rules, State.Party, x.Def))
+            .Where(x => ItemCompare.IsJunk(session.Rules, State.Party, x.Def, x.Item.Plus))
             .ToList();
 
     /// <summary>Sells all of the party's junk into the purse.</summary>
@@ -433,7 +468,7 @@ public sealed class TownServices(GameSession session)
         foreach (var (owner, item, def) in junk)
         {
             owner.Backpack.Remove(item);
-            total += Rulebook.SellPrice(def);
+            total += session.Rules.SellPrice(item);
         }
         State.Gold += total;
         log.Add(new($"The party sells {junk.Count} unneeded item{(junk.Count == 1 ? "" : "s")} for {total} gold: {string.Join(", ", junk.Select(j => j.Def.Name))}.", MessageKind.Good, "coins"));
@@ -456,10 +491,11 @@ public sealed class TownServices(GameSession session)
             log.Add(new($"The merchant won't touch {item.Name}.", MessageKind.Bad));
             return log;
         }
-        var price = Rulebook.SellPrice(item);
+        var price = session.Rules.SellPrice(seller.Backpack[backpackIndex]);
+        var name = session.Rules.ItemName(seller.Backpack[backpackIndex]);
         seller.Backpack.RemoveAt(backpackIndex);
         State.Gold += price;
-        log.Add(new($"{seller.Name} sells {item.Name} for {price} gold.", MessageKind.Good, "coins"));
+        log.Add(new($"{seller.Name} sells {name} for {price} gold.", MessageKind.Good, "coins"));
         return log;
     }
 }

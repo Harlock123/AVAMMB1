@@ -45,11 +45,32 @@
         </ScrollViewer>
       </DockPanel>
       <DockPanel Grid.Row="2" Grid.Column="2">
-        <Grid DockPanel.Dock="Top" ColumnDefinitions="*,Auto" Margin="0,0,16,0">
-          <TextBlock Classes="h2" Text="Sell from backpack (half price)" />
-          <Button Grid.Column="1" Classes="chip" Content="{Binding JunkText}" Command="{Binding SellJunkCommand}" IsEnabled="{Binding HasJunk}" ToolTip.Tip="{Binding JunkTip}" VerticalAlignment="Center" />
+        <Grid DockPanel.Dock="Top" ColumnDefinitions="*,Auto,Auto" Margin="0,0,16,0">
+          <TextBlock Classes="h2" Text="{Binding RightTitle}" />
+          <Button Grid.Column="1" Classes="chip" Content="{Binding JunkText}" Command="{Binding SellJunkCommand}" IsEnabled="{Binding HasJunk}" ToolTip.Tip="{Binding JunkTip}" VerticalAlignment="Center"
+                  IsVisible="{Binding !ShowSmithing}" />
+          <Button Grid.Column="2" Classes="chip" Content="{Binding SmithingLabel}" Command="{Binding ToggleSmithingCommand}" IsVisible="{Binding IsSmithy}" VerticalAlignment="Center" Margin="4,0,0,0"
+                  ToolTip.Tip="Have the smith improve weapons and armor, +1 to +5" />
         </Grid>
-        <ScrollViewer>
+        <TextBlock DockPanel.Dock="Top" Text="{Binding GemsText}" IsVisible="{Binding ShowSmithing}" Classes="dim" FontSize="{DynamicResource Font11}" TextWrapping="Wrap" Margin="0,0,16,4" />
+        <ScrollViewer IsVisible="{Binding ShowSmithing}">
+          <ItemsControl ItemsSource="{Binding Upgrades}" Margin="0,0,16,0">
+            <ItemsControl.ItemTemplate>
+              <DataTemplate x:DataType="vm:UpgradeRow">
+                <Grid ColumnDefinitions="40,*,Auto" Margin="0,1">
+                  <c:PixelImage Source="{Binding Icon}" Width="32" Height="32" />
+                  <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                    <TextBlock><Run Text="{Binding Name}" FontWeight="SemiBold" /><Run Text="  " /><Run Text="{Binding Where}" Foreground="{DynamicResource Dim}" /></TextBlock>
+                    <TextBlock Text="{Binding Cost}" FontSize="{DynamicResource Font11}" Foreground="{DynamicResource Gold}" />
+                  </StackPanel>
+                  <Button Grid.Column="2" Classes="chip" Content="Improve" IsEnabled="{Binding CanUpgrade}"
+                          Command="{Binding $parent[UserControl].((vm:ShopViewModel)DataContext).UpgradeItemCommand}" CommandParameter="{Binding}" />
+                </Grid>
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
+        </ScrollViewer>
+        <ScrollViewer IsVisible="{Binding !ShowSmithing}">
           <ItemsControl ItemsSource="{Binding Sellable}" Margin="0,0,16,0">
             <ItemsControl.ItemTemplate>
               <DataTemplate x:DataType="vm:ShopItemViewModel">

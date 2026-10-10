@@ -79,6 +79,7 @@ Code identifiers, the solution and executables use the name **`AVAMMB1`** (`AVAM
   where found, how many slain) and every item you have seen.
 - **Autosave and save pictures**: three rotating autosaves (new areas, before bosses); every save
   shows a picture of the view and the time played.
+- **Smithing**: improve weapons and armor up to +5 at the smithies, for gold and gems.
 - **Shopping help**: gear for sale is compared with what the shopper wears, and "Sell junk" sells
   everything nobody in the party could use as an upgrade.
 - **Difficulty and survival**: Easy, Normal or Hard (monster health and damage, gold, encounter
@@ -172,6 +173,7 @@ All screenshots are real frames rendered by the game itself (Avalonia headless +
 | ![Inn looks](docs/screenshots/33-inn-looks.png) Renaming and restyling at the inn | ![Bestiary](docs/screenshots/34-bestiary.png) The bestiary |
 | ![Items](docs/screenshots/35-items.png) The item compendium | ![Chronicle](docs/screenshots/36-chronicle.png) The Chronicle: statistics and achievements |
 | ![Riddle](docs/screenshots/37-riddle.png) A riddle door in the Hollow Belfry | ![Choice](docs/screenshots/38-choice.png) A choice: Sister Veyl's secret |
+| ![Smithing](docs/screenshots/39-smithing.png) Smithing: improving gear up to +5 | |
 
 ## Download and install
 

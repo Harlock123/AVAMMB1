@@ -59,6 +59,38 @@ public sealed class Rulebook(ContentDatabase db)
     /// <param name="stat">Attribute.</param>
     public int Bonus(Character c, Stat stat) => StatBonus(Stat(c, stat));
 
+    private static int PlusOf(Character c, EquipSlot slot) => c.Equipment.TryGetValue(slot, out var inst) ? inst.Plus : 0;
+
+    /// <summary>Highest smithy upgrade.</summary>
+    public const int MaxPlus = 5;
+
+    /// <summary>Whether a smith can improve an item (weapons and armor; not rings, amulets or lanterns).</summary>
+    /// <param name="d">Item.</param>
+    public static bool Upgradable(ItemDef d) =>
+        d.Slot is EquipSlot.Weapon or EquipSlot.Missile or EquipSlot.Armor or EquipSlot.Shield or EquipSlot.Head or EquipSlot.Hands or EquipSlot.Feet;
+
+    /// <summary>Gold to take an item to +n (each step dearer than the last).</summary>
+    /// <param name="d">Item.</param>
+    /// <param name="toPlus">The new bonus (1-5).</param>
+    public static int UpgradeGold(ItemDef d, int toPlus) => (d.Price + 200) * toPlus * toPlus;
+
+    /// <summary>Gems the smith needs to take an item to +n.</summary>
+    /// <param name="toPlus">The new bonus.</param>
+    public static int UpgradeGems(int toPlus) => toPlus;
+
+    /// <summary>"Long Sword +2".</summary>
+    /// <param name="item">Item.</param>
+    public string ItemName(ItemInstance item) => Def(item).Name + (item.Plus > 0 ? $" +{item.Plus}" : "");
+
+    /// <summary>What a merchant pays for an item: half its price, plus a quarter of what its upgrades cost.</summary>
+    /// <param name="item">Item.</param>
+    public int SellPrice(ItemInstance item)
+    {
+        var d = Def(item);
+        var spent = Enumerable.Range(1, Math.Max(0, item.Plus)).Sum(n => UpgradeGold(d, n));
+        return SellPrice(d) + spent / 4;
+    }
+
     private ItemDef? Equipped(Character c, EquipSlot slot) =>
         c.Equipment.TryGetValue(slot, out var inst) && db.Items.TryGetValue(inst.ItemId, out var def) ? def : null;
 
@@ -71,7 +103,7 @@ public sealed class Rulebook(ContentDatabase db)
         {
             if (db.Items.TryGetValue(item.ItemId, out var def))
             {
-                ac += def.ArmorClass;
+                ac += def.ArmorClass + (def.Slot is EquipSlot.Weapon or EquipSlot.Missile ? 0 : item.Plus);
             }
         }
         return Math.Max(0, ac);
@@ -82,7 +114,7 @@ public sealed class Rulebook(ContentDatabase db)
     public int MeleeAttackBonus(Character c)
     {
         var cls = db.Class(c.Class);
-        var bonus = (int)Math.Floor(c.Level * cls.AttackPerLevel) + Bonus(c, Rules.Stat.Accuracy) + (Equipped(c, EquipSlot.Weapon)?.HitBonus ?? 0);
+        var bonus = (int)Math.Floor(c.Level * cls.AttackPerLevel) + Bonus(c, Rules.Stat.Accuracy) + (Equipped(c, EquipSlot.Weapon)?.HitBonus ?? 0) + PlusOf(c, EquipSlot.Weapon);
         return c.Has(Condition.Blinded) ? bonus - 4 : bonus;
     }
 
@@ -91,7 +123,7 @@ public sealed class Rulebook(ContentDatabase db)
     public int MissileAttackBonus(Character c)
     {
         var cls = db.Class(c.Class);
-        var bonus = (int)Math.Floor(c.Level * cls.AttackPerLevel) + cls.MissileBonus + Bonus(c, Rules.Stat.Accuracy) + (Equipped(c, EquipSlot.Missile)?.HitBonus ?? 0);
+        var bonus = (int)Math.Floor(c.Level * cls.AttackPerLevel) + cls.MissileBonus + Bonus(c, Rules.Stat.Accuracy) + (Equipped(c, EquipSlot.Missile)?.HitBonus ?? 0) + PlusOf(c, EquipSlot.Missile);
         return c.Has(Condition.Blinded) ? bonus - 4 : bonus;
     }
 
@@ -106,7 +138,7 @@ public sealed class Rulebook(ContentDatabase db)
     {
         var w = Equipped(c, EquipSlot.Weapon);
         var dice = w is null ? new DiceExpression(1, 2, 0) : w.Damage;
-        return Math.Max(1, dice.Roll(rng) + Bonus(c, Rules.Stat.Might) + (w?.DamageBonus ?? 0));
+        return Math.Max(1, dice.Roll(rng) + Bonus(c, Rules.Stat.Might) + (w?.DamageBonus ?? 0) + PlusOf(c, EquipSlot.Weapon));
     }
 
     /// <summary>Rolls missile damage for one hit.</summary>
@@ -116,7 +148,7 @@ public sealed class Rulebook(ContentDatabase db)
     {
         var w = Equipped(c, EquipSlot.Missile);
         var dice = w?.Damage ?? new DiceExpression(1, 2, 0);
-        return Math.Max(1, dice.Roll(rng) + (w?.DamageBonus ?? 0));
+        return Math.Max(1, dice.Roll(rng) + (w?.DamageBonus ?? 0) + PlusOf(c, EquipSlot.Missile));
     }
 
     /// <summary>Melee attacks per round.</summary>

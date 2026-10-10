@@ -24,7 +24,8 @@
    "large_shield",
    "helmet",
    "boots"
-  ]
+  ],
+  "smithy": true
  },
  {
   "id": "brindle_apothecary",
@@ -62,7 +63,8 @@
    "helmet",
    "gauntlets",
    "boots"
-  ]
+  ],
+  "smithy": true
  },
  {
   "id": "salt_arcana",
@@ -107,7 +109,8 @@
    "helmet",
    "gauntlets",
    "boots"
-  ]
+  ],
+  "smithy": true
  },
  {
   "id": "duskmere_herbalist",
@@ -147,7 +150,8 @@
    "large_shield",
    "gauntlets",
    "helmet"
-  ]
+  ],
+  "smithy": true
  },
  {
   "id": "ashkar_alchemist",
@@ -191,6 +195,7 @@
    "torch",
    "lantern",
    "oil_flask"
-  ]
+  ],
+  "smithy": true
  }
 ]

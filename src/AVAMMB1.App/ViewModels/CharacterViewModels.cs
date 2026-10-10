@@ -104,7 +104,7 @@ public sealed partial class CharacterSheetViewModel : ViewModelBase
             {
                 var d = Session.Rules.Def(item);
                 var fuel = d.Kind == ItemKind.Lantern && d.FuelCapacity > 0 ? $" [oil {item.Charges}/{d.FuelCapacity}]" : "";
-                Equipment.Add(new ItemRow(slot, -1, d.Name + fuel, ItemText.Describe(d), tex.Bitmap("Items/" + d.Icon)));
+                Equipment.Add(new ItemRow(slot, -1, Session.Rules.ItemName(item) + fuel, ItemText.Describe(d, item.Plus), tex.Bitmap("Items/" + d.Icon)));
             }
             else
             {
@@ -117,7 +117,7 @@ public sealed partial class CharacterSheetViewModel : ViewModelBase
             var d = Session.Rules.Def(c.Backpack[i]);
             var extra = d.Kind == ItemKind.Lantern ? (d.FuelCapacity > 0 ? $" [oil {c.Backpack[i].Charges}/{d.FuelCapacity}]" : "")
                 : c.Backpack[i].Charges > 0 ? $" [{c.Backpack[i].Charges}]" : "";
-            Backpack.Add(new ItemRow(null, i, d.Name + extra, ItemText.Describe(d) + (d.Slot is not null && !Rulebook.CanUse(c, d) ? " (cannot use)" : ""), tex.Bitmap("Items/" + d.Icon)));
+            Backpack.Add(new ItemRow(null, i, Session.Rules.ItemName(c.Backpack[i]) + extra, ItemText.Describe(d, c.Backpack[i].Plus) + (d.Slot is not null && !Rulebook.CanUse(c, d) ? " (cannot use)" : ""), tex.Bitmap("Items/" + d.Icon)));
         }
         Stats.Clear();
         foreach (var s in Enum.GetValues<Stat>())
