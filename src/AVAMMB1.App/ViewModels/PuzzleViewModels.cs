@@ -126,3 +126,59 @@ public sealed partial class DecisionViewModel : ViewModelBase
         return false;
     }
 }
+
+/// <summary>A destination on the travel map.</summary>
+/// <param name="MapId">Town.</param>
+/// <param name="Label">"1. Saltreach".</param>
+/// <param name="Details">"about 5 hours - through the Greenvale Wilds - fare 200".</param>
+public sealed record TravelRow(string MapId, string Label, string Details);
+
+/// <summary>The travel map: known towns and what the road to each takes.</summary>
+public sealed partial class TravelViewModel : ViewModelBase
+{
+    private readonly GameViewModel _game;
+
+    /// <summary>Creates the dialog.</summary>
+    /// <param name="game">Owner.</param>
+    public TravelViewModel(GameViewModel game)
+    {
+        _game = game;
+        Rows = game.Services.Session.TravelOptions().Select((o, i) => new TravelRow(o.MapId, $"{i + 1}. {o.Name}",
+            string.Join(" - ", new[]
+            {
+                o.Duration,
+                o.Via.Count > 0 ? "through " + string.Join(", ", o.Via) : null,
+                o.Fare > 0 ? $"fare {o.Fare} gold" : null,
+            }.Where(x => x is not null)))).ToList();
+        Note = Rows.Count == 0
+            ? "There is nowhere you know the way to yet. Towns you have visited appear here."
+            : "Time passes as you travel, and the open country may hold an ambush. Choose a destination.";
+    }
+
+    /// <summary>Destinations.</summary>
+    public IReadOnlyList<TravelRow> Rows { get; }
+    /// <summary>Explanation.</summary>
+    public string Note { get; }
+
+    [RelayCommand]
+    private void Go(TravelRow row) => _game.TravelTo(row.MapId);
+
+    [RelayCommand]
+    private void Close() => _game.CloseOverlay();
+
+    /// <inheritdoc />
+    public override bool HandleKey(Key key)
+    {
+        if (key >= Key.D1 && key - Key.D1 < Rows.Count)
+        {
+            Go(Rows[key - Key.D1]);
+            return true;
+        }
+        if (key is Key.Escape or Key.T)
+        {
+            Close();
+            return true;
+        }
+        return false;
+    }
+}

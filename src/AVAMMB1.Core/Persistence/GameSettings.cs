@@ -43,6 +43,8 @@ public enum InputAction
     Help,
     /// <summary>Describe the surroundings in words.</summary>
     Look,
+    /// <summary>The travel map (to a known town).</summary>
+    Travel,
 }
 
 /// <summary>User preferences persisted between sessions.</summary>
@@ -125,6 +127,7 @@ public sealed class GameSettings
         [InputAction.Note] = ["N"],
         [InputAction.Help] = ["F1", "H"],
         [InputAction.Look] = ["L"],
+        [InputAction.Travel] = ["T"],
     };
 
     /// <summary>Fills in any actions missing from <see cref="KeyBindings"/> with defaults.</summary>

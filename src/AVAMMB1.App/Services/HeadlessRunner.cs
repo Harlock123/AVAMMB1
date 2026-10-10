@@ -700,6 +700,13 @@ public static class HeadlessRunner
         game.Refresh();
         Daylight(game, s);
         Capture(dir, "25-wintermere");
+        game.TravelCommand.Execute(null);
+        if (game.Overlay is not TravelViewModel { Rows.Count: > 2 })
+        {
+            throw new InvalidOperationException("The travel map did not open with the towns visited.");
+        }
+        Capture(dir, "43-travel");
+        game.CloseOverlay();
         TravelTo(game, s, "frostmark");
         TravelTo(game, s, "rime1");
         WalkTo(game, s, 7, 12);

@@ -6,6 +6,10 @@ All notable changes to this project are documented here. The format follows
 ## [Unreleased]
 
 ### Added
+- A travel map (T, or Travel map in the menu): from any town or the open country, travel to a town
+  you have visited. The road is planned through towns and open country, time passes as if it were
+  walked (rations, lantern oil and poison included; a sea voyage takes a day or so), ship fares are paid, and each stretch of open
+  country may hold an ambush that ends the journey there.
 - Describe surroundings (L, or Describe surroundings in the menu for controllers): the log says where
   the party is and which way it faces, what lies ahead ("open for 6 squares, then water"), to either
   side and behind, and what can be seen - places, stairs, treasure, riddle doors, guardians - with

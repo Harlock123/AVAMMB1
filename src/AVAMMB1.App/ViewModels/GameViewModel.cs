@@ -471,6 +471,26 @@ public sealed partial class GameViewModel : ViewModelBase
 
     [RelayCommand] private void Cast() => Overlay = new SpellCastViewModel(this, null);
 
+    /// <summary>Opens the travel map (in a town or the open country).</summary>
+    [RelayCommand]
+    public void Travel()
+    {
+        if (!Session.CanTravel)
+        {
+            AddMessage("The travel map can be used only in a town or out in the open country.");
+            return;
+        }
+        Overlay = new TravelViewModel(this);
+    }
+
+    /// <summary>Travels to a town (from the travel map).</summary>
+    /// <param name="townId">Town.</param>
+    public void TravelTo(string townId)
+    {
+        CloseOverlay();
+        Apply(Session.TravelTo(townId));
+    }
+
     /// <summary>Describes the surroundings in the log.</summary>
     [RelayCommand]
     public void Look() => AddMessages(AVAMMB1.Core.World.ViewDescriber.Describe(Session).Select(t => new GameMessage(t, MessageKind.Story)));
@@ -591,6 +611,7 @@ public sealed partial class GameViewModel : ViewModelBase
             case InputAction.Note: Note(); return true;
             case InputAction.Help: Help(); return true;
             case InputAction.Look: Look(); return true;
+            case InputAction.Travel: Travel(); return true;
             default: return false;
         }
     }

@@ -17,6 +17,7 @@ public sealed class ViewLocator : IDataTemplate
         StoryViewModel => new StoryView(),
         RiddleViewModel => new RiddleView(),
         DecisionViewModel => new DecisionView(),
+        TravelViewModel => new TravelView(),
         ShopViewModel => new ShopView(),
         InnViewModel => new InnView(),
         TempleViewModel => new TempleView(),
