@@ -2423,5 +2423,355 @@
    }
   ],
   "description": "The ice dragon of the Frostmark. Fire is the only thing it fears."
+ },
+ {
+  "id": "choir_acolyte",
+  "name": "Choir Acolyte",
+  "sprite": "choir_acolyte",
+  "level": 8,
+  "hitPoints": "8d8",
+  "armorClass": 7,
+  "speed": 12,
+  "xp": 1000,
+  "gold": "22d6+55",
+  "attacks": [
+   {
+    "verb": "strikes",
+    "damage": "1d8+2"
+   }
+  ],
+  "abilities": [
+   {
+    "name": "a droning hymn",
+    "chance": 25,
+    "allTargets": true,
+    "damage": "1d8",
+    "element": "magic"
+   }
+  ],
+  "description": "A grey-robed singer of the Silent Choir. Its hymn has no words, and hurts to hear."
+ },
+ {
+  "id": "unvoiced",
+  "name": "Unvoiced",
+  "sprite": "unvoiced",
+  "level": 8,
+  "hitPoints": "9d8",
+  "armorClass": 6,
+  "speed": 10,
+  "xp": 900,
+  "gold": "20d6+50",
+  "attacks": [
+   {
+    "verb": "claws",
+    "damage": "1d10"
+   },
+   {
+    "verb": "claws",
+    "damage": "1d6"
+   }
+  ],
+  "abilities": [
+   {
+    "name": "a soundless scream",
+    "chance": 15,
+    "allTargets": true,
+    "inflicts": "silenced"
+   }
+  ],
+  "plural": "Unvoiced",
+  "description": "Someone who heard the Hollow Bell. Nothing is left of them but a shape and a hunger."
+ },
+ {
+  "id": "bell_gargoyle",
+  "name": "Bell Gargoyle",
+  "sprite": "bell_gargoyle",
+  "level": 10,
+  "hitPoints": "10d8",
+  "armorClass": 10,
+  "speed": 12,
+  "xp": 1600,
+  "gold": "26d6+61",
+  "attacks": [
+   {
+    "verb": "claws",
+    "damage": "1d10"
+   },
+   {
+    "verb": "claws",
+    "damage": "1d10"
+   },
+   {
+    "verb": "bites",
+    "damage": "1d8"
+   }
+  ],
+  "resistances": {
+   "physical": 30,
+   "poison": 100
+  },
+  "description": "Carved to guard a bell tower; it did not stop when the tower fell."
+ },
+ {
+  "id": "silent_phantom",
+  "name": "Silent Phantom",
+  "sprite": "silent_phantom",
+  "level": 10,
+  "hitPoints": "8d8",
+  "armorClass": 9,
+  "speed": 16,
+  "xp": 1500,
+  "gold": "26d6+61",
+  "attacks": [
+   {
+    "verb": "touches",
+    "damage": "2d6",
+    "element": "magic",
+    "inflicts": "silenced",
+    "inflictChance": 20
+   }
+  ],
+  "abilities": [
+   {
+    "name": "a hush that steals breath",
+    "chance": 20,
+    "allTargets": true,
+    "damage": "2d8",
+    "element": "magic"
+   }
+  ],
+  "undead": true,
+  "resistances": {
+   "physical": 40,
+   "cold": 100,
+   "poison": 100
+  },
+  "description": "A cold light in the shape of a choirboy."
+ },
+ {
+  "id": "hollow_shade",
+  "name": "Bell-Flayed Shade",
+  "sprite": "hollow_shade",
+  "level": 11,
+  "hitPoints": "10d8",
+  "armorClass": 9,
+  "speed": 14,
+  "xp": 2000,
+  "gold": "28d6+65",
+  "attacks": [
+   {
+    "verb": "rends",
+    "damage": "2d8"
+   }
+  ],
+  "abilities": [
+   {
+    "name": "a toll that shakes the bones",
+    "chance": 20,
+    "allTargets": true,
+    "damage": "2d10",
+    "element": "magic"
+   }
+  ],
+  "undead": true,
+  "resistances": {
+   "physical": 30,
+   "poison": 100,
+   "cold": 50
+  },
+  "description": "What the Bell does to those who will not sing."
+ },
+ {
+  "id": "choir_cantor",
+  "name": "Choir Cantor",
+  "sprite": "choir_cantor",
+  "level": 11,
+  "hitPoints": "10d8",
+  "armorClass": 9,
+  "speed": 12,
+  "xp": 2200,
+  "gold": "28d6+65",
+  "attacks": [
+   {
+    "verb": "strikes",
+    "damage": "2d6"
+   }
+  ],
+  "abilities": [
+   {
+    "name": "a hymn of mending",
+    "chance": 20,
+    "selfHeal": "4d8"
+   },
+   {
+    "name": "a piercing high note",
+    "chance": 25,
+    "allTargets": true,
+    "damage": "3d6",
+    "element": "magic"
+   }
+  ],
+  "description": "A leader of the Choir's songs, robed in blue and gold."
+ },
+ {
+  "id": "bronze_sentinel",
+  "name": "Bronze Sentinel",
+  "sprite": "bronze_sentinel",
+  "level": 12,
+  "hitPoints": "13d8+13",
+  "armorClass": 12,
+  "speed": 9,
+  "xp": 2600,
+  "gold": "30d6+70",
+  "attacks": [
+   {
+    "verb": "smashes",
+    "damage": "3d8"
+   }
+  ],
+  "resistances": {
+   "physical": 30,
+   "poison": 100,
+   "cold": 25,
+   "fire": 25
+  },
+  "description": "A statue cast from bell-metal, walking."
+ },
+ {
+  "id": "choir_bursar",
+  "name": "Bursar Quill",
+  "sprite": "choir_bursar",
+  "level": 8,
+  "hitPoints": "70",
+  "armorClass": 8,
+  "speed": 12,
+  "xp": 1500,
+  "gold": "300",
+  "attacks": [
+   {
+    "verb": "strikes",
+    "damage": "1d8+2"
+   }
+  ],
+  "abilities": [
+   {
+    "name": "a ledger of curses",
+    "chance": 30,
+    "allTargets": true,
+    "damage": "2d8",
+    "element": "magic"
+   }
+  ],
+  "drops": [
+   {
+    "item": "choir_ledger",
+    "chance": 100
+   }
+  ],
+  "description": "The Choir's treasurer, buying bell-bronze from the renegades of the deep mines."
+ },
+ {
+  "id": "choir_keeper",
+  "name": "Keeper Isaura",
+  "sprite": "choir_keeper",
+  "level": 10,
+  "hitPoints": "120",
+  "armorClass": 9,
+  "speed": 13,
+  "xp": 3000,
+  "gold": "500",
+  "attacks": [
+   {
+    "verb": "strikes",
+    "damage": "2d6"
+   }
+  ],
+  "smart": true,
+  "abilities": [
+   {
+    "name": "a lullaby of the Hollow Bell",
+    "chance": 20,
+    "allTargets": true,
+    "inflicts": "asleep"
+   },
+   {
+    "name": "a shard of song",
+    "chance": 30,
+    "damage": "4d8",
+    "element": "magic"
+   }
+  ],
+  "drops": [
+   {
+    "item": "belfry_key",
+    "chance": 100
+   }
+  ],
+  "description": "Keeper of the Belfry's key, hiding among the tombs of the Sun Kings."
+ },
+ {
+  "id": "choirmaster",
+  "name": "The Choirmaster",
+  "sprite": "choirmaster",
+  "boss": true,
+  "level": 13,
+  "hitPoints": "340",
+  "armorClass": 12,
+  "speed": 13,
+  "xp": 15000,
+  "gold": "1500",
+  "attacks": [
+   {
+    "verb": "strikes",
+    "damage": "3d10",
+    "element": "cold"
+   },
+   {
+    "verb": "strikes",
+    "damage": "3d10"
+   }
+  ],
+  "smart": true,
+  "undead": true,
+  "resistances": {
+   "poison": 100,
+   "cold": 50,
+   "magic": 25
+  },
+  "abilities": [
+   {
+    "name": "the toll of the Hollow Bell",
+    "chance": 30,
+    "allTargets": true,
+    "damage": "5d8",
+    "element": "magic"
+   },
+   {
+    "name": "a hymn of silence",
+    "chance": 5,
+    "allTargets": true,
+    "inflicts": "silenced"
+   },
+   {
+    "name": "the devotion of the choir",
+    "chance": 12,
+    "selfHeal": "5d10"
+   }
+  ],
+  "drops": [
+   {
+    "item": "bell_clapper",
+    "chance": 100
+   },
+   {
+    "item": "bellbreaker",
+    "chance": 100
+   },
+   {
+    "item": "choir_cowl",
+    "chance": 100
+   }
+  ],
+  "description": "Dead for a century and still conducting. He means to ring the Hollow Bell once more, and silence the world."
  }
 ]

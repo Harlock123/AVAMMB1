@@ -200,6 +200,36 @@
    "name": "Old Wren's Landing",
    "requiresFlag": "wren_done",
    "text": "Wren poles his ferry slowly through the reeds, humming."
+  },
+  {
+   "type": "quest",
+   "id": "choir_veyl_meet",
+   "once": true,
+   "feature": "shop_books",
+   "text": "A woman with a shaved head lets you in and bars the door. \"I am Veyl. I sang with the Choir until I understood what the Bell does. They are recasting the Hollow Bell in a sunken belfry in the east of the Ashen Hills. When it rings, every voice in the six towns goes into it. The door opens only to the Belfry Key - the Archivist in Port Ashkar will know who carries it.\"",
+   "requiresFlag": "choir_saltreach",
+   "requiresNotFlag": "choir_veyl",
+   "setFlag": "choir_veyl",
+   "xp": 2000,
+   "x": 4,
+   "y": 3,
+   "name": "A Quiet Hut"
+  },
+  {
+   "type": "message",
+   "text": "Veyl whispers through the door: \"Port Ashkar. The Archivist. Hurry.\"",
+   "requiresFlag": "choir_veyl",
+   "x": 4,
+   "y": 3,
+   "name": "A Quiet Hut"
+  },
+  {
+   "type": "message",
+   "text": "A shuttered hut. Someone inside is being very, very quiet.",
+   "requiresNotFlag": "choir_veyl",
+   "x": 4,
+   "y": 3,
+   "name": "A Quiet Hut"
   }
  ],
  "ambience": "river"

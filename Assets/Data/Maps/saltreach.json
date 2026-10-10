@@ -233,6 +233,37 @@
    "name": "Harbormaster's Office",
    "requiresFlag": "quell_done",
    "text": "Quell is writing letters to collectors."
+  },
+  {
+   "type": "quest",
+   "id": "choir_customs",
+   "once": true,
+   "feature": "shop_books",
+   "text": "A nervous clerk finds the entry. \"Forty crates of 'church bells', by barge up the marsh to Duskmere. Signed for by a 'Sister V.' Look - take the fee they paid; I don't want it in my books.\"",
+   "requiresFlag": "choir_ledger_read",
+   "requiresNotFlag": "choir_saltreach",
+   "setFlag": "choir_saltreach",
+   "gold": "400",
+   "xp": 1500,
+   "x": 6,
+   "y": 7,
+   "name": "Customs House"
+  },
+  {
+   "type": "message",
+   "text": "The clerk: \"Duskmere. Sister V. I never saw any of it.\"",
+   "requiresFlag": "choir_saltreach",
+   "x": 6,
+   "y": 7,
+   "name": "Customs House"
+  },
+  {
+   "type": "message",
+   "text": "The Customs House. Clerks stamp papers and do not look at you.",
+   "requiresNotFlag": "choir_saltreach",
+   "x": 6,
+   "y": 7,
+   "name": "Customs House"
   }
  ],
  "ambience": "river"

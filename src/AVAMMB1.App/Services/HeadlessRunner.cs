@@ -658,6 +658,24 @@ public static class HeadlessRunner
         game.Refresh();
         Capture(dir, "26-rime-halls");
 
+        // The Silent Choir: the Choirmaster beneath the Hollow Bell.
+        (s.State.MapId, s.State.X, s.State.Y, s.State.Facing) = ("belfry2", 12, 5, Direction.North);
+        s.State.LightSteps = Math.Max(s.State.LightSteps, 50);
+        var choir = new StepResult();
+        s.StartCombat(CombatEngine.Spawn(s.Content.Monster("choirmaster"), 1, s.Random)
+            .Concat(CombatEngine.Spawn(s.Content.Monster("choir_cantor"), 2, s.Random)), choir);
+        game.Refresh();
+        game.BeginCombat();
+        Pump();
+        Capture(dir, "32-choirmaster");
+        game.Combat!.FightCommand.Execute(null);
+        if (s.Combat is not null)
+        {
+            AutoBattle(s);
+        }
+        game.CombatFinished();
+        game.CloseOverlay();
+
         // Accessibility: the high-contrast theme with larger text, and the sharper 3D view.
         var settings = vm.Services.Settings;
         settings.ColorTheme = "HighContrast";

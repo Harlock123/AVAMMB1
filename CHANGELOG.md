@@ -6,6 +6,13 @@ All notable changes to this project are documented here. The format follows
 ## [Unreleased]
 
 ### Added
+- The Silent Choir, a mid-game quest chain (levels 8-12) through all six towns. Magistrate Holloway
+  in Brindlemoor, Loremaster Durin in Thornwick (a ledger to take from the Choir's bursar in the Deep
+  Mines), the Saltreach Customs House, Sister Veyl in Duskmere, the Sealed Archive in Port Ashkar (a
+  key to take from Keeper Isaura in the Tomb of the Sun Kings), and Archmage Sela in Wintermere.
+  It leads to the Hollow Belfry, a new two-level dungeon in the east of the Ashen Hills, and its boss,
+  the Choirmaster. New: 10 monsters, 4 unique items (Bellbreaker, the Choirmaster's Cowl, the Signet
+  of the Concord, the Ward of Voices) and 2 new wall textures, all from the CC0 Dungeon Crawl tiles.
 - Autosave: entering a new area and facing a boss saves into three rotating autosave slots (Auto 1-3,
   kept apart from the quick and manual slots; Settings > Game turns it off). Continue picks up the
   newest save, autosaves included.

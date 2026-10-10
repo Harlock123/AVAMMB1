@@ -245,5 +245,57 @@
     "text": "The Sun Kings sealed a great serpent in the Sunless Deep: it ate the light. Their last carving begs you not to wake it."
    }
   ]
+ },
+ {
+  "id": "choir",
+  "title": "The Silent Choir",
+  "doneFlag": "choir_done",
+  "doneText": "The Hollow Bell will never ring again, and the Concord of the six towns stands. Magistrate Holloway made you a Friend of the Concord.",
+  "stages": [
+   {
+    "flag": "choir_met",
+    "text": "Magistrate Holloway of Brindlemoor: people across the six towns are waking without their voices. A cult, the Silent Choir, is to blame. Loremaster Durin in Thornwick has been tracking them."
+   },
+   {
+    "flag": "choir_durin",
+    "text": "Loremaster Durin of Thornwick: the Choir's bursar has been buying bell-bronze from the renegades of the Deep Mines, below the upper mines. Find him and bring back his ledger."
+   },
+   {
+    "item": "choir_ledger",
+    "text": "You have Bursar Quill's ledger. Take it to Loremaster Durin in Thornwick."
+   },
+   {
+    "flag": "choir_ledger_read",
+    "text": "The ledger shows the bronze was shipped from Saltreach. Ask at the Customs House on the Saltreach waterfront where it went."
+   },
+   {
+    "flag": "choir_saltreach",
+    "text": "The bronze went by barge up the marsh to Duskmere, to 'Sister V.'. Find her in Duskmere."
+   },
+   {
+    "flag": "choir_veyl",
+    "text": "Sister Veyl, who fled the Choir: they are recasting the Hollow Bell in a sunken belfry in the east of the Ashen Hills. Its door opens only to the Belfry Key - ask the Archivist in Port Ashkar where the Keeper hides it."
+   },
+   {
+    "flag": "choir_ashkar",
+    "text": "The Archivist of Port Ashkar: Keeper Isaura carries the Belfry Key and hides in the Tomb of the Sun Kings, in the Sunscar Wastes. Take the key from her."
+   },
+   {
+    "item": "belfry_key",
+    "text": "You have the Belfry Key. The Hollow Belfry lies in the east of the Ashen Hills. Stop the Choirmaster before the Bell is rung."
+   },
+   {
+    "visited": "belfry1",
+    "text": "You are inside the Hollow Belfry. The Choirmaster waits below, with the Bell."
+   },
+   {
+    "item": "bell_clapper",
+    "text": "The Choirmaster is dead and you carry the Hollow Bell's clapper. Only the Collegium of Wintermere can unmake it - take it to Archmage Sela there (by ship from Saltreach)."
+   },
+   {
+    "flag": "choir_unmade",
+    "text": "The clapper is unmade. Tell Magistrate Holloway in Brindlemoor that the Choir is finished."
+   }
+  ]
  }
 ]

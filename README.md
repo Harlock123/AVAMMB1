@@ -78,7 +78,7 @@ Code identifiers, the solution and executables use the name **`AVAMMB1`** (`AVAM
 - **Drag-and-drop marching order**: drag a party card along the bar at the bottom of the screen to
   change places (anywhere but in battle); a click still opens the character sheet. Without a mouse,
   Move left / Move right on the character sheet (`[` / `]`, or the buttons with a controller).
-- **Twenty-three maps**: six towns (Brindlemoor, Saltreach, Thornwick, Duskmere, Port Ashkar and
+- **Twenty-five maps**: six towns (Brindlemoor, Saltreach, Thornwick, Duskmere, Port Ashkar and
   Wintermere), four wilderness regions (the Greenvale Wilds, the Ashen Hills, the Sunscar Wastes and
   the Frostmark), twelve dungeon levels plus the final vault. The main quest chain (keys, quest items, flags) leads to a final boss
   and victory screen; optional side quests reward unique gear: the Thornwick Mines' Stone Wyrm and
@@ -89,6 +89,10 @@ Code identifiers, the solution and executables use the name **`AVAMMB1`** (`AVAM
   Deep (levels 13-15). By ship north from Saltreach lies the Frostmark (levels 11-14): the town of
   Wintermere, a tundra of wargs and frost giants, and the two-level Rime Halls where the ice dragon
   Rimefang lairs. Every town also posts a **bounty** - bring back a trophy from a monster's hoard.
+  Mid-game, **The Silent Choir** (levels 8-12) runs through all six towns: Brindlemoor's magistrate,
+  a ledger from the Deep Mines, the Saltreach customs house, a runaway singer in Duskmere, a key
+  hidden in the Tomb of the Sun Kings - and the two-level Hollow Belfry in the Ashen Hills, where the
+  Choirmaster is recasting a bell that steals voices. Its rewards include four unique items.
 - **Elite monsters**: about one random encounter in twenty is led by an elite (gold name) with double
   hit points, better armor and harder blows - worth triple experience and gold, with a chance of
   extra loot.
@@ -152,7 +156,8 @@ All screenshots are real frames rendered by the game itself (Avalonia headless +
 | ![High contrast](docs/screenshots/23-high-contrast.png) High-contrast theme, 115% text, 800 x 600 view | ![Help](docs/screenshots/24-help.png) The in-game help |
 | ![Wintermere](docs/screenshots/25-wintermere.png) Wintermere, the northern harbour town | ![Rime Halls](docs/screenshots/26-rime-halls.png) The Rime Halls |
 | ![Detailed textures](docs/screenshots/27-detailed-textures.png) Detailed textures at 800 x 600 (the Hollow Crypt) | ![Lantern](docs/screenshots/28-lantern.png) Lantern light in the cellars |
-| ![Night](docs/screenshots/29-night.png) The Ashen Hills road at night | |
+| ![Night](docs/screenshots/29-night.png) The Ashen Hills road at night | ![Battle spells](docs/screenshots/30-combat-spells.png) Battle spells with their keys |
+| ![Load game](docs/screenshots/31-load-game.png) Saves with pictures, play time and autosaves | ![Choirmaster](docs/screenshots/32-choirmaster.png) The Choirmaster in the Bell Chamber |
 
 ## Download and install
 
@@ -285,7 +290,7 @@ route order from level 1 to 15 (fighting, camping, curing with spells and potion
 zone's chests, training, selling loot, buying gear and potions, reloading after a wipe) and asserts
 the pace, wipe rate and gold flow stay within tuned bounds (about 600 battles from a new party to
 level 15). It skips boss hoards and quest rewards, so real players end up with a little more gold. The UI flow title -> party creation -> town -> shop -> dungeon -> combat -> inventory ->
-automap with notes -> journal -> spells -> secret door -> Old Cistern -> Ashen Hills -> Sunscar Coast -> Wintermere -> Rime Halls -> high-contrast theme -> detailed textures -> settings is exercised headlessly by `--screenshot`.
+automap with notes -> journal -> spells -> secret door -> Old Cistern -> Ashen Hills -> Sunscar Coast -> Wintermere -> Rime Halls -> the Bell Chamber -> high-contrast theme -> detailed textures -> settings is exercised headlessly by `--screenshot`.
 Gamepad support has been play-tested with a physical controller on Linux ARM64 (v1.4.0); on the
 other platforms CI confirms the bundled SDL2 library loads, and the button mapping is unit tested.
 The game is currently under testing.

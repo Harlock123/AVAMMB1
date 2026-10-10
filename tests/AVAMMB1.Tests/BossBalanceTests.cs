@@ -31,6 +31,8 @@ public class BossBalanceTests(ITestOutputHelper output)
     [InlineData("umbral_wyrm", "shade", 2, 12, false)]
     [InlineData("rimefang", "ice_devil", 2, 13, true)]
     [InlineData("rimefang", "ice_devil", 2, 11, false)]
+    [InlineData("choirmaster", "choir_cantor", 2, 11, true)]
+    [InlineData("choirmaster", "choir_cantor", 2, 8, false)]
     public void Boss_IsChallengingButFair(string boss, string? adds, int addCount, int level, bool shouldUsuallyWin)
     {
         var wins = Wins(boss, adds, addCount, level, Difficulty.Normal);
@@ -57,6 +59,7 @@ public class BossBalanceTests(ITestOutputHelper output)
     [InlineData("wight_king", "skeletal_warrior", 2, 8)]
     [InlineData("umbral_wyrm", "shade", 2, 15)]
     [InlineData("rimefang", "ice_devil", 2, 13)]
+    [InlineData("choirmaster", "choir_cantor", 2, 11)]
     public void Boss_Difficulties(string boss, string? adds, int addCount, int level)
     {
         var normal = Wins(boss, adds, addCount, level, Difficulty.Normal);

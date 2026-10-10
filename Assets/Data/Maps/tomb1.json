@@ -214,6 +214,26 @@
    "trap": "pit",
    "damage": "3d6",
    "text": "A sand-filled pit swallows the party and spits it out elsewhere!"
+  },
+  {
+   "x": 12,
+   "y": 12,
+   "type": "encounter",
+   "id": "choir_keeper_fight",
+   "once": true,
+   "name": "A Singer Among the Dead",
+   "requiresFlag": "choir_ashkar",
+   "text": "A woman sits on a sarcophagus, singing softly to the mummies. They are listening. She stops, and smiles. \"The key? Come and take it.\"",
+   "monsters": [
+    {
+     "monster": "choir_keeper",
+     "count": "1"
+    },
+    {
+     "monster": "choir_acolyte",
+     "count": "2"
+    }
+   ]
   }
  ],
  "ambience": "deep"

@@ -199,6 +199,26 @@
      "count": "2"
     }
    ]
+  },
+  {
+   "x": 6,
+   "y": 10,
+   "type": "encounter",
+   "id": "choir_bursar_fight",
+   "once": true,
+   "name": "A Counting Table",
+   "requiresFlag": "choir_durin",
+   "text": "A man in purple sits at a table in the dark, counting bronze ingots with renegade guards around him. \"You're not the buyer,\" he says.",
+   "monsters": [
+    {
+     "monster": "choir_bursar",
+     "count": "1"
+    },
+    {
+     "monster": "choir_acolyte",
+     "count": "2"
+    }
+   ]
   }
  ],
  "ambience": "deep"

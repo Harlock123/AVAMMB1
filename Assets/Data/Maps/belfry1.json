@@ -1,0 +1,265 @@
+{
+ "id": "belfry1",
+ "name": "The Hollow Belfry",
+ "kind": "dungeon",
+ "format": "edges",
+ "width": 16,
+ "height": 16,
+ "grid": [
+  "+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+",
+  "|. .|. . . . .|. . .|. . . . . .|",
+  "+ + + + +-+ + + +-+-+ +-+ + + +-+",
+  "|.|. . .|. . . . . . .|. .|.|. .|",
+  "+ + +-+-+ +-+ + +-+-+-+ +-+-+ + +",
+  "|.|. . . . . .|. . .|.|. . . .|.|",
+  "+ +-+-+-+ +S+-+-+ + + +-+-+-+-+ +",
+  "|.|. . . .|.|. . . . .|. .|.|. .|",
+  "+ +-+ +-+ +-+-+-+-+-+-+ + + + + +",
+  "|. .|. .|.|. . . . . .|.|. .|.|d|",
+  "+-+ + + + + + + + + + + +-+-+ + +",
+  "|. . . . .|. . . . . .|. .|. .|d|",
+  "+ +-+ +-+-+ + + + + + + + + +-+ +",
+  "|.|. . . .|. . . . . .|.|.|. .|d|",
+  "+ +-+ + +-+ + + + + + +-+ + + +-+",
+  "|. .|. .|.|. . . . . .|. . . . .|",
+  "+ + + +-+ +-+-+D+-+-+-+ +-+ +-+ +",
+  "|.|.|.|. .|. . .|. .|. .|.|. .|.|",
+  "+ + + + +-+ +-+ + +-+-+-+ + +-+ +",
+  "|.|.|.|. .|. .|.|. . . . .|.|. .|",
+  "+-+ +-+-+ +-+ + +-+ + + +-+ + + +",
+  "|. .|. . . .|.|. .|. . . . .|.|.|",
+  "+ +-+ + + +-+ +-+ +-+-+-+-+-+ + +",
+  "|. .|. . .|. .|.|. .|. .|. . .|.|",
+  "+ + +-+-+ + +-+ +-+ + + + +-+-+ +",
+  "|. .|. . .|. .|. . . .|. . . .|.|",
+  "+ +-+ +-+ +-+-+D+-+-+ + +-+-+ + +",
+  "|. . . .|. .|. . . .|.|. . . .|.|",
+  "+ + + + +-+ + + + + +-+-+ + +-+ +",
+  "|.|. .|. . .|. . . .|.|. .|. . .|",
+  "+-+ + +-+-+ + + + + + +-+-+-+ + +",
+  "|. .|. . .|.|. . . .|. . . . .|.|",
+  "+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+"
+ ],
+ "terrain": {
+  "d": {
+   "darkness": true,
+   "name": "Magical darkness",
+   "mapColor": "#07070c"
+  },
+  "a": {
+   "antiMagic": true,
+   "name": "Anti-magic",
+   "mapColor": "#3a2050"
+  }
+ },
+ "wallTexture": "wall_belfry",
+ "floorTexture": "floor_marble",
+ "ceilingTexture": "wall_belfry",
+ "dark": true,
+ "encounterChance": 8,
+ "encounters": [
+  {
+   "monster": "choir_acolyte",
+   "count": "1d3+1",
+   "weight": 25
+  },
+  {
+   "monster": "unvoiced",
+   "count": "1d4",
+   "weight": 25
+  },
+  {
+   "monster": "bell_gargoyle",
+   "count": "1d2",
+   "weight": 20
+  },
+  {
+   "monster": "silent_phantom",
+   "count": "1d2",
+   "weight": 15
+  },
+  {
+   "monster": "choir_cantor",
+   "count": "1",
+   "weight": 15
+  }
+ ],
+ "events": [
+  {
+   "x": 7,
+   "y": 15,
+   "type": "teleport",
+   "name": "Out to the Hills",
+   "feature": "stairs_up",
+   "map": "hills",
+   "toX": 16,
+   "toY": 7,
+   "facing": "West",
+   "text": "You climb out of the sunken tower into the wind of the Ashen Hills."
+  },
+  {
+   "x": 7,
+   "y": 14,
+   "type": "message",
+   "id": "belfry1_hint",
+   "once": true,
+   "name": "Cracked Bells",
+   "text": "Broken bells line the narthex walls, each one cracked through. Somewhere far below, a single bell is being tuned."
+  },
+  {
+   "x": 7,
+   "y": 6,
+   "type": "encounter",
+   "id": "belfry_loft",
+   "once": true,
+   "name": "The Choir Loft",
+   "setFlag": "belfry_loft_clear",
+   "text": "Rows of grey robes turn to face you as one. They open their mouths, and no sound comes out.",
+   "monsters": [
+    {
+     "monster": "choir_cantor",
+     "count": "1"
+    },
+    {
+     "monster": "choir_acolyte",
+     "count": "3"
+    }
+   ]
+  },
+  {
+   "x": 6,
+   "y": 5,
+   "type": "treasure",
+   "id": "belfry_loft_loot",
+   "once": true,
+   "feature": "chest",
+   "name": "Choir Coffer",
+   "requiresFlag": "belfry_loft_clear",
+   "blocking": true,
+   "failText": "An iron-bound coffer stands behind the choir stalls - and the choir stands in front of it.",
+   "gold": "25d20",
+   "gems": 3,
+   "items": [
+    "potion_vigor",
+    "potion_mana"
+   ],
+   "text": "The Choir's collection box. The towns' coin, every piece of it."
+  },
+  {
+   "x": 9,
+   "y": 0,
+   "type": "teleport",
+   "name": "Bell-Rope Stair",
+   "feature": "stairs_down",
+   "map": "belfry2",
+   "toX": 0,
+   "toY": 15,
+   "facing": "North",
+   "text": "A stair winds down around a bell-rope as thick as your arm. The rope is moving."
+  },
+  {
+   "x": 15,
+   "y": 0,
+   "type": "treasure",
+   "id": "belfry1_chest_a",
+   "once": true,
+   "feature": "chest",
+   "name": "Sexton's Locker",
+   "gold": "20d20",
+   "items": [
+    "potion_vigor",
+    "oil_flask"
+   ],
+   "text": "The bell-ringer's locker: rope-grease, a lamp, and his savings."
+  },
+  {
+   "x": 13,
+   "y": 1,
+   "type": "trap",
+   "id": "belfry1_trap_a",
+   "once": true,
+   "damage": "4d8",
+   "text": "A bell swings down out of the dark and strikes the party like a hammer!"
+  },
+  {
+   "x": 10,
+   "y": 2,
+   "type": "treasure",
+   "id": "belfry1_chest_b",
+   "once": true,
+   "feature": "chest",
+   "name": "Hymnal Case",
+   "gold": "15d20",
+   "items": [
+    "scroll_fire",
+    "potion_cure"
+   ],
+   "text": "Hymnals with every word scratched out - and some useful scrolls tucked between them."
+  },
+  {
+   "x": 1,
+   "y": 3,
+   "type": "encounter",
+   "id": "belfry1_unvoiced",
+   "once": true,
+   "name": "The Silent Ward",
+   "text": "Pale shapes sit along the walls, mouths open. They were townsfolk once.",
+   "monsters": [
+    {
+     "monster": "unvoiced",
+     "count": "5"
+    }
+   ]
+  },
+  {
+   "x": 5,
+   "y": 2,
+   "type": "message",
+   "id": "belfry1_secret_hint",
+   "once": true,
+   "name": "Hollow Wall",
+   "text": "Your footsteps echo strangely here, as if the wall were hollow. (Search with F.)"
+  },
+  {
+   "x": 5,
+   "y": 3,
+   "type": "treasure",
+   "id": "belfry1_secret",
+   "once": true,
+   "feature": "chest",
+   "name": "Founder's Reliquary",
+   "gold": "25d20+300",
+   "gems": 4,
+   "items": [
+    "amulet_warding"
+   ],
+   "text": "The reliquary of the belfry's founders, walled up before the Choir came."
+  },
+  {
+   "x": 6,
+   "y": 2,
+   "type": "spinner"
+  },
+  {
+   "x": 0,
+   "y": 8,
+   "type": "trap",
+   "id": "belfry1_alarm",
+   "once": true,
+   "trap": "alarm",
+   "text": "A tripwire sets a small bell ringing. Far below, something answers.",
+   "monsters": [
+    {
+     "monster": "bell_gargoyle",
+     "count": "2"
+    },
+    {
+     "monster": "silent_phantom",
+     "count": "1"
+    }
+   ]
+  }
+ ],
+ "music": "dungeon",
+ "ambience": "deep"
+}

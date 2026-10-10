@@ -232,6 +232,36 @@
    "name": "House of Scholars",
    "feature": "shop_books",
    "priceFactor": 1.2
+  },
+  {
+   "type": "quest",
+   "id": "choir_archive",
+   "once": true,
+   "feature": "shop_books",
+   "text": "The Archivist of Port Ashkar turns pale at the name. \"Isaura. She was our keeper of songs, before the Choir took her. She carries the Belfry Key, and hides where no one goes - in the Tomb of the Sun Kings, out in the Sunscar Wastes.\"",
+   "requiresFlag": "choir_veyl",
+   "requiresNotFlag": "choir_ashkar",
+   "setFlag": "choir_ashkar",
+   "xp": 2000,
+   "x": 7,
+   "y": 10,
+   "name": "The Sealed Archive"
+  },
+  {
+   "type": "message",
+   "text": "The Archivist: \"Isaura is in the Tomb of the Sun Kings. Take the key from her.\"",
+   "requiresFlag": "choir_ashkar",
+   "x": 7,
+   "y": 10,
+   "name": "The Sealed Archive"
+  },
+  {
+   "type": "message",
+   "text": "The Sealed Archive. Scholars copy old songs onto new scrolls.",
+   "requiresNotFlag": "choir_ashkar",
+   "x": 7,
+   "y": 10,
+   "name": "The Sealed Archive"
   }
  ],
  "ambience": "wind"

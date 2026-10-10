@@ -224,6 +224,20 @@
     "wyvern_egg"
    ],
    "text": "Among the bones: coins, gems and a silver ring."
+  },
+  {
+   "x": 17,
+   "y": 7,
+   "type": "teleport",
+   "name": "The Hollow Belfry",
+   "feature": "tomb_entrance",
+   "map": "belfry1",
+   "toX": 7,
+   "toY": 15,
+   "facing": "North",
+   "requiresItem": "belfry_key",
+   "failText": "A bell tower has sunk into the hillside until only its top shows. The door is dark bronze, with no keyhole you can see.",
+   "text": "The Belfry Key hums. The bronze door swings inward, and you go down into the sunken tower."
   }
  ],
  "ambience": "wind",

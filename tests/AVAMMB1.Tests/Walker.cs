@@ -15,6 +15,9 @@ internal sealed class Walker(GameSession s)
 {
     public int Battles { get; private set; }
 
+    /// <summary>Win every battle outright (for tests about where things are, not how hard they are).</summary>
+    public bool Overwhelm { get; set; }
+
     public StepResult? Last { get; private set; }
 
     private List<Direction>? Path(int tx, int ty)
@@ -104,6 +107,13 @@ internal sealed class Walker(GameSession s)
     public void Fight()
     {
         var combat = s.Combat!;
+        if (Overwhelm)
+        {
+            foreach (var m in combat.Monsters)
+            {
+                m.Hp = 0;
+            }
+        }
         combat.Advance();
         var guard = 0;
         while (combat.Outcome == CombatOutcome.Ongoing && guard++ < 2000)

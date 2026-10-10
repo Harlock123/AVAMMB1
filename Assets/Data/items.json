@@ -1075,5 +1075,82 @@
   "fuelAmount": 750,
   "useSpell": "i_oil",
   "description": "Use it to add 750 steps of oil to an equipped lantern. In battle, throw it for 2d6 fire damage."
+ },
+ {
+  "id": "choir_ledger",
+  "name": "Choir Ledger",
+  "kind": "quest",
+  "icon": "book",
+  "description": "Bursar Quill's accounts: bell-bronze bought from renegades, shipped south by sea."
+ },
+ {
+  "id": "belfry_key",
+  "name": "Belfry Key",
+  "kind": "quest",
+  "icon": "belfry_key",
+  "description": "A key of dark bronze that hums when held near the Ashen Hills."
+ },
+ {
+  "id": "bell_clapper",
+  "name": "Clapper of the Hollow Bell",
+  "kind": "quest",
+  "icon": "bell_clapper",
+  "description": "The tongue of the Hollow Bell. Silent - for now."
+ },
+ {
+  "id": "bellbreaker",
+  "name": "Bellbreaker",
+  "kind": "weapon",
+  "icon": "bellbreaker",
+  "price": 9000,
+  "damage": "2d6+4",
+  "hitBonus": 2,
+  "classes": [
+   "knight",
+   "paladin",
+   "cleric"
+  ],
+  "description": "The Choirmaster's own mace, heavy enough to crack bronze."
+ },
+ {
+  "id": "choir_cowl",
+  "name": "Choirmaster's Cowl",
+  "kind": "helmet",
+  "icon": "choir_cowl",
+  "price": 7000,
+  "armorClass": 2,
+  "statBonuses": {
+   "intellect": 2,
+   "luck": 1
+  },
+  "description": "It muffles every sound but the wearer's own thoughts."
+ },
+ {
+  "id": "concord_signet",
+  "name": "Signet of the Concord",
+  "kind": "ring",
+  "icon": "concord_signet",
+  "price": 6000,
+  "armorClass": 1,
+  "statBonuses": {
+   "personality": 2,
+   "luck": 2
+  },
+  "description": "Given by the six towns to those who keep their peace."
+ },
+ {
+  "id": "ward_voices",
+  "name": "Ward of Voices",
+  "kind": "amulet",
+  "icon": "ward_voices",
+  "price": 10000,
+  "armorClass": 2,
+  "statBonuses": {
+   "endurance": 1,
+   "intellect": 1,
+   "personality": 1,
+   "luck": 1
+  },
+  "description": "Forged by the Collegium from the Hollow Bell's clapper. It hums with every voice the Bell stole."
  }
 ]

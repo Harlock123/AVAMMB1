@@ -230,6 +230,60 @@
    "name": "The Watch House",
    "requiresFlag": "dunmore_done",
    "text": "Captain Dunmore nods to you. \"Quiet in the Greenvale since you came along.\""
+  },
+  {
+   "type": "quest",
+   "id": "choir_intro",
+   "once": true,
+   "feature": "shop_books",
+   "text": "Magistrate Holloway looks tired. \"Folk are waking up without their voices - here, in Saltreach, as far as Port Ashkar. A cult calls itself the Silent Choir, and it's behind this. This is work for seasoned adventurers. Loremaster Durin in Thornwick has been tracking them; start with him.\"",
+   "requiresNotFlag": "choir_met",
+   "setFlag": "choir_met",
+   "x": 10,
+   "y": 13,
+   "name": "Brindlemoor Town Hall"
+  },
+  {
+   "type": "quest",
+   "id": "choir_final",
+   "once": true,
+   "feature": "shop_books",
+   "text": "Holloway hears you out, then stands and shakes your hands, one by one. \"The six towns signed the Concord to keep the peace a hundred years ago. Today you kept it. Wear this - every gate in the realm will open to it.\"",
+   "requiresFlag": "choir_unmade",
+   "setFlag": "choir_done",
+   "items": [
+    "concord_signet"
+   ],
+   "xp": 15000,
+   "gold": "2000",
+   "x": 10,
+   "y": 13,
+   "name": "Brindlemoor Town Hall"
+  },
+  {
+   "type": "message",
+   "text": "Magistrate Holloway nods to you. \"The towns are singing again. Badly, mostly - but singing.\"",
+   "requiresFlag": "choir_done",
+   "x": 10,
+   "y": 13,
+   "name": "Brindlemoor Town Hall"
+  },
+  {
+   "type": "message",
+   "text": "Holloway: \"Any word of the Choir? Loremaster Durin in Thornwick knows the most about them.\"",
+   "requiresFlag": "choir_met",
+   "requiresNotFlag": "choir_done",
+   "x": 10,
+   "y": 13,
+   "name": "Brindlemoor Town Hall"
+  },
+  {
+   "type": "message",
+   "text": "The Town Hall. Magistrate Holloway is in conference with the town council.",
+   "requiresNotFlag": "choir_met",
+   "x": 10,
+   "y": 13,
+   "name": "Brindlemoor Town Hall"
   }
  ],
  "ambience": "birds"

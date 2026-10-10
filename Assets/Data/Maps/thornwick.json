@@ -203,6 +203,60 @@
    "name": "Brega's Smithy",
    "requiresFlag": "brega_done",
    "text": "Brega's forge roars. \"Need anything sharpened?\""
+  },
+  {
+   "type": "quest",
+   "id": "choir_durin_intro",
+   "once": true,
+   "feature": "shop_books",
+   "text": "Loremaster Durin unrolls a map of the mines. \"The Choir is buying bell-bronze - tons of it - from the renegades in the Deep Mines, below the upper mines. Their bursar does the buying himself. Bring me his ledger and we'll know where it went.\"",
+   "requiresFlag": "choir_met",
+   "requiresNotFlag": "choir_durin",
+   "setFlag": "choir_durin",
+   "x": 7,
+   "y": 9,
+   "name": "Loremaster's Hall"
+  },
+  {
+   "type": "quest",
+   "id": "choir_ledger_turnin",
+   "once": true,
+   "feature": "shop_books",
+   "text": "Durin reads the ledger by the fire, frowning. \"Shipped from Saltreach... to 'S.V.' Ask at the Customs House on the Saltreach waterfront. And here - the Hall's thanks.\"",
+   "requiresItem": "choir_ledger",
+   "consumeItem": true,
+   "requiresNotFlag": "choir_ledger_read",
+   "setFlag": "choir_ledger_read",
+   "xp": 4000,
+   "gold": "600",
+   "x": 7,
+   "y": 9,
+   "name": "Loremaster's Hall"
+  },
+  {
+   "type": "message",
+   "text": "Durin: \"The Saltreach Customs House will know where the bronze went.\"",
+   "requiresFlag": "choir_ledger_read",
+   "x": 7,
+   "y": 9,
+   "name": "Loremaster's Hall"
+  },
+  {
+   "type": "message",
+   "text": "Durin: \"The bursar works the Deep Mines - below the upper mines. Bring me his ledger.\"",
+   "requiresFlag": "choir_durin",
+   "requiresNotFlag": "choir_ledger_read",
+   "x": 7,
+   "y": 9,
+   "name": "Loremaster's Hall"
+  },
+  {
+   "type": "message",
+   "text": "Loremaster Durin is buried in old maps and does not look up.",
+   "requiresNotFlag": "choir_durin",
+   "x": 7,
+   "y": 9,
+   "name": "Loremaster's Hall"
   }
  ],
  "ambience": "wind"

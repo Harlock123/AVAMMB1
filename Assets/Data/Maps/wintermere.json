@@ -223,6 +223,39 @@
    "name": "Notice",
    "feature": "column",
    "text": "BY ORDER OF THE JARL: the Rime Halls are closed. Whoever slays the dragon Rimefang may name their reward. - Ingrith"
+  },
+  {
+   "type": "quest",
+   "id": "choir_unmake",
+   "once": true,
+   "feature": "shop_books",
+   "text": "Archmage Sela takes the clapper with tongs and lays it in a circle of salt. \"So the Hollow Bell was cast again. Stand back.\" The clapper screams once, in a hundred stolen voices, and is still. She hands you an amulet still warm from the forge. \"What was in it is in this now - free. Tell Brindlemoor the Choir is finished.\"",
+   "requiresItem": "bell_clapper",
+   "consumeItem": true,
+   "setFlag": "choir_unmade",
+   "items": [
+    "ward_voices"
+   ],
+   "xp": 8000,
+   "x": 11,
+   "y": 14,
+   "name": "The Collegium Annex"
+  },
+  {
+   "type": "message",
+   "text": "Archmage Sela: \"Brindlemoor will want to hear the Choir is finished.\"",
+   "requiresFlag": "choir_unmade",
+   "x": 11,
+   "y": 14,
+   "name": "The Collegium Annex"
+  },
+  {
+   "type": "message",
+   "text": "The Collegium Annex. Archmage Sela studies a crate of cracked bells.",
+   "requiresNotFlag": "choir_unmade",
+   "x": 11,
+   "y": 14,
+   "name": "The Collegium Annex"
   }
  ],
  "music": "town",

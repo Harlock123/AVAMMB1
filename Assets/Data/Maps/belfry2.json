@@ -1,0 +1,226 @@
+{
+ "id": "belfry2",
+ "name": "The Bell Chamber",
+ "kind": "dungeon",
+ "format": "edges",
+ "width": 16,
+ "height": 16,
+ "grid": [
+  "+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+",
+  "|. . . . . .|. . .|. . . . . . .|",
+  "+ +-+ +-+-+ + + +-+ + + + + + + +",
+  "|. . .|. . .|.|. .|. . . . . . .|",
+  "+ + +-+ +-+-+ +-+-+ + + + + + + +",
+  "|. .|. . .|. . . .|. . . . . . .|",
+  "+ +-+-+-+ + +-+-+ + + + + + + + +",
+  "|. . .|.|. .|. . .D. . . . . . .|",
+  "+ +-+ +S+-+ + +-+-+ + + + + + + +",
+  "|.|. . .|. . .|. .|. . . . . . .|",
+  "+ + +-+ + +-+ + + + + + + + + + +",
+  "|.|.|. .|. . .|. .|. . . . . . .|",
+  "+ + + + + + + + + +-+-+-+D+-+-+-+",
+  "|.|.|.|.|. .|. .|. . .|.|.|. .|.|",
+  "+ + + + + + + +-+-+-+-+ + + + + +",
+  "|.|.|.|. . . . . . . .|.|.|.|.|.|",
+  "+-+ + + + +-+-+ + +-+ + + + + + +",
+  "|. .|. .|. .|. . .|. .|.|. .|.|.|",
+  "+ +-+ + +-+-+ +-+-+ + + + +-+ + +",
+  "|. . .|. . . .|. . .|. .|. . .|.|",
+  "+ +-+-+-+-+-+-+ + + + +-+-+ +-+ +",
+  "|. .|. . . .|. .|.|.|. . . .|. .|",
+  "+ + + +-+-+ + +-+ + + + +-+-+ +-+",
+  "|. . .|. .|.|.|.|.|.|.|. . .|. .|",
+  "+-+ + + + + + + + + + +-+-+ +-+ +",
+  "|. .|. .|.|. .|.|.|.|.|. .|. . .|",
+  "+-+-+-+-+ +-+-+ + + + + +-+ +-+ +",
+  "|. . .|. .|.|. . .|.|. .|. .|. .|",
+  "+ + + +-+ + + +-+-+ + + + +-+ +-+",
+  "|. . .D.|.|. .|. . . . .|. .|. a|",
+  "+ + + + + + + + +-+ +-+ + + +-+ +",
+  "|. . .|. . . . .|. . . . .|. a a|",
+  "+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+"
+ ],
+ "terrain": {
+  "d": {
+   "darkness": true,
+   "name": "Magical darkness",
+   "mapColor": "#07070c"
+  },
+  "a": {
+   "antiMagic": true,
+   "name": "Anti-magic",
+   "mapColor": "#3a2050"
+  }
+ },
+ "wallTexture": "wall_belfry_deep",
+ "floorTexture": "floor_crypt",
+ "ceilingTexture": "wall_belfry_deep",
+ "dark": true,
+ "encounterChance": 9,
+ "encounters": [
+  {
+   "monster": "choir_cantor",
+   "count": "1d2",
+   "weight": 20
+  },
+  {
+   "monster": "hollow_shade",
+   "count": "1d2",
+   "weight": 25
+  },
+  {
+   "monster": "bronze_sentinel",
+   "count": "1",
+   "weight": 20
+  },
+  {
+   "monster": "bell_gargoyle",
+   "count": "1d3",
+   "weight": 20
+  },
+  {
+   "monster": "silent_phantom",
+   "count": "1d3",
+   "weight": 15
+  }
+ ],
+ "events": [
+  {
+   "x": 0,
+   "y": 15,
+   "type": "teleport",
+   "name": "Stair Up",
+   "feature": "stairs_up",
+   "map": "belfry1",
+   "toX": 9,
+   "toY": 0,
+   "facing": "North",
+   "text": "You climb back up the bell-rope stair."
+  },
+  {
+   "x": 1,
+   "y": 14,
+   "type": "message",
+   "id": "belfry2_hint",
+   "once": true,
+   "name": "The Rope",
+   "text": "The bell-rope runs along the ceiling toward the north-east. Every few breaths it twitches, as though someone is testing it."
+  },
+  {
+   "x": 12,
+   "y": 5,
+   "type": "encounter",
+   "id": "choirmaster_fight",
+   "once": true,
+   "name": "The Bell Chamber",
+   "setFlag": "choirmaster_slain",
+   "text": "The Hollow Bell hangs over the chamber, black and new. Beneath it a robed skeleton lowers its baton and turns. \"You are just in time for the first note.\"",
+   "monsters": [
+    {
+     "monster": "choirmaster",
+     "count": "1"
+    },
+    {
+     "monster": "choir_cantor",
+     "count": "2"
+    }
+   ]
+  },
+  {
+   "x": 13,
+   "y": 2,
+   "type": "treasure",
+   "id": "choirmaster_hoard",
+   "once": true,
+   "feature": "altar",
+   "name": "The Choir's Tithe",
+   "requiresFlag": "choirmaster_slain",
+   "blocking": true,
+   "failText": "Offerings are heaped beneath the Bell - but the Choirmaster stands between you and them.",
+   "gold": "35d20+1000",
+   "gems": 6,
+   "items": [
+    "potion_vigor",
+    "potion_vigor"
+   ],
+   "text": "A century of tithes from the six towns. They can have it back - some of it."
+  },
+  {
+   "x": 8,
+   "y": 0,
+   "type": "treasure",
+   "id": "belfry2_chest_a",
+   "once": true,
+   "feature": "chest",
+   "name": "Foundry Crate",
+   "gold": "25d20",
+   "gems": 2,
+   "text": "Bronze ingots stamped with the renegades' mark - and coin to pay for more."
+  },
+  {
+   "x": 8,
+   "y": 1,
+   "type": "trap",
+   "id": "belfry2_trap_a",
+   "once": true,
+   "damage": "5d8",
+   "text": "Molten bronze spills from a cracked mould!"
+  },
+  {
+   "x": 2,
+   "y": 2,
+   "type": "treasure",
+   "id": "belfry2_chest_b",
+   "once": true,
+   "feature": "chest",
+   "name": "Cantor's Chest",
+   "gold": "20d20",
+   "items": [
+    "potion_vigor",
+    "potion_mana"
+   ],
+   "text": "Robes, a tuning fork, and potions for long rehearsals."
+  },
+  {
+   "x": 3,
+   "y": 4,
+   "type": "message",
+   "id": "belfry2_secret_hint",
+   "once": true,
+   "name": "Muffled Wall",
+   "text": "The tuning-song sounds muffled here, as though a room lies behind the wall. (Search with F.)"
+  },
+  {
+   "x": 3,
+   "y": 3,
+   "type": "treasure",
+   "id": "belfry2_secret",
+   "once": true,
+   "feature": "chest",
+   "name": "The Old Bell's Grave",
+   "gold": "25d20+400",
+   "gems": 4,
+   "items": [
+    "ring_protection"
+   ],
+   "text": "The first Hollow Bell, broken by the Concord a century ago, lies buried here - with a ring on its tongue."
+  },
+  {
+   "x": 8,
+   "y": 14,
+   "type": "spinner"
+  },
+  {
+   "x": 0,
+   "y": 6,
+   "type": "trap",
+   "id": "belfry2_pit",
+   "once": true,
+   "trap": "pit",
+   "damage": "4d6",
+   "text": "The floor is a casting pit, barely covered. The party drops into it!"
+  }
+ ],
+ "music": "dungeon",
+ "ambience": "deep"
+}
