@@ -74,6 +74,9 @@ public sealed partial class TitleViewModel : ViewModelBase
     private void HallOfFame() => _main.ShowHallOfFame();
 
     [RelayCommand]
+    private void DailyChallenge() => _main.StartDailyChallenge();
+
+    [RelayCommand]
     private void Quit() => _main.Quit();
 
     /// <inheritdoc />

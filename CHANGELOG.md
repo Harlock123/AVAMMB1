@@ -6,6 +6,12 @@ All notable changes to this project are documented here. The format follows
 ## [Unreleased]
 
 ### Added
+- The Daily Challenge (title screen): six ready heroes at level 15 - their gear smithed to +2, with an
+  everburning lantern and potions - start straight in that day's Depths Below. Every level is the same
+  for everyone on that date (fights and loot still roll for each player); it is played by ironman
+  rules (one self-kept save, so a run can be continued the same day). Climbing out by any stair up
+  ends the run, and the depth reached goes into the Hall of Fame, which keeps each day's best and the
+  best ever.
 - Towns by time of day: Port Ashkar's Night Market opens only after dark (rare goods, at a price);
   thieves work the streets of every town at night - cutpurses in Brindlemoor and Saltreach, footpads
   in Thornwick and Duskmere, Guild Blades in Port Ashkar and Wintermere; temples ask a quarter less for

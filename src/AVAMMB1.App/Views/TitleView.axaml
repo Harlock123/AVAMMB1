@@ -35,6 +35,8 @@
       <Button Classes="big" HorizontalAlignment="Center" Content="Continue  (C)" Command="{Binding ContinueCommand}" IsEnabled="{Binding CanContinue}" />
       <Button Classes="big" HorizontalAlignment="Center" Content="Load Game  (L)" Command="{Binding LoadCommand}" />
       <Button Classes="big" HorizontalAlignment="Center" Content="Settings  (S)" Command="{Binding SettingsCommand}" />
+      <Button Classes="big" HorizontalAlignment="Center" Content="Daily Challenge" Command="{Binding DailyChallengeCommand}"
+              ToolTip.Tip="Today's Depths Below - the same levels for everyone, a ready party at level 15. How deep can you go?" />
       <Button Classes="big" HorizontalAlignment="Center" Content="Hall of Fame" Command="{Binding HallOfFameCommand}" />
       <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="6">
         <Button Content="Help  (F1)" Command="{Binding HelpCommand}" />

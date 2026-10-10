@@ -38,6 +38,19 @@ public static class Depths
     /// <param name="depth">Depth.</param>
     public static int MonsterLevel(int depth) => Math.Min(15, 12 + depth);
 
+    /// <summary>The seed of a daily challenge level: the same for everyone on that date.</summary>
+    /// <param name="date">The day ("2026-10-10").</param>
+    /// <param name="depth">Depth.</param>
+    public static int DailySeed(string date, int depth)
+    {
+        var h = 17;
+        foreach (var ch in date)
+        {
+            h = unchecked(h * 31 + ch); // a fixed hash (string.GetHashCode differs from run to run)
+        }
+        return unchecked(h * 7919 + depth * 104729) & 0x7FFFFFFF;
+    }
+
     /// <summary>The square the party arrives on (the stair up is there).</summary>
     public static (int X, int Y) Start => (0, Size - 1);
 

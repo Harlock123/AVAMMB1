@@ -890,8 +890,30 @@ public static class HeadlessRunner
         {
             throw new InvalidOperationException("The fallen ironman run was not recorded properly.");
         }
+        Console.WriteLine("ironman ok");
+
+        // The daily challenge: from the title, into today's Depths, then out again (recorded in the Hall of Fame).
+        vm.ShowTitle();
+        ((TitleViewModel)vm.CurrentScreen).DailyChallengeCommand.Execute(null);
+        var daily = vm.Game ?? throw new InvalidOperationException("The daily challenge did not start.");
+        daily.CloseOverlay();
+        if (s.State.DailyChallenge is null || s.State.MapId != AVAMMB1.Core.World.Depths.MapId)
+        {
+            throw new InvalidOperationException("The daily challenge did not start in the Depths.");
+        }
+        for (var i = 0; i < 4 && s.CurrentMap.Probe(s.State.X, s.State.Y, s.State.Facing).Wall != AVAMMB1.Core.World.WallKind.None; i++)
+        {
+            daily.TurnRightCommand.Execute(null);
+        }
+        Pump();
+        Capture(dir, "44-daily-challenge");
+        vm.EndDailyChallenge();
+        if (vm.Services.HallOfFameStore.Load().DailyBest.Count == 0)
+        {
+            throw new InvalidOperationException("The daily challenge was not recorded.");
+        }
         vm.ShowHallOfFame();
         Capture(dir, "40-hall-of-fame");
-        Console.WriteLine("ironman ok");
+        Console.WriteLine("daily ok");
     }
 }

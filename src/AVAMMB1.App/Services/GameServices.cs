@@ -46,6 +46,10 @@ public sealed class GameServices(
     {
         var hof = HallOfFameStore.Load();
         hof.Add(HallOfFameEntry.From(Session.State, Content, outcome));
+        if (Session.State.DailyChallenge is { } date)
+        {
+            hof.RecordDaily(date, Session.State.DeepestDepth);
+        }
         HallOfFameStore.Save(hof);
     }
 

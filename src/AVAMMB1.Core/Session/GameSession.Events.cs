@@ -111,6 +111,12 @@ public sealed partial class GameSession
                     }
                     result.Messages.Add(new($"The party pays {ev.Fare} gold for passage.", MessageKind.Info, "coins"));
                 }
+                if (State.DailyChallenge is not null && map.Id == World.Depths.MapId && ev.Map != World.Depths.MapId)
+                {
+                    result.Messages.Add(new($"The party climbs out of the Depths from level {State.Depth}, with the day's tale to tell.", MessageKind.Good));
+                    result.ChallengeOver = true;
+                    break;
+                }
                 Story(result, ev);
                 Complete(map, ev);
                 var destMap = ev.Map ?? map.Id;

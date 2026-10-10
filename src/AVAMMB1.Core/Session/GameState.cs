@@ -229,6 +229,9 @@ public sealed class GameState
     /// <summary>Steps of levitation left (the Levitate spell: floor traps and pits pass beneath).</summary>
     public int LevitateSteps { get; set; }
 
+    /// <summary>A daily challenge run: the date ("2026-10-10") whose Depths are being explored, or null.</summary>
+    public string? DailyChallenge { get; set; }
+
     /// <summary>The current level of the Depths Below (when the party is there).</summary>
     public int Depth { get; set; }
 

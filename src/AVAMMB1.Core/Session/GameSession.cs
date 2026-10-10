@@ -41,6 +41,8 @@ public sealed class StepResult
     public string? StoryTitle { get; set; }
     /// <summary>The game has been won.</summary>
     public bool Victory { get; set; }
+    /// <summary>A daily challenge party has climbed out of the Depths: the run is over.</summary>
+    public bool ChallengeOver { get; set; }
 }
 
 /// <summary>
@@ -123,13 +125,52 @@ public sealed partial class GameSession
             .Order(StringComparer.Ordinal)
             .ToList();
 
+    /// <summary>The level of a daily challenge party.</summary>
+    public const int DailyChallengeLevel = 15;
+
+    /// <summary>
+    /// Starts a daily challenge: the given party at level 15, with a smith's +2 on its gear, an
+    /// everburning lantern and potions, straight into level 1 of that day's Depths Below. It is an
+    /// ironman run: one self-kept save, and a wipe ends it.
+    /// </summary>
+    /// <param name="date">The day ("2026-10-10").</param>
+    /// <param name="party">The party.</param>
+    public void StartDailyChallenge(string date, IEnumerable<Character> party)
+    {
+        var (ironman, difficulty, survival) = (Ironman, Difficulty, Survival);
+        (Ironman, Difficulty, Survival) = (true, Difficulty.Normal, false); // the same rules for everyone
+        NewGame(party);
+        (Ironman, Difficulty, Survival) = (ironman, difficulty, survival);
+        State.DailyChallenge = date;
+        State.Flags.Add(World.Depths.OpenFlag);
+        foreach (var c in State.Party)
+        {
+            c.Experience = Rulebook.XpForLevel(Content.Class(c.Class), DailyChallengeLevel);
+            while (Rules.LevelUp(c, Random) is not null)
+            {
+            }
+            foreach (var item in c.Equipment.Values.Where(i => Rulebook.Upgradable(Rules.Def(i))))
+            {
+                item.Plus = 2;
+            }
+            c.Backpack.AddRange([new ItemInstance("potion_vigor"), new ItemInstance("potion_vigor"), new ItemInstance("potion_cure")]);
+            c.Hp = c.MaxHp;
+            c.Sp = c.MaxSp;
+            c.Food = Content.Config.MaxFood;
+        }
+        State.Party[0].Equipment[EquipSlot.Light] = new ItemInstance("lantern_everburning");
+        State.MapId = World.Depths.MapId;
+        EnterDepth(1, []);
+        Explore();
+    }
+
     /// <summary>Generates and enters a level of the Depths Below (a fresh level each descent).</summary>
     /// <param name="depth">Depth (1 and up).</param>
     /// <param name="log">Messages.</param>
     private void EnterDepth(int depth, List<GameMessage> log)
     {
         State.Depth = depth;
-        State.DepthSeed = Random.Next(1, int.MaxValue);
+        State.DepthSeed = State.DailyChallenge is { } date ? World.Depths.DailySeed(date, depth) : Random.Next(1, int.MaxValue);
         Content.SetGeneratedMap(World.Depths.Generate(Content, depth, State.DepthSeed));
         State.Explored.Remove(World.Depths.MapId); // a new level: nothing mapped yet
         foreach (var key in State.MapNotes.Keys.Where(k => k.StartsWith(World.Depths.MapId + ":", StringComparison.Ordinal)).ToList())

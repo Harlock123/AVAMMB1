@@ -661,12 +661,14 @@ public sealed partial class EndingViewModel : ViewModelBase
     /// <summary>Creates the screen.</summary>
     /// <param name="main">Root view model.</param>
     /// <param name="victory">Victory or defeat.</param>
-    public EndingViewModel(MainViewModel main, bool victory)
+    /// <param name="title">A title of its own (a daily challenge), if any.</param>
+    /// <param name="text">A text of its own, if any.</param>
+    public EndingViewModel(MainViewModel main, bool victory, string? title = null, string? text = null)
     {
         _main = main;
         Victory = victory;
         var state = main.Services.Session.State;
-        Title = victory ? "Victory!" : "The party has fallen";
+        Title = title ?? (victory ? "Victory!" : "The party has fallen");
         var ironman = state.Ironman && !victory;
         Text = victory
             ? main.Services.Content.Config.VictoryText
@@ -677,6 +679,15 @@ public sealed partial class EndingViewModel : ViewModelBase
         main.Services.Audio.PlayMusic(victory ? "title" : "dungeon");
         main.Services.Audio.PlayAmbience(null);
         CanLoad = !ironman && main.Services.Saves.MostRecentSlot() is not null;
+        if (text is not null)
+        {
+            Text = text;
+            CanLoad = false;
+        }
+        else if (state.DailyChallenge is not null && !victory)
+        {
+            Text = $"The daily challenge party fell on level {state.Depth} of the Depths Below. The deepest it reached was level {state.DeepestDepth} - it is in the Hall of Fame.";
+        }
     }
 
     /// <summary>Whether this is a victory.</summary>
@@ -731,6 +742,9 @@ public sealed partial class HallOfFameViewModel : ViewModelBase
         }).ToList();
         Achievements = AVAMMB1.Core.Session.Chronicle.Achievements.Select(a => new AchievementRow(a.Title, a.Description, hof.Achievements.Contains(a.Id))).ToList();
         AchievementCount = $"Achievements earned in any game: {Achievements.Count(a => a.Earned)} of {Achievements.Count}";
+        var today = MainViewModel.Today;
+        Daily = hof.DailyBest.Count == 0 ? "No daily challenges yet - try one from the title screen."
+            : $"Daily challenge - today's best: {(hof.DailyBest.TryGetValue(today, out var t) ? $"level {t}" : "not tried yet")}; best ever: level {hof.DailyBest.Values.Max()} ({hof.DailyBest.Count} day{(hof.DailyBest.Count == 1 ? "" : "s")} played).";
         Summary = Entries.Count == 0
             ? "No finished runs yet. Complete the main quest - or fall in an ironman run - to be remembered here."
             : $"{Entries.Count(e => e.Won)} victor{(Entries.Count(e => e.Won) == 1 ? "y" : "ies")} in {Entries.Count} finished run{(Entries.Count == 1 ? "" : "s")}.";
@@ -744,6 +758,8 @@ public sealed partial class HallOfFameViewModel : ViewModelBase
     public string AchievementCount { get; }
     /// <summary>"2 victories in 3 finished runs".</summary>
     public string Summary { get; }
+    /// <summary>Daily challenge records.</summary>
+    public string Daily { get; }
 
     [RelayCommand]
     private void Back() => _main.ShowTitle();

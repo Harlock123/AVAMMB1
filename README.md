@@ -85,6 +85,8 @@ Code identifiers, the solution and executables use the name **`AVAMMB1`** (`AVAM
   temples and a rumour of the day in every tavern.
 - **Travel map**: travel to any town you have visited - time passes, fares are paid, and the open
   country may ambush you on the way.
+- **Daily Challenge**: today's Depths - the same levels for everyone - with a ready party; the Hall of
+  Fame keeps each day's best depth.
 - **The Depths Below**: an endless post-game dungeon of generated levels, harder and richer each
   level down.
 - **Weather and spell effects**: snow and rain in the open country, and colour flashes for spells
@@ -192,7 +194,7 @@ All screenshots are real frames rendered by the game itself (Avalonia headless +
 | ![Riddle](docs/screenshots/37-riddle.png) A riddle door in the Hollow Belfry | ![Choice](docs/screenshots/38-choice.png) A choice: Sister Veyl's secret |
 | ![Smithing](docs/screenshots/39-smithing.png) Smithing: improving gear up to +5 | ![Hall of Fame](docs/screenshots/40-hall-of-fame.png) The Hall of Fame |
 | ![Keyboard](docs/screenshots/41-keyboard.png) The on-screen keyboard for controller players | ![Depths](docs/screenshots/42-depths.png) The Depths Below, level 1 |
-| ![Travel](docs/screenshots/43-travel.png) The travel map | |
+| ![Travel](docs/screenshots/43-travel.png) The travel map | ![Daily](docs/screenshots/44-daily-challenge.png) The Daily Challenge |
 
 ## Download and install
 

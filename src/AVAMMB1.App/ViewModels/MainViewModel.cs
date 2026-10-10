@@ -184,6 +184,49 @@ public sealed partial class MainViewModel : ViewModelBase
     /// <param name="returnTo">Screen to return to afterwards.</param>
     public void ShowSettings(ViewModelBase returnTo) => CurrentScreen = new SettingsViewModel(this, returnTo);
 
+    /// <summary>Today's date, as daily challenges are named.</summary>
+    public static string Today => DateTime.Now.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture);
+
+    /// <summary>Starts (or, if one is in progress today, continues) the daily challenge.</summary>
+    public void StartDailyChallenge()
+    {
+        var today = Today;
+        if (Services.Saves.Exists(SaveGameService.IronmanSlot)
+            && Services.Saves.Load(SaveGameService.IronmanSlot).State.DailyChallenge == today
+            && LoadSlot(SaveGameService.IronmanSlot) is null)
+        {
+            return; // today's run continues
+        }
+        var party = Services.Content.Config.Premades.Select(Services.Session.Factory.CreatePremade).ToList();
+        Services.Session.StartDailyChallenge(today, party);
+        Game = new GameViewModel(this);
+        CurrentScreen = Game;
+        Game.ShowStory("Daily Challenge - " + today,
+            "Six heroes at the height of their powers stand at the top of today's Depths Below. Every level is the same for everyone who "
+            + "goes down today. How deep can you go? Climb back out by any stair up to end the run - or fall, and be remembered.");
+        Game.AutoSave(null);
+    }
+
+    /// <summary>A daily challenge party has climbed out: record the depth and show how it went.</summary>
+    public void EndDailyChallenge()
+    {
+        var state = Services.Session.State;
+        Game?.CountPlayTime();
+        var best = Services.HallOfFameStore.Load().DailyBest.GetValueOrDefault(state.DailyChallenge ?? "");
+        Services.RecordRun($"Daily challenge {state.DailyChallenge}: climbed out from level {state.DeepestDepth}");
+        try
+        {
+            Services.Saves.Delete(SaveGameService.IronmanSlot);
+        }
+        catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
+        {
+            // The run is recorded either way.
+        }
+        var text = $"The party climbed out of the Depths Below having reached level {state.DeepestDepth}."
+            + (state.DeepestDepth > best ? " That is the best today!" : $" Today's best is level {best}.");
+        CurrentScreen = new EndingViewModel(this, victory: true, "Challenge complete", text);
+    }
+
     /// <summary>Shows the Hall of Fame.</summary>
     public void ShowHallOfFame() => CurrentScreen = new HallOfFameViewModel(this);
 
@@ -212,7 +255,9 @@ public sealed partial class MainViewModel : ViewModelBase
         if (state.Ironman)
         {
             Game?.CountPlayTime();
-            Services.RecordRun("Fell in " + Services.Session.CurrentMap.Def.Name);
+            Services.RecordRun(state.DailyChallenge is { } date
+                ? $"Daily challenge {date}: fell on level {state.Depth}"
+                : "Fell in " + Services.Session.CurrentMap.Def.Name);
             try
             {
                 Services.Saves.Delete(SaveGameService.IronmanSlot); // the run is over

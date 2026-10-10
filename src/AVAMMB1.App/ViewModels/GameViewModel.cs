@@ -343,6 +343,11 @@ public sealed partial class GameViewModel : ViewModelBase
     private void Apply(StepResult r)
     {
         AddMessages(r.Messages.Where(m => m.Kind != MessageKind.Story || r.StoryText is null));
+        if (r.ChallengeOver)
+        {
+            _main.EndDailyChallenge();
+            return;
+        }
         if (r.Moved && !r.CombatStarted && Services.Settings.DescribeSteps)
         {
             AddMessage(AVAMMB1.Core.World.ViewDescriber.Brief(Session));

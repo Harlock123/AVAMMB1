@@ -9,6 +9,7 @@
           <StackPanel>
             <TextBlock Classes="title" Text="Hall of Fame" />
             <TextBlock Text="{Binding Summary}" Classes="dim" />
+            <TextBlock Text="{Binding Daily}" Foreground="{DynamicResource Gold}" />
           </StackPanel>
           <Button Grid.Column="1" Content="Back (Esc)" Command="{Binding BackCommand}" VerticalAlignment="Top" />
         </Grid>

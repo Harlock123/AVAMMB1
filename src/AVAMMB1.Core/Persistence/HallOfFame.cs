@@ -28,6 +28,8 @@ public sealed class HallOfFameEntry
     public int MonstersSlain { get; set; }
     /// <summary>"Brannoc, Human Knight 14".</summary>
     public List<string> Party { get; set; } = new();
+    /// <summary>The date of a daily challenge run, or null.</summary>
+    public string? DailyChallenge { get; set; }
     /// <summary>Deepest level of the Depths Below reached.</summary>
     public int DeepestDepth { get; set; }
     /// <summary>Achievement ids earned in the run.</summary>
@@ -49,6 +51,7 @@ public sealed class HallOfFameEntry
         PlaySeconds = state.PlaySeconds,
         MonstersSlain = state.Kills.Values.Sum(),
         DeepestDepth = state.DeepestDepth,
+        DailyChallenge = state.DailyChallenge,
         Party = state.Party.Select(c => $"{c.Name}, {(content.Races.TryGetValue(c.Race, out var r) ? r.Name : c.Race)} {(content.Classes.TryGetValue(c.Class, out var k) ? k.Name : c.Class)} {c.Level}").ToList(),
         Achievements = state.Achievements.Order(StringComparer.Ordinal).ToList(),
     };
@@ -61,6 +64,23 @@ public sealed class HallOfFame
     public List<HallOfFameEntry> Entries { get; set; } = new();
     /// <summary>Achievements earned in any game.</summary>
     public HashSet<string> Achievements { get; set; } = new(StringComparer.Ordinal);
+
+    /// <summary>The deepest level reached in each day's daily challenge ("2026-10-10" -> 7).</summary>
+    public Dictionary<string, int> DailyBest { get; set; } = new(StringComparer.Ordinal);
+
+    /// <summary>Records a daily challenge's depth (keeps the day's best).</summary>
+    /// <param name="date">The day.</param>
+    /// <param name="depth">Depth reached.</param>
+    /// <returns>Whether it is a new best for that day.</returns>
+    public bool RecordDaily(string date, int depth)
+    {
+        if (DailyBest.TryGetValue(date, out var best) && best >= depth)
+        {
+            return false;
+        }
+        DailyBest[date] = depth;
+        return true;
+    }
 
     /// <summary>Adds a finished run (newest first; at most 100 are kept).</summary>
     /// <param name="entry">The run.</param>
