@@ -13,7 +13,7 @@ namespace AVAMMB1.Core.Session;
 public sealed partial class GameSession
 {
     /// <summary>Percent chance that a random encounter is led by an elite monster.</summary>
-    public const int EliteChance = 5;
+    public const int EliteChance = 5; // on Normal; see DifficultyRules.EliteChance
 
     private void TryRandomEncounter(StepResult result, int chance)
     {
@@ -37,7 +37,8 @@ public sealed partial class GameSession
         }
         var ordered = monsters.Take(8).ToList();
         // Now and then a group is led by an elite: tougher, but worth far more.
-        if (Random.Chance(night ? EliteChance * 2 : EliteChance) && ordered.FirstOrDefault(m => !m.Def.Boss) is { } leader)
+        var elite = DifficultyRules.EliteChance(State.Difficulty);
+        if (Random.Chance(night ? elite * 2 : elite) && ordered.FirstOrDefault(m => !m.Def.Boss) is { } leader)
         {
             leader.MakeElite();
         }

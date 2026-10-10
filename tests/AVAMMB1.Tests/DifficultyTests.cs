@@ -150,4 +150,30 @@ public class DifficultyTests
         // Refilling six empty packs (240 rations) costs less than the starting purse.
         Assert.InRange(s.Town.FoodCost(tavern), 1, 300);
     }
+
+    [Fact]
+    public void Hard_BossesAreTougher_ElitesCommoner_AndExperienceSlower()
+    {
+        var s = TestContent.StartedSession();
+        s.State.Difficulty = Difficulty.Hard;
+        var boss = new MonsterInstance(s.Content.Monster("rimefang"), 100);
+        var grunt = new MonsterInstance(s.Content.Monster("kobold"), 100);
+        s.StartCombat([boss, grunt], new StepResult());
+        Assert.Equal(140, boss.MaxHp);
+        Assert.Equal(130, grunt.MaxHp);
+        Assert.Equal(10, DifficultyRules.EliteChance(Difficulty.Hard));
+        Assert.Equal(5, DifficultyRules.EliteChance(Difficulty.Normal));
+
+        int XpFor(Difficulty d)
+        {
+            var t = TestContent.StartedSession(seed: 3);
+            t.State.Difficulty = d;
+            t.StartCombat(CombatEngine.Spawn(t.Content.Monster("kobold"), 4, t.Random), new StepResult());
+            foreach (var m in t.Combat!.Monsters) m.Hp = 0;
+            t.Combat.Advance();
+            return t.Combat.Rewards!.Experience;
+        }
+        Assert.Equal(XpFor(Difficulty.Normal) * 90 / 100, XpFor(Difficulty.Hard));
+        Assert.Equal(XpFor(Difficulty.Normal), XpFor(Difficulty.Easy));
+    }
 }

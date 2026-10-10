@@ -56,7 +56,7 @@ public sealed class CombatEngine
         {
             foreach (var m in Monsters)
             {
-                m.ScaleHp(DifficultyRules.MonsterHp(state.Difficulty));
+                m.ScaleHp(m.Def.Boss ? DifficultyRules.BossHp(state.Difficulty) : DifficultyRules.MonsterHp(state.Difficulty));
                 m.DamagePercent = DifficultyRules.MonsterDamage(state.Difficulty);
             }
         }
@@ -315,7 +315,7 @@ public sealed class CombatEngine
     private CombatRewards ComputeRewards()
     {
         var killed = Monsters.Where(m => m.IsDead).ToList();
-        var xp = killed.Sum(m => m.Def.Xp * (m.Elite ? 3 : 1));
+        var xp = killed.Sum(m => m.Def.Xp * (m.Elite ? 3 : 1)) * DifficultyRules.Experience(_state.Difficulty) / 100;
         var gold = killed.Sum(m => Math.Max(0, m.Def.Gold.Roll(_rng)) * (m.Elite ? 3 : 1)) * DifficultyRules.Gold(_state.Difficulty) / 100;
         var gems = killed.Count(m => m.Def.Level >= 3 && _rng.Chance(10));
         var items = new List<ItemInstance>();

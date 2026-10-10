@@ -277,7 +277,7 @@ internal sealed class BalanceSimulator
             monsters.AddRange(CombatEngine.Spawn(_s.Content.Monster(entry.Monster), entry.Count.Roll(_s.Random), _s.Random));
         }
         var ordered = monsters.Take(8).ToList();
-        if (_s.Random.Chance(GameSession.EliteChance) && ordered.FirstOrDefault(m => !m.Def.Boss) is { } leader)
+        if (_s.Random.Chance(DifficultyRules.EliteChance(State.Difficulty)) && ordered.FirstOrDefault(m => !m.Def.Boss) is { } leader)
         {
             leader.MakeElite();
         }

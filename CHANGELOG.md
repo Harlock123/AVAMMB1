@@ -13,6 +13,10 @@ All notable changes to this project are documented here. The format follows
   shop comparisons and sell for more. Shops have a Smithing list next to selling.
 
 ### Changed
+- Hard is now a harder climb as well as a costlier one: bosses have 40% more hit points (other
+  monsters 30%), elite-led encounters are twice as common, and battles give 10% less experience. The
+  simulated playthrough takes about 5% more battles on Hard, and every boss stays beatable on Hard by
+  a party two levels above its intended level.
 - Code: the game session (about 1,400 lines) is split by area into partial-class files - core state,
   movement and time, map events, quests, puzzles, and combat - with no change in behaviour.
 
