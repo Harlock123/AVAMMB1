@@ -155,4 +155,29 @@ public class HirelingTests
         s.State.DailyChallenge = "2026-10-10";
         Assert.Contains(s.Hire("tobin"), m => m.Kind == MessageKind.Bad);
     }
+
+    [Fact]
+    public void AnEightStrongParty_FightsABattle_AndOnlyTheHeroesGainExperience()
+    {
+        var s = InTown("wintermere");
+        s.State.Gold = 10_000;
+        s.Hire("ragna");
+        s.Hire("aldwyn");
+        Assert.Equal(8, s.State.Party.Count);
+        var heroXp = s.State.Party[0].Experience;
+        var hiredXp = s.State.Party[7].Experience;
+        s.StartCombat(AVAMMB1.Core.Combat.CombatEngine.Spawn(s.Content.Monster("ogre"), 4, s.Random).ToList(), new StepResult());
+        var combat = s.Combat!;
+        combat.Advance();
+        var acted = new HashSet<AVAMMB1.Core.Characters.Character>();
+        for (var guard = 0; combat.Outcome == AVAMMB1.Core.Combat.CombatOutcome.Ongoing && guard < 2000; guard++)
+        {
+            acted.Add(combat.ActiveCharacter!);
+            combat.Act(AVAMMB1.Core.Combat.AutoTactics.Choose(s.Rules, s.Spells, combat, combat.ActiveCharacter!, s.State.Party, offensiveSpells: true));
+        }
+        Assert.Equal(AVAMMB1.Core.Combat.CombatOutcome.Victory, s.EndCombat().Outcome);
+        Assert.Contains(s.State.Party[7], acted); // the eighth fights too
+        Assert.True(s.State.Party[0].Experience > heroXp);
+        Assert.Equal(hiredXp, s.State.Party[7].Experience);
+    }
 }
