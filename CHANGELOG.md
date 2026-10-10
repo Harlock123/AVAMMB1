@@ -5,6 +5,8 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+## [1.10.0] - 2026-10-10
+
 ### Added
 - Puzzles and choices. Riddle doors (type the answer: the Door of the Scribe in the Tomb of the Sun
   Kings, the Silent Door in the Hollow Belfry; wrong answers hurt), a pressure plate that opens a hidden
