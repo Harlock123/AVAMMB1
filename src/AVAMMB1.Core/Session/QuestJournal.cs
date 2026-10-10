@@ -11,6 +11,16 @@ namespace AVAMMB1.Core.Session;
 /// <param name="Entries">Journal lines reached so far, oldest first (the last one is the current goal).</param>
 public sealed record QuestEntry(string Id, string Title, bool Main, bool Done, IReadOnlyList<string> Entries);
 
+/// <summary>Where a quest leads next.</summary>
+/// <param name="QuestId">Quest id.</param>
+/// <param name="Quest">Quest title.</param>
+/// <param name="MapId">Map id.</param>
+/// <param name="MapName">Map name.</param>
+/// <param name="X">Cell X.</param>
+/// <param name="Y">Cell Y.</param>
+/// <param name="Place">What is there ("Loremaster's Hall").</param>
+public sealed record QuestGoal(string QuestId, string Quest, string MapId, string MapName, int X, int Y, string Place);
+
 /// <summary>A clue the party has read (a one-time message event).</summary>
 /// <param name="Place">Map name.</param>
 /// <param name="Name">Event name.</param>
@@ -59,7 +69,10 @@ public static class QuestJournal
                 .Select(e => new Discovery(m.Def.Name, e.Name ?? "", e.Text!)))
             .ToList();
 
-    private static bool Reached(QuestStageDef st, GameState state) =>
+    /// <summary>Whether a stage has been reached.</summary>
+    /// <param name="st">Stage.</param>
+    /// <param name="state">State.</param>
+    public static bool Reached(QuestStageDef st, GameState state) =>
         st.Flag is not null ? state.Flags.Contains(st.Flag)
         : st.Item is not null ? Inventory.AnyoneHas(state.Party, st.Item)
         : st.Visited is not null && state.Explored.ContainsKey(st.Visited);

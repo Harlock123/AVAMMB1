@@ -70,6 +70,7 @@ Code identifiers, the solution and executables use the name **`AVAMMB1`** (`AVAM
   where gold buys permanent statistic points (each lesson dearer than the last - a late-game gold sink).
 - **Character looks**: pick a hairstyle and beard for each portrait at creation; rename characters
   and restyle them at any inn.
+- **Where next?**: the journal, automap and minimap show where each open quest leads.
 - **Autosave and save pictures**: three rotating autosaves (new areas, before bosses); every save
   shows a picture of the view and the time played.
 - **Shopping help**: gear for sale is compared with what the shopper wears, and "Sell junk" sells

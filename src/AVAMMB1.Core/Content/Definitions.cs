@@ -361,8 +361,23 @@ public sealed class QuestStageDef
     public string? Item { get; set; }
     /// <summary>Reached once the party has set foot on this map.</summary>
     public string? Visited { get; set; }
+    /// <summary>Where to go next from this stage, when the game cannot work it out from the map events.</summary>
+    public QuestGoalDef? Goal { get; set; }
     /// <summary>Journal text.</summary>
     public string Text { get; set; } = "";
+}
+
+/// <summary>An explicit "go here next" for a quest stage.</summary>
+public sealed class QuestGoalDef
+{
+    /// <summary>Map id.</summary>
+    public string Map { get; set; } = "";
+    /// <summary>Cell X.</summary>
+    public int X { get; set; }
+    /// <summary>Cell Y.</summary>
+    public int Y { get; set; }
+    /// <summary>What is there (shown in the journal), e.g. "the kobold warren".</summary>
+    public string? Name { get; set; }
 }
 
 /// <summary>Ability names used in <see cref="ClassDef.Abilities"/>.</summary>

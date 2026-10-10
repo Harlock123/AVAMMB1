@@ -62,6 +62,8 @@ public sealed class GameSettings
     public int ViewResolution { get; set; } = 300;
     /// <summary>Save automatically on entering a new area and before boss fights (three rotating slots).</summary>
     public bool Autosave { get; set; } = true;
+    /// <summary>Mark where open quests lead on the automap and minimap.</summary>
+    public bool QuestMarkers { get; set; } = true;
     /// <summary>Difficulty for new games.</summary>
     public Rules.Difficulty Difficulty { get; set; } = Rules.Difficulty.Normal;
     /// <summary>Survival mode (daily rations) for new games.</summary>

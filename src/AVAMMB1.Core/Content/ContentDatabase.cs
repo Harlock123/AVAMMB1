@@ -241,6 +241,8 @@ public sealed class ContentDatabase
                 Check((st.Flag is null ? 0 : 1) + (st.Item is null ? 0 : 1) + (st.Visited is null ? 0 : 1) == 1, $"quest {q.Id}: each stage needs exactly one of flag, item, visited");
                 Check(st.Item is null || Items.ContainsKey(st.Item), $"quest {q.Id}: unknown item {st.Item}");
                 Check(st.Visited is null || _maps.ContainsKey(st.Visited), $"quest {q.Id}: unknown map {st.Visited}");
+                Check(st.Goal is null || (_maps.TryGetValue(st.Goal.Map, out var gm) && gm.InBounds(st.Goal.X, st.Goal.Y)),
+                    $"quest {q.Id}: goal {st.Goal?.Map} ({st.Goal?.X},{st.Goal?.Y}) is not on a known map");
             }
         }
         Check(Quests.Select(q => q.Id).Distinct().Count() == Quests.Count, "duplicate quest id");

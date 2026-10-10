@@ -428,6 +428,15 @@ public sealed partial class AutomapViewModel : ViewModelBase
     /// <summary>Whether the view should focus the note box when it opens.</summary>
     public bool EditNote { get; }
     /// <summary>Map snapshot.</summary>
+    /// <summary>Where open quests lead, on this map first ("The Silent Choir: Loremaster's Hall, Thornwick").</summary>
+    public IReadOnlyList<string> Goals => (_game.MapInfo?.Goals ?? [])
+        .OrderByDescending(g => g.MapId == _game.Services.Session.State.MapId)
+        .Select(g => (g.MapId == _game.Services.Session.State.MapId ? "\u25C6 " : "") + $"{g.Quest}: {JournalQuest.GoalText(g)}")
+        .ToList();
+
+    /// <summary>Whether any quest goal is known.</summary>
+    public bool HasGoals => Goals.Count > 0;
+
     public MapSnapshot? MapInfo => _game.MapInfo;
     /// <summary>Map name.</summary>
     public string Title => _game.LocationText;
@@ -524,7 +533,8 @@ public sealed partial class JournalViewModel : ViewModelBase
         _game = game;
         var state = game.Services.Session.State;
         var content = game.Services.Content;
-        Quests = QuestJournal.Quests(state, content).Select(q => new JournalQuest(q)).ToList();
+        var goals = game.Services.Settings.QuestMarkers ? game.Services.Session.QuestGoals() : [];
+        Quests = QuestJournal.Quests(state, content).Select(q => new JournalQuest(q, goals.FirstOrDefault(g => g.QuestId == q.Id))).ToList();
         Discoveries = QuestJournal.Discoveries(state, content);
     }
 
@@ -554,8 +564,19 @@ public sealed partial class JournalViewModel : ViewModelBase
 
 /// <summary>A quest row in the journal.</summary>
 /// <param name="Quest">Quest.</param>
-public sealed record JournalQuest(QuestEntry Quest)
+/// <param name="Goal">Where it leads next, if known.</param>
+public sealed record JournalQuest(QuestEntry Quest, QuestGoal? Goal = null)
 {
+    /// <summary>"Next: Loremaster's Hall, Thornwick (7,9)".</summary>
+    public string Next => Goal is null || Quest.Done ? "" : "Next: " + GoalText(Goal);
+    /// <summary>Whether a next place is known.</summary>
+    public bool HasNext => Next.Length > 0;
+
+    /// <summary>A place in words.</summary>
+    /// <param name="g">Goal.</param>
+    public static string GoalText(QuestGoal g) =>
+        (g.Place == g.MapName ? g.MapName : $"{g.Place}, {g.MapName}") + $" ({g.X},{g.Y})";
+
     /// <summary>Title with status.</summary>
     public string Heading => Quest.Title + (Quest.Done ? "  (complete)" : Quest.Main ? "  (main quest)" : "");
     /// <summary>The current goal.</summary>

@@ -238,6 +238,27 @@ public sealed class MapView : Control
             context.DrawRectangle(SelectedPen, CellRect(sel.X, sel.Y).Deflate(1));
         }
 
+        // Quest goals: a diamond on the square where an open quest leads.
+        foreach (var goal in info.Goals.Where(g => g.MapId == map.Id))
+        {
+            if (goal.X < x0 || goal.Y < y0 || goal.X >= x0 + cols || goal.Y >= y0 + rows)
+            {
+                continue;
+            }
+            var gc = CellRect(goal.X, goal.Y).Center;
+            var h = Math.Max(4, cell * 0.42);
+            var diamond = new StreamGeometry();
+            using (var g = diamond.Open())
+            {
+                g.BeginFigure(new Point(gc.X, gc.Y - h), true);
+                g.LineTo(new Point(gc.X + h, gc.Y));
+                g.LineTo(new Point(gc.X, gc.Y + h));
+                g.LineTo(new Point(gc.X - h, gc.Y));
+                g.EndFigure(true);
+            }
+            context.DrawGeometry(Theming.Theme.Brush("MapQuest"), new Pen(Brushes.Black, 1.5), diamond);
+        }
+
         // Party arrow.
         var pr = CellRect(state.X, state.Y);
         var c0 = pr.Center;

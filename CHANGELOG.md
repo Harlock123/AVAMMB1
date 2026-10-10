@@ -5,6 +5,13 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+### Added
+- "Where next?": the journal shows where each open quest leads ("Next: Loremaster's Hall, Thornwick
+  (7,9)"), and the automap and minimap mark it with a diamond and list every quest's next place. The
+  game works it out from the map events (and follows a locked hoard back to its guardian); quest stages
+  can also name a `goal` (see CONTENT_FORMAT.md), and the content check validates it. Settings > Game
+  turns the markers off.
+
 ### Fixed
 - The Run and Bribe buttons in battle now show their keys, like Fight: "Run 50% (R)", "Bribe 120 gold (B)".
 

@@ -18,6 +18,7 @@
         <TextBlock Text="&#x25CF; treasure" Foreground="{DynamicResource MapTreasure}" />
         <TextBlock Text="&#x25CF; fountain" Foreground="{DynamicResource MapFountain}" />
         <TextBlock Text="&#x25CF; quest" Foreground="{DynamicResource MapQuest}" />
+        <TextBlock Text="&#x25C6; where next" Foreground="{DynamicResource MapQuest}" />
         <TextBlock Text="&#x25A0; note" Foreground="{DynamicResource MapNote}" />
         <TextBlock Text="&#x2501; door" Foreground="{DynamicResource MapDoor}" />
         <TextBlock Text="&#x2501; locked" Foreground="{DynamicResource MapLocked}" />
@@ -26,6 +27,16 @@
       </WrapPanel>
       <DockPanel DockPanel.Dock="Right" Width="270" Margin="10,0,0,0">
         <StackPanel DockPanel.Dock="Top" Spacing="4">
+          <StackPanel IsVisible="{Binding HasGoals}" Spacing="2" Margin="0,0,0,8">
+            <TextBlock Classes="h2" Text="Where next" />
+            <ItemsControl ItemsSource="{Binding Goals}">
+              <ItemsControl.ItemTemplate>
+                <DataTemplate x:DataType="x:String">
+                  <TextBlock Text="{Binding}" TextWrapping="Wrap" FontSize="{DynamicResource Font12}" Foreground="{DynamicResource MapQuest}" Margin="0,1" />
+                </DataTemplate>
+              </ItemsControl.ItemTemplate>
+            </ItemsControl>
+          </StackPanel>
           <TextBlock Classes="h2" Text="Notes" />
           <TextBlock Text="{Binding NoteLabel}" Classes="dim" FontSize="{DynamicResource Font12}" TextWrapping="Wrap" />
           <TextBox x:Name="NoteBox" Text="{Binding NoteText}" AcceptsReturn="False" MaxLength="200" TextWrapping="Wrap" Height="70" Watermark="e.g. Locked door - need a key" />

@@ -282,7 +282,13 @@
    },
    {
     "item": "belfry_key",
-    "text": "You have the Belfry Key. The Hollow Belfry lies in the east of the Ashen Hills. Stop the Choirmaster before the Bell is rung."
+    "text": "You have the Belfry Key. The Hollow Belfry lies in the east of the Ashen Hills. Stop the Choirmaster before the Bell is rung.",
+    "goal": {
+     "map": "hills",
+     "x": 17,
+     "y": 7,
+     "name": "The Hollow Belfry"
+    }
    },
    {
     "visited": "belfry1",

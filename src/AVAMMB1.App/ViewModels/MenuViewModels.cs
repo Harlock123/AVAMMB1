@@ -244,6 +244,7 @@ public sealed partial class SettingsViewModel : ViewModelBase
         _difficultyIndex = (int)(InGame ? state.Difficulty : s.Difficulty);
         _survival = InGame ? state.Survival : s.Survival;
         _autosave = s.Autosave;
+        _questMarkers = s.QuestMarkers;
         _pad = new Dictionary<InputAction, AVAMMB1.Core.Input.GamepadButton>(s.GamepadBindings);
         LoadPadRows();
         LoadBindings();
@@ -352,6 +353,10 @@ public sealed partial class SettingsViewModel : ViewModelBase
     /// <summary>Survival mode (daily rations).</summary>
     [ObservableProperty]
     private bool _survival;
+
+    /// <summary>Mark where quests lead on the maps.</summary>
+    [ObservableProperty]
+    private bool _questMarkers;
 
     /// <summary>Autosave on entering new areas and before boss fights.</summary>
     [ObservableProperty]
@@ -523,6 +528,7 @@ public sealed partial class SettingsViewModel : ViewModelBase
         s.Difficulty = (Difficulty)Math.Clamp(DifficultyIndex, 0, 2);
         s.Survival = Survival;
         s.Autosave = Autosave;
+        s.QuestMarkers = QuestMarkers;
         if (InGame)
         {
             var state = _main.Services.Session.State;

@@ -14,7 +14,11 @@ namespace AVAMMB1.App.ViewModels;
 /// <summary>Snapshot used by the map controls; a new instance forces a redraw.</summary>
 /// <param name="Session">Session to draw.</param>
 /// <param name="Version">Change counter.</param>
-public sealed record MapSnapshot(GameSession Session, int Version);
+public sealed record MapSnapshot(GameSession Session, int Version)
+{
+    /// <summary>Where open quests lead (empty when quest markers are off).</summary>
+    public IReadOnlyList<QuestGoal> Goals { get; init; } = [];
+}
 
 /// <summary>Main exploration screen: 3D view, minimap, log, party and overlays.</summary>
 public sealed partial class GameViewModel : ViewModelBase
@@ -230,7 +234,7 @@ public sealed partial class GameViewModel : ViewModelBase
             SecretFound = (x, y, d) => state.IsSecretFound(map.Id, x, y, d),
             Sprites = sprites,
         };
-        MapInfo = new MapSnapshot(Session, ++_version);
+        MapInfo = new MapSnapshot(Session, ++_version) { Goals = Services.Settings.QuestMarkers ? Session.QuestGoals() : [] };
         if (Party.Count != state.Party.Count || Party.Select(p => p.Character).Where((c, i) => !ReferenceEquals(c, state.Party[i])).Any())
         {
             Party.Clear();

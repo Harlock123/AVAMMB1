@@ -133,6 +133,13 @@ is set. Nothing extra is stored in saves - the journal is rebuilt from flags, it
     { "visited": "mines2", "text": "..." } ] }
 ```
 
+**Where next?** The journal and automap mark where each open quest leads. The game works this out
+from the map events: the place that reaches the *next* stage (an event that sets its flag, a chest or
+guardian that gives its item - a hoard locked behind a flag points at whatever sets that flag - or a
+passage to its map), otherwise the place that wants what the current stage gave (`requiresFlag` /
+`requiresItem`). When that guess is wrong, give the stage an explicit goal:
+`{ "item": "belfry_key", "text": "...", "goal": { "map": "hills", "x": 17, "y": 7, "name": "The Hollow Belfry" } }`.
+
 ## shops.json
 
 ```json
