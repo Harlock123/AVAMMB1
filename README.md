@@ -68,6 +68,8 @@ Code identifiers, the solution and executables use the name **`AVAMMB1`** (`AVAM
 - **Towns** with inns (rest, save, roster of up to 18 characters), temples (heal, cure, raise dead,
   donate), taverns (food, rumors), smithies and magic shops, training grounds, and **academies**
   where gold buys permanent statistic points (each lesson dearer than the last - a late-game gold sink).
+- **Character looks**: pick a hairstyle and beard for each portrait at creation; rename characters
+  and restyle them at any inn.
 - **Accessibility**: high-contrast and colour-blind friendly themes, larger text, an interface zoom,
   adjustable battle text speed, and text cues (LOW) that don't depend on colour.
 - **Autosave and save pictures**: three rotating autosaves (new areas, before bosses); every save
@@ -160,6 +162,7 @@ All screenshots are real frames rendered by the game itself (Avalonia headless +
 | ![Detailed textures](docs/screenshots/27-detailed-textures.png) Detailed textures at 800 x 600 (the Hollow Crypt) | ![Lantern](docs/screenshots/28-lantern.png) Lantern light in the cellars |
 | ![Night](docs/screenshots/29-night.png) The Ashen Hills road at night | ![Battle spells](docs/screenshots/30-combat-spells.png) Battle spells with their keys |
 | ![Load game](docs/screenshots/31-load-game.png) Saves with pictures, play time and autosaves | ![Choirmaster](docs/screenshots/32-choirmaster.png) The Choirmaster in the Bell Chamber |
+| ![Inn looks](docs/screenshots/33-inn-looks.png) Renaming and restyling at the inn | |
 
 ## Download and install
 
