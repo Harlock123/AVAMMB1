@@ -54,7 +54,9 @@ Code identifiers, the solution and executables use the name **`AVAMMB1`** (`AVAM
   the signs, inscriptions and warnings you have read (Clues). The game menu opens it too.
 - **Class abilities**: knights Guard a companion (blows strike the knight instead), paladins Lay on
   Hands once a battle, archers take Aimed shots (+4 to hit, double damage, not two rounds running),
-  and robbers sneak-attack for double damage in the first round and pick locked doors.
+  robbers sneak-attack for double damage in the first round and pick locked doors, clerics Turn
+  Undead once a battle (undead flee or crumble), and sorcerers Overcharge a spell (half again the
+  power for double the spell points).
 - **Combat helpers**: *Repeat* replays everyone's last action for the round (picking a new target
   if the old one fell), *Auto* fights with weapons and healing until the battle ends or someone is
   badly hurt, and monsters you have defeated before show their level, HP, armor class, undead-ness,
@@ -71,8 +73,6 @@ Code identifiers, the solution and executables use the name **`AVAMMB1`** (`AVAM
 - **Character looks**: pick a hairstyle and beard for each portrait at creation; rename characters
   and restyle them at any inn.
 - **Where next?**: the journal, automap and minimap show where each open quest leads.
-- **Class abilities**: Guard (knights), Lay on Hands (paladins), Aimed shot (archers), sneak attack and
-  lock-picking (robbers), Turn Undead (clerics) and Overcharge (sorcerers).
 - **Puzzles and choices**: riddle doors (type the answer), levers and portcullises, pressure plates,
   and decisions with consequences.
 - **The Chronicle**: statistics for your game (monsters slain, gold found, secrets, spells...) and 22
@@ -119,10 +119,12 @@ Code identifiers, the solution and executables use the name **`AVAMMB1`** (`AVAM
 - **Turn-based combat**: initiative order, front/back ranks for both sides, melee and missile attacks,
   blocking, running, bribing; monster AI with special abilities, healing, fleeing and target
   selection; treasure, item drops and XP.
-- **Magic**: 41 spells in two schools (cleric and sorcerer) across six spell levels - healing,
+- **Magic**: 55 spells in two schools (cleric and sorcerer) across seven spell levels - healing,
   curing, blessings and wards, single/group/all-enemy attacks, sleep and paralysis, armor-weakening,
-  light, recall, raising the dead - plus potions, scrolls and wands. Three rare **tomes** (one sold,
-  two hidden in the Ashen Hills) teach spells that can't be learned by levelling up.
+  light, recall, raising the dead, and utility magic (Reveal Secrets, Levitate, Sense Minds) - plus
+  potions, scrolls and wands. Rare **tomes** teach spells that can't be learned by levelling up,
+  including the seventh circle (Starfall, Divine Intervention), sold in Wintermere and found in the
+  Depths Below.
 - **Gold**: each character carries their own gold, and the party shares a **purse** that loot goes
   into. Purchases come out of the purse first and then from the buyer's own gold. From the character
   sheet you can deposit, withdraw, pool everyone's gold or share the purse evenly; a character who
