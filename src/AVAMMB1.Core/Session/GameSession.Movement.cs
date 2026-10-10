@@ -325,6 +325,14 @@ public sealed partial class GameSession
         State.Steps += steps;
         State.Minutes += steps * GameState.MinutesPerStep;
         State.LightSteps = Math.Max(0, State.LightSteps - steps);
+        if (State.LevitateSteps > 0)
+        {
+            State.LevitateSteps = Math.Max(0, State.LevitateSteps - steps);
+            if (State.LevitateSteps == 0)
+            {
+                log.Add(new("The party settles back to the ground.", MessageKind.Info));
+            }
+        }
         BurnLantern(steps, log);
         DailyRations(log);
         var ticks = (int)(State.Steps / 10 - before / 10);

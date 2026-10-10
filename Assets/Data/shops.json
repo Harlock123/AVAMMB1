@@ -194,7 +194,9 @@
    "ration",
    "torch",
    "lantern",
-   "oil_flask"
+   "oil_flask",
+   "tome_starfall",
+   "tome_divine"
   ],
   "smithy": true
  }

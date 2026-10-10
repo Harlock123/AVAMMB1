@@ -18,16 +18,18 @@ public class SpellTests
     }
 
     [Fact]
-    public void Content_HasSixSpellLevelsForBothSchools()
+    public void Content_HasSixSpellLevelsForBothSchools_AndTomesForTheSeventh()
     {
         var spells = TestContent.Content.Spells.Values.Where(s => s.Learnable).ToList();
         Assert.True(spells.Count >= 40);
         foreach (var school in Enum.GetValues<SpellSchool>())
         {
-            for (var level = 1; level <= Rulebook.TopSpellLevel; level++)
+            for (var level = 1; level <= 6; level++)
             {
                 Assert.Contains(spells, s => s.School == school && s.Level == level && !s.Tome);
             }
+            // The seventh circle is learned only from tomes.
+            Assert.Contains(spells, s => s.School == school && s.Level == Rulebook.TopSpellLevel && s.Tome);
         }
     }
 

@@ -346,6 +346,57 @@ public sealed class SpellCaster(Rulebook rules, IRandomSource rng)
                     log.Add(new($"You are in {name} at {state.X},{state.Y} facing {state.Facing}.", MessageKind.Story));
                     return new SpellResult(true, log);
                 }
+            case EffectKind.RevealSecrets:
+                {
+                    if (!rules.Content.Maps.TryGetValue(state.MapId, out var here))
+                    {
+                        return Fail("Nothing happens.", log);
+                    }
+                    var radius = Math.Max(1, spell.Magnitude);
+                    var found = 0;
+                    for (var y = state.Y - radius; y <= state.Y + radius; y++)
+                    {
+                        for (var x = state.X - radius; x <= state.X + radius; x++)
+                        {
+                            foreach (var d in Enum.GetValues<Direction>())
+                            {
+                                if (here.InBounds(x, y) && here.GetWall(x, y, d) == World.WallKind.SecretDoor && state.FoundSecrets.Add(GameState.SecretKey(here.Id, x, y, d)))
+                                {
+                                    found++;
+                                }
+                            }
+                        }
+                    }
+                    log.Add(new(found == 0 ? "The walls hold no secrets here." : $"Hidden doorways shimmer into view: {found / 2 + found % 2} secret door{(found > 2 ? "s" : "")} revealed.",
+                        found == 0 ? MessageKind.Info : MessageKind.Good, found == 0 ? null : "door"));
+                    return new SpellResult(true, log);
+                }
+            case EffectKind.Levitate:
+                state.LevitateSteps = Math.Max(state.LevitateSteps, Math.Max(10, spell.Magnitude) + 10 * power);
+                log.Add(new($"The party rises a hand's breadth off the ground ({state.LevitateSteps} steps of levitation).", MessageKind.Good));
+                return new SpellResult(true, log);
+            case EffectKind.SenseMinds:
+                {
+                    if (!rules.Content.Maps.TryGetValue(state.MapId, out var here))
+                    {
+                        return Fail("Nothing happens.", log);
+                    }
+                    var minds = here.AllEvents
+                        .Where(e => e.Type == MapEventKind.Encounter && e.Monsters.Count > 0
+                            && !(e.Once && state.CompletedEvents.Contains(e.Id ?? $"{here.Id}:{e.X}:{e.Y}:{here.Def.Events.IndexOf(e)}")))
+                        .Select(e => (e, Dist: Math.Abs(e.X - state.X) + Math.Abs(e.Y - state.Y)))
+                        .OrderBy(x => x.Dist).Take(5).ToList();
+                    if (minds.Count == 0)
+                    {
+                        log.Add(new("You reach out with your mind and feel nothing waiting here.", MessageKind.Info));
+                    }
+                    foreach (var (e, dist) in minds)
+                    {
+                        var what = rules.Content.Monsters.TryGetValue(e.Monsters[0].Monster, out var m) ? m.Name : e.Monsters[0].Monster;
+                        log.Add(new($"You sense {what} {Bearing(e.X - state.X, e.Y - state.Y)}, {dist} squares away{(e.Name is null ? "" : $" ({e.Name})")}.", MessageKind.Story));
+                    }
+                    return new SpellResult(true, log);
+                }
             case EffectKind.CreateFood:
                 foreach (var c in party.Where(c => c.IsAlive))
                 {
@@ -380,6 +431,27 @@ public sealed class SpellCaster(Rulebook rules, IRandomSource rng)
             default:
                 return Fail("Nothing happens.", log);
         }
+    }
+
+    /// <summary>"to the north-east", "right here".</summary>
+    private static string Bearing(int dx, int dy)
+    {
+        if (dx == 0 && dy == 0)
+        {
+            return "right here";
+        }
+        var ns = dy < 0 ? "north" : dy > 0 ? "south" : "";
+        var ew = dx > 0 ? "east" : dx < 0 ? "west" : "";
+        // Mostly one way: name just that way.
+        if (Math.Abs(dx) > 2 * Math.Abs(dy))
+        {
+            ns = "";
+        }
+        else if (Math.Abs(dy) > 2 * Math.Abs(dx))
+        {
+            ew = "";
+        }
+        return "to the " + (ns.Length > 0 && ew.Length > 0 ? $"{ns}-{ew}" : ns + ew);
     }
 
     private static List<Character> Single(Character? c) => c is not null && c.IsAlive ? [c] : [];

@@ -6,6 +6,11 @@ All notable changes to this project are documented here. The format follows
 ## [Unreleased]
 
 ### Added
+- New spells. Utility: Reveal Secrets (sorcerer, level 3 - secret doors within three squares),
+  Levitate (sorcerer, level 4 - float over floor traps and pits for a while) and Sense Minds (cleric,
+  level 3 - what guardians and lairs wait on this level, and which way). And a seventh circle, learned
+  only from tomes sold in Wintermere or found in the Depths Below: Starfall (sorcerer - every foe) and
+  Divine Intervention (cleric - the whole party healed). Casters reach the seventh circle at level 13.
 - Class abilities for the casters. Clerics: Turn Undead (V, once per battle) - each undead foe may
   flee (40% + 8% per level the cleric has over it; turned undead count as beaten for experience and
   gold), and undead five or more levels weaker crumble to dust; unique undead are unmoved. Sorcerers:

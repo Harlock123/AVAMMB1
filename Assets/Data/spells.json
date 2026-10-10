@@ -637,5 +637,73 @@
   "combat": true,
   "explore": false,
   "description": "A thrown flask of burning oil."
+ },
+ {
+  "id": "s_reveal",
+  "name": "Reveal Secrets",
+  "school": "sorcerer",
+  "level": 3,
+  "cost": 5,
+  "effect": "revealSecrets",
+  "target": "none",
+  "magnitude": 3,
+  "combat": false,
+  "explore": true,
+  "description": "Hidden doors within three squares shimmer into view."
+ },
+ {
+  "id": "s_levitate",
+  "name": "Levitate",
+  "school": "sorcerer",
+  "level": 4,
+  "cost": 6,
+  "effect": "levitate",
+  "target": "none",
+  "magnitude": 30,
+  "combat": false,
+  "explore": true,
+  "description": "The party floats over floor traps and pits for 30 steps, and 10 more a caster level."
+ },
+ {
+  "id": "c_sense",
+  "name": "Sense Minds",
+  "school": "cleric",
+  "level": 3,
+  "cost": 4,
+  "effect": "senseMinds",
+  "target": "none",
+  "combat": false,
+  "explore": true,
+  "description": "Feel out the guardians and lairs still waiting on this level - what they are and which way."
+ },
+ {
+  "id": "s_starfall",
+  "name": "Starfall",
+  "school": "sorcerer",
+  "level": 7,
+  "cost": 20,
+  "tome": true,
+  "effect": "damage",
+  "target": "allEnemies",
+  "amount": "10d10",
+  "perLevel": 2,
+  "element": "magic",
+  "combat": true,
+  "description": "The sky opens and the stars come down on every foe. Learned only from a tome."
+ },
+ {
+  "id": "c_divine",
+  "name": "Divine Intervention",
+  "school": "cleric",
+  "level": 7,
+  "cost": 20,
+  "tome": true,
+  "effect": "heal",
+  "target": "party",
+  "amount": "10d10+20",
+  "perLevel": 3,
+  "combat": true,
+  "explore": true,
+  "description": "The gods themselves mend the whole party. Learned only from a tome."
  }
 ]

@@ -209,6 +209,12 @@ public enum EffectKind
     RestoreSp,
     /// <summary>Lowers enemy armor class (by <c>magnitude</c>) for the rest of the battle.</summary>
     DebuffArmor,
+    /// <summary>Uncovers secret doors within <c>magnitude</c> squares.</summary>
+    RevealSecrets,
+    /// <summary>The party floats over floor traps and pits for <c>magnitude</c> steps (plus 10 a caster level).</summary>
+    Levitate,
+    /// <summary>Senses the guardians and lairs still waiting on this level: what and which way.</summary>
+    SenseMinds,
 }
 
 /// <summary>Cardinal facing on the grid.</summary>

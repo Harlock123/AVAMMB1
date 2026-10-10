@@ -217,7 +217,7 @@ public sealed class Rulebook(ContentDatabase db)
     }
 
     /// <summary>Highest spell level in the game.</summary>
-    public const int TopSpellLevel = 6;
+    public const int TopSpellLevel = 7;
 
     /// <summary>Highest spell level the character may cast (0-6; level 6 at caster level 11).</summary>
     /// <param name="c">Character.</param>

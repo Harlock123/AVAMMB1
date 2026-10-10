@@ -1152,5 +1152,23 @@
    "luck": 1
   },
   "description": "Forged by the Collegium from the Hollow Bell's clapper. It hums with every voice the Bell stole."
+ },
+ {
+  "id": "tome_starfall",
+  "name": "Tome of Starfall",
+  "kind": "tome",
+  "icon": "book",
+  "price": 12000,
+  "teachSpell": "s_starfall",
+  "description": "A star-chart that is also a spell. Teaches a sorcerer of the seventh circle Starfall."
+ },
+ {
+  "id": "tome_divine",
+  "name": "Tome of Divine Intervention",
+  "kind": "tome",
+  "icon": "book",
+  "price": 12000,
+  "teachSpell": "c_divine",
+  "description": "The prayers of a saint. Teaches a cleric of the seventh circle Divine Intervention."
  }
 ]

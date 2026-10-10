@@ -203,6 +203,11 @@ public sealed partial class GameSession
 
     private void RunTrap(GameMap map, MapEventDef ev, StepResult result)
     {
+        if (State.LevitateSteps > 0 && ev.Trap is TrapEffect.Damage or TrapEffect.Pit or TrapEffect.Teleport)
+        {
+            result.Messages.Add(new("The party floats over a trap in the floor.", MessageKind.Good));
+            return;
+        }
         var best = State.Party.Where(c => c.CanAct).OrderByDescending(Rules.Thievery).FirstOrDefault();
         var skill = best is null ? 0 : Rules.Thievery(best);
         if (best is not null && skill > 0 && Random.Chance(skill))

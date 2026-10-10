@@ -226,6 +226,9 @@ public sealed class GameState
     /// <summary>Difficulty of this game.</summary>
     public Difficulty Difficulty { get; set; } = Difficulty.Normal;
 
+    /// <summary>Steps of levitation left (the Levitate spell: floor traps and pits pass beneath).</summary>
+    public int LevitateSteps { get; set; }
+
     /// <summary>The current level of the Depths Below (when the party is there).</summary>
     public int Depth { get; set; }
 
