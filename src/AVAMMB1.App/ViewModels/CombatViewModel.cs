@@ -482,7 +482,8 @@ public sealed partial class CombatViewModel : ViewModelBase
 
     /// <summary>The active character's class ability, or null.</summary>
     private string? ActiveAbility => _combat.ActiveCharacter is { } c
-        ? _game.Services.Content.Class(c.Class).Abilities.FirstOrDefault(a => a is ClassAbility.Guard or ClassAbility.LayOnHands or ClassAbility.AimedShot)
+        ? _game.Services.Content.Class(c.Class).Abilities.FirstOrDefault(a => a is ClassAbility.Guard or ClassAbility.LayOnHands or ClassAbility.AimedShot
+            or ClassAbility.TurnUndead or ClassAbility.Overcharge)
         : null;
 
     /// <summary>Label of the class ability button.</summary>
@@ -491,6 +492,8 @@ public sealed partial class CombatViewModel : ViewModelBase
         ClassAbility.Guard => "Guard (G)",
         ClassAbility.LayOnHands => "Lay hands (L)",
         ClassAbility.AimedShot => "Aim (T)",
+        ClassAbility.TurnUndead => "Turn undead (V)",
+        ClassAbility.Overcharge => "Overcharge (Y)",
         _ => "No ability",
     };
 
@@ -500,6 +503,9 @@ public sealed partial class CombatViewModel : ViewModelBase
         ClassAbility.Guard => _combat.Party.Count(p => p.IsAlive) > 1,
         ClassAbility.LayOnHands => !_combat.HasLaidHands(c),
         ClassAbility.AimedShot => _combat.CanAim(c),
+        ClassAbility.TurnUndead => _combat.CanTurnUndead(c),
+        ClassAbility.Overcharge => _game.Services.Session.Rules.KnownSpells(c)
+            .Any(s => s.Combat && c.Sp >= s.Cost * 2 && _game.Services.Session.Spells.CanCast(c, s, true) is null),
         _ => false,
     };
 
@@ -509,6 +515,8 @@ public sealed partial class CombatViewModel : ViewModelBase
         ClassAbility.Guard => "Protect an ally this round: attacks aimed at them strike you instead (and you count as blocking)",
         ClassAbility.LayOnHands => "Once per battle: heal an ally (3 x level + 5) and draw out poison",
         ClassAbility.AimedShot => "One careful shot at +4 to hit for double damage; not two rounds running",
+        ClassAbility.TurnUndead => "Once per battle: undead may flee from the light - those far weaker than you crumble to dust",
+        ClassAbility.Overcharge => "Cast a spell at half again your level, for double the spell points",
         _ => "",
     };
 
@@ -524,6 +532,12 @@ public sealed partial class CombatViewModel : ViewModelBase
         {
             case ClassAbility.AimedShot:
                 Act(new CombatAction(CombatActionKind.AimedShot, TargetIndex));
+                break;
+            case ClassAbility.TurnUndead:
+                Act(new CombatAction(CombatActionKind.TurnUndead));
+                break;
+            case ClassAbility.Overcharge:
+                ListSpells(overcharge: true);
                 break;
             case ClassAbility.Guard or ClassAbility.LayOnHands:
                 _pending = new CombatAction(ActiveAbility == ClassAbility.Guard ? CombatActionKind.Guard : CombatActionKind.LayOnHands);
@@ -683,20 +697,27 @@ public sealed partial class CombatViewModel : ViewModelBase
     }
 
     [RelayCommand]
-    private void ShowSpells()
+    private void ShowSpells() => ListSpells(overcharge: false);
+
+    private bool _overcharge;
+
+    /// <summary>Lists the active character's battle spells (overcharged: double cost, half again the power).</summary>
+    private void ListSpells(bool overcharge)
     {
         if (_combat.ActiveCharacter is not { } c)
         {
             return;
         }
+        _overcharge = overcharge;
         Choices.Clear();
         var caster = _game.Services.Session.Spells;
         foreach (var s in _game.Services.Session.Rules.KnownSpells(c).Where(s => s.Combat))
         {
-            Choices.Add(new CombatChoice(s.Id, $"{ChoiceKey(Choices.Count)}. L{s.Level} {s.Name} ({s.Cost} SP)", s.Target, caster.CanCast(c, s, true) is null));
+            var cost = overcharge ? s.Cost * 2 : s.Cost;
+            Choices.Add(new CombatChoice(s.Id, $"{ChoiceKey(Choices.Count)}. L{s.Level} {s.Name} ({cost} SP)", s.Target, caster.CanCast(c, s, true) is null && c.Sp >= cost));
         }
         Phase = CombatPhase.Spell;
-        Prompt = $"{c.Name} has {c.Sp} SP. Choose a spell.";
+        Prompt = overcharge ? $"{c.Name} has {c.Sp} SP. Overcharge which spell? (double cost, half again the power)" : $"{c.Name} has {c.Sp} SP. Choose a spell.";
     }
 
     [RelayCommand]
@@ -752,7 +773,7 @@ public sealed partial class CombatViewModel : ViewModelBase
         }
         var isSpell = Phase == CombatPhase.Spell;
         _pending = isSpell
-            ? new CombatAction(CombatActionKind.Cast, TargetIndex, SpellId: choice.Id)
+            ? new CombatAction(CombatActionKind.Cast, TargetIndex, SpellId: choice.Id, Overcharge: _overcharge)
             : new CombatAction(CombatActionKind.UseItem, TargetIndex, ItemIndex: int.Parse(choice.Id, System.Globalization.CultureInfo.InvariantCulture));
         if (choice.Target == TargetKind.Ally)
         {
@@ -787,6 +808,7 @@ public sealed partial class CombatViewModel : ViewModelBase
     private void Cancel()
     {
         _pending = null;
+        _overcharge = false;
         Phase = CombatPhase.Action;
         Prompt = _combat.ActiveCharacter is { } c ? $"{c.Name}'s turn. Choose an action." : "";
     }
@@ -894,7 +916,7 @@ public sealed partial class CombatViewModel : ViewModelBase
                 return key == Key.Escape;
             case CombatPhase.Action:
                 if (key == Key.E) { Repeat(); return true; }
-                if (key is Key.G or Key.L or Key.T && CanAbility) { Ability(); return true; }
+                if (key is Key.G or Key.L or Key.T or Key.V or Key.Y && CanAbility) { Ability(); return true; }
                 if (key == Key.O) { ToggleAuto(); return true; }
                 if (key == Key.A && CanMelee) { Attack(); return true; }
                 if (key == Key.S && CanShoot) { Shoot(); return true; }

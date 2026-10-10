@@ -37,7 +37,8 @@ public class ClassAbilityTests
         Assert.Contains(ClassAbility.AimedShot, db.Class("archer").Abilities);
         Assert.Contains(ClassAbility.SneakAttack, db.Class("robber").Abilities);
         Assert.Contains(ClassAbility.PickLocks, db.Class("robber").Abilities);
-        Assert.Empty(db.Class("sorcerer").Abilities);
+        Assert.Contains(ClassAbility.Overcharge, db.Class("sorcerer").Abilities);
+        Assert.Contains(ClassAbility.TurnUndead, db.Class("cleric").Abilities);
     }
 
     [Fact]

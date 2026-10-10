@@ -38,6 +38,8 @@ public enum CombatActionKind
     LayOnHands,
     /// <summary>Archers: one careful shot at +4 to hit for double damage.</summary>
     AimedShot,
+    /// <summary>Clerics, once per battle: undead flee or crumble.</summary>
+    TurnUndead,
 }
 
 /// <summary>An action chosen by the player for the active character.</summary>
@@ -46,7 +48,8 @@ public enum CombatActionKind
 /// <param name="Ally">Party index for ally targets (-1 = none).</param>
 /// <param name="SpellId">Spell for <see cref="CombatActionKind.Cast"/>.</param>
 /// <param name="ItemIndex">Backpack index for <see cref="CombatActionKind.UseItem"/>.</param>
-public sealed record CombatAction(CombatActionKind Kind, int Target = -1, int Ally = -1, string? SpellId = null, int ItemIndex = -1);
+/// <param name="Overcharge">Sorcerers: cast the spell overcharged (half again the power, double the spell points).</param>
+public sealed record CombatAction(CombatActionKind Kind, int Target = -1, int Ally = -1, string? SpellId = null, int ItemIndex = -1, bool Overcharge = false);
 
 /// <summary>Spoils of a won battle.</summary>
 /// <param name="Experience">Experience awarded to each eligible member.</param>

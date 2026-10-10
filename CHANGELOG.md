@@ -6,6 +6,11 @@ All notable changes to this project are documented here. The format follows
 ## [Unreleased]
 
 ### Added
+- Class abilities for the casters. Clerics: Turn Undead (V, once per battle) - each undead foe may
+  flee (40% + 8% per level the cleric has over it; turned undead count as beaten for experience and
+  gold), and undead five or more levels weaker crumble to dust; unique undead are unmoved. Sorcerers:
+  Overcharge (Y) - cast a spell at half again the sorcerer's level, for double the spell points.
+  Auto-fight turns undead when two or more are present.
 - An automated playthrough test: following only the journal's "Where next?" goals, with real movement
   through the map connections, a party finishes every quest - main and side - in one run. It guards the
   whole game against content that can no longer be completed.

@@ -71,6 +71,8 @@ Code identifiers, the solution and executables use the name **`AVAMMB1`** (`AVAM
 - **Character looks**: pick a hairstyle and beard for each portrait at creation; rename characters
   and restyle them at any inn.
 - **Where next?**: the journal, automap and minimap show where each open quest leads.
+- **Class abilities**: Guard (knights), Lay on Hands (paladins), Aimed shot (archers), sneak attack and
+  lock-picking (robbers), Turn Undead (clerics) and Overcharge (sorcerers).
 - **Puzzles and choices**: riddle doors (type the answer), levers and portcullises, pressure plates,
   and decisions with consequences.
 - **The Chronicle**: statistics for your game (monsters slain, gold found, secrets, spells...) and 22

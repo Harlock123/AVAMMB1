@@ -70,24 +70,30 @@ public sealed class SpellCaster(Rulebook rules, IRandomSource rng)
     /// <param name="combat">Battle in progress, or <c>null</c> when exploring.</param>
     /// <param name="ally">Party index of an ally target.</param>
     /// <param name="enemy">Enemy target.</param>
-    public SpellResult Cast(Character caster, SpellDef spell, GameState state, CombatEngine? combat, int ally, MonsterInstance? enemy)
+    /// <param name="overcharge">Sorcerers: half again the power for double the spell points.</param>
+    public SpellResult Cast(Character caster, SpellDef spell, GameState state, CombatEngine? combat, int ally, MonsterInstance? enemy, bool overcharge = false)
     {
         var reason = CanCast(caster, spell, combat is not null);
+        if (reason is null && overcharge && caster.Sp < spell.Cost * 2)
+        {
+            reason = $"{caster.Name} needs {spell.Cost * 2} spell points to overcharge {spell.Name}.";
+        }
         if (reason is not null)
         {
             return new SpellResult(false, [new GameMessage(reason)]);
         }
         var log = new List<GameMessage>
         {
-            new($"{caster.Name} casts {spell.Name}.", MessageKind.Combat, spell.Element == Element.Fire ? "fire" : "spell")
+            new($"{caster.Name} casts {(overcharge ? "an overcharged " : "")}{spell.Name}.", MessageKind.Combat, spell.Element == Element.Fire ? "fire" : "spell")
             {
                 Effect = spell.Effect == EffectKind.Heal ? "heal" : spell.Element == Element.Physical ? "magic" : spell.Element.ToString().ToLowerInvariant(),
             },
         };
-        var result = Apply(spell, Math.Max(1, rules.CasterLevel(caster)), state, combat, ally, enemy, log);
+        var power = Math.Max(1, rules.CasterLevel(caster));
+        var result = Apply(spell, overcharge ? power * 3 / 2 : power, state, combat, ally, enemy, log);
         if (result.Success)
         {
-            caster.Sp -= spell.Cost;
+            caster.Sp -= overcharge ? spell.Cost * 2 : spell.Cost;
             state.Count(Session.Chronicle.Keys.Spells);
         }
         return result;

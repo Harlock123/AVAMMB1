@@ -18,6 +18,9 @@ public sealed class MonsterInstance(MonsterDef def, int hp)
     public Condition Conditions { get; set; }
     /// <summary>Whether the monster ran away.</summary>
     public bool Fled { get; set; }
+
+    /// <summary>Driven off by a cleric's Turn Undead: it counts as defeated (experience and gold) though it fled.</summary>
+    public bool Turned { get; set; }
     /// <summary>Armor class lost to weakening magic during this battle.</summary>
     public int ArmorPenalty { get; set; }
 

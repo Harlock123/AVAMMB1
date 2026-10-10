@@ -397,5 +397,11 @@ public static class ClassAbility
     public const string PickLocks = "pickLocks";
 
     /// <summary>All known abilities.</summary>
-    public static readonly IReadOnlyList<string> All = [Guard, LayOnHands, AimedShot, SneakAttack, PickLocks];
+    /// <summary>Battle, once per fight: undead may flee - or crumble, if far weaker than the cleric.</summary>
+    public const string TurnUndead = "turnUndead";
+    /// <summary>Battle: cast the next spell at half again the caster's level, for double the spell points.</summary>
+    public const string Overcharge = "overcharge";
+
+    /// <summary>Every known ability.</summary>
+    public static readonly IReadOnlyList<string> All = [Guard, LayOnHands, AimedShot, SneakAttack, PickLocks, TurnUndead, Overcharge];
 }

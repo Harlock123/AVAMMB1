@@ -213,6 +213,7 @@ public sealed class CombatEngine
             CombatActionKind.Guard => Guard(c, action.Ally, log),
             CombatActionKind.LayOnHands => LayOnHands(c, action.Ally, log),
             CombatActionKind.AimedShot => AimedShot(c, action.Target, log),
+            CombatActionKind.TurnUndead => TurnUndead(c, log),
             CombatActionKind.Run => Run(log),
             _ => false,
         };
@@ -317,7 +318,7 @@ public sealed class CombatEngine
 
     private CombatRewards ComputeRewards()
     {
-        var killed = Monsters.Where(m => m.IsDead).ToList();
+        var killed = Monsters.Where(m => m.IsDead || m.Turned).ToList(); // turned undead count as beaten
         var xp = killed.Sum(m => m.Def.Xp * (m.Elite ? 3 : 1)) * DifficultyRules.Experience(_state.Difficulty) / 100 * RewardPercent / 100;
         var gold = killed.Sum(m => Math.Max(0, m.Def.Gold.Roll(_rng)) * (m.Elite ? 3 : 1)) * DifficultyRules.Gold(_state.Difficulty) / 100 * RewardPercent / 100;
         var gems = killed.Count(m => m.Def.Level >= 3 && _rng.Chance(10));
@@ -475,6 +476,52 @@ public sealed class CombatEngine
         return true;
     }
 
+    /// <summary>Whether a cleric can turn undead now (once per battle, with undead to turn).</summary>
+    /// <param name="c">Character.</param>
+    public bool CanTurnUndead(Character c) =>
+        _rules.HasAbility(c, ClassAbility.TurnUndead) && !_turned.Contains(c) && Monsters.Any(m => m.IsActive && m.Def.Undead);
+
+    private readonly HashSet<Character> _turned = new();
+
+    /// <summary>
+    /// Turn undead: each undead foe flees with a chance of 40% + 8% per level the cleric has over it
+    /// (5-90%); one five or more levels weaker crumbles to dust instead. Unique undead are unmoved.
+    /// </summary>
+    private bool TurnUndead(Character c, List<GameMessage> log)
+    {
+        if (!CanTurnUndead(c))
+        {
+            log.Add(new(_turned.Contains(c) ? $"{c.Name} has already called on the gods this battle." : "There are no undead here to turn.", MessageKind.Info));
+            return false;
+        }
+        _turned.Add(c);
+        var level = _rules.CasterLevel(c);
+        log.Add(new($"{c.Name} raises a holy symbol and calls on the light!", MessageKind.Combat, "spell") { Effect = "holy" });
+        foreach (var m in Monsters.Where(m => m.IsActive && m.Def.Undead))
+        {
+            if (m.Def.Boss)
+            {
+                log.Add(new($"{m.Label} laughs at the holy symbol.", MessageKind.Bad));
+            }
+            else if (level >= m.Def.Level + 5)
+            {
+                m.Hp = 0;
+                log.Add(new($"{m.Label} crumbles to dust!", MessageKind.Good));
+            }
+            else if (_rng.Chance(Math.Clamp(40 + 8 * (level - m.Def.Level), 5, 90)))
+            {
+                m.Fled = true;
+                m.Turned = true;
+                log.Add(new($"{m.Label} flees from the light!", MessageKind.Good));
+            }
+            else
+            {
+                log.Add(new($"{m.Label} stands its ground.", MessageKind.Info));
+            }
+        }
+        return true;
+    }
+
     /// <summary>Whether an archer can take an aimed shot now (not two rounds running).</summary>
     /// <param name="c">Character.</param>
     public bool CanAim(Character c) =>
@@ -577,8 +624,12 @@ public sealed class CombatEngine
             log.Add(new(reason, MessageKind.Info));
             return false;
         }
+        if (action.Overcharge && !_rules.HasAbility(c, ClassAbility.Overcharge))
+        {
+            return false;
+        }
         var target = action.Target >= 0 && action.Target < Monsters.Count ? Monsters[action.Target] : null;
-        var result = _spells.Cast(c, spell, _state, this, action.Ally, target);
+        var result = _spells.Cast(c, spell, _state, this, action.Ally, target, action.Overcharge);
         log.AddRange(result.Messages);
         return result.Success;
     }

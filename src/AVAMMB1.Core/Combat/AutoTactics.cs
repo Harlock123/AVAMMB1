@@ -38,6 +38,10 @@ public static class AutoTactics
             return new CombatAction(CombatActionKind.UseItem, Ally: allies.IndexOf(hurt), ItemIndex: potion);
         }
         var active = combat.Monsters.Where(m => m.IsActive).ToList();
+        if (combat.CanTurnUndead(c) && active.Count(m => m.Def.Undead && !m.Def.Boss) >= 2)
+        {
+            return new CombatAction(CombatActionKind.TurnUndead);
+        }
         if (offensiveSpells && active.Count > 0 && !combat.IsInFrontRank(c))
         {
             var nukes = known.Where(sp => sp.Effect == EffectKind.Damage && (!sp.UndeadOnly || active.Any(m => m.Def.Undead))).ToList();
