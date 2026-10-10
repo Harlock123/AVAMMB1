@@ -337,6 +337,7 @@ public sealed partial class GameSession
         }
         BurnLantern(steps, log);
         DailyRations(log);
+        PayWages(log);
         var ticks = (int)(State.Steps / 10 - before / 10);
         if (ticks <= 0)
         {

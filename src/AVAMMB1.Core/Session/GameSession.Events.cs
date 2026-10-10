@@ -391,9 +391,9 @@ public sealed partial class GameSession
         return true;
     }
 
-    private void AwardXp(int xp, List<GameMessage> log)
+    internal void AwardXp(int xp, List<GameMessage> log)
     {
-        var eligible = State.Party.Where(c => c.IsAlive && !c.Has(Condition.Unconscious)).ToList();
+        var eligible = State.Heroes.Where(c => c.IsAlive && !c.Has(Condition.Unconscious)).ToList(); // hirelings are paid instead
         foreach (var c in eligible)
         {
             var could = Rules.CanLevelUp(c);

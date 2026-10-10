@@ -106,5 +106,185 @@
     "luck": 10
    }
   }
+ ],
+ "hirelings": [
+  {
+   "id": "tobin",
+   "name": "Tobin",
+   "race": "human",
+   "class": "robber",
+   "sex": "male",
+   "alignment": "neutral",
+   "stats": {
+    "might": 12,
+    "intellect": 11,
+    "personality": 10,
+    "endurance": 13,
+    "speed": 16,
+    "accuracy": 15,
+    "luck": 15
+   },
+   "level": 2,
+   "town": "brindlemoor",
+   "wage": 18,
+   "hair": "short_red",
+   "blurb": "A cheerful young locksmith between jobs. Knows the cellars under Brindlemoor better than the rats do."
+  },
+  {
+   "id": "marisol",
+   "name": "Marisol",
+   "race": "human",
+   "class": "cleric",
+   "sex": "female",
+   "alignment": "good",
+   "stats": {
+    "might": 12,
+    "intellect": 12,
+    "personality": 16,
+    "endurance": 14,
+    "speed": 11,
+    "accuracy": 12,
+    "luck": 13
+   },
+   "level": 4,
+   "town": "saltreach",
+   "wage": 32,
+   "hair": "fem_black",
+   "blurb": "A temple healer who would rather patch up adventurers in the field than wait for them to be carried in."
+  },
+  {
+   "id": "garrick",
+   "name": "Garrick",
+   "race": "dwarf",
+   "class": "knight",
+   "sex": "male",
+   "alignment": "good",
+   "stats": {
+    "might": 17,
+    "intellect": 9,
+    "personality": 10,
+    "endurance": 17,
+    "speed": 10,
+    "accuracy": 13,
+    "luck": 11
+   },
+   "level": 5,
+   "town": "saltreach",
+   "wage": 38,
+   "beard": "long_red",
+   "blurb": "A retired caravan guard with a bad knee and a worse temper. Stands in the front rank and stays there."
+  },
+  {
+   "id": "brenna",
+   "name": "Brenna",
+   "race": "dwarf",
+   "class": "paladin",
+   "sex": "female",
+   "alignment": "good",
+   "stats": {
+    "might": 15,
+    "intellect": 10,
+    "personality": 14,
+    "endurance": 17,
+    "speed": 10,
+    "accuracy": 12,
+    "luck": 12
+   },
+   "level": 6,
+   "town": "thornwick",
+   "wage": 46,
+   "hair": "knot_red",
+   "blurb": "A miner turned holy warrior after the deep tunnels took her crew. She has opinions about undead."
+  },
+  {
+   "id": "ilsa",
+   "name": "Ilsa",
+   "race": "elf",
+   "class": "sorcerer",
+   "sex": "female",
+   "alignment": "neutral",
+   "stats": {
+    "might": 9,
+    "intellect": 17,
+    "personality": 12,
+    "endurance": 11,
+    "speed": 15,
+    "accuracy": 13,
+    "luck": 12
+   },
+   "level": 8,
+   "town": "duskmere",
+   "wage": 60,
+   "hair": "fem_white",
+   "blurb": "A marsh-witch of some renown, short of coin since her tower sank. Fire is her answer to most questions."
+  },
+  {
+   "id": "kadir",
+   "name": "Kadir",
+   "race": "human",
+   "class": "archer",
+   "sex": "male",
+   "alignment": "neutral",
+   "stats": {
+    "might": 12,
+    "intellect": 14,
+    "personality": 11,
+    "endurance": 13,
+    "speed": 15,
+    "accuracy": 17,
+    "luck": 12
+   },
+   "level": 10,
+   "town": "ashkar",
+   "wage": 74,
+   "hair": "long_black",
+   "beard": "short_black",
+   "blurb": "A desert scout who can put an arrow through a ring at a hundred paces - and charges accordingly."
+  },
+  {
+   "id": "ragna",
+   "name": "Ragna",
+   "race": "halforc",
+   "class": "knight",
+   "sex": "female",
+   "alignment": "neutral",
+   "stats": {
+    "might": 18,
+    "intellect": 8,
+    "personality": 9,
+    "endurance": 17,
+    "speed": 12,
+    "accuracy": 13,
+    "luck": 10
+   },
+   "level": 13,
+   "town": "wintermere",
+   "wage": 96,
+   "hair": "long_white",
+   "blurb": "A shieldmaiden of the north who has walked the Rime Halls and come back. Few can say that."
+  },
+  {
+   "id": "aldwyn",
+   "name": "Aldwyn",
+   "race": "human",
+   "class": "cleric",
+   "sex": "male",
+   "alignment": "good",
+   "stats": {
+    "might": 12,
+    "intellect": 13,
+    "personality": 17,
+    "endurance": 14,
+    "speed": 10,
+    "accuracy": 11,
+    "luck": 13
+   },
+   "level": 12,
+   "town": "wintermere",
+   "wage": 90,
+   "hair": "short_white",
+   "beard": "long_white",
+   "blurb": "An old priest of the Hearth who keeps the northern road open with prayer and a very heavy mace."
+  }
  ]
 }

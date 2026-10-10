@@ -30,8 +30,12 @@ public sealed partial class PartyMemberViewModel : ObservableObject
     public string Slot => (Index + 1).ToString(System.Globalization.CultureInfo.InvariantCulture);
     /// <summary>Name.</summary>
     public string Name => Character.Name;
-    /// <summary>"Knight 3" style label.</summary>
-    public string ClassLevel => $"{_services.Content.Race(Character.Race).Name} {_services.Content.Class(Character.Class).Name} {Character.Level}";
+    /// <summary>"Human Knight 3" style label ("Hired Knight 6" for hirelings).</summary>
+    public string ClassLevel => $"{(IsHireling ? "Hired" : _services.Content.Race(Character.Race).Name)} {_services.Content.Class(Character.Class).Name} {Character.Level}";
+    /// <summary>Whether this is a hireling rather than one of the party's heroes.</summary>
+    public bool IsHireling => Character.Hireling is not null;
+    /// <summary>What parting with them is called at the inn.</summary>
+    public string LeaveLabel => IsHireling ? $"Dismiss ({_services.Session.WageOf(Character)} gp/day)" : "Stay here";
     /// <summary>Hit points text.</summary>
     public string HpText => $"{Character.Hp}/{Character.MaxHp}";
     /// <summary>Spell points text.</summary>

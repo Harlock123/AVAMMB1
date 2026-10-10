@@ -84,7 +84,7 @@ public sealed class TownServices(GameSession session)
         {
             return log;
         }
-        if (State.Party.Count == 1)
+        if (State.Heroes.Count() == 1 && State.Party[partyIndex].Hireling is null)
         {
             log.Add(new("Someone has to stay in the party.", MessageKind.Bad));
             return log;
@@ -95,6 +95,11 @@ public sealed class TownServices(GameSession session)
             return log;
         }
         var c = State.Party[partyIndex];
+        if (c.Hireling is not null)
+        {
+            log.Add(new($"{c.Name} is a hireling - dismiss them instead.", MessageKind.Info));
+            return log;
+        }
         var taken = State.Withdraw(c, takeFromPurse);
         State.Party.RemoveAt(partyIndex);
         State.Roster.Add(c);
@@ -113,7 +118,7 @@ public sealed class TownServices(GameSession session)
         {
             return log;
         }
-        if (State.Party.Count >= GameState.MaxPartySize)
+        if (State.Heroes.Count() >= GameState.MaxPartySize)
         {
             log.Add(new("The party is already full.", MessageKind.Bad));
             return log;
@@ -130,7 +135,7 @@ public sealed class TownServices(GameSession session)
     public List<GameMessage> Recruit(Character c)
     {
         var log = new List<GameMessage>();
-        if (State.Party.Count < GameState.MaxPartySize)
+        if (State.Heroes.Count() < GameState.MaxPartySize)
         {
             State.Party.Add(c);
             log.Add(new($"{c.Name} joins the party.", MessageKind.Good));
@@ -294,6 +299,11 @@ public sealed class TownServices(GameSession session)
     public List<GameMessage> Train(Character c, MapEventDef ev)
     {
         var log = new List<GameMessage>();
+        if (c.Hireling is not null)
+        {
+            log.Add(new($"{c.Name} is paid to fight, not to train.", MessageKind.Info));
+            return log;
+        }
         if (!session.Rules.CanLevelUp(c))
         {
             var need = session.Rules.XpForNextLevel(c) - c.Experience;

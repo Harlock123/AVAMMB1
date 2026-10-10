@@ -370,9 +370,36 @@ public sealed partial class InnViewModel : BuildingViewModel
     public string LeavePrompt => Leaving is null ? "" :
         $"{Leaving.Name} keeps their own {Leaving.Character.Gold} gold. How much from the purse ({Session.State.Gold}) do they take along?";
 
+    /// <summary>Adventurers for hire at this inn.</summary>
+    public ObservableCollection<HireRow> ForHire { get; } = new();
+
+    /// <summary>Whether to show the hiring section (someone for hire here, or hirelings along).</summary>
+    public bool HasForHire => ForHire.Count > 0 || Session.State.Hirelings.Any();
+
+    /// <summary>Shown when no one (else) is for hire here.</summary>
+    public bool NoOneForHire => ForHire.Count == 0;
+
+    /// <summary>A note on hirelings ("2 of 2 hired" and so on).</summary>
+    public string HireNote => $"Hirelings travel with your six heroes for a daily wage and take no share of experience. With the party: {Session.State.Hirelings.Count()} of {GameState.MaxHirelings}.";
+
+    [RelayCommand]
+    private void Hire(HireRow row)
+    {
+        Report(Session.Hire(row.Id));
+        Game.Refresh();
+        RefreshRows();
+    }
+
     [RelayCommand]
     private void LeaveMember(PartyMemberViewModel m)
     {
+        if (m.IsHireling)
+        {
+            Report(Session.Dismiss(m.Character));
+            Game.Refresh();
+            RefreshRows();
+            return;
+        }
         Editing = null;
         TakeGold = 0;
         Leaving = m;
@@ -502,9 +529,25 @@ public sealed partial class InnViewModel : BuildingViewModel
         {
             Roster.Add(c);
         }
+        ForHire.Clear();
+        foreach (var h in Session.HirelingsAt(Session.State.MapId))
+        {
+            ForHire.Add(new HireRow(h.Id, h.Name,
+                $"L{h.Level} {Game.Services.Content.Race(h.Race).Name} {Game.Services.Content.Class(h.Class).Name} - {h.Wage} gold a day", h.Blurb));
+        }
         OnPropertyChanged(nameof(StayLabel));
+        OnPropertyChanged(nameof(HasForHire));
+        OnPropertyChanged(nameof(NoOneForHire));
+        OnPropertyChanged(nameof(HireNote));
     }
 }
+
+/// <summary>An adventurer for hire at an inn.</summary>
+/// <param name="Id">Hireling id.</param>
+/// <param name="Name">Name.</param>
+/// <param name="Terms">Level, class and wage.</param>
+/// <param name="Blurb">A line about them.</param>
+public sealed record HireRow(string Id, string Name, string Terms, string Blurb);
 
 /// <summary>An item offered or owned in a shop.</summary>
 public sealed class ShopItemViewModel

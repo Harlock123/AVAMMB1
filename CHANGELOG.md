@@ -6,6 +6,11 @@ All notable changes to this project are documented here. The format follows
 ## [Unreleased]
 
 ### Added
+- Hirelings: eight adventurers wait for work at the inns - Tobin the locksmith in Brindlemoor up to
+  Ragna the shieldmaiden in Wintermere, levels 2 to 13. Up to two travel with the six heroes (the party
+  bar makes room) for a daily wage paid each morning; they take no share of experience and never
+  train, and they leave if the wage can't be paid. Hire and dismiss them at the inn. Hirelings are
+  defined in game.json (`hirelings`), so mods can add their own.
 - Tips for new players: the first time something comes up - the first steps, a battle, a shop, the inn,
   the temple, a quest, a dungeon, a locked door, treasure, wounds, a level earned, nightfall, saving - a
   short tip appears over the view, using the player's own keys. It fades after a while or with Got it;

@@ -121,6 +121,9 @@ public sealed partial class GameViewModel : ViewModelBase
     [NotifyPropertyChangedFor(nameof(HasOverlay))]
     private ViewModelBase? _overlay;
 
+    /// <summary>Columns of the party bar: six, or more with hirelings along.</summary>
+    public int PartyColumns => Math.Max(GameState.MaxPartySize, Party.Count);
+
     /// <summary>Whether an overlay is open.</summary>
     public bool HasOverlay => Overlay is not null;
 
@@ -256,6 +259,7 @@ public sealed partial class GameViewModel : ViewModelBase
             {
                 Party.Add(new PartyMemberViewModel(Services, state.Party[i], i));
             }
+            OnPropertyChanged(nameof(PartyColumns));
         }
         foreach (var p in Party)
         {
@@ -630,7 +634,7 @@ public sealed partial class GameViewModel : ViewModelBase
             }
             return false;
         }
-        if (key >= Key.D1 && key <= Key.D6)
+        if (key >= Key.D1 && key <= Key.D8)
         {
             var i = key - Key.D1;
             if (i < Party.Count)

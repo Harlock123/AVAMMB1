@@ -24,7 +24,7 @@
                   <Button Grid.Column="3" Classes="chip" Content="Name &amp; looks" ToolTip.Tip="Rename this character or change their hair and beard"
                           Command="{Binding $parent[UserControl].((vm:InnViewModel)DataContext).EditCommand}" CommandParameter="{Binding}" />
                   <Button Grid.Column="1" Classes="chip" Content="Up" Command="{Binding $parent[UserControl].((vm:InnViewModel)DataContext).MoveUpCommand}" CommandParameter="{Binding}" />
-                  <Button Grid.Column="2" Classes="chip" Content="Stay here" Command="{Binding $parent[UserControl].((vm:InnViewModel)DataContext).LeaveMemberCommand}" CommandParameter="{Binding}" />
+                  <Button Grid.Column="2" Classes="chip" Content="{Binding LeaveLabel}" Command="{Binding $parent[UserControl].((vm:InnViewModel)DataContext).LeaveMemberCommand}" CommandParameter="{Binding}" />
                 </Grid>
               </DataTemplate>
             </ItemsControl.ItemTemplate>
@@ -42,6 +42,23 @@
               </DataTemplate>
             </ItemsControl.ItemTemplate>
           </ItemsControl>
+          <TextBlock Classes="h2" Text="For hire" Margin="0,10,0,0" IsVisible="{Binding HasForHire}" />
+          <ItemsControl ItemsSource="{Binding ForHire}">
+            <ItemsControl.ItemTemplate>
+              <DataTemplate x:DataType="vm:HireRow">
+                <Grid ColumnDefinitions="*,Auto" Margin="0,2" ToolTip.Tip="{Binding Blurb}">
+                  <StackPanel>
+                    <TextBlock Text="{Binding Name}" FontWeight="SemiBold" />
+                    <TextBlock Text="{Binding Terms}" Classes="dim" FontSize="{DynamicResource Font12}" />
+                  </StackPanel>
+                  <Button Grid.Column="1" Classes="chip" Content="Hire" VerticalAlignment="Center"
+                          Command="{Binding $parent[UserControl].((vm:InnViewModel)DataContext).HireCommand}" CommandParameter="{Binding}" />
+                </Grid>
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
+          <TextBlock Text="No one else is looking for work here." Classes="dim" FontSize="{DynamicResource Font12}" IsVisible="{Binding NoOneForHire}" />
+          <TextBlock Text="{Binding HireNote}" Classes="dim" FontSize="{DynamicResource Font12}" TextWrapping="Wrap" IsVisible="{Binding HasForHire}" />
         </StackPanel>
       </Grid>
       <Border IsVisible="{Binding IsChoosingGold}" Background="{DynamicResource ButtonBg}" CornerRadius="4" Padding="10">

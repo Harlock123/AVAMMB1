@@ -196,6 +196,7 @@ All screenshots are real frames rendered by the game itself (Avalonia headless +
 | ![Keyboard](docs/screenshots/41-keyboard.png) The on-screen keyboard for controller players | ![Depths](docs/screenshots/42-depths.png) The Depths Below, level 1 |
 | ![Travel](docs/screenshots/43-travel.png) The travel map | ![Daily](docs/screenshots/44-daily-challenge.png) The Daily Challenge |
 | ![Daily result](docs/screenshots/45-daily-result.png) A daily challenge result card, ready to share | ![Tip](docs/screenshots/46-tip.png) A tip for new players |
+| ![Hireling](docs/screenshots/47-hireling.png) A hireling joins at the inn | |
 
 ## Download and install
 

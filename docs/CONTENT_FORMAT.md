@@ -25,6 +25,7 @@ unconscious, dead, stoned`. **Elements**: `physical, fire, cold, electric, acid,
 | `startMap`, `startX`, `startY`, `startFacing` | Where new games begin |
 | `startingGoldPerMember`, `startingFood`, `maxFood` | Economy |
 | `premades` | Characters for *Quick Party*: `name, race, class, sex, alignment, stats{}` |
+| `hirelings` | Adventurers for hire at inns: `id, name, race, class, sex, alignment, stats{}, level, town` (a town map with an inn), `wage` (gold a day), optional `hair`, `beard`, `blurb` |
 
 ## races.json
 

@@ -44,11 +44,11 @@ public partial class GameView : UserControl
         PartyBar.AddHandler(PointerCaptureLostEvent, (_, _) => EndDrag(), RoutingStrategies.Direct, handledEventsToo: true);
     }
 
-    /// <summary>The party slot under a point on the party bar (six equal columns).</summary>
+    /// <summary>The party slot under a point on the party bar (equal columns).</summary>
     private int SlotAt(Point p)
     {
         var count = _vm?.Party.Count ?? 0;
-        var width = PartyBar.Bounds.Width / 6;
+        var width = PartyBar.Bounds.Width / Math.Max(1, _vm?.PartyColumns ?? 6);
         return count == 0 || width <= 0 ? -1 : Math.Clamp((int)(p.X / width), 0, count - 1);
     }
 

@@ -47,6 +47,8 @@ public sealed class Character
     public List<string> LearnedSpells { get; set; } = new();
     /// <summary>Statistic points bought at an academy (each costs more than the last).</summary>
     public int AcademyPoints { get; set; }
+    /// <summary>The hireling this is (see <see cref="Content.HirelingDef"/>), or null for one of the party's own heroes.</summary>
+    public string? Hireling { get; set; }
     /// <summary>Food units carried.</summary>
     public int Food { get; set; }
     /// <summary>Backpack contents.</summary>

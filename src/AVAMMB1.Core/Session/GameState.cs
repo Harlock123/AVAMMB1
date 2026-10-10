@@ -11,6 +11,19 @@ public sealed class GameState
 
     /// <summary>Maximum number of characters waiting at the inn.</summary>
     public const int MaxRosterSize = 18;
+    /// <summary>Most hirelings travelling with the party (on top of <see cref="MaxPartySize"/> heroes).</summary>
+    public const int MaxHirelings = 2;
+
+    /// <summary>The party's own heroes (everyone but hirelings).</summary>
+    [System.Text.Json.Serialization.JsonIgnore]
+    public IEnumerable<Characters.Character> Heroes => Party.Where(c => c.Hireling is null);
+
+    /// <summary>Hirelings travelling with the party.</summary>
+    [System.Text.Json.Serialization.JsonIgnore]
+    public IEnumerable<Characters.Character> Hirelings => Party.Where(c => c.Hireling is not null);
+
+    /// <summary>The last day whose wages the hirelings have been paid.</summary>
+    public long WagesPaidDay { get; set; }
 
     /// <summary>Active party members in marching order (first three form the front rank).</summary>
     public List<Character> Party { get; set; } = new();

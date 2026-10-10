@@ -461,6 +461,27 @@ public static class HeadlessRunner
         Pump();
         Capture(dir, "33-inn-looks");
         inn.CancelEditCommand.Execute(null);
+
+        // A hireling joins (a seventh in the party bar), then goes home again so the tour stays as it was.
+        var purse = s.State.Gold;
+        var logLines = game.Messages.Count;
+        inn.HireCommand.Execute(inn.ForHire.First());
+        if (s.State.Party.Count != 7 || game.PartyColumns != 7)
+        {
+            throw new InvalidOperationException("The hireling did not join the party.");
+        }
+        Capture(dir, "47-hireling");
+        inn.LeaveMemberCommand.Execute(game.Party[6]);
+        s.State.Gold = purse;
+        while (game.Messages.Count > logLines)
+        {
+            game.Messages.RemoveAt(game.Messages.Count - 1);
+        }
+        if (s.State.Party.Count != 6)
+        {
+            throw new InvalidOperationException("The hireling was not dismissed.");
+        }
+        Console.WriteLine("hireling ok");
         game.CloseOverlay();
 
         // Walk around town (real moves) so the automap has something to show, then visit the smithy.

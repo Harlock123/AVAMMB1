@@ -99,7 +99,7 @@
         </Style>
       </ItemsControl.Styles>
       <ItemsControl.ItemsPanel>
-        <ItemsPanelTemplate><UniformGrid Columns="6" /></ItemsPanelTemplate>
+        <ItemsPanelTemplate><UniformGrid Columns="{Binding $parent[UserControl].((vm:GameViewModel)DataContext).PartyColumns}" /></ItemsPanelTemplate>
       </ItemsControl.ItemsPanel>
       <ItemsControl.ItemTemplate>
         <DataTemplate x:DataType="vm:PartyMemberViewModel">

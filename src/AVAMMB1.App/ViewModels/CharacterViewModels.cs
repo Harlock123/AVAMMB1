@@ -83,7 +83,10 @@ public sealed partial class CharacterSheetViewModel : ViewModelBase
         {
             var r = Session.Rules;
             var next = r.XpForNextLevel(Character);
-            return $"Level {Character.Level}   XP {Character.Experience} / {next}\n" +
+            var level = Character.Hireling is null
+                ? $"Level {Character.Level}   XP {Character.Experience} / {next}\n"
+                : $"Level {Character.Level}   Hireling from {Session.HirelingHome(Character)}, {Session.WageOf(Character)} gold a day (no experience, no training)\n";
+            return level +
                    $"HP {Character.Hp}/{Character.MaxHp}   SP {Character.Sp}/{Character.MaxSp}   AC {r.ArmorClass(Character)}\n" +
                    $"To-hit +{r.MeleeAttackBonus(Character)} (missile +{r.MissileAttackBonus(Character)})   Attacks {r.AttacksPerRound(Character)}\n" +
                    $"Food {Character.Food}   Condition: {Character.StatusText}" +
@@ -273,7 +276,7 @@ public sealed partial class CharacterSheetViewModel : ViewModelBase
         {
             case Key.Right or Key.Tab: Next(); return true;
             case Key.Left: Previous(); return true;
-            case >= Key.D1 and <= Key.D6 when key - Key.D1 < _game.Party.Count: Index = key - Key.D1; return true;
+            case >= Key.D1 and <= Key.D8 when key - Key.D1 < _game.Party.Count: Index = key - Key.D1; return true;
             case Key.I or Key.C: Close(); return true;
             case Key.OemOpenBrackets: MoveLeft(); return true;
             case Key.OemCloseBrackets: MoveRight(); return true;

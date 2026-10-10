@@ -318,6 +318,42 @@ public sealed class GameConfigDef
     public string VictoryText { get; set; } = "";
     /// <summary>Premade characters offered by Quick Start.</summary>
     public List<PremadeCharacterDef> Premades { get; set; } = new();
+    /// <summary>Adventurers for hire at the inns.</summary>
+    public List<HirelingDef> Hirelings { get; set; } = new();
+}
+
+/// <summary>
+/// An adventurer for hire at a town's inn: joins the party (beyond its six heroes) for a daily wage,
+/// takes no share of experience and never trains.
+/// </summary>
+public sealed class HirelingDef
+{
+    /// <summary>Id.</summary>
+    public string Id { get; set; } = "";
+    /// <summary>Name.</summary>
+    public string Name { get; set; } = "";
+    /// <summary>Race id.</summary>
+    public string Race { get; set; } = "";
+    /// <summary>Class id.</summary>
+    public string Class { get; set; } = "";
+    /// <summary>Sex.</summary>
+    public Sex Sex { get; set; }
+    /// <summary>Alignment.</summary>
+    public Alignment Alignment { get; set; }
+    /// <summary>Attributes (race modifiers included).</summary>
+    public Dictionary<Stat, int> Stats { get; set; } = new();
+    /// <summary>Level (fixed).</summary>
+    public int Level { get; set; } = 1;
+    /// <summary>Id of the town whose inn they wait at.</summary>
+    public string Town { get; set; } = "";
+    /// <summary>Gold a day.</summary>
+    public int Wage { get; set; }
+    /// <summary>Portrait hairstyle, or null.</summary>
+    public string? Hair { get; set; }
+    /// <summary>Portrait beard, or null.</summary>
+    public string? Beard { get; set; }
+    /// <summary>A line about them.</summary>
+    public string Blurb { get; set; } = "";
 }
 
 /// <summary>A premade character used for a quick start.</summary>

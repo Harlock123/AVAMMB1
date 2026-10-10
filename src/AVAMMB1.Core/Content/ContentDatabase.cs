@@ -267,6 +267,15 @@ public sealed class ContentDatabase
             Check(Races.ContainsKey(p.Race), $"premade {p.Name}: unknown race {p.Race}");
             Check(Classes.ContainsKey(p.Class), $"premade {p.Name}: unknown class {p.Class}");
         }
+        Check(Config.Hirelings.Select(h => h.Id).Distinct().Count() == Config.Hirelings.Count, "game.json: duplicate hireling id");
+        foreach (var h in Config.Hirelings)
+        {
+            Check(Races.ContainsKey(h.Race), $"hireling {h.Id}: unknown race {h.Race}");
+            Check(Classes.ContainsKey(h.Class), $"hireling {h.Id}: unknown class {h.Class}");
+            Check(h.Level is >= 1 and <= Rules.Rulebook.MaxLevel && h.Wage > 0, $"hireling {h.Id}: needs a level and a wage");
+            Check(_maps.TryGetValue(h.Town, out var town) && town.Def.Events.Any(e => e.Type == MapEventKind.Inn),
+                $"hireling {h.Id}: {h.Town} is not a town with an inn");
+        }
         Check(_maps.ContainsKey(Config.StartMap), $"game.json: unknown start map {Config.StartMap}");
         foreach (var map in _maps.Values)
         {
