@@ -41,6 +41,8 @@ public enum InputAction
     Note,
     /// <summary>Open the help screen.</summary>
     Help,
+    /// <summary>Describe the surroundings in words.</summary>
+    Look,
 }
 
 /// <summary>User preferences persisted between sessions.</summary>
@@ -62,6 +64,8 @@ public sealed class GameSettings
     public int ViewResolution { get; set; } = 300;
     /// <summary>Save automatically on entering a new area and before boss fights (three rotating slots).</summary>
     public bool Autosave { get; set; } = true;
+    /// <summary>After every step, a short line in the log says what lies ahead (for screen readers).</summary>
+    public bool DescribeSteps { get; set; }
     /// <summary>Snow and rain in the open country.</summary>
     public bool Weather { get; set; } = true;
     /// <summary>Mark where open quests lead on the automap and minimap.</summary>
@@ -120,6 +124,7 @@ public sealed class GameSettings
         [InputAction.Journal] = ["J"],
         [InputAction.Note] = ["N"],
         [InputAction.Help] = ["F1", "H"],
+        [InputAction.Look] = ["L"],
     };
 
     /// <summary>Fills in any actions missing from <see cref="KeyBindings"/> with defaults.</summary>

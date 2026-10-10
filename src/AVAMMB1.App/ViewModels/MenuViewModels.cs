@@ -250,6 +250,7 @@ public sealed partial class SettingsViewModel : ViewModelBase
         _autosave = s.Autosave;
         _questMarkers = s.QuestMarkers;
         _weather = s.Weather;
+        _describeSteps = s.DescribeSteps;
         _pad = new Dictionary<InputAction, AVAMMB1.Core.Input.GamepadButton>(s.GamepadBindings);
         LoadPadRows();
         LoadBindings();
@@ -358,6 +359,10 @@ public sealed partial class SettingsViewModel : ViewModelBase
     /// <summary>Survival mode (daily rations).</summary>
     [ObservableProperty]
     private bool _survival;
+
+    /// <summary>Describe each step in the log.</summary>
+    [ObservableProperty]
+    private bool _describeSteps;
 
     /// <summary>Snow and rain outdoors.</summary>
     [ObservableProperty]
@@ -539,6 +544,7 @@ public sealed partial class SettingsViewModel : ViewModelBase
         s.Autosave = Autosave;
         s.QuestMarkers = QuestMarkers;
         s.Weather = Weather;
+        s.DescribeSteps = DescribeSteps;
         if (InGame)
         {
             var state = _main.Services.Session.State;

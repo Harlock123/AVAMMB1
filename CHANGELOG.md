@@ -6,6 +6,10 @@ All notable changes to this project are documented here. The format follows
 ## [Unreleased]
 
 ### Added
+- Describe surroundings (L, or Describe surroundings in the menu for controllers): the log says where
+  the party is and which way it faces, what lies ahead ("open for 6 squares, then water"), to either
+  side and behind, and what can be seen - places, stairs, treasure, riddle doors, guardians - with
+  distances. Settings > Accessibility can also describe each step briefly; screen readers read the log.
 - New spells. Utility: Reveal Secrets (sorcerer, level 3 - secret doors within three squares),
   Levitate (sorcerer, level 4 - float over floor traps and pits for a while) and Sense Minds (cleric,
   level 3 - what guardians and lairs wait on this level, and which way). And a seventh circle, learned

@@ -713,6 +713,13 @@ public sealed partial class GameMenuViewModel(GameViewModel game) : ViewModelBas
     private void Resume() => game.CloseOverlay();
 
     [RelayCommand]
+    private void Describe()
+    {
+        game.CloseOverlay();
+        game.Look();
+    }
+
+    [RelayCommand]
     private void Journal() => game.Overlay = new JournalViewModel(game);
 
     [RelayCommand]

@@ -7,6 +7,7 @@
       <TextBlock Classes="title" Text="Game Menu" HorizontalAlignment="Center" Margin="0,0,0,8" />
       <Button Classes="big" Content="Resume" Command="{Binding ResumeCommand}" />
       <Button Classes="big" Content="Journal" Command="{Binding JournalCommand}" />
+      <Button Classes="big" Content="Describe surroundings" Command="{Binding DescribeCommand}" ToolTip.Tip="Tells you in the log what is around the party (also the L key)" />
       <Button Classes="big" Content="Help" Command="{Binding HelpCommand}" />
       <Button Classes="big" Content="Save Game" Command="{Binding SaveCommand}" />
       <Button Classes="big" Content="Load Game" Command="{Binding LoadCommand}" />

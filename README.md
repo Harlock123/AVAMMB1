@@ -143,7 +143,8 @@ Code identifiers, the solution and executables use the name **`AVAMMB1`** (`AVAM
 - **Accessibility**: three colour themes (Standard, High contrast, and Colour-blind friendly, which
   shows good news in blue and bad news in orange instead of green and red, using the Okabe-Ito
   palette), adjustable text size (90-130%), adjustable battle text speed (lines appear one at a time),
-  a LOW badge on badly hurt characters that does not rely on colour, and rebindable keys and
+  a LOW badge on badly hurt characters that does not rely on colour, "Describe surroundings" (L) and
+  optional step-by-step descriptions in the log for screen readers, and rebindable keys and
   controller buttons.
 - **3D view options**: classic 400 x 300, sharp 640 x 480 or high 800 x 600 internal resolution,
   optional smooth scaling, and optional **detailed textures** - 128 x 128 walls and floors (CC0,

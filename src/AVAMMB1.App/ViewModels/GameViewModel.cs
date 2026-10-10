@@ -343,6 +343,10 @@ public sealed partial class GameViewModel : ViewModelBase
     private void Apply(StepResult r)
     {
         AddMessages(r.Messages.Where(m => m.Kind != MessageKind.Story || r.StoryText is null));
+        if (r.Moved && !r.CombatStarted && Services.Settings.DescribeSteps)
+        {
+            AddMessage(AVAMMB1.Core.World.ViewDescriber.Brief(Session));
+        }
         Refresh();
         if (!r.CombatStarted && !Session.State.Party.Any(c => c.CanAct))
         {
@@ -467,6 +471,10 @@ public sealed partial class GameViewModel : ViewModelBase
 
     [RelayCommand] private void Cast() => Overlay = new SpellCastViewModel(this, null);
 
+    /// <summary>Describes the surroundings in the log.</summary>
+    [RelayCommand]
+    public void Look() => AddMessages(AVAMMB1.Core.World.ViewDescriber.Describe(Session).Select(t => new GameMessage(t, MessageKind.Story)));
+
     [RelayCommand] private void Characters() => Overlay = new CharacterSheetViewModel(this, 0);
 
     /// <summary>Opens the character sheet for one member.</summary>
@@ -582,6 +590,7 @@ public sealed partial class GameViewModel : ViewModelBase
             case InputAction.Journal: Journal(); return true;
             case InputAction.Note: Note(); return true;
             case InputAction.Help: Help(); return true;
+            case InputAction.Look: Look(); return true;
             default: return false;
         }
     }

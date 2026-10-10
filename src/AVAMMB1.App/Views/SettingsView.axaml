@@ -39,6 +39,7 @@
                     <ComboBox Grid.Row="3" Grid.Column="1" ItemsSource="{Binding BattleTextOptions}" SelectedIndex="{Binding BattleTextIndex}" HorizontalAlignment="Stretch" Margin="0,2"
                               ToolTip.Tip="How quickly battle messages appear, one line at a time. Acting shows the rest at once." />
                   </Grid>
+                  <CheckBox Content="Describe each step in the log (for screen readers; L describes everything)" IsChecked="{Binding DescribeSteps}" />
                   <TextBlock Classes="dim" FontSize="{DynamicResource Font12}" TextWrapping="Wrap"
                              Text="High contrast uses black backgrounds and bright colours. Colour-blind friendly shows good news in blue and bad news in orange instead of green and red. Interface zoom applies when the interface is not fitted to the window." />
                   <TextBlock Classes="h2" Text="Game" />
