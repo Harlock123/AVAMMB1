@@ -6,6 +6,10 @@ All notable changes to this project are documented here. The format follows
 ## [Unreleased]
 
 ### Added
+- Installers and packages alongside the archives: a Windows installer (per-user, no admin rights,
+  Start-menu and optional desktop shortcut, uninstaller), a macOS disk image and a Linux AppImage, for
+  every platform and architecture. CI builds them and smoke-tests the installed / mounted / packaged
+  game. They are not code-signed. Made with `packaging/package.sh` and `packaging/package.ps1`.
 - The Daily Challenge (title screen): six ready heroes at level 15 - their gear smithed to +2, with an
   everburning lantern and potions - start straight in that day's Depths Below. Every level is the same
   for everyone on that date (fights and loot still roll for each player); it is played by ironman

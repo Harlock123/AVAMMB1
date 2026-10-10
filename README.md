@@ -209,6 +209,13 @@ Download the archive for your platform from the **[latest release](https://githu
 | Linux ARM64 | [AVAMMB1-1.11.0-linux-arm64.tar.gz](https://github.com/Harlock123/AVAMMB1/releases/download/v1.11.0/AVAMMB1-1.11.0-linux-arm64.tar.gz) | Same as above. |
 | macOS Apple Silicon | [AVAMMB1-1.11.0-osx-arm64.tar.gz](https://github.com/Harlock123/AVAMMB1/releases/download/v1.11.0/AVAMMB1-1.11.0-osx-arm64.tar.gz) | Extract, then open `AVAMMB1.app`. The app is **not notarized**: right-click -> *Open* the first time, or run `xattr -dr com.apple.quarantine AVAMMB1.app`. |
 | macOS Intel | [AVAMMB1-1.11.0-osx-x64.tar.gz](https://github.com/Harlock123/AVAMMB1/releases/download/v1.11.0/AVAMMB1-1.11.0-osx-x64.tar.gz) | Same as above. |
+**Installers and packages** (from the next release on; same release page): a Windows installer
+`AVAMMB1-<version>-<rid>-setup.exe` (installs for the current user without admin rights, Start-menu
+and optional desktop shortcut, uninstall from *Settings > Apps*; unsigned, so SmartScreen may warn), a
+macOS disk image `AVAMMB1-<version>-<rid>.dmg` (drag `AVAMMB1.app` to Applications; same
+notarization note as below) and a Linux AppImage `AVAMMB1-<version>-<rid>.AppImage`
+(`chmod +x AVAMMB1-*.AppImage && ./AVAMMB1-*.AppImage`; needs FUSE 2/3, or add
+`--appimage-extract-and-run`). Saves and settings are the same as with the archives.
 
 **Gatekeeper / notarization:** release builds made on the macOS CI runner are ad-hoc signed
 (`codesign -s -`), which Apple Silicon requires, but they are not signed with a Developer ID or
@@ -297,6 +304,11 @@ Each target is published with `PublishSingleFile=true`, `SelfContained=true`,
 `IncludeNativeLibrariesForSelfExtract=true`, `EnableCompressionInSingleFile=true` and
 `PublishReadyToRun=true` into `dist/<rid>/`, then packaged as `dist/AVAMMB1-<version>-<rid>.zip`
 (Windows) or `.tar.gz` (Linux, and macOS with an `AVAMMB1.app` bundle).
+Installers and packages are made from those builds by `packaging/package.sh <rid>` (macOS `.dmg`
+with `hdiutil`; Linux AppImage - `appimagetool` is downloaded) and `pwsh packaging/package.ps1 -Rid <rid>`
+(Windows, [Inno Setup](https://jrsoftware.org/isinfo.php) 6 - `packaging/windows/AVAMMB1.iss`).
+CI builds and smoke-tests them too: the installer is installed silently and the installed game run,
+the disk image is mounted and its app run, and the AppImage is run.
 **Trimming is intentionally disabled**: Avalonia, the DI container and the toolkit rely on
 reflection that trimming can break; ReadyToRun is used instead for faster startup.
 
