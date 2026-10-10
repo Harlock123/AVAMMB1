@@ -7,6 +7,7 @@ using AVAMMB1.Core.World;
 namespace AVAMMB1.Tests;
 
 /// <summary>The daily Depths challenge.</summary>
+[Collection(DepthsCollection.Name)]
 public class DailyChallengeTests
 {
     private static GameSession Start(string date, int seed)

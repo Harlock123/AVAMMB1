@@ -8,6 +8,7 @@ using AVAMMB1.Core.World;
 namespace AVAMMB1.Tests;
 
 /// <summary>The Depths Below: generated levels of an endless post-game dungeon.</summary>
+[Collection(DepthsCollection.Name)]
 public class DepthsTests
 {
     [Theory]

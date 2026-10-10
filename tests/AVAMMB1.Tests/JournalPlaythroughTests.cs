@@ -12,6 +12,7 @@ namespace AVAMMB1.Tests;
 /// talk, answer, choose). Fights are won outright - this guards that every quest can be finished and
 /// that the goals lead somewhere, not how hard the way is.
 /// </summary>
+[Collection(DepthsCollection.Name)]
 public class JournalPlaythroughTests(ITestOutputHelper output)
 {
     private static GameSession Party()
