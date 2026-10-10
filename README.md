@@ -224,7 +224,11 @@ and optional desktop shortcut, uninstall from *Settings > Apps*; unsigned, so Sm
 macOS disk image `AVAMMB1-<version>-<rid>.dmg` (drag `AVAMMB1.app` to Applications; same
 notarization note as below) and a Linux AppImage `AVAMMB1-<version>-<rid>.AppImage`
 (`chmod +x AVAMMB1-*.AppImage && ./AVAMMB1-*.AppImage`; needs FUSE 2/3, or add
-`--appimage-extract-and-run`). Saves and settings are the same as with the archives.
+`--appimage-extract-and-run`). From v1.13.0 there is also a Flatpak bundle,
+`AVAMMB1-<version>-<x86_64|aarch64>.flatpak` (`flatpak install --user AVAMMB1-*.flatpak`, then start it
+from the menu or with `flatpak run io.github.Harlock123.AVAMMB1`) - it suits the Steam Deck's desktop
+mode; see [packaging/flatpak](packaging/flatpak/README.md), which also covers submitting to Flathub.
+Saves and settings are the same as with the archives.
 
 **Updates:** the game asks GitHub about once a day whether a newer release exists and, if so, says so
 on the title screen with a link to the download page. It never downloads or installs anything, and

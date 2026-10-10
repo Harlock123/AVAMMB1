@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>io.github.Harlock123.AVAMMB1</id>
+  <name>AVAM&amp;M</name>
+  <summary>A first-person, turn-based fantasy role-playing adventure</summary>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>MIT AND CC0-1.0</project_license>
+  <developer id="io.github.Harlock123">
+    <name>AVAM&amp;M contributors</name>
+  </developer>
+  <description>
+    <p>
+      AVAM&amp;M (Book One - Secrets of the Inner Vault) is an unofficial fan re-implementation inspired by the classic
+      1980s party-based dungeon crawlers. Lead six adventurers through towns, wilderness and dungeons drawn on a
+      step-by-step grid, fight turn-based battles, and uncover the secret of the Inner Vault.
+    </p>
+    <ul>
+      <li>Six classes and five races, spells in two schools, and gear to smith up to +5</li>
+      <li>Seven towns, wilderness, a dozen dungeons and an endless post-game dungeon</li>
+      <li>Hirelings, New Game+, a Daily Challenge and a Hall of Fame</li>
+      <li>Keyboard, mouse and controller play, an automap, a quest journal and tips for new players</li>
+    </ul>
+    <p>All content is original or openly licensed. Not affiliated with or endorsed by any rights holder.</p>
+  </description>
+  <launchable type="desktop-id">io.github.Harlock123.AVAMMB1.desktop</launchable>
+  <url type="homepage">https://github.com/Harlock123/AVAMMB1</url>
+  <url type="bugtracker">https://github.com/Harlock123/AVAMMB1/issues</url>
+  <screenshots>
+    <screenshot type="default">
+      <caption>Exploring a town</caption>
+      <image>https://raw.githubusercontent.com/Harlock123/AVAMMB1/main/docs/screenshots/04-town.png</image>
+    </screenshot>
+    <screenshot>
+      <caption>A battle in the dungeon</caption>
+      <image>https://raw.githubusercontent.com/Harlock123/AVAMMB1/main/docs/screenshots/09-combat.png</image>
+    </screenshot>
+    <screenshot>
+      <caption>The automap</caption>
+      <image>https://raw.githubusercontent.com/Harlock123/AVAMMB1/main/docs/screenshots/11-automap-dungeon.png</image>
+    </screenshot>
+    <screenshot>
+      <caption>Character sheet and inventory</caption>
+      <image>https://raw.githubusercontent.com/Harlock123/AVAMMB1/main/docs/screenshots/10-inventory.png</image>
+    </screenshot>
+  </screenshots>
+  <content_rating type="oars-1.1">
+    <content_attribute id="violence-fantasy">moderate</content_attribute>
+  </content_rating>
+  <supports>
+    <control>keyboard</control>
+    <control>pointing</control>
+    <control>gamepad</control>
+  </supports>
+  <categories>
+    <category>Game</category>
+    <category>RolePlaying</category>
+  </categories>
+  <releases>
+    <release version="@VERSION@" date="@DATE@">
+      <url type="details">https://github.com/Harlock123/AVAMMB1/releases/tag/v@VERSION@</url>
+    </release>
+  </releases>
+</component>

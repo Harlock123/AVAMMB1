@@ -128,9 +128,56 @@ jobs:
             dist/*.AppImage
             dist/*-setup.exe
 
+  flatpak:
+    needs: publish
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { arch: x86_64,  rid: linux-x64,   os: ubuntu-latest }
+          - { arch: aarch64, rid: linux-arm64, os: ubuntu-24.04-arm }
+    runs-on: ${{ matrix.os }}
+    container:
+      image: ghcr.io/flathub-infra/flatpak-github-actions:freedesktop-24.08
+      options: --privileged
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: AVAMMB1-${{ matrix.rid }}
+          path: dist
+      - name: Manifest
+        id: manifest
+        shell: bash
+        run: |
+          version="$(sed -n 's:.*<Version>\(.*\)</Version>.*:\1:p' Directory.Build.props | head -1)"
+          packaging/flatpak/make-manifest.sh flatpak-build dist/AVAMMB1-*-${{ matrix.rid }}.tar.gz
+          echo "bundle=AVAMMB1-$version-${{ matrix.arch }}.flatpak" >> "$GITHUB_OUTPUT"
+      - uses: flatpak/flatpak-github-actions/flatpak-builder@v6
+        with:
+          manifest-path: flatpak-build/io.github.Harlock123.AVAMMB1.yml
+          bundle: ${{ steps.manifest.outputs.bundle }}
+          arch: ${{ matrix.arch }}
+          cache: false
+          upload-artifact: false
+      - name: Smoke test the Flatpak
+        shell: bash
+        run: |
+          flatpak remote-add --user --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+          flatpak install --user -y --noninteractive flathub org.freedesktop.Platform//24.08
+          flatpak install --user -y --noninteractive --bundle ${{ steps.manifest.outputs.bundle }}
+          flatpak run io.github.Harlock123.AVAMMB1 --smoke-test
+      - name: Collect
+        shell: bash
+        run: mkdir -p out && mv ${{ steps.manifest.outputs.bundle }} out/
+      - uses: actions/upload-artifact@v4
+        with:
+          name: AVAMMB1-flatpak-${{ matrix.arch }}
+          path: out/*.flatpak
+
   release:
     if: startsWith(github.ref, 'refs/tags/v')
-    needs: publish
+    needs: [publish, flatpak]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/download-artifact@v4
@@ -145,7 +192,9 @@ jobs:
           body: |
             Single-file, self-contained builds of AVAM&M (unofficial fan re-implementation), as plain
             archives and as packages: a Windows installer (-setup.exe), a macOS disk image (.dmg) and a
-            Linux AppImage (.AppImage - make it executable and run it).
+            Linux AppImage (.AppImage - make it executable and run it) and a Flatpak bundle
+            (`flatpak install --user AVAMMB1-*.flatpak`, then run it from the menu or with
+            `flatpak run io.github.Harlock123.AVAMMB1`).
             The installers are not code-signed: Windows SmartScreen may warn (More info -> Run anyway);
             macOS builds are ad-hoc signed but not notarized: right-click -> Open on first launch,
             or run `xattr -dr com.apple.quarantine AVAMMB1.app`.

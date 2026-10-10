@@ -6,6 +6,9 @@ All notable changes to this project are documented here. The format follows
 ## [Unreleased]
 
 ### Added
+- A Flatpak (`io.github.Harlock123.AVAMMB1`) for x86_64 and aarch64 Linux, built and smoke-tested in
+  CI and attached to releases as a bundle, with AppStream metadata, a desktop file and a manifest
+  generator ready for a Flathub submission (packaging/flatpak).
 - New Game+: after the victory, the same party can start again from Brindlemoor - levels, gear,
   spells, gold, hirelings and the heroes at the inn are kept; quest relics are left behind and the
   world (quests, treasure, maps, story) begins anew. Every monster fights as if as many levels higher

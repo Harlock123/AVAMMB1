@@ -1,0 +1,30 @@
+# Flatpak manifest for AVAM&M. packaging/flatpak/make-manifest.sh fills in the game archive: a local
+# build (CI bundles) or a GitHub release download with its checksum (for Flathub).
+app-id: io.github.Harlock123.AVAMMB1
+runtime: org.freedesktop.Platform
+runtime-version: '24.08'
+sdk: org.freedesktop.Sdk
+command: AVAMMB1
+finish-args:
+  - --share=ipc
+  - --socket=x11
+  - --socket=pulseaudio
+  - --device=all # controllers (and the GPU)
+  - --share=network # the once-a-day update check, which can be switched off in Settings
+modules:
+  - name: avammb1
+    buildsystem: simple
+    build-commands:
+      - install -Dm755 AVAMMB1 /app/bin/AVAMMB1
+      - install -Dm644 io.github.Harlock123.AVAMMB1.desktop /app/share/applications/io.github.Harlock123.AVAMMB1.desktop
+      - install -Dm644 io.github.Harlock123.AVAMMB1.metainfo.xml /app/share/metainfo/io.github.Harlock123.AVAMMB1.metainfo.xml
+      - install -Dm644 avammb1.png /app/share/icons/hicolor/256x256/apps/io.github.Harlock123.AVAMMB1.png
+      - install -Dm644 -t /app/share/licenses/io.github.Harlock123.AVAMMB1 LICENSE CREDITS.md ASSETS_LICENSES.md
+    sources:
+@GAME_SOURCE@
+      - type: file
+        path: io.github.Harlock123.AVAMMB1.desktop
+      - type: file
+        path: io.github.Harlock123.AVAMMB1.metainfo.xml
+      - type: file
+        path: avammb1.png
