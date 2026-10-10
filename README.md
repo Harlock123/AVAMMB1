@@ -98,7 +98,7 @@ Code identifiers, the solution and executables use the name **`AVAMMB1`** (`AVAM
   Deep (levels 13-15). By ship north from Saltreach lies the Frostmark (levels 11-14): the town of
   Wintermere, a tundra of wargs and frost giants, and the two-level Rime Halls where the ice dragon
   Rimefang lairs. Every town also posts a **bounty** - bring back a trophy from a monster's hoard.
-  Mid-game, **The Silent Choir** (levels 8-12) runs through all six towns: Brindlemoor's magistrate,
+  Mid-game, **The Silent Choir** (levels 7-12) runs through all six towns: Brindlemoor's magistrate,
   a ledger from the Deep Mines, the Saltreach customs house, a runaway singer in Duskmere, a key
   hidden in the Tomb of the Sun Kings - and the two-level Hollow Belfry in the Ashen Hills, where the
   Choirmaster is recasting a bell that steals voices. Its rewards include four unique items.

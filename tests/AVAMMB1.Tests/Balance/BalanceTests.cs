@@ -25,6 +25,8 @@ public class BalanceTests(ITestOutputHelper output)
         new("temple", "duskmere", 9),
         new("sunscar", "ashkar", 10),
         new("tomb1", "ashkar", 11),
+        new("belfry1", "duskmere", 11),
+        new("belfry2", "duskmere", 12),
         new("tomb2", "ashkar", 12),
         new("frostmark", "wintermere", 13),
         new("rime1", "wintermere", 13),
@@ -57,6 +59,35 @@ public class BalanceTests(ITestOutputHelper output)
         Assert.True(reports.Sum(r => r.Wipes) <= 4, "too many wipes");
         Assert.InRange(total, 350, 1000);
         Assert.DoesNotContain(sim.Outcomes.Keys, k => k.StartsWith("STUCK", StringComparison.Ordinal));
+    }
+
+    /// <summary>The whole route on Easy and Hard: both finish, Hard takes longer and costs more lives.</summary>
+    [Theory]
+    [InlineData(Difficulty.Easy)]
+    [InlineData(Difficulty.Hard)]
+    public void SimulatedPlaythrough_OnEasyAndHard(Difficulty difficulty)
+    {
+        var sim = new BalanceSimulator(1, difficulty);
+        var reports = sim.Run(Route, maxBattlesPerZone: 400);
+        foreach (var r in reports)
+        {
+            output.WriteLine(r.ToString());
+        }
+        var total = reports.Sum(r => r.Battles);
+        var wipes = reports.Sum(r => r.Wipes);
+        output.WriteLine($"{difficulty}: total battles {total}, wipes {wipes}, deaths {reports.Sum(r => r.Deaths)}");
+        Assert.All(reports, r => Assert.True(r.Reached, $"{difficulty} {r.Zone.Map}: stuck at level {r.ExitLevel}"));
+        Assert.DoesNotContain(sim.Outcomes.Keys, k => k.StartsWith("STUCK", StringComparison.Ordinal));
+        if (difficulty == Difficulty.Easy)
+        {
+            Assert.True(wipes <= 2, $"Easy: {wipes} wipes");
+            Assert.InRange(total, 300, 1000);
+        }
+        else
+        {
+            Assert.True(wipes <= 12, $"Hard: {wipes} wipes");
+            Assert.InRange(total, 350, 1500);
+        }
     }
 
     [Fact]

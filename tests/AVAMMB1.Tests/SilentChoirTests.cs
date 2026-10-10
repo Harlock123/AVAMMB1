@@ -38,7 +38,7 @@ public class SilentChoirTests
     public void TheChain_RunsThroughAllSixTowns_ToTheBelfryAndBack()
     {
         var s = StrongParty();
-        var walker = new Walker(s);
+        var walker = new Walker(s) { Overwhelm = true }; // how hard the fights are is BossBalanceTests' business
 
         // Steps out of order do nothing yet.
         Assert.Contains("buried in old maps", Said(Visit(s, "thornwick", 7, 9)), StringComparison.Ordinal);
@@ -78,8 +78,7 @@ public class SilentChoirTests
         walker.Go(12, 12);
         Assert.Contains(s.State.Party, c => c.Backpack.Any(i => i.ItemId == "belfry_key"));
 
-        // Now the Belfry door opens. (How hard the Choirmaster is is BossBalanceTests' business.)
-        walker.Overwhelm = true;
+        // Now the Belfry door opens.
         (s.State.MapId, s.State.X, s.State.Y) = ("hills", 16, 7);
         walker.Go(17, 7);
         Assert.Equal("belfry1", s.State.MapId);

@@ -115,4 +115,39 @@ public class DifficultyTests
         Step(s);
         Assert.Equal(food, s.State.Party.Select(c => c.Food));
     }
+
+    /// <summary>
+    /// Balance of survival mode: ten days on the road without camping costs each character one food a
+    /// day; camping daily costs nothing extra (the rest is the day's meal). Either way a full pack lasts
+    /// well over a week and refilling it costs little next to what a party earns.
+    /// </summary>
+    [Fact]
+    public void Survival_FoodCostsStayModest()
+    {
+        var s = TestContent.StartedSession();
+        s.State.Survival = true;
+        var start = s.State.Party.Select(c => c.Food).ToList();
+        for (var day = 0; day < 10; day++)
+        {
+            s.State.Minutes = s.State.LastMealMinutes + GameState.MinutesPerDay - 1;
+            Step(s);
+        }
+        Assert.Equal(start.Select(f => f - 10), s.State.Party.Select(c => c.Food));
+
+        var camper = TestContent.StartedSession();
+        camper.State.Survival = true;
+        var before = camper.State.Party.Select(c => c.Food).ToList();
+        for (var day = 0; day < 3; day++)
+        {
+            camper.State.Minutes += GameState.MinutesPerDay - 9 * 60;
+            Step(camper);
+            camper.Rest();
+        }
+        // Three rests eat three meals; the daily ration never comes due on top of them.
+        Assert.All(camper.State.Party.Zip(before), p => Assert.InRange(before[0] - p.First.Food, 3, 4));
+
+        var tavern = s.Content.Map("brindlemoor").AllEvents.First(e => e.Type == AVAMMB1.Core.Content.MapEventKind.Tavern);
+        // Refilling six empty packs (240 rations) costs less than the starting purse.
+        Assert.InRange(s.Town.FoodCost(tavern), 1, 300);
+    }
 }

@@ -63,6 +63,13 @@ All notable changes to this project are documented here. The format follows
   character as they move.
 
 ### Changed
+- Balance check of the mid-game: the simulated playthrough now includes the Hollow Belfry and runs on
+  Easy and Hard as well as Normal (all three finish the route; Hard costs about 15% less gold, twice
+  the potions and a third less gear). The Silent Choir's two lieutenants were too easy for mini-bosses
+  and are now real fights: Bursar Quill (party level 7; 200 HP) and Keeper Isaura (level 10; 320 HP,
+  now guarded by two Choir Cantors). Survival mode's food cost was measured: a rest is the day's meal,
+  so camping parties pay nothing extra, and a party that never camps eats one ration each a day -
+  about 6 gold a day for six.
 - macOS Intel (osx-x64) builds are now verified (play-tested on an Intel Mac).
 
 ### Fixed

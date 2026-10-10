@@ -2642,23 +2642,28 @@
   "name": "Bursar Quill",
   "sprite": "choir_bursar",
   "level": 8,
-  "hitPoints": "70",
-  "armorClass": 8,
+  "hitPoints": "200",
+  "armorClass": 11,
   "speed": 12,
-  "xp": 1500,
+  "xp": 2500,
   "gold": "300",
   "attacks": [
    {
     "verb": "strikes",
-    "damage": "1d8+2"
+    "damage": "2d8+2"
+   },
+   {
+    "verb": "strikes",
+    "damage": "2d6"
    }
   ],
+  "smart": true,
   "abilities": [
    {
     "name": "a ledger of curses",
     "chance": 30,
     "allTargets": true,
-    "damage": "2d8",
+    "damage": "4d8",
     "element": "magic"
    }
   ],
@@ -2674,30 +2679,35 @@
   "id": "choir_keeper",
   "name": "Keeper Isaura",
   "sprite": "choir_keeper",
-  "level": 10,
-  "hitPoints": "120",
-  "armorClass": 9,
-  "speed": 13,
-  "xp": 3000,
+  "level": 11,
+  "hitPoints": "320",
+  "armorClass": 12,
+  "speed": 14,
+  "xp": 6000,
   "gold": "500",
   "attacks": [
    {
     "verb": "strikes",
-    "damage": "2d6"
+    "damage": "2d10"
+   },
+   {
+    "verb": "strikes",
+    "damage": "2d8"
    }
   ],
   "smart": true,
   "abilities": [
    {
     "name": "a lullaby of the Hollow Bell",
-    "chance": 20,
+    "chance": 12,
     "allTargets": true,
     "inflicts": "asleep"
    },
    {
     "name": "a shard of song",
     "chance": 30,
-    "damage": "4d8",
+    "allTargets": true,
+    "damage": "5d8",
     "element": "magic"
    }
   ],

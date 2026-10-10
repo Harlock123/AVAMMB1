@@ -62,9 +62,10 @@ internal sealed class BalanceSimulator
     private ZoneReport? _current;
     private bool _profiling;
 
-    public BalanceSimulator(int seed)
+    public BalanceSimulator(int seed, Difficulty difficulty = Difficulty.Normal)
     {
         _s = TestContent.StartedSession(seed);
+        _s.State.Difficulty = difficulty;
         _save = Clone(_s.State);
     }
 
