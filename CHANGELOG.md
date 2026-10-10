@@ -5,6 +5,8 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+## [1.12.0] - 2026-10-10
+
 ### Added
 - Installers and packages alongside the archives: a Windows installer (per-user, no admin rights,
   Start-menu and optional desktop shortcut, uninstaller), a macOS disk image and a Linux AppImage, for
