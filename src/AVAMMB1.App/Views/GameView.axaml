@@ -1,4 +1,5 @@
-<UserControl xmlns="https://github.com/avaloniaui"
+<UserControl xmlns:l="using:AVAMMB1.App.Localization"
+             xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:AVAMMB1.App.ViewModels"
              xmlns:c="using:AVAMMB1.App.Controls"
@@ -24,12 +25,12 @@
                 DataContext="{Binding Tip}" x:DataType="vm:TipViewModel">
           <StackPanel Spacing="6">
             <Grid ColumnDefinitions="*,Auto">
-              <TextBlock Text="{Binding Title, StringFormat='Tip: {0}'}" Foreground="{DynamicResource Gold}" FontWeight="Bold" FontSize="{DynamicResource Font15}" />
-              <Button Grid.Column="1" Classes="chip" Content="Got it" Command="{Binding DismissCommand}" Focusable="False" />
+              <TextBlock Text="{Binding Title}" Foreground="{DynamicResource Gold}" FontWeight="Bold" FontSize="{DynamicResource Font15}" />
+              <Button Grid.Column="1" Classes="chip" Content="{l:T 'Got it'}" Command="{Binding DismissCommand}" Focusable="False" />
             </Grid>
             <TextBlock Text="{Binding Text}" TextWrapping="Wrap" FontSize="{DynamicResource Font14}" />
-            <Button Classes="chip" HorizontalAlignment="Right" Content="No more tips" Command="{Binding TurnOffCommand}" Focusable="False"
-                    ToolTip.Tip="Settings > Game can switch tips back on" />
+            <Button Classes="chip" HorizontalAlignment="Right" Content="{l:T 'No more tips'}" Command="{Binding TurnOffCommand}" Focusable="False"
+                    ToolTip.Tip="{l:T 'Settings > Game can switch tips back on'}" />
           </StackPanel>
         </Border>
         </Panel>
@@ -47,12 +48,12 @@
           <TextBlock Text="{Binding TimeText}" Classes="dim" TextTrimming="CharacterEllipsis" />
           <!-- Movement -->
           <Grid ColumnDefinitions="Auto,Auto,Auto" RowDefinitions="Auto,Auto" HorizontalAlignment="Center">
-            <Button Classes="nav" Content="&#x21B6;" ToolTip.Tip="Turn left (Left / A)" Command="{Binding TurnLeftCommand}" />
-            <Button Grid.Column="1" Classes="nav" Content="&#x2191;" ToolTip.Tip="Forward (Up / W)" Command="{Binding ForwardCommand}" />
-            <Button Grid.Column="2" Classes="nav" Content="&#x21B7;" ToolTip.Tip="Turn right (Right / D)" Command="{Binding TurnRightCommand}" />
-            <Button Grid.Row="1" Classes="nav" Content="&#x2190;" ToolTip.Tip="Strafe left (Q)" Command="{Binding StrafeLeftCommand}" />
-            <Button Grid.Row="1" Grid.Column="1" Classes="nav" Content="&#x2193;" ToolTip.Tip="Back (Down / S)" Command="{Binding BackCommand}" />
-            <Button Grid.Row="1" Grid.Column="2" Classes="nav" Content="&#x2192;" ToolTip.Tip="Strafe right (E)" Command="{Binding StrafeRightCommand}" />
+            <Button Classes="nav" Content="&#x21B6;" ToolTip.Tip="{l:T 'Turn left (Left / A)'}" Command="{Binding TurnLeftCommand}" />
+            <Button Grid.Column="1" Classes="nav" Content="&#x2191;" ToolTip.Tip="{l:T 'Forward (Up / W)'}" Command="{Binding ForwardCommand}" />
+            <Button Grid.Column="2" Classes="nav" Content="&#x21B7;" ToolTip.Tip="{l:T 'Turn right (Right / D)'}" Command="{Binding TurnRightCommand}" />
+            <Button Grid.Row="1" Classes="nav" Content="&#x2190;" ToolTip.Tip="{l:T 'Strafe left (Q)'}" Command="{Binding StrafeLeftCommand}" />
+            <Button Grid.Row="1" Grid.Column="1" Classes="nav" Content="&#x2193;" ToolTip.Tip="{l:T 'Back (Down / S)'}" Command="{Binding BackCommand}" />
+            <Button Grid.Row="1" Grid.Column="2" Classes="nav" Content="&#x2192;" ToolTip.Tip="{l:T 'Strafe right (E)'}" Command="{Binding StrafeRightCommand}" />
           </Grid>
           <UniformGrid Columns="5">
             <UniformGrid.Styles>
@@ -61,18 +62,18 @@
                 <Setter Property="FontSize" Value="11.5" /> <!-- fixed: the labels just fit -->
               </Style>
             </UniformGrid.Styles>
-            <Button Content="Use (Spc)" Command="{Binding InteractCommand}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" />
-            <Button Content="Search (F)" Command="{Binding SearchCommand}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" ToolTip.Tip="Search the walls here for secret doors" />
-            <Button Content="Rest (R)" Command="{Binding RestCommand}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" />
-            <Button Content="Cast (K)" Command="{Binding CastCommand}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" />
-            <Button Content="Party (I)" Command="{Binding CharactersCommand}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" />
-            <Button Content="Map (M)" Command="{Binding AutomapCommand}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" />
-            <Button Content="Journal (J)" Command="{Binding JournalCommand}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" ToolTip.Tip="Quests and clues" />
-            <Button Content="Note (N)" Command="{Binding NoteCommand}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" ToolTip.Tip="Write a note on this square of the automap" />
-            <Button Content="Menu (Esc)" Command="{Binding MenuCommand}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" />
-            <Button Content="Save (F5)" Command="{Binding QuickSaveCommand}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" />
+            <Button Content="{l:T 'Use (Spc)'}" Command="{Binding InteractCommand}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" />
+            <Button Content="{l:T 'Search (F)'}" Command="{Binding SearchCommand}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" ToolTip.Tip="{l:T 'Search the walls here for secret doors'}" />
+            <Button Content="{l:T 'Rest (R)'}" Command="{Binding RestCommand}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" />
+            <Button Content="{l:T 'Cast (K)'}" Command="{Binding CastCommand}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" />
+            <Button Content="{l:T 'Party (I)'}" Command="{Binding CharactersCommand}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" />
+            <Button Content="{l:T 'Map (M)'}" Command="{Binding AutomapCommand}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" />
+            <Button Content="{l:T 'Journal (J)'}" Command="{Binding JournalCommand}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" ToolTip.Tip="{l:T 'Quests and clues'}" />
+            <Button Content="{l:T 'Note (N)'}" Command="{Binding NoteCommand}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" ToolTip.Tip="{l:T 'Write a note on this square of the automap'}" />
+            <Button Content="{l:T 'Menu (Esc)'}" Command="{Binding MenuCommand}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" />
+            <Button Content="{l:T 'Save (F5)'}" Command="{Binding QuickSaveCommand}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" />
           </UniformGrid>
-          <TextBlock Classes="h2" Text="Log" Margin="0,4,0,0" />
+          <TextBlock Classes="h2" Text="{l:T 'Log'}" Margin="0,4,0,0" />
         </StackPanel>
         <ScrollViewer x:Name="LogScroller" Background="{DynamicResource ScreenBg}">
           <ItemsControl ItemsSource="{Binding Messages}" Margin="6,4">
@@ -104,7 +105,7 @@
       <ItemsControl.ItemTemplate>
         <DataTemplate x:DataType="vm:PartyMemberViewModel">
           <Button Padding="0" Margin="0,0,6,0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch"
-                  Background="Transparent" BorderThickness="0" ToolTip.Tip="Click for the character sheet; drag to change places"
+                  Background="Transparent" BorderThickness="0" ToolTip.Tip="{l:T 'Click for the character sheet; drag to change places'}"
                   Command="{Binding $parent[UserControl].((vm:GameViewModel)DataContext).OpenMemberCommand}" CommandParameter="{Binding}">
             <Border Classes="panel" Padding="6" Classes.active="{Binding IsActive}" Classes.hurt="{Binding IsHurt}">
               <Border.Styles>
@@ -139,23 +140,23 @@
                 </Grid>
                 <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding ClassLevel}" Classes="dim" FontSize="{DynamicResource Font11}" TextTrimming="CharacterEllipsis" />
                 <StackPanel Grid.Column="1" Grid.Row="2" Orientation="Horizontal" Spacing="8">
-                  <TextBlock FontSize="{DynamicResource Font12}"><Run Text="AC " Foreground="{DynamicResource Dim}" /><Run Text="{Binding ArmorClass}" /></TextBlock>
-                  <TextBlock FontSize="{DynamicResource Font12}"><Run Text="Food " Foreground="{DynamicResource Dim}" /><Run Text="{Binding Food}" /></TextBlock>
-                  <TextBlock FontSize="{DynamicResource Font12}" Text="LVL!" Foreground="{DynamicResource Good}" IsVisible="{Binding CanLevel}" FontWeight="Bold" />
+                  <TextBlock FontSize="{DynamicResource Font12}"><Run Text="{l:T 'AC '}" Foreground="{DynamicResource Dim}" /><Run Text="{Binding ArmorClass}" /></TextBlock>
+                  <TextBlock FontSize="{DynamicResource Font12}"><Run Text="{l:T 'Food '}" Foreground="{DynamicResource Dim}" /><Run Text="{Binding Food}" /></TextBlock>
+                  <TextBlock FontSize="{DynamicResource Font12}" Text="{l:T 'LVL!'}" Foreground="{DynamicResource Good}" IsVisible="{Binding CanLevel}" FontWeight="Bold" />
                 </StackPanel>
                 <Grid Grid.Row="3" Grid.ColumnSpan="2" ColumnDefinitions="26,*,60" Margin="0,4,0,0">
-                  <TextBlock Text="HP" FontSize="{DynamicResource Font11}" Classes="dim" />
+                  <TextBlock Text="{l:T 'HP'}" FontSize="{DynamicResource Font11}" Classes="dim" />
                   <ProgressBar Grid.Column="1" Minimum="0" Maximum="1" Value="{Binding HpFraction}" Foreground="{DynamicResource HpBrush}" VerticalAlignment="Center" />
                   <Border Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center" Background="{DynamicResource BadgeBg}" CornerRadius="2" Padding="3,0"
-                          IsVisible="{Binding LowHp}" ToolTip.Tip="Badly hurt">
-                    <TextBlock Text="LOW" FontSize="{DynamicResource Font11}" FontWeight="Bold" />
+                          IsVisible="{Binding LowHp}" ToolTip.Tip="{l:T 'Badly hurt'}">
+                    <TextBlock Text="{l:T 'LOW'}" FontSize="{DynamicResource Font11}" FontWeight="Bold" />
                   </Border>
                   <TextBlock Grid.Column="2" Text="{Binding HpText}" FontSize="{DynamicResource Font11}" HorizontalAlignment="Right" Classes.low="{Binding LowHp}">
                     <TextBlock.Styles><Style Selector="TextBlock.low"><Setter Property="FontWeight" Value="Bold" /></Style></TextBlock.Styles>
                   </TextBlock>
                 </Grid>
                 <Grid Grid.Row="4" Grid.ColumnSpan="2" ColumnDefinitions="26,*,60">
-                  <TextBlock Text="SP" FontSize="{DynamicResource Font11}" Classes="dim" />
+                  <TextBlock Text="{l:T 'SP'}" FontSize="{DynamicResource Font11}" Classes="dim" />
                   <ProgressBar Grid.Column="1" Minimum="0" Maximum="1" Value="{Binding SpFraction}" Foreground="{DynamicResource SpBrush}" VerticalAlignment="Center" />
                   <TextBlock Grid.Column="2" Text="{Binding SpText}" FontSize="{DynamicResource Font11}" HorizontalAlignment="Right" />
                 </Grid>

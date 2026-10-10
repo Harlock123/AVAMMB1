@@ -48,6 +48,7 @@ public partial class App : Application
         var mods = ModSet.Discover(options, new SettingsStore(UserDataPaths.SettingsFile).Load().DisabledMods);
         Mods = mods;
         OpenAlAudioService.ModRoots = mods.AssetRoots;
+        RegisterLanguages(mods.AssetRoots);
         services.AddSingleton(mods);
         services.AddSingleton<IContentSource>(_ => ResolveContentSource(options));
         services.AddSingleton(sp => ContentDatabase.Load(sp.GetRequiredService<IContentSource>(), mods.Active));
@@ -60,6 +61,22 @@ public partial class App : Application
         services.AddSingleton<GameServices>();
         services.AddSingleton<MainViewModel>();
         return Services = services.BuildServiceProvider();
+    }
+
+    /// <summary>Mod packs can bring translations: Lang/*.json in the pack (see AVAMMB1.Core.Info.Loc).</summary>
+    private static void RegisterLanguages(IEnumerable<string> roots)
+    {
+        foreach (var file in roots.Select(r => Path.Combine(r, "Lang")).Where(Directory.Exists).SelectMany(d => Directory.GetFiles(d, "*.json")))
+        {
+            try
+            {
+                AVAMMB1.Core.Info.Loc.Register(AVAMMB1.Core.Info.LanguagePack.Parse(File.ReadAllText(file)));
+            }
+            catch (Exception ex) when (ex is InvalidDataException or IOException)
+            {
+                Console.Error.WriteLine($"Skipping language file {file}: {ex.Message}");
+            }
+        }
     }
 
     private static IContentSource ResolveContentSource(LaunchOptions options)

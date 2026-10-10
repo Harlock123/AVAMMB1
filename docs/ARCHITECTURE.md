@@ -100,6 +100,15 @@ Randomness always flows through `IRandomSource`, so tests can script dice rolls
   rendering, drives the actual view models (`--screenshot DIR` captures README screenshots,
   `--smoke-test` validates a build, including OpenAL initialization).
 
+## Translations
+
+`Core/Info/Loc` looks text up by its English original (`Loc.T("New Game")`, `Loc.F("Version {0}", v)`;
+XAML uses `{l:T 'New Game'}` from `App/Localization`), so untranslated text simply stays English.
+Language files (`Assets/Lang/<code>.json`, embedded; mod packs' `Lang/*.json`) map English to the
+translation. `LocalizationTests` collects every key from the views, the code and the tips into
+`Assets/Lang/template.json` (refresh with `UPDATE_LANG_TEMPLATE=1 dotnet test`) and checks each language
+file for unknown keys and lost placeholders. Screens pick up a language change the next time they are shown.
+
 ## Persistence formats
 
 * Save games: `slot<N>.json` (`SaveFile` wrapper with format version, game version, name, timestamp,

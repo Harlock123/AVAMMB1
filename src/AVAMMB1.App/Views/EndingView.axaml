@@ -1,4 +1,5 @@
-<UserControl xmlns="https://github.com/avaloniaui"
+<UserControl xmlns:l="using:AVAMMB1.App.Localization"
+             xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:AVAMMB1.App.ViewModels"
              x:Class="AVAMMB1.App.Views.EndingView" x:DataType="vm:EndingViewModel">
@@ -12,14 +13,14 @@
         <SelectableTextBlock Text="{Binding ShareText}" FontSize="{DynamicResource Font16}" TextWrapping="Wrap" />
       </Border>
       <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="10" IsVisible="{Binding CanShare}">
-        <Button x:Name="CopyCard" Content="Copy result (to share)" />
+        <Button x:Name="CopyCard" Content="{l:T 'Copy result (to share)'}" />
         <TextBlock Text="{Binding ShareNote}" Classes="dim" VerticalAlignment="Center" />
       </StackPanel>
       <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-        <Button Content="Load last save" Command="{Binding LoadLastCommand}" IsVisible="{Binding CanLoad}" />
-        <Button Content="New Game+ (keep the party)" Command="{Binding NewGamePlusCommand}" IsVisible="{Binding CanNewGamePlus}" FontWeight="Bold"
-                ToolTip.Tip="Start again from the beginning with this party: every monster stronger, quests and treasure renewed, and Ascendant treasures to win" />
-        <Button Content="Return to title" Command="{Binding ToTitleCommand}" FontWeight="Bold" />
+        <Button Content="{l:T 'Load last save'}" Command="{Binding LoadLastCommand}" IsVisible="{Binding CanLoad}" />
+        <Button Content="{l:T 'New Game+ (keep the party)'}" Command="{Binding NewGamePlusCommand}" IsVisible="{Binding CanNewGamePlus}" FontWeight="Bold"
+                ToolTip.Tip="{l:T 'Start again from the beginning with this party: every monster stronger, quests and treasure renewed, and Ascendant treasures to win'}" />
+        <Button Content="{l:T 'Return to title'}" Command="{Binding ToTitleCommand}" FontWeight="Bold" />
       </StackPanel>
     </StackPanel>
   </Grid>

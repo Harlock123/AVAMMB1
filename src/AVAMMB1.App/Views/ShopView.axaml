@@ -1,4 +1,5 @@
-<UserControl xmlns="https://github.com/avaloniaui"
+<UserControl xmlns:l="using:AVAMMB1.App.Localization"
+             xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:AVAMMB1.App.ViewModels"
              xmlns:c="using:AVAMMB1.App.Controls"
@@ -7,7 +8,7 @@
     <Grid RowDefinitions="Auto,Auto,*,Auto" ColumnDefinitions="*,16,*">
       <TextBlock Grid.ColumnSpan="3" Classes="title" Text="{Binding Title}" />
       <StackPanel Grid.Row="1" Grid.ColumnSpan="3" Orientation="Horizontal" Spacing="10" Margin="0,6">
-        <TextBlock Text="Shopping for:" VerticalAlignment="Center" Classes="dim" />
+        <TextBlock Text="{l:T 'Shopping for:'}" VerticalAlignment="Center" Classes="dim" />
         <ComboBox ItemsSource="{Binding Members}" SelectedItem="{Binding SelectedMember}" MinWidth="200">
           <ComboBox.ItemTemplate>
             <DataTemplate x:DataType="vm:PartyMemberViewModel">
@@ -18,7 +19,7 @@
         <TextBlock Text="{Binding SpendText}" Foreground="{DynamicResource Gold}" VerticalAlignment="Center" FontWeight="Bold" />
       </StackPanel>
       <DockPanel Grid.Row="2">
-        <TextBlock DockPanel.Dock="Top" Classes="h2" Text="For Sale" />
+        <TextBlock DockPanel.Dock="Top" Classes="h2" Text="{l:T 'For Sale'}" />
         <ScrollViewer>
           <ItemsControl ItemsSource="{Binding Stock}" Margin="0,0,16,0">
             <ItemsControl.ItemTemplate>
@@ -37,7 +38,7 @@
                     </TextBlock>
                   </StackPanel>
                   <TextBlock Grid.Column="2" Text="{Binding Price, StringFormat='{}{0} gp'}" VerticalAlignment="Center" Foreground="{DynamicResource Gold}" />
-                  <Button Grid.Column="3" Classes="chip" Content="Buy" Command="{Binding $parent[UserControl].((vm:ShopViewModel)DataContext).BuyCommand}" CommandParameter="{Binding}" />
+                  <Button Grid.Column="3" Classes="chip" Content="{l:T 'Buy'}" Command="{Binding $parent[UserControl].((vm:ShopViewModel)DataContext).BuyCommand}" CommandParameter="{Binding}" />
                 </Grid>
               </DataTemplate>
             </ItemsControl.ItemTemplate>
@@ -50,7 +51,7 @@
           <Button Grid.Column="1" Classes="chip" Content="{Binding JunkText}" Command="{Binding SellJunkCommand}" IsEnabled="{Binding HasJunk}" ToolTip.Tip="{Binding JunkTip}" VerticalAlignment="Center"
                   IsVisible="{Binding !ShowSmithing}" />
           <Button Grid.Column="2" Classes="chip" Content="{Binding SmithingLabel}" Command="{Binding ToggleSmithingCommand}" IsVisible="{Binding IsSmithy}" VerticalAlignment="Center" Margin="4,0,0,0"
-                  ToolTip.Tip="Have the smith improve weapons and armor, +1 to +5" />
+                  ToolTip.Tip="{l:T 'Have the smith improve weapons and armor, +1 to +5'}" />
         </Grid>
         <TextBlock DockPanel.Dock="Top" Text="{Binding GemsText}" IsVisible="{Binding ShowSmithing}" Classes="dim" FontSize="{DynamicResource Font11}" TextWrapping="Wrap" Margin="0,0,16,4" />
         <ScrollViewer IsVisible="{Binding ShowSmithing}">
@@ -63,7 +64,7 @@
                     <TextBlock><Run Text="{Binding Name}" FontWeight="SemiBold" /><Run Text="  " /><Run Text="{Binding Where}" Foreground="{DynamicResource Dim}" /></TextBlock>
                     <TextBlock Text="{Binding Cost}" FontSize="{DynamicResource Font11}" Foreground="{DynamicResource Gold}" />
                   </StackPanel>
-                  <Button Grid.Column="2" Classes="chip" Content="Improve" IsEnabled="{Binding CanUpgrade}"
+                  <Button Grid.Column="2" Classes="chip" Content="{l:T 'Improve'}" IsEnabled="{Binding CanUpgrade}"
                           Command="{Binding $parent[UserControl].((vm:ShopViewModel)DataContext).UpgradeItemCommand}" CommandParameter="{Binding}" />
                 </Grid>
               </DataTemplate>
@@ -78,10 +79,10 @@
                   <c:PixelImage Source="{Binding Icon}" Width="32" Height="32" />
                   <StackPanel Grid.Column="1" VerticalAlignment="Center">
                     <TextBlock Text="{Binding Name}" />
-                    <TextBlock Text="not needed by anyone" IsVisible="{Binding IsJunk}" FontSize="{DynamicResource Font11}" Classes="dim" />
+                    <TextBlock Text="{l:T 'not needed by anyone'}" IsVisible="{Binding IsJunk}" FontSize="{DynamicResource Font11}" Classes="dim" />
                   </StackPanel>
                   <TextBlock Grid.Column="2" Text="{Binding Price, StringFormat='{}{0} gp'}" VerticalAlignment="Center" Foreground="{DynamicResource Gold}" />
-                  <Button Grid.Column="3" Classes="chip" Content="Sell" Command="{Binding $parent[UserControl].((vm:ShopViewModel)DataContext).SellCommand}" CommandParameter="{Binding}" />
+                  <Button Grid.Column="3" Classes="chip" Content="{l:T 'Sell'}" Command="{Binding $parent[UserControl].((vm:ShopViewModel)DataContext).SellCommand}" CommandParameter="{Binding}" />
                 </Grid>
               </DataTemplate>
             </ItemsControl.ItemTemplate>
@@ -90,7 +91,7 @@
       </DockPanel>
       <Grid Grid.Row="3" Grid.ColumnSpan="3" ColumnDefinitions="*,Auto" Margin="0,8,0,0">
         <TextBlock Text="{Binding Feedback}" TextWrapping="Wrap" Foreground="{DynamicResource Info}" />
-        <Button Grid.Column="1" Content="Leave (Esc)" Command="{Binding LeaveCommand}" />
+        <Button Grid.Column="1" Content="{l:T 'Leave (Esc)'}" Command="{Binding LeaveCommand}" />
       </Grid>
     </Grid>
   </Border>

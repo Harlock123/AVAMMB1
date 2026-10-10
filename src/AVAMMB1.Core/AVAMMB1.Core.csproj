@@ -7,6 +7,8 @@
   <ItemGroup>
     <!-- Game content (monsters, items, spells, maps...) lives in /Assets/Data and is embedded as a fallback. -->
     <EmbeddedResource Include="$(RepoRoot)Assets/Data/**/*.json" LogicalName="AVAMMB1.Data/%(RecursiveDir)%(Filename)%(Extension)" />
+    <!-- Translations of the interface (see Info/Loc.cs). -->
+    <EmbeddedResource Include="$(RepoRoot)Assets/Lang/*.json" LogicalName="AVAMMB1.Lang/%(Filename)%(Extension)" />
   </ItemGroup>
   <ItemGroup>
     <InternalsVisibleTo Include="AVAMMB1.Tests" />

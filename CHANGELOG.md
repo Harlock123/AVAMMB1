@@ -6,6 +6,12 @@ All notable changes to this project are documented here. The format follows
 ## [Unreleased]
 
 ### Added
+- Translations: the interface can be shown in other languages (Settings > Language; Automatic follows
+  the system). Every label, button and tooltip on the screens, the tips and a few messages are looked
+  up by their English text in a language file, so anything untranslated stays English. German is
+  included as the first translation; `Assets/Lang/template.json` lists every string for translators
+  (a test keeps it up to date and checks every language file), and mod packs can bring languages in
+  `Lang/*.json`. Game content (monsters, items, places, story) and most log messages are still English.
 - A Flatpak (`io.github.Harlock123.AVAMMB1`) for x86_64 and aarch64 Linux, built and smoke-tested in
   CI and attached to releases as a bundle, with AppStream metadata, a desktop file and a manifest
   generator ready for a Flathub submission (packaging/flatpak).
@@ -22,7 +28,7 @@ All notable changes to this project are documented here. The format follows
   Ragna the shieldmaiden in Wintermere, levels 2 to 13. Up to two travel with the six heroes (the party
   bar makes room) for a daily wage paid each morning; they take no share of experience and never
   train, and they leave if the wage can't be paid. Hire and dismiss them at the inn. Hirelings are
-  defined in game.json (`hirelings`), so mods can add their own.
+  defined in game.json (`hirelings`).
 - Tips for new players: the first time something comes up - the first steps, a battle, a shop, the inn,
   the temple, a quest, a dungeon, a locked door, treasure, wounds, a level earned, nightfall, saving - a
   short tip appears over the view, using the player's own keys. It fades after a while or with Got it;

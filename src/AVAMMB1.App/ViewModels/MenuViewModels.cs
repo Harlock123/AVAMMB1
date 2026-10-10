@@ -237,6 +237,7 @@ public sealed partial class SettingsViewModel : ViewModelBase
         GamepadStatus = App.Gamepad?.Status ?? "Gamepad support not running";
         _animateMonsters = s.AnimateMonsters;
         _themeIndex = Math.Max(0, Array.IndexOf(ThemeKeys, s.ColorTheme));
+        _languageIndex = Math.Max(0, Array.IndexOf(LanguageCodes, s.Language));
         _textScaleIndex = Math.Max(0, Array.IndexOf(TextScales, s.TextScale) is var i and >= 0 ? i : 1);
         _resolutionIndex = Math.Max(0, Array.IndexOf(Resolutions, s.ViewResolution));
         _zoomIndex = Math.Max(0, Array.IndexOf(Zooms, s.InterfaceZoom));
@@ -330,6 +331,17 @@ public sealed partial class SettingsViewModel : ViewModelBase
 
     /// <summary>Theme choices.</summary>
     public string[] ThemeOptions { get; } = ["Standard", "High contrast", "Colour-blind friendly"];
+
+    /// <summary>Language codes offered ("" = the system's language).</summary>
+    private static string[] LanguageCodes => ["", "en", .. AVAMMB1.Core.Info.Loc.Available.Select(p => p.Code)];
+
+    /// <summary>Language names offered.</summary>
+    public string[] LanguageOptions { get; } =
+        [AVAMMB1.Core.Info.Loc.T("Automatic (the system's language)"), "English", .. AVAMMB1.Core.Info.Loc.Available.Select(p => p.Name)];
+
+    /// <summary>Selected language.</summary>
+    [ObservableProperty]
+    private int _languageIndex;
     /// <summary>Text size choices.</summary>
     public string[] TextScaleOptions { get; } = ["90%", "100%", "115%", "130%"];
     /// <summary>3D view resolution choices.</summary>
@@ -427,6 +439,8 @@ public sealed partial class SettingsViewModel : ViewModelBase
     {
         var s = _main.Services.Settings;
         s.ColorTheme = ThemeKeys[Math.Clamp(ThemeIndex, 0, ThemeKeys.Length - 1)];
+        s.Language = LanguageCodes[Math.Clamp(LanguageIndex, 0, LanguageCodes.Length - 1)];
+        AVAMMB1.Core.Info.Loc.Use(s.Language);
         s.TextScale = TextScales[Math.Clamp(TextScaleIndex, 0, TextScales.Length - 1)];
         MainViewModel.ApplyTheme(s);
     }

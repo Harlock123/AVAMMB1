@@ -1,4 +1,5 @@
-<UserControl xmlns="https://github.com/avaloniaui"
+<UserControl xmlns:l="using:AVAMMB1.App.Localization"
+             xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:AVAMMB1.App.ViewModels"
              xmlns:c="using:AVAMMB1.App.Controls"
@@ -67,7 +68,7 @@
       </LinearGradientBrush>
     </Grid.Background>
     <Border Background="#aa000000" CornerRadius="0,0,6,6" Padding="14,4" HorizontalAlignment="Center" Margin="0,30,0,0">
-      <TextBlock Foreground="{DynamicResource Bad}" FontSize="{DynamicResource Font18}" FontWeight="Bold"><Run Text="Battle!  " /><Run Text="{Binding RoundText}" Foreground="{DynamicResource Parchment}" FontWeight="Normal" /></TextBlock>
+      <TextBlock Foreground="{DynamicResource Bad}" FontSize="{DynamicResource Font18}" FontWeight="Bold"><Run Text="{l:T 'Battle!  '}" /><Run Text="{Binding RoundText}" Foreground="{DynamicResource Parchment}" FontWeight="Normal" /></TextBlock>
     </Border>
     <!-- Back rank: further away, smaller and dimmer. -->
     <ItemsControl Grid.Row="2" ItemsSource="{Binding BackRank}" HorizontalAlignment="Center" Opacity="0.82">

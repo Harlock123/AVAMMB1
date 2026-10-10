@@ -1,4 +1,5 @@
-<UserControl xmlns="https://github.com/avaloniaui"
+<UserControl xmlns:l="using:AVAMMB1.App.Localization"
+             xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:AVAMMB1.App.ViewModels"
              x:Class="AVAMMB1.App.Views.ModsView" x:DataType="vm:ModsViewModel">
@@ -6,24 +7,24 @@
     <Border Classes="dialog" Width="900" Height="680" HorizontalAlignment="Center" VerticalAlignment="Center">
       <DockPanel>
         <StackPanel DockPanel.Dock="Top" Spacing="4">
-          <TextBlock Classes="title" Text="Mods" />
+          <TextBlock Classes="title" Text="{l:T 'Mods'}" />
           <TextBlock TextWrapping="Wrap" Classes="dim"
-                     Text="A mod pack is a folder with a pack.json and any monsters, items, spells, shops, quests, maps, graphics or music to add. Put packs in the Mods folder below, switch them on or off here, and restart. See docs/modding in the game's source for a guide and an example pack." />
+                     Text="{l:T 'A mod pack is a folder with a pack.json and any monsters, items, spells, shops, quests, maps, graphics or music to add. Put packs in the Mods folder below, switch them on or off here, and restart. See docs/modding in the game’s source for a guide and an example pack.'}" />
           <StackPanel Orientation="Horizontal" Spacing="8" Margin="0,4">
             <TextBlock Text="{Binding Folder}" Foreground="{DynamicResource Gold}" VerticalAlignment="Center" TextWrapping="Wrap" />
-            <Button x:Name="OpenFolder" Content="Open folder" />
+            <Button x:Name="OpenFolder" Content="{l:T 'Open folder'}" />
           </StackPanel>
           <TextBlock Text="{Binding Active}" Classes="dim" />
           <TextBlock Text="{Binding Problems}" IsVisible="{Binding HasProblems}" Foreground="{DynamicResource Bad}" TextWrapping="Wrap" />
         </StackPanel>
         <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Right" Spacing="8" Margin="0,8,0,0">
           <TextBlock Text="{Binding Notice}" Foreground="{DynamicResource Info}" VerticalAlignment="Center" TextWrapping="Wrap" MaxWidth="560" />
-          <Button Content="Save &amp; Back" Command="{Binding BackCommand}" FontWeight="Bold" />
-          <Button Content="Cancel (Esc)" Command="{Binding CloseCommand}" />
+          <Button Content="{l:T 'Save &amp; Back'}" Command="{Binding BackCommand}" FontWeight="Bold" />
+          <Button Content="{l:T 'Cancel (Esc)'}" Command="{Binding CloseCommand}" />
         </StackPanel>
         <ScrollViewer Margin="0,8,0,0">
           <StackPanel>
-            <TextBlock IsVisible="{Binding NoPacks}" Classes="dim" Text="No mod packs found yet." Margin="0,8" />
+            <TextBlock IsVisible="{Binding NoPacks}" Classes="dim" Text="{l:T 'No mod packs found yet.'}" Margin="0,8" />
             <ItemsControl ItemsSource="{Binding Packs}">
               <ItemsControl.ItemTemplate>
                 <DataTemplate x:DataType="vm:ModRow">

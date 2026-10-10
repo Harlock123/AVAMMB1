@@ -1,4 +1,5 @@
-<UserControl xmlns="https://github.com/avaloniaui"
+<UserControl xmlns:l="using:AVAMMB1.App.Localization"
+             xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:AVAMMB1.App.ViewModels"
              xmlns:c="using:AVAMMB1.App.Controls"
@@ -12,12 +13,12 @@
       <Grid ColumnDefinitions="300,20,*" RowDefinitions="Auto,*">
         <!-- Attributes -->
         <StackPanel Spacing="4">
-          <TextBlock Classes="h2" Text="Attributes" />
+          <TextBlock Classes="h2" Text="{l:T 'Attributes'}" />
           <Grid ColumnDefinitions="110,50,40,50">
-            <TextBlock Text="Attribute" Classes="dim" />
-            <TextBlock Grid.Column="1" Text="Roll" Classes="dim" />
-            <TextBlock Grid.Column="2" Text="Race" Classes="dim" />
-            <TextBlock Grid.Column="3" Text="Final" Classes="dim" />
+            <TextBlock Text="{l:T 'Attribute'}" Classes="dim" />
+            <TextBlock Grid.Column="1" Text="{l:T 'Roll'}" Classes="dim" />
+            <TextBlock Grid.Column="2" Text="{l:T 'Race'}" Classes="dim" />
+            <TextBlock Grid.Column="3" Text="{l:T 'Final'}" Classes="dim" />
           </Grid>
           <ItemsControl ItemsSource="{Binding StatRows}">
             <ItemsControl.ItemTemplate>
@@ -31,38 +32,38 @@
               </DataTemplate>
             </ItemsControl.ItemTemplate>
           </ItemsControl>
-          <Button Content="Reroll Attributes" Command="{Binding RollCommand}" HorizontalAlignment="Left" Margin="0,8,0,0" />
+          <Button Content="{l:T 'Reroll Attributes'}" Command="{Binding RollCommand}" HorizontalAlignment="Left" Margin="0,8,0,0" />
           <StackPanel Orientation="Horizontal" Spacing="12" Margin="0,16,0,0">
             <Border BorderBrush="{DynamicResource PanelBorder}" BorderThickness="1" Background="{DynamicResource ScreenBg}" Padding="4">
               <c:PixelImage Source="{Binding Portrait}" Width="96" Height="96" />
             </Border>
             <StackPanel VerticalAlignment="Center" Spacing="6">
               <Grid ColumnDefinitions="*,Auto" Width="170">
-                <TextBlock Text="Name" Classes="dim" VerticalAlignment="Center" />
-                <Button Grid.Column="1" Classes="chip" Content="Random" Command="{Binding RandomNameCommand}" ToolTip.Tip="A random name for this race" />
+                <TextBlock Text="{l:T 'Name'}" Classes="dim" VerticalAlignment="Center" />
+                <Button Grid.Column="1" Classes="chip" Content="{l:T 'Random'}" Command="{Binding RandomNameCommand}" ToolTip.Tip="{l:T 'A random name for this race'}" />
               </Grid>
-              <TextBox Text="{Binding Name}" Width="170" MaxLength="16" Watermark="Enter a name" ToolTip.Tip="Type a name - with a controller, press A here for the on-screen keyboard" />
+              <TextBox Text="{Binding Name}" Width="170" MaxLength="16" Watermark="{l:T 'Enter a name'}" ToolTip.Tip="{l:T 'Type a name - with a controller, press A here for the on-screen keyboard'}" />
             </StackPanel>
           </StackPanel>
           <StackPanel Spacing="4" Margin="0,8,0,0" Width="290" HorizontalAlignment="Left">
             <Grid ColumnDefinitions="50,Auto,*,Auto">
-                <TextBlock Text="Hair" Classes="dim" VerticalAlignment="Center" />
-                <Button Grid.Column="1" Classes="chip" Content="&lt;" Command="{Binding PreviousHairCommand}" ToolTip.Tip="Previous hairstyle" />
+                <TextBlock Text="{l:T 'Hair'}" Classes="dim" VerticalAlignment="Center" />
+                <Button Grid.Column="1" Classes="chip" Content="&lt;" Command="{Binding PreviousHairCommand}" ToolTip.Tip="{l:T 'Previous hairstyle'}" />
                 <TextBlock Grid.Column="2" Text="{Binding HairLabel}" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="{DynamicResource Font12}" />
-                <Button Grid.Column="3" Classes="chip" Content="&gt;" Command="{Binding NextHairCommand}" ToolTip.Tip="Next hairstyle (a hairstyle leaves the helmet or hood off)" />
+                <Button Grid.Column="3" Classes="chip" Content="&gt;" Command="{Binding NextHairCommand}" ToolTip.Tip="{l:T 'Next hairstyle (a hairstyle leaves the helmet or hood off)'}" />
               </Grid>
             <Grid ColumnDefinitions="50,Auto,*,Auto">
-                <TextBlock Text="Beard" Classes="dim" VerticalAlignment="Center" />
-                <Button Grid.Column="1" Classes="chip" Content="&lt;" Command="{Binding PreviousBeardCommand}" ToolTip.Tip="Previous beard" />
+                <TextBlock Text="{l:T 'Beard'}" Classes="dim" VerticalAlignment="Center" />
+                <Button Grid.Column="1" Classes="chip" Content="&lt;" Command="{Binding PreviousBeardCommand}" ToolTip.Tip="{l:T 'Previous beard'}" />
                 <TextBlock Grid.Column="2" Text="{Binding BeardLabel}" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="{DynamicResource Font12}" />
-                <Button Grid.Column="3" Classes="chip" Content="&gt;" Command="{Binding NextBeardCommand}" ToolTip.Tip="Next beard" />
+                <Button Grid.Column="3" Classes="chip" Content="&gt;" Command="{Binding NextBeardCommand}" ToolTip.Tip="{l:T 'Next beard'}" />
               </Grid>
           </StackPanel>
         </StackPanel>
 
         <!-- Choices -->
         <StackPanel Grid.Column="2" Spacing="4">
-          <TextBlock Classes="h2" Text="Race" />
+          <TextBlock Classes="h2" Text="{l:T 'Race'}" />
           <ListBox ItemsSource="{Binding Races}" SelectedItem="{Binding SelectedRace}" Background="Transparent">
             <ListBox.ItemsPanel><ItemsPanelTemplate><WrapPanel /></ItemsPanelTemplate></ListBox.ItemsPanel>
             <ListBox.ItemTemplate>
@@ -73,7 +74,7 @@
           </ListBox>
           <StackPanel Orientation="Horizontal" Spacing="30">
             <StackPanel>
-              <TextBlock Classes="h2" Text="Sex" />
+              <TextBlock Classes="h2" Text="{l:T 'Sex'}" />
               <ListBox ItemsSource="{Binding Sexes}" SelectedItem="{Binding SelectedSex}" Background="Transparent">
                 <ListBox.ItemsPanel><ItemsPanelTemplate><StackPanel Orientation="Horizontal" /></ItemsPanelTemplate></ListBox.ItemsPanel>
                 <ListBox.ItemTemplate>
@@ -82,7 +83,7 @@
               </ListBox>
             </StackPanel>
             <StackPanel>
-              <TextBlock Classes="h2" Text="Alignment" />
+              <TextBlock Classes="h2" Text="{l:T 'Alignment'}" />
               <ListBox ItemsSource="{Binding Alignments}" SelectedItem="{Binding SelectedAlignment}" Background="Transparent">
                 <ListBox.ItemsPanel><ItemsPanelTemplate><StackPanel Orientation="Horizontal" /></ItemsPanelTemplate></ListBox.ItemsPanel>
                 <ListBox.ItemTemplate>
@@ -91,7 +92,7 @@
               </ListBox>
             </StackPanel>
           </StackPanel>
-          <TextBlock Classes="h2" Text="Class (greyed out classes need better attributes)" />
+          <TextBlock Classes="h2" Text="{l:T 'Class (greyed out classes need better attributes)'}" />
           <ItemsControl ItemsSource="{Binding Classes}">
             <ItemsControl.ItemsPanel><ItemsPanelTemplate><WrapPanel /></ItemsPanelTemplate></ItemsControl.ItemsPanel>
             <ItemsControl.ItemTemplate>
@@ -102,12 +103,12 @@
             </ItemsControl.ItemTemplate>
           </ItemsControl>
           <TextBlock Margin="0,6,0,0" TextWrapping="Wrap">
-            <Run Text="Selected: " Foreground="{DynamicResource Dim}" />
+            <Run Text="{l:T 'Selected: '}" Foreground="{DynamicResource Dim}" />
             <Run Text="{Binding SelectedClass.Name, FallbackValue=none}" FontWeight="Bold" Foreground="{DynamicResource Gold}" />
           </TextBlock>
           <TextBlock Text="{Binding SelectedClass.Description, FallbackValue=''}" TextWrapping="Wrap" Classes="dim" />
           <TextBlock Text="{Binding Preview}" Margin="0,4,0,0" />
-          <Button Content="Add Adventurer" Command="{Binding AddCharacterCommand}" HorizontalAlignment="Left" Margin="0,12,0,0" FontWeight="Bold" />
+          <Button Content="{l:T 'Add Adventurer'}" Command="{Binding AddCharacterCommand}" HorizontalAlignment="Left" Margin="0,12,0,0" FontWeight="Bold" />
           <TextBlock Text="{Binding Status}" Foreground="{DynamicResource Good}" TextWrapping="Wrap" />
         </StackPanel>
       </Grid>
@@ -117,9 +118,9 @@
     <Border Grid.Row="1" Grid.Column="2" Classes="panel">
       <DockPanel>
         <StackPanel DockPanel.Dock="Top" Spacing="4">
-          <TextBlock Classes="h2" Text="Your Party" />
+          <TextBlock Classes="h2" Text="{l:T 'Your Party'}" />
           <TextBlock Text="{Binding PartySummary}" Classes="dim" />
-          <Button Content="Quick Party (6 premade heroes)" Command="{Binding QuickPartyCommand}" IsVisible="{Binding !RecruitMode}" />
+          <Button Content="{l:T 'Quick Party (6 premade heroes)'}" Command="{Binding QuickPartyCommand}" IsVisible="{Binding !RecruitMode}" />
         </StackPanel>
         <ItemsControl ItemsSource="{Binding Created}" Margin="0,8,0,0">
           <ItemsControl.ItemTemplate>
@@ -129,10 +130,10 @@
                   <StackPanel>
                     <TextBlock Text="{Binding Name}" FontWeight="Bold" />
                     <TextBlock Classes="dim" FontSize="{DynamicResource Font12}">
-                      <Run Text="{Binding Race}" /><Run Text=" " /><Run Text="{Binding Class}" /><Run Text="  HP " /><Run Text="{Binding MaxHp}" /><Run Text="  SP " /><Run Text="{Binding MaxSp}" />
+                      <Run Text="{Binding Race}" /><Run Text=" " /><Run Text="{Binding Class}" /><Run Text="{l:T '  HP '}" /><Run Text="{Binding MaxHp}" /><Run Text="{l:T '  SP '}" /><Run Text="{Binding MaxSp}" />
                     </TextBlock>
                   </StackPanel>
-                  <Button Grid.Column="1" Classes="chip" Content="Remove"
+                  <Button Grid.Column="1" Classes="chip" Content="{l:T 'Remove'}"
                           Command="{Binding $parent[UserControl].((vm:PartyCreationViewModel)DataContext).RemoveCommand}" CommandParameter="{Binding}" />
                 </Grid>
               </Border>
@@ -144,13 +145,13 @@
 
     <StackPanel Grid.Row="2" Grid.ColumnSpan="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0" Spacing="8">
       <StackPanel Orientation="Horizontal" Spacing="8" IsVisible="{Binding !RecruitMode}" VerticalAlignment="Center" Margin="0,0,16,0">
-        <TextBlock Text="Difficulty" VerticalAlignment="Center" />
+        <TextBlock Text="{l:T 'Difficulty'}" VerticalAlignment="Center" />
         <ComboBox ItemsSource="{Binding DifficultyOptions}" SelectedIndex="{Binding DifficultyIndex}" Width="110" ToolTip.Tip="{Binding DifficultyText}" />
-        <CheckBox Content="Survival mode" IsChecked="{Binding Survival}" ToolTip.Tip="Everyone eats 1 food a day as well as when resting, and goes hungry without. Can be changed later in Settings." />
-        <CheckBox Content="Ironman" IsChecked="{Binding Ironman}" ToolTip.Tip="One save, kept by the game as you play - no reloading. If the whole party falls, the run is over and goes into the Hall of Fame. Cannot be changed later." />
+        <CheckBox Content="{l:T 'Survival mode'}" IsChecked="{Binding Survival}" ToolTip.Tip="{l:T 'Everyone eats 1 food a day as well as when resting, and goes hungry without. Can be changed later in Settings.'}" />
+        <CheckBox Content="{l:T 'Ironman'}" IsChecked="{Binding Ironman}" ToolTip.Tip="{l:T 'One save, kept by the game as you play - no reloading. If the whole party falls, the run is over and goes into the Hall of Fame. Cannot be changed later.'}" />
       </StackPanel>
-      <Button Content="Back (Esc)" Command="{Binding BackCommand}" />
-      <Button Content="Begin the Adventure" Command="{Binding BeginCommand}" FontWeight="Bold" IsVisible="{Binding !RecruitMode}" />
+      <Button Content="{l:T 'Back (Esc)'}" Command="{Binding BackCommand}" />
+      <Button Content="{l:T 'Begin the Adventure'}" Command="{Binding BeginCommand}" FontWeight="Bold" IsVisible="{Binding !RecruitMode}" />
     </StackPanel>
   </Grid>
 </UserControl>

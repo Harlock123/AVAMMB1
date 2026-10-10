@@ -27,6 +27,7 @@ screen) and restart.
 | `mapPatches.json` | Events added to existing maps - this is how a pack links its new places into the world without replacing the base maps: `[ { "map": "brindlemoor", "addEvents": [ { "x": 13, "y": 4, "type": "teleport", ... } ] } ]` |
 | `Graphics/...png` | Images, by the same paths as the game's `Assets/Graphics` (e.g. `Graphics/Monsters/my_monster.png` for a monster whose `sprite` is `my_monster`; `Graphics/Textures/...`, `Graphics/Items/...`, `Graphics/Features/...`). A pack's image with the same path as a built-in one replaces it. 32 x 32 RGBA PNGs match the built-in art. |
 | `Audio/Music/*.ogg`, `Audio/Ambience/*.ogg`, `Audio/Sfx/*.ogg` | Ogg Vorbis music, ambient loops and sound effects (a map's `music`/`ambience` key is the file name). |
+| `Lang/*.json` | Interface translations: `{ "code": "fr", "name": "Français", "strings": { "New Game  (N)": "Nouvelle partie  (N)", ... } }`. Start from the game's `Assets/Lang/template.json`, which lists every string; keep `{0}`-style placeholders and `{Action}` key names. Untranslated strings stay English; a pack's language replaces a built-in one with the same code. |
 
 `game.json` (start position, starting party, intro) cannot be changed by a pack.
 

@@ -1,4 +1,5 @@
-<UserControl xmlns="https://github.com/avaloniaui"
+<UserControl xmlns:l="using:AVAMMB1.App.Localization"
+             xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:AVAMMB1.App.ViewModels"
              xmlns:c="using:AVAMMB1.App.Controls"
@@ -9,40 +10,40 @@
         <c:PixelImage Source="{Binding Member.Portrait}" Width="64" Height="64" Margin="0,0,10,0" />
         <StackPanel Grid.Column="1" VerticalAlignment="Center">
           <TextBlock Classes="title" Text="{Binding Header}" />
-          <TextBlock Text="Left/Right or 1-6 to switch characters; [ and ] to change their place in the party" Classes="dim" FontSize="{DynamicResource Font12}" />
+          <TextBlock Text="{l:T 'Left/Right or 1-6 to switch characters; [ and ] to change their place in the party'}" Classes="dim" FontSize="{DynamicResource Font12}" />
         </StackPanel>
         <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
-          <Button Content="Move left [" Command="{Binding MoveLeftCommand}" IsEnabled="{Binding CanMoveLeft}" ToolTip.Tip="Move this character one place towards the front" />
-          <Button Content="Move right ]" Command="{Binding MoveRightCommand}" IsEnabled="{Binding CanMoveRight}" Margin="0,0,12,0" ToolTip.Tip="Move this character one place towards the back" />
-          <Button Content="&lt; Prev" Command="{Binding PreviousCommand}" />
-          <Button Content="Next &gt;" Command="{Binding NextCommand}" />
+          <Button Content="{l:T 'Move left ['}" Command="{Binding MoveLeftCommand}" IsEnabled="{Binding CanMoveLeft}" ToolTip.Tip="{l:T 'Move this character one place towards the front'}" />
+          <Button Content="{l:T 'Move right ]'}" Command="{Binding MoveRightCommand}" IsEnabled="{Binding CanMoveRight}" Margin="0,0,12,0" ToolTip.Tip="{l:T 'Move this character one place towards the back'}" />
+          <Button Content="{l:T '&lt; Prev'}" Command="{Binding PreviousCommand}" />
+          <Button Content="{l:T 'Next &gt;'}" Command="{Binding NextCommand}" />
         </StackPanel>
       </Grid>
 
       <StackPanel Grid.Row="1" Margin="0,8,0,0" Spacing="2">
-        <TextBlock Classes="h2" Text="Attributes" />
+        <TextBlock Classes="h2" Text="{l:T 'Attributes'}" />
         <ItemsControl ItemsSource="{Binding Stats}">
           <ItemsControl.ItemTemplate>
             <DataTemplate x:DataType="x:String"><TextBlock Text="{Binding}" FontFamily="monospace" /></DataTemplate>
           </ItemsControl.ItemTemplate>
         </ItemsControl>
         <TextBlock Text="{Binding Summary}" TextWrapping="Wrap" Margin="0,8,0,0" FontSize="{DynamicResource Font13}" LineHeight="20" />
-        <TextBlock Classes="h2" Text="Gold" />
+        <TextBlock Classes="h2" Text="{l:T 'Gold'}" />
         <TextBlock Text="{Binding GoldLine}" TextWrapping="Wrap" FontSize="{DynamicResource Font13}" Foreground="{DynamicResource Gold}" />
         <StackPanel Orientation="Horizontal" Spacing="2">
           <NumericUpDown Value="{Binding GoldAmount}" Minimum="0" Increment="10" FormatString="0" Width="110" />
-          <Button Classes="chip" Content="Deposit" Command="{Binding DepositGoldCommand}" ToolTip.Tip="Put this much into the party purse" />
-          <Button Classes="chip" Content="Withdraw" Command="{Binding WithdrawGoldCommand}" ToolTip.Tip="Take this much from the party purse" />
+          <Button Classes="chip" Content="{l:T 'Deposit'}" Command="{Binding DepositGoldCommand}" ToolTip.Tip="{l:T 'Put this much into the party purse'}" />
+          <Button Classes="chip" Content="{l:T 'Withdraw'}" Command="{Binding WithdrawGoldCommand}" ToolTip.Tip="{l:T 'Take this much from the party purse'}" />
         </StackPanel>
         <WrapPanel>
-          <Button Classes="chip" Content="Deposit all" Command="{Binding DepositAllGoldCommand}" />
-          <Button Classes="chip" Content="Pool everyone" Command="{Binding PoolAllGoldCommand}" ToolTip.Tip="Everyone puts all their gold in the purse" />
-          <Button Classes="chip" Content="Share evenly" Command="{Binding ShareGoldCommand}" ToolTip.Tip="Split the purse between all members" />
+          <Button Classes="chip" Content="{l:T 'Deposit all'}" Command="{Binding DepositAllGoldCommand}" />
+          <Button Classes="chip" Content="{l:T 'Pool everyone'}" Command="{Binding PoolAllGoldCommand}" ToolTip.Tip="{l:T 'Everyone puts all their gold in the purse'}" />
+          <Button Classes="chip" Content="{l:T 'Share evenly'}" Command="{Binding ShareGoldCommand}" ToolTip.Tip="{l:T 'Split the purse between all members'}" />
         </WrapPanel>
       </StackPanel>
 
       <DockPanel Grid.Row="1" Grid.Column="2" Margin="0,8,0,0">
-        <TextBlock DockPanel.Dock="Top" Classes="h2" Text="Equipped" />
+        <TextBlock DockPanel.Dock="Top" Classes="h2" Text="{l:T 'Equipped'}" />
         <ItemsControl ItemsSource="{Binding Equipment}">
           <ItemsControl.ItemTemplate>
             <DataTemplate x:DataType="vm:ItemRow">
@@ -63,7 +64,7 @@
       </DockPanel>
 
       <DockPanel Grid.Row="1" Grid.Column="4" Margin="0,8,0,0">
-        <TextBlock DockPanel.Dock="Top" Classes="h2" Text="Backpack" />
+        <TextBlock DockPanel.Dock="Top" Classes="h2" Text="{l:T 'Backpack'}" />
         <ScrollViewer>
           <StackPanel>
             <ItemsControl ItemsSource="{Binding Backpack}">
@@ -82,7 +83,7 @@
                 </DataTemplate>
               </ItemsControl.ItemTemplate>
             </ItemsControl>
-            <TextBlock Classes="h2" Text="Spells" IsVisible="{Binding Spells.Count}" />
+            <TextBlock Classes="h2" Text="{l:T 'Spells'}" IsVisible="{Binding Spells.Count}" />
             <ItemsControl ItemsSource="{Binding Spells}">
               <ItemsControl.ItemTemplate>
                 <DataTemplate x:DataType="x:String"><TextBlock Text="{Binding}" FontSize="{DynamicResource Font12}" TextWrapping="Wrap" /></DataTemplate>
@@ -95,10 +96,10 @@
       <StackPanel Grid.Row="2" Grid.ColumnSpan="5" Spacing="4" Margin="0,8,0,0">
         <TextBlock Text="{Binding SelectedDescription}" Foreground="{DynamicResource Gold}" />
         <StackPanel Orientation="Horizontal" IsEnabled="{Binding HasSelection}">
-          <Button Content="Equip / Remove" Command="{Binding EquipOrRemoveCommand}" />
-          <Button Content="Use" Command="{Binding UseCommand}" />
-          <Button Content="Drop" Command="{Binding DropCommand}" />
-          <TextBlock Text="  Give to:" VerticalAlignment="Center" Classes="dim" />
+          <Button Content="{l:T 'Equip / Remove'}" Command="{Binding EquipOrRemoveCommand}" />
+          <Button Content="{l:T 'Use'}" Command="{Binding UseCommand}" />
+          <Button Content="{l:T 'Drop'}" Command="{Binding DropCommand}" />
+          <TextBlock Text="{l:T '  Give to:'}" VerticalAlignment="Center" Classes="dim" />
           <ItemsControl ItemsSource="{Binding Party}">
             <ItemsControl.ItemsPanel><ItemsPanelTemplate><StackPanel Orientation="Horizontal" /></ItemsPanelTemplate></ItemsControl.ItemsPanel>
             <ItemsControl.ItemTemplate>
@@ -110,7 +111,7 @@
         </StackPanel>
         <Grid ColumnDefinitions="*,Auto">
           <TextBlock Text="{Binding Feedback}" Foreground="{DynamicResource Info}" VerticalAlignment="Center" />
-          <Button Grid.Column="1" Content="Close (Esc)" Command="{Binding CloseCommand}" />
+          <Button Grid.Column="1" Content="{l:T 'Close (Esc)'}" Command="{Binding CloseCommand}" />
         </Grid>
       </StackPanel>
     </Grid>

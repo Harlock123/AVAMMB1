@@ -1,4 +1,5 @@
-<UserControl xmlns="https://github.com/avaloniaui"
+<UserControl xmlns:l="using:AVAMMB1.App.Localization"
+             xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:AVAMMB1.App.ViewModels"
              x:Class="AVAMMB1.App.Views.TavernView" x:DataType="vm:TavernViewModel">
@@ -9,10 +10,10 @@
       <TextBlock Text="{Binding FoodStatus}" Classes="dim" TextWrapping="Wrap" />
       <StackPanel Orientation="Horizontal">
         <Button Content="{Binding FoodLabel}" Command="{Binding BuyFoodCommand}" />
-        <Button Content="Buy a round and listen for rumors" Command="{Binding BuyDrinksCommand}" />
+        <Button Content="{l:T 'Buy a round and listen for rumors'}" Command="{Binding BuyDrinksCommand}" />
       </StackPanel>
       <TextBlock Text="{Binding Feedback}" TextWrapping="Wrap" Foreground="{DynamicResource Info}" FontSize="{DynamicResource Font15}" />
-      <Button Content="Leave (Esc)" Command="{Binding LeaveCommand}" HorizontalAlignment="Right" />
+      <Button Content="{l:T 'Leave (Esc)'}" Command="{Binding LeaveCommand}" HorizontalAlignment="Right" />
     </StackPanel>
   </Border>
 </UserControl>

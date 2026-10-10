@@ -35,7 +35,9 @@ public sealed partial class PartyMemberViewModel : ObservableObject
     /// <summary>Whether this is a hireling rather than one of the party's heroes.</summary>
     public bool IsHireling => Character.Hireling is not null;
     /// <summary>What parting with them is called at the inn.</summary>
-    public string LeaveLabel => IsHireling ? $"Dismiss ({_services.Session.WageOf(Character)} gp/day)" : "Stay here";
+    public string LeaveLabel => IsHireling
+        ? AVAMMB1.Core.Info.Loc.F("Dismiss ({0} gp/day)", _services.Session.WageOf(Character))
+        : AVAMMB1.Core.Info.Loc.T("Stay here");
     /// <summary>Hit points text.</summary>
     public string HpText => $"{Character.Hp}/{Character.MaxHp}";
     /// <summary>Spell points text.</summary>

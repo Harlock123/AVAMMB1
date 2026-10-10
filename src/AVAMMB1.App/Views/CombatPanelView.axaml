@@ -1,4 +1,5 @@
-<UserControl xmlns="https://github.com/avaloniaui"
+<UserControl xmlns:l="using:AVAMMB1.App.Localization"
+             xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:AVAMMB1.App.ViewModels"
              xmlns:c="using:AVAMMB1.App.Controls"
@@ -6,32 +7,32 @@
   <DockPanel>
     <StackPanel DockPanel.Dock="Top" Spacing="6">
       <Grid ColumnDefinitions="*,Auto">
-        <TextBlock Classes="title" Text="Battle!" />
+        <TextBlock Classes="title" Text="{l:T 'Battle!'}" />
         <TextBlock Grid.Column="1" Text="{Binding RoundText}" Classes="dim" VerticalAlignment="Center" />
       </Grid>
       <TextBlock Text="{Binding Prompt}" FontSize="{DynamicResource Font15}" Foreground="{DynamicResource Gold}" TextWrapping="Wrap" />
       <WrapPanel IsVisible="{Binding IsOpening}">
-        <Button Content="Fight (F)" Command="{Binding FightCommand}" FontWeight="Bold" />
+        <Button Content="{l:T 'Fight (F)'}" Command="{Binding FightCommand}" FontWeight="Bold" />
         <Button Content="{Binding RunText}" Command="{Binding FleeCommand}" />
         <Button Content="{Binding BribeLabel}" Command="{Binding BribeCommand}" IsEnabled="{Binding CanBribe}" />
-        <Button Content="{Binding AutoLabel}" Command="{Binding ToggleAutoCommand}" ToolTip.Tip="Fight automatically with weapons and healing; pauses if anyone is badly hurt" />
+        <Button Content="{Binding AutoLabel}" Command="{Binding ToggleAutoCommand}" ToolTip.Tip="{l:T 'Fight automatically with weapons and healing; pauses if anyone is badly hurt'}" />
       </WrapPanel>
       <StackPanel IsVisible="{Binding IsAction}" Spacing="2">
         <UniformGrid Columns="3">
-          <Button Content="Attack (A)" Command="{Binding AttackCommand}" IsEnabled="{Binding CanMelee}" FontWeight="Bold" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" />
-          <Button Content="Shoot (S)" Command="{Binding ShootCommand}" IsEnabled="{Binding CanShoot}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" />
-          <Button Content="Cast (C)" Command="{Binding ShowSpellsCommand}" IsEnabled="{Binding CanCast}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" />
-          <Button Content="Item (U)" Command="{Binding ShowItemsCommand}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" />
-          <Button Content="Block (B)" Command="{Binding BlockCommand}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" />
+          <Button Content="{l:T 'Attack (A)'}" Command="{Binding AttackCommand}" IsEnabled="{Binding CanMelee}" FontWeight="Bold" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" />
+          <Button Content="{l:T 'Shoot (S)'}" Command="{Binding ShootCommand}" IsEnabled="{Binding CanShoot}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" />
+          <Button Content="{l:T 'Cast (C)'}" Command="{Binding ShowSpellsCommand}" IsEnabled="{Binding CanCast}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" />
+          <Button Content="{l:T 'Item (U)'}" Command="{Binding ShowItemsCommand}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" />
+          <Button Content="{l:T 'Block (B)'}" Command="{Binding BlockCommand}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" />
           <Button Content="{Binding RunText}" Command="{Binding RunCommand}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" />
           <Button Content="{Binding AbilityLabel}" Command="{Binding AbilityCommand}" IsEnabled="{Binding CanAbility}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"
                   ToolTip.Tip="{Binding AbilityTip}" />
-          <Button Content="Repeat (E)" Command="{Binding RepeatCommand}" IsEnabled="{Binding CanRepeat}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"
-                  ToolTip.Tip="Everyone repeats their last action for the rest of this round" />
+          <Button Content="{l:T 'Repeat (E)'}" Command="{Binding RepeatCommand}" IsEnabled="{Binding CanRepeat}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"
+                  ToolTip.Tip="{l:T 'Everyone repeats their last action for the rest of this round'}" />
           <Button Content="{Binding AutoLabel}" Command="{Binding ToggleAutoCommand}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"
-                  ToolTip.Tip="Fight automatically with weapons and healing; pauses if anyone is badly hurt" />
+                  ToolTip.Tip="{l:T 'Fight automatically with weapons and healing; pauses if anyone is badly hurt'}" />
         </UniformGrid>
-        <TextBlock Text="Click a monster or press 1-9 to target." Classes="dim" FontSize="{DynamicResource Font12}" />
+        <TextBlock Text="{l:T 'Click a monster or press 1-9 to target.'}" Classes="dim" FontSize="{DynamicResource Font12}" />
         <TextBlock Text="{Binding TargetInfo}" Foreground="{DynamicResource Info}" FontSize="{DynamicResource Font12}" TextWrapping="Wrap" />
       </StackPanel>
       <StackPanel IsVisible="{Binding IsChoosing}" Spacing="2">
@@ -43,8 +44,8 @@
             </DataTemplate>
           </ItemsControl.ItemTemplate>
         </ItemsControl>
-        <TextBlock Text="Press the key shown, or click." Classes="dim" FontSize="{DynamicResource Font12}" />
-        <Button Content="Cancel (Esc)" Command="{Binding CancelCommand}" HorizontalAlignment="Left" />
+        <TextBlock Text="{l:T 'Press the key shown, or click.'}" Classes="dim" FontSize="{DynamicResource Font12}" />
+        <Button Content="{l:T 'Cancel (Esc)'}" Command="{Binding CancelCommand}" HorizontalAlignment="Left" />
       </StackPanel>
       <StackPanel IsVisible="{Binding IsAlly}" Spacing="2">
         <ItemsControl ItemsSource="{Binding Party}">
@@ -57,10 +58,10 @@
             </DataTemplate>
           </ItemsControl.ItemTemplate>
         </ItemsControl>
-        <Button Content="Cancel (Esc)" Command="{Binding CancelCommand}" HorizontalAlignment="Left" />
+        <Button Content="{l:T 'Cancel (Esc)'}" Command="{Binding CancelCommand}" HorizontalAlignment="Left" />
       </StackPanel>
-      <Button Content="Continue (Enter)" Command="{Binding ContinueCommand}" IsVisible="{Binding IsFinished}" FontWeight="Bold" HorizontalAlignment="Left" />
-      <TextBlock Classes="h2" Text="Battle log" />
+      <Button Content="{l:T 'Continue (Enter)'}" Command="{Binding ContinueCommand}" IsVisible="{Binding IsFinished}" FontWeight="Bold" HorizontalAlignment="Left" />
+      <TextBlock Classes="h2" Text="{l:T 'Battle log'}" />
     </StackPanel>
     <ScrollViewer x:Name="LogScroller" Background="{DynamicResource ScreenBg}">
       <ItemsControl ItemsSource="{Binding Log}" Margin="6,4">

@@ -1,11 +1,12 @@
-<UserControl xmlns="https://github.com/avaloniaui"
+<UserControl xmlns:l="using:AVAMMB1.App.Localization"
+             xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:AVAMMB1.App.ViewModels"
              x:Class="AVAMMB1.App.Views.SpellCastView" x:DataType="vm:SpellCastViewModel">
   <Border Classes="dialog" Width="760" MaxHeight="560">
     <DockPanel>
       <StackPanel DockPanel.Dock="Top" Spacing="6">
-        <TextBlock Classes="title" Text="Cast a Spell" />
+        <TextBlock Classes="title" Text="{l:T 'Cast a Spell'}" />
         <ListBox ItemsSource="{Binding Casters}" SelectedItem="{Binding SelectedCaster}" Background="Transparent">
           <ListBox.ItemsPanel><ItemsPanelTemplate><WrapPanel /></ItemsPanelTemplate></ListBox.ItemsPanel>
           <ListBox.ItemTemplate>
@@ -15,7 +16,7 @@
       </StackPanel>
       <StackPanel DockPanel.Dock="Bottom" Spacing="6" Margin="0,8,0,0">
         <StackPanel Orientation="Horizontal" IsVisible="{Binding NeedsAlly}">
-          <TextBlock Text="Target: " VerticalAlignment="Center" />
+          <TextBlock Text="{l:T 'Target: '}" VerticalAlignment="Center" />
           <ItemsControl ItemsSource="{Binding Party}">
             <ItemsControl.ItemsPanel><ItemsPanelTemplate><StackPanel Orientation="Horizontal" /></ItemsPanelTemplate></ItemsControl.ItemsPanel>
             <ItemsControl.ItemTemplate>
@@ -29,7 +30,7 @@
         </StackPanel>
         <Grid ColumnDefinitions="*,Auto">
           <TextBlock Text="{Binding Feedback}" TextWrapping="Wrap" Foreground="{DynamicResource Info}" />
-          <Button Grid.Column="1" Content="Close (Esc)" Command="{Binding CloseCommand}" />
+          <Button Grid.Column="1" Content="{l:T 'Close (Esc)'}" Command="{Binding CloseCommand}" />
         </Grid>
       </StackPanel>
       <ScrollViewer>

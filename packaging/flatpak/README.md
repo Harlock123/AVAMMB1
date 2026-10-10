@@ -23,7 +23,7 @@ Flathub listings are submitted by the project owner as a pull request to
 published release - the archives are downloaded by URL and checked by SHA-256:
 
 ```bash
-v=1.13.0; base=https://github.com/Harlock123/AVAMMB1/releases/download/v$v
+v=<version>; base=https://github.com/Harlock123/AVAMMB1/releases/download/v$v
 packaging/flatpak/make-manifest.sh flathub \
   $base/AVAMMB1-$v-linux-x64.tar.gz   "$(curl -sL $base/AVAMMB1-$v-linux-x64.tar.gz | sha256sum | cut -d' ' -f1)" x86_64 \
   $base/AVAMMB1-$v-linux-arm64.tar.gz "$(curl -sL $base/AVAMMB1-$v-linux-arm64.tar.gz | sha256sum | cut -d' ' -f1)" aarch64

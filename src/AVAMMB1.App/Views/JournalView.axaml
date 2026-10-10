@@ -1,4 +1,5 @@
-<UserControl xmlns="https://github.com/avaloniaui"
+<UserControl xmlns:l="using:AVAMMB1.App.Localization"
+             xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:AVAMMB1.App.ViewModels"
              xmlns:s="using:AVAMMB1.Core.Session"
@@ -7,15 +8,15 @@
   <Border Classes="dialog" Width="900" Height="600">
     <DockPanel>
       <Grid DockPanel.Dock="Top" ColumnDefinitions="*,Auto" Margin="0,0,0,6">
-        <TextBlock Classes="title" Text="Journal" />
-        <Button Grid.Column="1" Content="Close (J)" Command="{Binding CloseCommand}" />
+        <TextBlock Classes="title" Text="{l:T 'Journal'}" />
+        <Button Grid.Column="1" Content="{l:T 'Close (J)'}" Command="{Binding CloseCommand}" />
       </Grid>
       <TabControl SelectedIndex="{Binding Tab}">
-        <TabItem Header="Quests">
+        <TabItem Header="{l:T 'Quests'}">
           <ScrollViewer>
             <StackPanel Spacing="12" Margin="0,6">
               <TextBlock IsVisible="{Binding NoQuests}" Classes="dim" TextWrapping="Wrap"
-                         Text="No quests yet. Talk to the people of Brindlemoor - Archivist Pell is said to be looking for adventurers." />
+                         Text="{l:T 'No quests yet. Talk to the people of Brindlemoor - Archivist Pell is said to be looking for adventurers.'}" />
               <ItemsControl ItemsSource="{Binding Quests}">
                 <ItemsControl.ItemTemplate>
                   <DataTemplate x:DataType="vm:JournalQuest">
@@ -37,7 +38,7 @@
             </StackPanel>
           </ScrollViewer>
         </TabItem>
-        <TabItem Header="Bestiary">
+        <TabItem Header="{l:T 'Bestiary'}">
           <DockPanel>
             <TextBlock DockPanel.Dock="Top" Text="{Binding BestiaryCount}" Classes="dim" Margin="0,6,0,6" />
             <ScrollViewer>
@@ -63,7 +64,7 @@
             </ScrollViewer>
           </DockPanel>
         </TabItem>
-        <TabItem Header="Items">
+        <TabItem Header="{l:T 'Items'}">
           <DockPanel>
             <TextBlock DockPanel.Dock="Top" Text="{Binding ItemsCount}" Classes="dim" Margin="0,6,0,6" />
             <ScrollViewer>
@@ -85,10 +86,10 @@
             </ScrollViewer>
           </DockPanel>
         </TabItem>
-        <TabItem Header="Chronicle">
+        <TabItem Header="{l:T 'Chronicle'}">
           <Grid ColumnDefinitions="*,24,*" Margin="0,6,0,0">
             <StackPanel Spacing="2">
-              <TextBlock Classes="h2" Text="The story so far" />
+              <TextBlock Classes="h2" Text="{l:T 'The story so far'}" />
               <ItemsControl ItemsSource="{Binding Statistics}">
                 <ItemsControl.ItemTemplate>
                   <DataTemplate x:DataType="vm:StatisticRow">
@@ -124,10 +125,10 @@
             </DockPanel>
           </Grid>
         </TabItem>
-        <TabItem Header="Clues">
+        <TabItem Header="{l:T 'Clues'}">
           <ScrollViewer>
             <StackPanel Spacing="10" Margin="0,6">
-              <TextBlock IsVisible="{Binding NoDiscoveries}" Classes="dim" Text="Signs, inscriptions and warnings you read are collected here." />
+              <TextBlock IsVisible="{Binding NoDiscoveries}" Classes="dim" Text="{l:T 'Signs, inscriptions and warnings you read are collected here.'}" />
               <ItemsControl ItemsSource="{Binding Discoveries}">
                 <ItemsControl.ItemTemplate>
                   <DataTemplate x:DataType="s:Discovery">

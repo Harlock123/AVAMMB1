@@ -1,4 +1,5 @@
-<UserControl xmlns="https://github.com/avaloniaui"
+<UserControl xmlns:l="using:AVAMMB1.App.Localization"
+             xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:AVAMMB1.App.ViewModels"
              xmlns:c="using:AVAMMB1.App.Controls"
@@ -13,22 +14,22 @@
         <WrapPanel.Styles>
           <Style Selector="TextBlock"><Setter Property="Margin" Value="0,0,14,0" /><Setter Property="VerticalAlignment" Value="Center" /></Style>
         </WrapPanel.Styles>
-        <TextBlock Text="&#x25CF; services" Foreground="{DynamicResource MapServices}" />
-        <TextBlock Text="&#x25CF; passages" Foreground="{DynamicResource MapPassage}" />
-        <TextBlock Text="&#x25CF; treasure" Foreground="{DynamicResource MapTreasure}" />
-        <TextBlock Text="&#x25CF; fountain" Foreground="{DynamicResource MapFountain}" />
-        <TextBlock Text="&#x25CF; quest" Foreground="{DynamicResource MapQuest}" />
-        <TextBlock Text="&#x25C6; where next" Foreground="{DynamicResource MapQuest}" />
-        <TextBlock Text="&#x25A0; note" Foreground="{DynamicResource MapNote}" />
-        <TextBlock Text="&#x2501; door" Foreground="{DynamicResource MapDoor}" />
-        <TextBlock Text="&#x2501; locked" Foreground="{DynamicResource MapLocked}" />
-        <TextBlock Text="&#x2501; secret" Foreground="{DynamicResource MapSecret}" />
-        <Button Content="Close (M)" Command="{Binding CloseCommand}" />
+        <TextBlock Text="{l:T '&#x25CF; services'}" Foreground="{DynamicResource MapServices}" />
+        <TextBlock Text="{l:T '&#x25CF; passages'}" Foreground="{DynamicResource MapPassage}" />
+        <TextBlock Text="{l:T '&#x25CF; treasure'}" Foreground="{DynamicResource MapTreasure}" />
+        <TextBlock Text="{l:T '&#x25CF; fountain'}" Foreground="{DynamicResource MapFountain}" />
+        <TextBlock Text="{l:T '&#x25CF; quest'}" Foreground="{DynamicResource MapQuest}" />
+        <TextBlock Text="{l:T '&#x25C6; where next'}" Foreground="{DynamicResource MapQuest}" />
+        <TextBlock Text="{l:T '&#x25A0; note'}" Foreground="{DynamicResource MapNote}" />
+        <TextBlock Text="{l:T '&#x2501; door'}" Foreground="{DynamicResource MapDoor}" />
+        <TextBlock Text="{l:T '&#x2501; locked'}" Foreground="{DynamicResource MapLocked}" />
+        <TextBlock Text="{l:T '&#x2501; secret'}" Foreground="{DynamicResource MapSecret}" />
+        <Button Content="{l:T 'Close (M)'}" Command="{Binding CloseCommand}" />
       </WrapPanel>
       <DockPanel DockPanel.Dock="Right" Width="270" Margin="10,0,0,0">
         <StackPanel DockPanel.Dock="Top" Spacing="4">
           <StackPanel IsVisible="{Binding HasGoals}" Spacing="2" Margin="0,0,0,8">
-            <TextBlock Classes="h2" Text="Where next" />
+            <TextBlock Classes="h2" Text="{l:T 'Where next'}" />
             <ItemsControl ItemsSource="{Binding Goals}">
               <ItemsControl.ItemTemplate>
                 <DataTemplate x:DataType="x:String">
@@ -37,14 +38,14 @@
               </ItemsControl.ItemTemplate>
             </ItemsControl>
           </StackPanel>
-          <TextBlock Classes="h2" Text="Notes" />
+          <TextBlock Classes="h2" Text="{l:T 'Notes'}" />
           <TextBlock Text="{Binding NoteLabel}" Classes="dim" FontSize="{DynamicResource Font12}" TextWrapping="Wrap" />
-          <TextBox x:Name="NoteBox" Text="{Binding NoteText}" AcceptsReturn="False" MaxLength="200" TextWrapping="Wrap" Height="70" Watermark="e.g. Locked door - need a key" />
+          <TextBox x:Name="NoteBox" Text="{Binding NoteText}" AcceptsReturn="False" MaxLength="200" TextWrapping="Wrap" Height="70" Watermark="{l:T 'e.g. Locked door - need a key'}" />
           <StackPanel Orientation="Horizontal" Spacing="6">
-            <Button Content="Save note" Command="{Binding SaveNoteCommand}" />
-            <Button Content="Delete" Command="{Binding DeleteNoteCommand}" />
+            <Button Content="{l:T 'Save note'}" Command="{Binding SaveNoteCommand}" />
+            <Button Content="{l:T 'Delete'}" Command="{Binding DeleteNoteCommand}" />
           </StackPanel>
-          <TextBlock Text="Click any square on the map to note it." Classes="dim" FontSize="{DynamicResource Font12}" TextWrapping="Wrap" />
+          <TextBlock Text="{l:T 'Click any square on the map to note it.'}" Classes="dim" FontSize="{DynamicResource Font12}" TextWrapping="Wrap" />
         </StackPanel>
         <ScrollViewer Margin="0,8,0,0">
           <ItemsControl ItemsSource="{Binding Notes}">

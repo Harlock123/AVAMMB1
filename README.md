@@ -146,6 +146,9 @@ Code identifiers, the solution and executables use the name **`AVAMMB1`** (`AVAM
   executable or pass `--content DIR` to mod the game without rebuilding.
 - **Any screen size**: the interface scales to fit the window - crisp on a small laptop or a 4K
   monitor (Settings can switch back to a fixed layout, with an interface zoom of 100-150%).
+- **Languages**: the interface in English or German (Settings > Language); more translations can be
+  added as a file - `Assets/Lang/template.json` lists every string, and mod packs can bring their own.
+  Game content and most log messages are English for now.
 - **Accessibility**: three colour themes (Standard, High contrast, and Colour-blind friendly, which
   shows good news in blue and bad news in orange instead of green and red, using the Okabe-Ito
   palette), adjustable text size (90-130%), adjustable battle text speed (lines appear one at a time),
@@ -224,7 +227,7 @@ and optional desktop shortcut, uninstall from *Settings > Apps*; unsigned, so Sm
 macOS disk image `AVAMMB1-<version>-<rid>.dmg` (drag `AVAMMB1.app` to Applications; same
 notarization note as below) and a Linux AppImage `AVAMMB1-<version>-<rid>.AppImage`
 (`chmod +x AVAMMB1-*.AppImage && ./AVAMMB1-*.AppImage`; needs FUSE 2/3, or add
-`--appimage-extract-and-run`). From v1.13.0 there is also a Flatpak bundle,
+`--appimage-extract-and-run`). Releases after v1.12.0 also include a Flatpak bundle,
 `AVAMMB1-<version>-<x86_64|aarch64>.flatpak` (`flatpak install --user AVAMMB1-*.flatpak`, then start it
 from the menu or with `flatpak run io.github.Harlock123.AVAMMB1`) - it suits the Steam Deck's desktop
 mode; see [packaging/flatpak](packaging/flatpak/README.md), which also covers submitting to Flathub.

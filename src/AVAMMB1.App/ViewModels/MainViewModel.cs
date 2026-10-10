@@ -14,6 +14,7 @@ public sealed partial class MainViewModel : ViewModelBase
     public MainViewModel(GameServices services)
     {
         Services = services;
+        AVAMMB1.Core.Info.Loc.Use(services.Settings.Language);
         services.Audio.SetVolumes(services.Settings.MusicVolume, services.Settings.SfxVolume, services.Settings.AmbienceVolume);
         ApplyTheme(services.Settings);
         services.Textures.Detailed = services.Settings.DetailedTextures;

@@ -440,7 +440,7 @@ public static class HeadlessRunner
         vm.Services.Settings.ShowTips = true;
         vm.Services.Settings.SeenTips.Clear();
         game.CloseOverlay();
-        if (game.Tip is not { Title: "Getting around" } tip)
+        if (game.Tip is not { Title: "Tip: Getting around" } tip)
         {
             throw new InvalidOperationException("The first tip did not appear.");
         }

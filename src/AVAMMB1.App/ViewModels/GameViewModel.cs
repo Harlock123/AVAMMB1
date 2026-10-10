@@ -363,7 +363,7 @@ public sealed partial class GameViewModel : ViewModelBase
         }
         settings.SeenTips.Add(tip.Id);
         Services.SaveSettings();
-        Tip = new TipViewModel(tip.Title, Tips.WithKeys(tip.Text, settings.KeyBindings), DismissTip, TurnOffTips);
+        Tip = new TipViewModel(AVAMMB1.Core.Info.Loc.F("Tip: {0}", AVAMMB1.Core.Info.Loc.T(tip.Title)), Tips.WithKeys(AVAMMB1.Core.Info.Loc.T(tip.Text), settings.KeyBindings), DismissTip, TurnOffTips);
         _tipActions = 0;
     }
 

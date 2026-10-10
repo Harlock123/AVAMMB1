@@ -1,4 +1,5 @@
-<UserControl xmlns="https://github.com/avaloniaui"
+<UserControl xmlns:l="using:AVAMMB1.App.Localization"
+             xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:AVAMMB1.App.ViewModels"
              x:Class="AVAMMB1.App.Views.TrainingView" x:DataType="vm:TrainingViewModel">
@@ -12,7 +13,7 @@
               <Grid ColumnDefinitions="140,*,Auto" Margin="0,2">
                 <TextBlock Text="{Binding Member.Name}" FontWeight="SemiBold" VerticalAlignment="Center" />
                 <TextBlock Grid.Column="1" Text="{Binding Info}" VerticalAlignment="Center" />
-                <Button Grid.Column="2" Classes="chip" Content="Train" IsEnabled="{Binding Available}"
+                <Button Grid.Column="2" Classes="chip" Content="{l:T 'Train'}" IsEnabled="{Binding Available}"
                         Command="{Binding $parent[UserControl].((vm:TrainingViewModel)DataContext).TrainCommand}" CommandParameter="{Binding}" />
               </Grid>
             </DataTemplate>
@@ -20,7 +21,7 @@
         </ItemsControl>
       
       <TextBlock Text="{Binding Feedback}" TextWrapping="Wrap" Foreground="{DynamicResource Info}" />
-      <Button Content="Leave (Esc)" Command="{Binding LeaveCommand}" HorizontalAlignment="Right" />
+      <Button Content="{l:T 'Leave (Esc)'}" Command="{Binding LeaveCommand}" HorizontalAlignment="Right" />
     </StackPanel>
   </Border>
 </UserControl>

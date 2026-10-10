@@ -52,7 +52,7 @@ public sealed partial class TitleViewModel : ViewModelBase
     {
         var s = _main.Services.Settings;
         UpdateText = s.CheckForUpdates && AVAMMB1.Core.Info.UpdateCheck.Offer(MainViewModel.GameVersion, s.LatestRelease) is { } v
-            ? $"Version {v} is out (you have {MainViewModel.GameVersion})"
+            ? AVAMMB1.Core.Info.Loc.F("Version {0} is out (you have {1})", v, MainViewModel.GameVersion)
             : null;
     }
 

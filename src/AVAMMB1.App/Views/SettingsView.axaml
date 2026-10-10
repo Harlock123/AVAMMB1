@@ -1,18 +1,19 @@
-<UserControl xmlns="https://github.com/avaloniaui"
+<UserControl xmlns:l="using:AVAMMB1.App.Localization"
+             xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:AVAMMB1.App.ViewModels"
              x:Class="AVAMMB1.App.Views.SettingsView" x:DataType="vm:SettingsViewModel">
   <Grid Background="{DynamicResource WindowBg}">
     <Border Classes="dialog" Width="900" Height="740" Margin="20" HorizontalAlignment="Center" VerticalAlignment="Center">
       <DockPanel>
-        <TextBlock DockPanel.Dock="Top" Classes="title" Text="Settings" Margin="0,0,0,4" />
-        <Button DockPanel.Dock="Bottom" Content="Save &amp; Back" Command="{Binding BackCommand}" HorizontalAlignment="Right" FontWeight="Bold" Margin="0,8,0,0" />
+        <TextBlock DockPanel.Dock="Top" Classes="title" Text="{l:T 'Settings'}" Margin="0,0,0,4" />
+        <Button DockPanel.Dock="Bottom" Content="{l:T 'Save &amp; Back'}" Command="{Binding BackCommand}" HorizontalAlignment="Right" FontWeight="Bold" Margin="0,8,0,0" />
         <TabControl>
-          <TabItem Header="General">
+          <TabItem Header="{l:T 'General'}">
             <ScrollViewer>
               <Grid ColumnDefinitions="*,24,*" Margin="0,6,0,0">
                 <StackPanel Spacing="6">
-                  <TextBlock Classes="h2" Text="Audio" />
+                  <TextBlock Classes="h2" Text="{l:T 'Audio'}" />
                   <Grid ColumnDefinitions="120,*">
                     <TextBlock Text="{Binding MusicVolume, StringFormat='Music: {0}'}" VerticalAlignment="Center" />
                     <Slider Grid.Column="1" Minimum="0" Maximum="100" Value="{Binding MusicVolume}" TickFrequency="5" IsSnapToTickEnabled="True" />
@@ -26,63 +27,66 @@
                     <Slider Grid.Column="1" Minimum="0" Maximum="100" Value="{Binding AmbienceVolume}" TickFrequency="5" IsSnapToTickEnabled="True" />
                   </Grid>
                   <TextBlock Text="{Binding AudioStatus}" Classes="dim" FontSize="{DynamicResource Font12}" />
-                  <TextBlock Classes="h2" Text="Accessibility" />
-                  <Grid ColumnDefinitions="120,*" RowDefinitions="Auto,Auto,Auto,Auto" >
-                    <TextBlock Text="Colours" VerticalAlignment="Center" />
+                  <TextBlock Classes="h2" Text="{l:T 'Accessibility'}" />
+                  <Grid ColumnDefinitions="120,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto" >
+                    <TextBlock Text="{l:T 'Colours'}" VerticalAlignment="Center" />
                     <ComboBox Grid.Column="1" ItemsSource="{Binding ThemeOptions}" SelectedIndex="{Binding ThemeIndex}" HorizontalAlignment="Stretch" Margin="0,2" />
-                    <TextBlock Grid.Row="1" Text="Text size" VerticalAlignment="Center" />
+                    <TextBlock Grid.Row="1" Text="{l:T 'Text size'}" VerticalAlignment="Center" />
                     <ComboBox Grid.Row="1" Grid.Column="1" ItemsSource="{Binding TextScaleOptions}" SelectedIndex="{Binding TextScaleIndex}" HorizontalAlignment="Stretch" Margin="0,2" />
-                    <TextBlock Grid.Row="2" Text="Interface zoom" VerticalAlignment="Center" />
+                    <TextBlock Grid.Row="2" Text="{l:T 'Interface zoom'}" VerticalAlignment="Center" />
                     <ComboBox Grid.Row="2" Grid.Column="1" ItemsSource="{Binding ZoomOptions}" SelectedIndex="{Binding ZoomIndex}" HorizontalAlignment="Stretch" Margin="0,2"
-                              IsEnabled="{Binding !FitToWindow}" ToolTip.Tip="Enlarges the whole interface on big or high-resolution screens (when it is not fitted to the window)." />
-                    <TextBlock Grid.Row="3" Text="Battle text" VerticalAlignment="Center" />
+                              IsEnabled="{Binding !FitToWindow}" ToolTip.Tip="{l:T 'Enlarges the whole interface on big or high-resolution screens (when it is not fitted to the window).'}" />
+                    <TextBlock Grid.Row="3" Text="{l:T 'Battle text'}" VerticalAlignment="Center" />
                     <ComboBox Grid.Row="3" Grid.Column="1" ItemsSource="{Binding BattleTextOptions}" SelectedIndex="{Binding BattleTextIndex}" HorizontalAlignment="Stretch" Margin="0,2"
-                              ToolTip.Tip="How quickly battle messages appear, one line at a time. Acting shows the rest at once." />
+                              ToolTip.Tip="{l:T 'How quickly battle messages appear, one line at a time. Acting shows the rest at once.'}" />
+                    <TextBlock Grid.Row="4" Text="{l:T 'Language'}" VerticalAlignment="Center" />
+                    <ComboBox Grid.Row="4" Grid.Column="1" ItemsSource="{Binding LanguageOptions}" SelectedIndex="{Binding LanguageIndex}" HorizontalAlignment="Stretch" Margin="0,2"
+                              ToolTip.Tip="{l:T 'The language of the interface. Untranslated text stays in English; translations can come in mod packs.'}" />
                   </Grid>
-                  <CheckBox Content="Describe each step in the log (for screen readers; L describes everything)" IsChecked="{Binding DescribeSteps}" />
+                  <CheckBox Content="{l:T 'Describe each step in the log (for screen readers; L describes everything)'}" IsChecked="{Binding DescribeSteps}" />
                   <TextBlock Classes="dim" FontSize="{DynamicResource Font12}" TextWrapping="Wrap"
-                             Text="High contrast uses black backgrounds and bright colours. Colour-blind friendly shows good news in blue and bad news in orange instead of green and red. Interface zoom applies when the interface is not fitted to the window." />
-                  <TextBlock Classes="h2" Text="Game" />
+                             Text="{l:T 'High contrast uses black backgrounds and bright colours. Colour-blind friendly shows good news in blue and bad news in orange instead of green and red. Interface zoom applies when the interface is not fitted to the window.'}" />
+                  <TextBlock Classes="h2" Text="{l:T 'Game'}" />
                   <Grid ColumnDefinitions="120,*">
-                    <TextBlock Text="Difficulty" VerticalAlignment="Center" />
+                    <TextBlock Text="{l:T 'Difficulty'}" VerticalAlignment="Center" />
                     <ComboBox Grid.Column="1" ItemsSource="{Binding DifficultyOptions}" SelectedIndex="{Binding DifficultyIndex}" HorizontalAlignment="Stretch" />
                   </Grid>
                   <TextBlock Text="{Binding DifficultyText}" Classes="dim" FontSize="{DynamicResource Font12}" TextWrapping="Wrap" />
-                  <CheckBox Content="Survival mode (everyone eats 1 food a day, and goes hungry without)" IsChecked="{Binding Survival}" />
+                  <CheckBox Content="{l:T 'Survival mode (everyone eats 1 food a day, and goes hungry without)'}" IsChecked="{Binding Survival}" />
                   <TextBlock Classes="dim" FontSize="{DynamicResource Font12}" TextWrapping="Wrap"
                              Text="{Binding GameNote}" />
-                  <CheckBox Content="Autosave (entering a new area and before boss fights; 3 rotating slots)" IsChecked="{Binding Autosave}" />
-                  <CheckBox Content="Quest markers (show where open quests lead on the maps and in the journal)" IsChecked="{Binding QuestMarkers}" />
+                  <CheckBox Content="{l:T 'Autosave (entering a new area and before boss fights; 3 rotating slots)'}" IsChecked="{Binding Autosave}" />
+                  <CheckBox Content="{l:T 'Quest markers (show where open quests lead on the maps and in the journal)'}" IsChecked="{Binding QuestMarkers}" />
                   <StackPanel Orientation="Horizontal" Spacing="8">
-                    <CheckBox Content="Tips for new players" IsChecked="{Binding ShowTips}" />
-                    <Button Classes="chip" Content="Show all again" Command="{Binding ResetTipsCommand}" VerticalAlignment="Center" />
+                    <CheckBox Content="{l:T 'Tips for new players'}" IsChecked="{Binding ShowTips}" />
+                    <Button Classes="chip" Content="{l:T 'Show all again'}" Command="{Binding ResetTipsCommand}" VerticalAlignment="Center" />
                   </StackPanel>
-                  <CheckBox Content="Check for a new version at start (asks GitHub about once a day; never downloads)" IsChecked="{Binding CheckForUpdates}" />
-                  <TextBlock Classes="h2" Text="Data" />
+                  <CheckBox Content="{l:T 'Check for a new version at start (asks GitHub about once a day; never downloads)'}" IsChecked="{Binding CheckForUpdates}" />
+                  <TextBlock Classes="h2" Text="{l:T 'Data'}" />
                   <TextBlock Text="{Binding DataLocation}" Classes="dim" FontSize="{DynamicResource Font12}" TextWrapping="Wrap" />
                 </StackPanel>
                 <StackPanel Grid.Column="2" Spacing="6">
-                  <TextBlock Classes="h2" Text="Display" />
-                  <CheckBox Content="Fullscreen (F11 toggles)" IsChecked="{Binding Fullscreen}" />
-                  <CheckBox Content="Fit interface to window (scales for small and large screens)" IsChecked="{Binding FitToWindow}" />
-                  <CheckBox Content="Show minimap" IsChecked="{Binding ShowMinimap}" />
-                  <CheckBox Content="Smooth movement (animated steps and turns)" IsChecked="{Binding SmoothMovement}" />
-                  <CheckBox Content="Animated monsters in combat" IsChecked="{Binding AnimateMonsters}" />
-                  <CheckBox Content="Weather (snow and rain in the open)" IsChecked="{Binding Weather}" />
-                  <TextBlock Classes="h2" Text="3D view" />
+                  <TextBlock Classes="h2" Text="{l:T 'Display'}" />
+                  <CheckBox Content="{l:T 'Fullscreen (F11 toggles)'}" IsChecked="{Binding Fullscreen}" />
+                  <CheckBox Content="{l:T 'Fit interface to window (scales for small and large screens)'}" IsChecked="{Binding FitToWindow}" />
+                  <CheckBox Content="{l:T 'Show minimap'}" IsChecked="{Binding ShowMinimap}" />
+                  <CheckBox Content="{l:T 'Smooth movement (animated steps and turns)'}" IsChecked="{Binding SmoothMovement}" />
+                  <CheckBox Content="{l:T 'Animated monsters in combat'}" IsChecked="{Binding AnimateMonsters}" />
+                  <CheckBox Content="{l:T 'Weather (snow and rain in the open)'}" IsChecked="{Binding Weather}" />
+                  <TextBlock Classes="h2" Text="{l:T '3D view'}" />
                   <Grid ColumnDefinitions="120,*">
-                    <TextBlock Text="Resolution" VerticalAlignment="Center" />
+                    <TextBlock Text="{l:T 'Resolution'}" VerticalAlignment="Center" />
                     <ComboBox Grid.Column="1" ItemsSource="{Binding ResolutionOptions}" SelectedIndex="{Binding ResolutionIndex}" HorizontalAlignment="Stretch" />
                   </Grid>
-                  <CheckBox Content="Smooth scaling (softer, less pixelated)" IsChecked="{Binding SmoothView}" />
-                  <CheckBox Content="Detailed textures (128 x 128 walls and floors)" IsChecked="{Binding DetailedTextures}" />
+                  <CheckBox Content="{l:T 'Smooth scaling (softer, less pixelated)'}" IsChecked="{Binding SmoothView}" />
+                  <CheckBox Content="{l:T 'Detailed textures (128 x 128 walls and floors)'}" IsChecked="{Binding DetailedTextures}" />
                   <TextBlock Classes="dim" FontSize="{DynamicResource Font12}" TextWrapping="Wrap"
-                             Text="Classic matches the original chunky look. Higher resolutions give finer detail and use more processor time." />
+                             Text="{l:T 'Classic matches the original chunky look. Higher resolutions give finer detail and use more processor time.'}" />
                 </StackPanel>
               </Grid>
             </ScrollViewer>
           </TabItem>
-          <TabItem Header="Keyboard">
+          <TabItem Header="{l:T 'Keyboard'}">
             <ScrollViewer>
               <StackPanel Spacing="2" Margin="0,6,0,0" MaxWidth="560" HorizontalAlignment="Left">
                 <ItemsControl ItemsSource="{Binding Bindings}">
@@ -91,46 +95,46 @@
                       <Grid ColumnDefinitions="180,*,Auto" Margin="0,1">
                         <TextBlock Text="{Binding Label}" VerticalAlignment="Center" />
                         <TextBlock Grid.Column="1" Text="{Binding Keys}" VerticalAlignment="Center" Foreground="{DynamicResource Gold}" />
-                        <Button Grid.Column="2" Classes="chip" Content="Rebind"
+                        <Button Grid.Column="2" Classes="chip" Content="{l:T 'Rebind'}"
                                 Command="{Binding $parent[UserControl].((vm:SettingsViewModel)DataContext).RebindCommand}" CommandParameter="{Binding}" />
                       </Grid>
                     </DataTemplate>
                   </ItemsControl.ItemTemplate>
                 </ItemsControl>
                 <TextBlock Text="{Binding Hint}" Foreground="{DynamicResource Info}" TextWrapping="Wrap" />
-                <Button Content="Reset to defaults" Command="{Binding ResetBindingsCommand}" HorizontalAlignment="Left" />
+                <Button Content="{l:T 'Reset to defaults'}" Command="{Binding ResetBindingsCommand}" HorizontalAlignment="Left" />
               </StackPanel>
             </ScrollViewer>
           </TabItem>
-          <TabItem Header="Controller">
+          <TabItem Header="{l:T 'Controller'}">
             <ScrollViewer>
               <Grid ColumnDefinitions="*,24,*" Margin="0,6,0,0">
                 <StackPanel Spacing="2">
-                  <CheckBox Content="Use gamepad" IsChecked="{Binding GamepadEnabled}" />
+                  <CheckBox Content="{l:T 'Use gamepad'}" IsChecked="{Binding GamepadEnabled}" />
                   <TextBlock Text="{Binding GamepadStatus}" Classes="dim" FontSize="{DynamicResource Font12}" TextWrapping="Wrap" />
-                  <TextBlock Classes="h2" Text="Exploring buttons" />
+                  <TextBlock Classes="h2" Text="{l:T 'Exploring buttons'}" />
                   <ItemsControl ItemsSource="{Binding PadRows}">
                     <ItemsControl.ItemTemplate>
                       <DataTemplate x:DataType="vm:PadRow">
                         <Grid ColumnDefinitions="130,*,Auto,Auto" Margin="0,1">
                           <TextBlock Text="{Binding Label}" VerticalAlignment="Center" />
                           <TextBlock Grid.Column="1" Text="{Binding Button}" VerticalAlignment="Center" Foreground="{DynamicResource Gold}" />
-                          <Button Grid.Column="2" Classes="chip" Content="Rebind"
+                          <Button Grid.Column="2" Classes="chip" Content="{l:T 'Rebind'}"
                                   Command="{Binding $parent[UserControl].((vm:SettingsViewModel)DataContext).RebindPadCommand}" CommandParameter="{Binding}" />
-                          <Button Grid.Column="3" Classes="chip" Content="Clear"
+                          <Button Grid.Column="3" Classes="chip" Content="{l:T 'Clear'}"
                                   Command="{Binding $parent[UserControl].((vm:SettingsViewModel)DataContext).ClearPadCommand}" CommandParameter="{Binding}" />
                         </Grid>
                       </DataTemplate>
                     </ItemsControl.ItemTemplate>
                   </ItemsControl>
                   <TextBlock Text="{Binding PadHint}" Foreground="{DynamicResource Info}" TextWrapping="Wrap" />
-                  <Button Content="Reset to defaults" Command="{Binding ResetPadCommand}" HorizontalAlignment="Left" />
+                  <Button Content="{l:T 'Reset to defaults'}" Command="{Binding ResetPadCommand}" HorizontalAlignment="Left" />
                 </StackPanel>
                 <StackPanel Grid.Column="2" Spacing="6">
-                  <TextBlock Classes="h2" Text="Fixed buttons" />
-                  <TextBlock TextWrapping="Wrap" Text="Start always opens the menu." />
-                  <TextBlock TextWrapping="Wrap" Text="Battle: A attack (shoots from the back rank) / continue, X cast, Y item, B block, View run, LB or left / right change target, RB class ability, LT repeat last actions, RT auto-fight." />
-                  <TextBlock TextWrapping="Wrap" Text="Menus: D-pad moves between buttons (left / right adjust sliders), A selects, B goes back." />
+                  <TextBlock Classes="h2" Text="{l:T 'Fixed buttons'}" />
+                  <TextBlock TextWrapping="Wrap" Text="{l:T 'Start always opens the menu.'}" />
+                  <TextBlock TextWrapping="Wrap" Text="{l:T 'Battle: A attack (shoots from the back rank) / continue, X cast, Y item, B block, View run, LB or left / right change target, RB class ability, LT repeat last actions, RT auto-fight.'}" />
+                  <TextBlock TextWrapping="Wrap" Text="{l:T 'Menus: D-pad moves between buttons (left / right adjust sliders), A selects, B goes back.'}" />
                 </StackPanel>
               </Grid>
             </ScrollViewer>

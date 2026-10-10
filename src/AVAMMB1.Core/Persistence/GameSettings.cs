@@ -62,6 +62,8 @@ public sealed class GameSettings
     public List<string> DisabledMods { get; set; } = new();
     /// <summary>The game version whose release notes the player has seen ("" before 1.7).</summary>
     public string LastSeenVersion { get; set; } = "";
+    /// <summary>Interface language code ("de"), "en" for English, or "" for the system's language.</summary>
+    public string Language { get; set; } = "";
     /// <summary>Show tips the first time things come up (null until decided: on for new players, off for players updating).</summary>
     public bool? ShowTips { get; set; }
     /// <summary>Ids of the tips already shown.</summary>

@@ -1,4 +1,5 @@
-<UserControl xmlns="https://github.com/avaloniaui"
+<UserControl xmlns:l="using:AVAMMB1.App.Localization"
+             xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:AVAMMB1.App.ViewModels"
              xmlns:ch="using:AVAMMB1.Core.Characters"
@@ -10,20 +11,20 @@
       <TextBlock Text="{Binding GoldText}" Foreground="{DynamicResource Gold}" />
       <StackPanel Orientation="Horizontal">
         <Button Content="{Binding StayLabel}" Command="{Binding StayCommand}" FontWeight="Bold" />
-        <Button Content="Save Game" Command="{Binding SaveGameCommand}" />
-        <Button Content="Create a New Adventurer" Command="{Binding RecruitCommand}" />
+        <Button Content="{l:T 'Save Game'}" Command="{Binding SaveGameCommand}" />
+        <Button Content="{l:T 'Create a New Adventurer'}" Command="{Binding RecruitCommand}" />
       </StackPanel>
       <Grid ColumnDefinitions="3*,16,2*">
         <StackPanel>
-          <TextBlock Classes="h2" Text="Party (marching order)" />
+          <TextBlock Classes="h2" Text="{l:T 'Party (marching order)'}" />
           <ItemsControl ItemsSource="{Binding Members}">
             <ItemsControl.ItemTemplate>
               <DataTemplate x:DataType="vm:PartyMemberViewModel">
                 <Grid ColumnDefinitions="*,Auto,Auto,Auto" Margin="0,1">
                   <TextBlock VerticalAlignment="Center"><Run Text="{Binding Slot}" /><Run Text=". " /><Run Text="{Binding Name}" FontWeight="SemiBold" /><Run Text="  " /><Run Text="{Binding ClassLevel}" Foreground="{DynamicResource Dim}" /></TextBlock>
-                  <Button Grid.Column="3" Classes="chip" Content="Name &amp; looks" ToolTip.Tip="Rename this character or change their hair and beard"
+                  <Button Grid.Column="3" Classes="chip" Content="{l:T 'Name &amp; looks'}" ToolTip.Tip="{l:T 'Rename this character or change their hair and beard'}"
                           Command="{Binding $parent[UserControl].((vm:InnViewModel)DataContext).EditCommand}" CommandParameter="{Binding}" />
-                  <Button Grid.Column="1" Classes="chip" Content="Up" Command="{Binding $parent[UserControl].((vm:InnViewModel)DataContext).MoveUpCommand}" CommandParameter="{Binding}" />
+                  <Button Grid.Column="1" Classes="chip" Content="{l:T 'Up'}" Command="{Binding $parent[UserControl].((vm:InnViewModel)DataContext).MoveUpCommand}" CommandParameter="{Binding}" />
                   <Button Grid.Column="2" Classes="chip" Content="{Binding LeaveLabel}" Command="{Binding $parent[UserControl].((vm:InnViewModel)DataContext).LeaveMemberCommand}" CommandParameter="{Binding}" />
                 </Grid>
               </DataTemplate>
@@ -31,18 +32,18 @@
           </ItemsControl>
         </StackPanel>
         <StackPanel Grid.Column="2">
-          <TextBlock Classes="h2" Text="Waiting at the inn" />
+          <TextBlock Classes="h2" Text="{l:T 'Waiting at the inn'}" />
           <ItemsControl ItemsSource="{Binding Roster}">
             <ItemsControl.ItemTemplate>
               <DataTemplate x:DataType="ch:Character">
                 <Grid ColumnDefinitions="*,Auto" Margin="0,1">
-                  <TextBlock VerticalAlignment="Center"><Run Text="{Binding Name}" FontWeight="SemiBold" /><Run Text="  L" /><Run Text="{Binding Level}" /><Run Text=" " /><Run Text="{Binding Class}" Foreground="{DynamicResource Dim}" /><Run Text="  " /><Run Text="{Binding Gold}" Foreground="{DynamicResource Gold}" /><Run Text=" gp" Foreground="{DynamicResource Gold}" /></TextBlock>
-                  <Button Grid.Column="1" Classes="chip" Content="Join" Command="{Binding $parent[UserControl].((vm:InnViewModel)DataContext).JoinCommand}" CommandParameter="{Binding}" />
+                  <TextBlock VerticalAlignment="Center"><Run Text="{Binding Name}" FontWeight="SemiBold" /><Run Text="  L" /><Run Text="{Binding Level}" /><Run Text=" " /><Run Text="{Binding Class}" Foreground="{DynamicResource Dim}" /><Run Text="  " /><Run Text="{Binding Gold}" Foreground="{DynamicResource Gold}" /><Run Text="{l:T ' gp'}" Foreground="{DynamicResource Gold}" /></TextBlock>
+                  <Button Grid.Column="1" Classes="chip" Content="{l:T 'Join'}" Command="{Binding $parent[UserControl].((vm:InnViewModel)DataContext).JoinCommand}" CommandParameter="{Binding}" />
                 </Grid>
               </DataTemplate>
             </ItemsControl.ItemTemplate>
           </ItemsControl>
-          <TextBlock Classes="h2" Text="For hire" Margin="0,10,0,0" IsVisible="{Binding HasForHire}" />
+          <TextBlock Classes="h2" Text="{l:T 'For hire'}" Margin="0,10,0,0" IsVisible="{Binding HasForHire}" />
           <ItemsControl ItemsSource="{Binding ForHire}">
             <ItemsControl.ItemTemplate>
               <DataTemplate x:DataType="vm:HireRow">
@@ -51,13 +52,13 @@
                     <TextBlock Text="{Binding Name}" FontWeight="SemiBold" />
                     <TextBlock Text="{Binding Terms}" Classes="dim" FontSize="{DynamicResource Font12}" />
                   </StackPanel>
-                  <Button Grid.Column="1" Classes="chip" Content="Hire" VerticalAlignment="Center"
+                  <Button Grid.Column="1" Classes="chip" Content="{l:T 'Hire'}" VerticalAlignment="Center"
                           Command="{Binding $parent[UserControl].((vm:InnViewModel)DataContext).HireCommand}" CommandParameter="{Binding}" />
                 </Grid>
               </DataTemplate>
             </ItemsControl.ItemTemplate>
           </ItemsControl>
-          <TextBlock Text="No one else is looking for work here." Classes="dim" FontSize="{DynamicResource Font12}" IsVisible="{Binding NoOneForHire}" />
+          <TextBlock Text="{l:T 'No one else is looking for work here.'}" Classes="dim" FontSize="{DynamicResource Font12}" IsVisible="{Binding NoOneForHire}" />
           <TextBlock Text="{Binding HireNote}" Classes="dim" FontSize="{DynamicResource Font12}" TextWrapping="Wrap" IsVisible="{Binding HasForHire}" />
         </StackPanel>
       </Grid>
@@ -66,8 +67,8 @@
           <TextBlock Text="{Binding LeavePrompt}" TextWrapping="Wrap" />
           <StackPanel Orientation="Horizontal" Spacing="6">
             <NumericUpDown Value="{Binding TakeGold}" Minimum="0" Maximum="{Binding PurseGold}" Increment="10" FormatString="0" Width="150" />
-            <Button Content="Leave them here" Command="{Binding ConfirmLeaveCommand}" FontWeight="Bold" />
-            <Button Content="Cancel" Command="{Binding CancelLeaveCommand}" />
+            <Button Content="{l:T 'Leave them here'}" Command="{Binding ConfirmLeaveCommand}" FontWeight="Bold" />
+            <Button Content="{l:T 'Cancel'}" Command="{Binding CancelLeaveCommand}" />
           </StackPanel>
         </StackPanel>
       </Border>
@@ -78,30 +79,30 @@
           </Border>
           <StackPanel Spacing="6">
             <StackPanel Orientation="Horizontal" Spacing="4">
-              <TextBox Text="{Binding EditName}" Width="200" MaxLength="16" Watermark="Name" ToolTip.Tip="With a controller, press A here for the on-screen keyboard" />
-              <Button Classes="chip" Content="Random" Command="{Binding RandomEditNameCommand}" VerticalAlignment="Center" />
+              <TextBox Text="{Binding EditName}" Width="200" MaxLength="16" Watermark="{l:T 'Name'}" ToolTip.Tip="{l:T 'With a controller, press A here for the on-screen keyboard'}" />
+              <Button Classes="chip" Content="{l:T 'Random'}" Command="{Binding RandomEditNameCommand}" VerticalAlignment="Center" />
             </StackPanel>
             <Grid ColumnDefinitions="44,Auto,170,Auto">
-              <TextBlock Text="Hair" Classes="dim" VerticalAlignment="Center" />
+              <TextBlock Text="{l:T 'Hair'}" Classes="dim" VerticalAlignment="Center" />
               <Button Grid.Column="1" Classes="chip" Content="&lt;" Command="{Binding PreviousEditHairCommand}" />
               <TextBlock Grid.Column="2" Text="{Binding EditHairLabel}" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="{DynamicResource Font12}" />
               <Button Grid.Column="3" Classes="chip" Content="&gt;" Command="{Binding NextEditHairCommand}" />
             </Grid>
             <Grid ColumnDefinitions="44,Auto,170,Auto">
-              <TextBlock Text="Beard" Classes="dim" VerticalAlignment="Center" />
+              <TextBlock Text="{l:T 'Beard'}" Classes="dim" VerticalAlignment="Center" />
               <Button Grid.Column="1" Classes="chip" Content="&lt;" Command="{Binding PreviousEditBeardCommand}" />
               <TextBlock Grid.Column="2" Text="{Binding EditBeardLabel}" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="{DynamicResource Font12}" />
               <Button Grid.Column="3" Classes="chip" Content="&gt;" Command="{Binding NextEditBeardCommand}" />
             </Grid>
             <StackPanel Orientation="Horizontal" Spacing="6">
-              <Button Content="Save" Command="{Binding SaveEditCommand}" FontWeight="Bold" />
-              <Button Content="Cancel" Command="{Binding CancelEditCommand}" />
+              <Button Content="{l:T 'Save'}" Command="{Binding SaveEditCommand}" FontWeight="Bold" />
+              <Button Content="{l:T 'Cancel'}" Command="{Binding CancelEditCommand}" />
             </StackPanel>
           </StackPanel>
         </StackPanel>
       </Border>
       <TextBlock Text="{Binding Feedback}" TextWrapping="Wrap" Foreground="{DynamicResource Info}" />
-      <Button Content="Leave (Esc)" Command="{Binding LeaveCommand}" HorizontalAlignment="Right" />
+      <Button Content="{l:T 'Leave (Esc)'}" Command="{Binding LeaveCommand}" HorizontalAlignment="Right" />
     </StackPanel>
   </Border>
 </UserControl>

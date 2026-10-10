@@ -1,4 +1,5 @@
-<UserControl xmlns="https://github.com/avaloniaui"
+<UserControl xmlns:l="using:AVAMMB1.App.Localization"
+             xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:AVAMMB1.App.ViewModels"
              x:Class="AVAMMB1.App.Views.SaveLoadView" x:DataType="vm:SaveLoadViewModel">
@@ -28,7 +29,7 @@
       </ScrollViewer>
       <TextBlock Text="{Binding Feedback}" Foreground="{DynamicResource Info}" />
       <TextBlock Text="{Binding Location, StringFormat='Saves are stored in: {0}'}" Classes="dim" FontSize="{DynamicResource Font11}" TextWrapping="Wrap" />
-      <Button Content="Back (Esc)" Command="{Binding BackCommand}" HorizontalAlignment="Right" />
+      <Button Content="{l:T 'Back (Esc)'}" Command="{Binding BackCommand}" HorizontalAlignment="Right" />
     </StackPanel>
   </Border>
 </UserControl>

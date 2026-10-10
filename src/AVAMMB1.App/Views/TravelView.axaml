@@ -1,10 +1,11 @@
-<UserControl xmlns="https://github.com/avaloniaui"
+<UserControl xmlns:l="using:AVAMMB1.App.Localization"
+             xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:AVAMMB1.App.ViewModels"
              x:Class="AVAMMB1.App.Views.TravelView" x:DataType="vm:TravelViewModel">
   <Border Classes="dialog" MaxWidth="700" MinWidth="500">
     <StackPanel Spacing="10">
-      <TextBlock Classes="title" Text="Travel map" />
+      <TextBlock Classes="title" Text="{l:T 'Travel map'}" />
       <TextBlock Text="{Binding Note}" TextWrapping="Wrap" Classes="dim" />
       <ItemsControl ItemsSource="{Binding Rows}">
         <ItemsControl.ItemTemplate>
@@ -19,7 +20,7 @@
           </DataTemplate>
         </ItemsControl.ItemTemplate>
       </ItemsControl>
-      <Button Content="Stay here (Esc)" Command="{Binding CloseCommand}" HorizontalAlignment="Right" />
+      <Button Content="{l:T 'Stay here (Esc)'}" Command="{Binding CloseCommand}" HorizontalAlignment="Right" />
     </StackPanel>
   </Border>
 </UserControl>
