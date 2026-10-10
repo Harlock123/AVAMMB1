@@ -5,6 +5,9 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+### Fixed
+- The Run and Bribe buttons in battle now show their keys, like Fight: "Run 50% (R)", "Bribe 120 gold (B)".
+
 ### Added
 - Character looks: choose a hairstyle (18, which leaves the helmet or hood off) and a beard (8) for
   each portrait when creating a character, and change name and looks later at any inn ("Name &

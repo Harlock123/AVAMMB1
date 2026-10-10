@@ -127,7 +127,7 @@ public sealed partial class CombatViewModel : ViewModelBase
         var names = combat.Monsters.GroupBy(m => m.Def).Select(g => g.Count() == 1 ? g.Key.NameWithArticle : $"{g.Count()} {g.Key.PluralName}");
         Log.Add(new MessageViewModel(new GameMessage($"You face {string.Join(", ", names)}!", MessageKind.Bad)));
         var bribe = combat.BribeCost;
-        BribeLabel = bribe is { } b ? $"Bribe ({b} gold)" : "Bribe (refused)";
+        BribeLabel = bribe is { } b ? $"Bribe {b} gold (B)" : "Bribe (refused)";
         CanBribe = bribe is not null;
         RefreshAll();
     }
@@ -177,7 +177,7 @@ public sealed partial class CombatViewModel : ViewModelBase
     /// <summary>Round counter.</summary>
     public string RoundText => _combat.Round > 0 ? $"Round {_combat.Round}" : "";
     /// <summary>Chance to flee.</summary>
-    public string RunText => $"Run ({_combat.RunChance}%)";
+    public string RunText => $"Run {_combat.RunChance}% (R)";
     /// <summary>Whether the active character can melee.</summary>
     public bool CanMelee => _combat.ActiveCharacter is { } c && _combat.IsInFrontRank(c);
     /// <summary>Whether the active character can shoot.</summary>
