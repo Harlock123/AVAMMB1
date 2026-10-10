@@ -70,8 +70,6 @@ Code identifiers, the solution and executables use the name **`AVAMMB1`** (`AVAM
   where gold buys permanent statistic points (each lesson dearer than the last - a late-game gold sink).
 - **Character looks**: pick a hairstyle and beard for each portrait at creation; rename characters
   and restyle them at any inn.
-- **Accessibility**: high-contrast and colour-blind friendly themes, larger text, an interface zoom,
-  adjustable battle text speed, and text cues (LOW) that don't depend on colour.
 - **Autosave and save pictures**: three rotating autosaves (new areas, before bosses); every save
   shows a picture of the view and the time played.
 - **Shopping help**: gear for sale is compared with what the shopper wears, and "Sell junk" sells
@@ -121,10 +119,12 @@ Code identifiers, the solution and executables use the name **`AVAMMB1`** (`AVAM
   can edit (see [docs/CONTENT_FORMAT.md](docs/CONTENT_FORMAT.md)); put a `Content` folder next to the
   executable or pass `--content DIR` to mod the game without rebuilding.
 - **Any screen size**: the interface scales to fit the window - crisp on a small laptop or a 4K
-  monitor (Settings can switch back to a fixed 100% layout).
+  monitor (Settings can switch back to a fixed layout, with an interface zoom of 100-150%).
 - **Accessibility**: three colour themes (Standard, High contrast, and Colour-blind friendly, which
   shows good news in blue and bad news in orange instead of green and red, using the Okabe-Ito
-  palette), adjustable text size (90-130%), and rebindable keys and controller buttons.
+  palette), adjustable text size (90-130%), adjustable battle text speed (lines appear one at a time),
+  a LOW badge on badly hurt characters that does not rely on colour, and rebindable keys and
+  controller buttons.
 - **3D view options**: classic 400 x 300, sharp 640 x 480 or high 800 x 600 internal resolution,
   optional smooth scaling, and optional **detailed textures** - 128 x 128 walls and floors (CC0,
   Screaming Brain Studios) for the towns and most dungeons, with mipmapping so distant walls do not
