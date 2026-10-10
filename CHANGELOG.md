@@ -5,6 +5,10 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+### Changed
+- Code: the game session (about 1,400 lines) is split by area into partial-class files - core state,
+  movement and time, map events, quests, puzzles, and combat - with no change in behaviour.
+
 ## [1.10.0] - 2026-10-10
 
 ### Added
