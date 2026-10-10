@@ -12,8 +12,8 @@ public class EffectTests
     {
         var s = TestContent.StartedSession();
         var db = s.Content;
-        var fire = db.Spells.Values.Where(sp => sp.Combat && sp.Element == Element.Fire).MinBy(sp => sp.Level)!;
-        var heal = db.Spells.Values.First(sp => sp.Effect == EffectKind.Heal && sp.Level == 1);
+        var fire = db.Spells.Values.Where(sp => sp.Learnable && sp.Combat && sp.Element == Element.Fire).MinBy(sp => sp.Level)!;
+        var heal = db.Spells.Values.Where(sp => sp.Learnable && sp.Effect == EffectKind.Heal).MinBy(sp => sp.Level)!;
         foreach (var spell in new[] { fire, heal })
         {
             var caster = s.State.Party.First(c => db.Class(c.Class).SpellSchool == spell.School);
