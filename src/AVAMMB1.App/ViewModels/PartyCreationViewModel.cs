@@ -306,6 +306,17 @@ public sealed partial class PartyCreationViewModel : ViewModelBase
     /// <summary>What the chosen difficulty does.</summary>
     public string DifficultyText => AVAMMB1.Core.Rules.DifficultyRules.Describe(_main.Services.Settings.Difficulty);
 
+    /// <summary>Ironman for the new game (remembered in settings).</summary>
+    public bool Ironman
+    {
+        get => _main.Services.Settings.Ironman;
+        set
+        {
+            _main.Services.Settings.Ironman = value;
+            OnPropertyChanged();
+        }
+    }
+
     /// <summary>Survival mode for the new game (remembered in settings).</summary>
     public bool Survival
     {

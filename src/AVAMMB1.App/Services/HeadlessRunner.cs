@@ -804,5 +804,30 @@ public static class HeadlessRunner
         vm.Services.Settings.AnimateMonsters = true;
         vm.ShowSettings(game);
         Capture(dir, "13-settings");
+        vm.ReturnToGame();
+
+        // Hall of Fame: one victory, then an ironman run that falls (its save is deleted, its deeds kept).
+        s.State.Won = true;
+        vm.Services.RecordRun("Victory");
+        s.State.Won = false;
+        s.State.Ironman = true;
+        game.AutoSave(null);
+        if (!vm.Services.Saves.Exists(SaveGameService.IronmanSlot))
+        {
+            throw new InvalidOperationException("The ironman run was not saved.");
+        }
+        game.QuickLoadCommand.Execute(null);
+        if (!game.Messages.Any(m => m.Text.Contains("no going back", StringComparison.Ordinal)))
+        {
+            throw new InvalidOperationException("Quick load was allowed in an ironman run.");
+        }
+        vm.ShowGameOver();
+        if (vm.Services.Saves.Exists(SaveGameService.IronmanSlot) || vm.Services.HallOfFameStore.Load().Entries.Count != 2)
+        {
+            throw new InvalidOperationException("The fallen ironman run was not recorded properly.");
+        }
+        vm.ShowHallOfFame();
+        Capture(dir, "40-hall-of-fame");
+        Console.WriteLine("ironman ok");
     }
 }

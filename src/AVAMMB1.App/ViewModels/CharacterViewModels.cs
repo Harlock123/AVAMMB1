@@ -731,5 +731,9 @@ public sealed partial class GameMenuViewModel(GameViewModel game) : ViewModelBas
     }
 
     [RelayCommand]
-    private void QuitToTitle() => game.Main.ShowTitle();
+    private void QuitToTitle()
+    {
+        game.AutoSave(null); // an ironman run is saved as it is left (autosave rules apply otherwise)
+        game.Main.ShowTitle();
+    }
 }

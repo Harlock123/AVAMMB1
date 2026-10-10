@@ -48,5 +48,6 @@ public sealed class DiceJsonConverter : JsonConverter<DiceExpression>
 [JsonSerializable(typeof(MapDef))]
 [JsonSerializable(typeof(SaveFile))]
 [JsonSerializable(typeof(GameState))]
+[JsonSerializable(typeof(HallOfFame))]
 [JsonSerializable(typeof(GameSettings))]
 public sealed partial class GameJsonContext : JsonSerializerContext;

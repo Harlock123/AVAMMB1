@@ -68,6 +68,8 @@ public sealed class GameSettings
     public Rules.Difficulty Difficulty { get; set; } = Rules.Difficulty.Normal;
     /// <summary>Survival mode (daily rations) for new games.</summary>
     public bool Survival { get; set; }
+    /// <summary>Ironman for new games (one save the game keeps itself; a wipe ends the run).</summary>
+    public bool Ironman { get; set; }
     /// <summary>Detailed (128 x 128) wall and floor textures where available.</summary>
     public bool DetailedTextures { get; set; }
     /// <summary>Smooth (filtered) scaling of the 3D view instead of sharp pixels.</summary>
@@ -222,6 +224,9 @@ public static class UserDataPaths
 
     /// <summary>Settings file path.</summary>
     public static string SettingsFile => System.IO.Path.Combine(DataDirectory, "settings.json");
+
+    /// <summary>The Hall of Fame (finished runs, achievements across games).</summary>
+    public static string HallOfFameFile => System.IO.Path.Combine(DataDirectory, "halloffame.json");
     /// <summary>Folder for mod packs (one sub-folder per pack).</summary>
     public static string ModsDirectory => System.IO.Path.Combine(DataDirectory, "Mods");
 }

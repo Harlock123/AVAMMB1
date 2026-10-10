@@ -144,6 +144,7 @@
         <TextBlock Text="Difficulty" VerticalAlignment="Center" />
         <ComboBox ItemsSource="{Binding DifficultyOptions}" SelectedIndex="{Binding DifficultyIndex}" Width="110" ToolTip.Tip="{Binding DifficultyText}" />
         <CheckBox Content="Survival mode" IsChecked="{Binding Survival}" ToolTip.Tip="Everyone eats 1 food a day as well as when resting, and goes hungry without. Can be changed later in Settings." />
+        <CheckBox Content="Ironman" IsChecked="{Binding Ironman}" ToolTip.Tip="One save, kept by the game as you play - no reloading. If the whole party falls, the run is over and goes into the Hall of Fame. Cannot be changed later." />
       </StackPanel>
       <Button Content="Back (Esc)" Command="{Binding BackCommand}" />
       <Button Content="Begin the Adventure" Command="{Binding BeginCommand}" FontWeight="Bold" IsVisible="{Binding !RecruitMode}" />

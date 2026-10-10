@@ -24,6 +24,31 @@ public sealed class GameServices(
     public ContentDatabase Content { get; } = content;
     /// <summary>Game session.</summary>
     public GameSession Session { get; } = session;
+    /// <summary>The Hall of Fame file.</summary>
+    public HallOfFameStore HallOfFameStore { get; } = new(UserDataPaths.HallOfFameFile);
+
+    /// <summary>Adds achievements to the Hall of Fame (earned in any game).</summary>
+    /// <param name="ids">Achievement ids.</param>
+    public void RecordAchievements(IEnumerable<string> ids)
+    {
+        var hof = HallOfFameStore.Load();
+        var before = hof.Achievements.Count;
+        hof.Achievements.UnionWith(ids);
+        if (hof.Achievements.Count != before)
+        {
+            HallOfFameStore.Save(hof);
+        }
+    }
+
+    /// <summary>Adds a finished run to the Hall of Fame.</summary>
+    /// <param name="outcome">"Victory" or "Fell in ...".</param>
+    public void RecordRun(string outcome)
+    {
+        var hof = HallOfFameStore.Load();
+        hof.Add(HallOfFameEntry.From(Session.State, Content, outcome));
+        HallOfFameStore.Save(hof);
+    }
+
     /// <summary>Saves.</summary>
     public SaveGameService Saves { get; } = saves;
     /// <summary>Settings store.</summary>

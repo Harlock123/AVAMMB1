@@ -71,6 +71,9 @@ public sealed partial class TitleViewModel : ViewModelBase
     private void Credits() => _main.ShowCredits();
 
     [RelayCommand]
+    private void HallOfFame() => _main.ShowHallOfFame();
+
+    [RelayCommand]
     private void Quit() => _main.Quit();
 
     /// <inheritdoc />

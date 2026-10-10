@@ -226,6 +226,9 @@ public sealed class GameState
     /// <summary>Difficulty of this game.</summary>
     public Difficulty Difficulty { get; set; } = Difficulty.Normal;
 
+    /// <summary>Ironman: the game keeps a single save itself, and a party wipe ends the run.</summary>
+    public bool Ironman { get; set; }
+
     /// <summary>Survival mode: besides resting, everyone eats one food a day, and goes hungry without.</summary>
     public bool Survival { get; set; }
 

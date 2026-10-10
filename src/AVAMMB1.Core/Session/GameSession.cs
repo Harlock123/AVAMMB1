@@ -192,6 +192,7 @@ public sealed partial class GameSession
         State.PoolAll(); // a new party starts by pooling its gold into the purse
         State.Difficulty = Difficulty;
         State.Survival = Survival;
+        State.Ironman = Ironman;
         Combat = null;
         Explore();
     }
@@ -201,6 +202,9 @@ public sealed partial class GameSession
 
     /// <summary>Survival mode for the next new game.</summary>
     public bool Survival { get; set; }
+
+    /// <summary>Ironman for the next new game.</summary>
+    public bool Ironman { get; set; }
 
     /// <summary>Replaces the state with a loaded one.</summary>
     /// <param name="state">Loaded state.</param>

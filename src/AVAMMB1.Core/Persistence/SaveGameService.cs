@@ -40,7 +40,10 @@ public sealed class SaveFile
 public sealed record SaveSlotInfo(int Slot, bool Exists, string Name, DateTime SavedUtc, string Summary, TimeSpan PlayTime = default, string? ThumbnailPath = null)
 {
     /// <summary>Whether this is one of the rotating autosave slots.</summary>
-    public bool IsAuto => Slot >= SaveGameService.SlotCount;
+    public bool IsAuto => Slot >= SaveGameService.SlotCount && Slot < SaveGameService.IronmanSlot;
+
+    /// <summary>Whether this is the ironman slot.</summary>
+    public bool IsIronman => Slot == SaveGameService.IronmanSlot;
 }
 
 /// <summary>Saves and loads games as JSON files in a directory.</summary>
@@ -62,7 +65,25 @@ public sealed class SaveGameService
     /// <summary>Mod packs active in this session (written into new saves).</summary>
     public IReadOnlyList<string> ActiveMods { get; set; } = [];
 
-    private string PathFor(int slot) => Path.Combine(Directory, slot >= SlotCount ? $"auto{slot - SlotCount + 1}.json" : $"slot{slot}.json");
+    private string PathFor(int slot) => Path.Combine(Directory,
+        slot == IronmanSlot ? "ironman.json" : slot >= SlotCount ? $"auto{slot - SlotCount + 1}.json" : $"slot{slot}.json");
+
+    /// <summary>The single slot an ironman game keeps itself (after the autosave slots).</summary>
+    public const int IronmanSlot = SlotCount + AutoSlotCount;
+
+    /// <summary>Deletes a save and its picture (an ironman run that has ended).</summary>
+    /// <param name="slot">Slot number.</param>
+    public void Delete(int slot)
+    {
+        ValidateSlot(slot);
+        foreach (var path in new[] { PathFor(slot), ThumbnailFor(slot) })
+        {
+            if (File.Exists(path))
+            {
+                File.Delete(path);
+            }
+        }
+    }
 
     /// <summary>Number of rotating autosave slots (numbered after the manual ones).</summary>
     public const int AutoSlotCount = 3;
@@ -193,8 +214,12 @@ public sealed class SaveGameService
     public IReadOnlyList<SaveSlotInfo> List()
     {
         var list = new List<SaveSlotInfo>();
-        for (var i = 0; i < TotalSlots; i++)
+        for (var i = 0; i <= IronmanSlot; i++)
         {
+            if (i == IronmanSlot && !Exists(i))
+            {
+                break; // the ironman slot is listed only when a run is in progress
+            }
             try
             {
                 if (Exists(i))
@@ -221,7 +246,7 @@ public sealed class SaveGameService
 
     private static void ValidateSlot(int slot)
     {
-        if (slot < 0 || slot >= TotalSlots)
+        if (slot < 0 || slot > IronmanSlot)
         {
             throw new ArgumentOutOfRangeException(nameof(slot));
         }

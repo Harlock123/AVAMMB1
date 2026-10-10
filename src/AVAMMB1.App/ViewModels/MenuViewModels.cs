@@ -15,7 +15,7 @@ namespace AVAMMB1.App.ViewModels;
 public sealed record SlotRow(SaveSlotInfo Info, Avalonia.Media.Imaging.Bitmap? Picture)
 {
     /// <summary>Slot label.</summary>
-    public string Label => Info.IsAuto ? $"Auto {Info.Slot - SaveGameService.SlotCount + 1}" : Info.Slot == 0 ? "Quick" : $"Slot {Info.Slot}";
+    public string Label => Info.IsIronman ? "Ironman" : Info.IsAuto ? $"Auto {Info.Slot - SaveGameService.SlotCount + 1}" : Info.Slot == 0 ? "Quick" : $"Slot {Info.Slot}";
     /// <summary>Description.</summary>
     public string Description => Info.Exists
         ? $"{Info.Name} - {Info.Summary}"
@@ -48,7 +48,8 @@ public sealed partial class SaveLoadViewModel : ViewModelBase
         Saving = saving;
         _onClose = onClose;
         Reload();
-        Feedback = saving ? "Choose a slot to save into. (Autosaves are kept separately - see Load.)"
+        Feedback = saving && main.Services.Session.IsActive && main.Services.Session.State.Ironman ? "Ironman: the game keeps a single save, written as you go."
+            : saving ? "Choose a slot to save into. (Autosaves are kept separately - see Load.)"
             : Slots.Count == 0 ? "There are no saved games yet." : "Choose a saved game to load (newest first).";
         Location = main.Services.Saves.Directory;
     }
@@ -71,7 +72,10 @@ public sealed partial class SaveLoadViewModel : ViewModelBase
         Slots.Clear();
         var all = _main.Services.Saves.List();
         // Saving: the quick and manual slots in order. Loading: only real saves, newest first.
-        var shown = Saving ? all.Where(s => !s.IsAuto) : all.Where(s => s.Exists).OrderByDescending(s => s.SavedUtc);
+        var ironman = _main.Services.Session.IsActive && _main.Services.Session.State.Ironman;
+        var shown = Saving && ironman
+            ? [all.FirstOrDefault(s => s.IsIronman) ?? new SaveSlotInfo(SaveGameService.IronmanSlot, false, "", DateTime.MinValue, "")]
+            : Saving ? all.Where(s => !s.IsAuto && !s.IsIronman) : all.Where(s => s.Exists).OrderByDescending(s => s.SavedUtc);
         foreach (var s in shown)
         {
             Avalonia.Media.Imaging.Bitmap? pic = null;
@@ -651,14 +655,16 @@ public sealed partial class EndingViewModel : ViewModelBase
         Victory = victory;
         var state = main.Services.Session.State;
         Title = victory ? "Victory!" : "The party has fallen";
+        var ironman = state.Ironman && !victory;
         Text = victory
             ? main.Services.Content.Config.VictoryText
+            : ironman ? "Darkness closes in. This was an ironman run: there is no saved game to return to. The party's deeds are written in the Hall of Fame."
             : "Darkness closes in. Perhaps a saved game holds a brighter fate...";
         Stats = $"Days in the field: {state.Day}   Gold: {state.Gold}   " +
                 string.Join("   ", state.Party.Select(c => $"{c.Name} L{c.Level}"));
         main.Services.Audio.PlayMusic(victory ? "title" : "dungeon");
         main.Services.Audio.PlayAmbience(null);
-        CanLoad = main.Services.Saves.MostRecentSlot() is not null;
+        CanLoad = !ironman && main.Services.Saves.MostRecentSlot() is not null;
     }
 
     /// <summary>Whether this is a victory.</summary>
@@ -682,5 +688,61 @@ public sealed partial class EndingViewModel : ViewModelBase
         {
             _main.LoadSlot(slot);
         }
+    }
+}
+
+/// <summary>A finished run in the Hall of Fame.</summary>
+/// <param name="Heading">"Victory - Hard, ironman".</param>
+/// <param name="Party">Party line.</param>
+/// <param name="Details">Days, play time, kills, achievements, date.</param>
+/// <param name="Won">Whether the main quest was completed.</param>
+public sealed record HallEntryRow(string Heading, string Party, string Details, bool Won);
+
+/// <summary>The Hall of Fame: finished runs and achievements earned in any game.</summary>
+public sealed partial class HallOfFameViewModel : ViewModelBase
+{
+    private readonly MainViewModel _main;
+
+    /// <summary>Creates the screen.</summary>
+    /// <param name="main">Root view model.</param>
+    public HallOfFameViewModel(MainViewModel main)
+    {
+        _main = main;
+        var hof = main.Services.HallOfFameStore.Load();
+        Entries = hof.Entries.Select(e =>
+        {
+            var mode = string.Join(", ", new[] { e.Difficulty.ToString(), e.Survival ? "survival" : null, e.Ironman ? "ironman" : null }.Where(x => x is not null));
+            return new HallEntryRow($"{e.Outcome} - {mode}", string.Join("; ", e.Party),
+                $"Day {e.Day} - played {SlotRow.PlayTimeText(TimeSpan.FromSeconds(e.PlaySeconds))} - {e.MonstersSlain:N0} monsters slain - {e.Achievements.Count} achievements - {e.FinishedUtc.ToLocalTime().ToString("d", CultureInfo.CurrentCulture)}",
+                e.Won);
+        }).ToList();
+        Achievements = AVAMMB1.Core.Session.Chronicle.Achievements.Select(a => new AchievementRow(a.Title, a.Description, hof.Achievements.Contains(a.Id))).ToList();
+        AchievementCount = $"Achievements earned in any game: {Achievements.Count(a => a.Earned)} of {Achievements.Count}";
+        Summary = Entries.Count == 0
+            ? "No finished runs yet. Complete the main quest - or fall in an ironman run - to be remembered here."
+            : $"{Entries.Count(e => e.Won)} victor{(Entries.Count(e => e.Won) == 1 ? "y" : "ies")} in {Entries.Count} finished run{(Entries.Count == 1 ? "" : "s")}.";
+    }
+
+    /// <summary>Finished runs, newest first.</summary>
+    public IReadOnlyList<HallEntryRow> Entries { get; }
+    /// <summary>Every achievement, marked when earned in any game.</summary>
+    public IReadOnlyList<AchievementRow> Achievements { get; }
+    /// <summary>"Achievements earned in any game: 7 of 23".</summary>
+    public string AchievementCount { get; }
+    /// <summary>"2 victories in 3 finished runs".</summary>
+    public string Summary { get; }
+
+    [RelayCommand]
+    private void Back() => _main.ShowTitle();
+
+    /// <inheritdoc />
+    public override bool HandleKey(Key key)
+    {
+        if (key is Key.Escape or Key.Enter)
+        {
+            Back();
+            return true;
+        }
+        return false;
     }
 }

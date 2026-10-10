@@ -64,18 +64,29 @@ public sealed partial class GameViewModel : ViewModelBase
     public byte[]? Thumbnail() => SaveThumbnail.Render(Scene);
 
     /// <summary>Saves into the rotating autosave slots (if autosave is on).</summary>
-    /// <param name="why">Shown in the log, e.g. "entering Brindlemoor Cellars".</param>
-    public void AutoSave(string why)
+    /// <param name="why">Shown in the log, e.g. "entering Brindlemoor Cellars" (null: save quietly).</param>
+    public void AutoSave(string? why)
     {
-        if (!Services.Settings.Autosave || !Session.IsActive)
+        var ironman = Session.State.Ironman;
+        if (!Session.IsActive || (!ironman && !Services.Settings.Autosave))
         {
             return;
         }
         try
         {
             CountPlayTime();
-            Services.Saves.AutoSave(Session.LocationSummary, Session.State, Thumbnail());
-            AddMessages([new GameMessage($"Autosaved ({why}).", MessageKind.Info)]);
+            if (ironman)
+            {
+                Services.Saves.Save(SaveGameService.IronmanSlot, "Ironman", Session.LocationSummary, Session.State, Thumbnail());
+            }
+            else
+            {
+                Services.Saves.AutoSave(Session.LocationSummary, Session.State, Thumbnail());
+            }
+            if (why is not null)
+            {
+                AddMessages([new GameMessage($"{(ironman ? "Saved" : "Autosaved")} ({why}).", MessageKind.Info)]);
+            }
         }
         catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
         {
@@ -251,6 +262,7 @@ public sealed partial class GameViewModel : ViewModelBase
         if (Chronicle.Check(Session) is { Count: > 0 } earned)
         {
             AddMessages(earned);
+            Services.RecordAchievements(Session.State.Achievements);
         }
         OnPropertyChanged(nameof(LocationText));
         OnPropertyChanged(nameof(CompassText));
@@ -413,6 +425,10 @@ public sealed partial class GameViewModel : ViewModelBase
             return;
         }
         Refresh();
+        if (Session.State.Ironman)
+        {
+            AutoSave(null); // ironman keeps its one save up to date after every battle
+        }
     }
 
     [RelayCommand] private void Forward() => Apply(Session.Move(MoveKind.Forward));
@@ -473,6 +489,11 @@ public sealed partial class GameViewModel : ViewModelBase
         try
         {
             CountPlayTime();
+            if (Session.State.Ironman)
+            {
+                AutoSave("ironman: the game keeps one save");
+                return;
+            }
             Services.Saves.Save(0, "Quick Save", Session.LocationSummary, Session.State, Thumbnail());
             AddMessages([new GameMessage("Game saved to the quick-save slot.", MessageKind.Good, "book")]);
         }
@@ -485,6 +506,11 @@ public sealed partial class GameViewModel : ViewModelBase
     [RelayCommand]
     private void QuickLoad()
     {
+        if (Session.State.Ironman)
+        {
+            AddMessage("Ironman: there is no going back.");
+            return;
+        }
         if (!Services.Saves.Exists(0))
         {
             AddMessage("There is no quick save yet (F5 to quick save).");

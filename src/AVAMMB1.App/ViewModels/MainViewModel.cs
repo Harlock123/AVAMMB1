@@ -127,10 +127,12 @@ public sealed partial class MainViewModel : ViewModelBase
     {
         Services.Session.Difficulty = Services.Settings.Difficulty;
         Services.Session.Survival = Services.Settings.Survival;
+        Services.Session.Ironman = Services.Settings.Ironman;
         Services.Session.NewGame(party, roster);
         Game = new GameViewModel(this);
         CurrentScreen = Game;
         Game.ShowStory("Welcome", Services.Content.Config.Intro);
+        Game.AutoSave(null); // an ironman run has its save from the first step
     }
 
     /// <summary>Returns to the running game.</summary>
@@ -157,6 +159,7 @@ public sealed partial class MainViewModel : ViewModelBase
             try
             {
                 Services.Session.Load(file.State);
+                Services.RecordAchievements(file.State.Achievements);
             }
             catch (InvalidDataException) when (missing.Count > 0)
             {
@@ -181,6 +184,9 @@ public sealed partial class MainViewModel : ViewModelBase
     /// <param name="returnTo">Screen to return to afterwards.</param>
     public void ShowSettings(ViewModelBase returnTo) => CurrentScreen = new SettingsViewModel(this, returnTo);
 
+    /// <summary>Shows the Hall of Fame.</summary>
+    public void ShowHallOfFame() => CurrentScreen = new HallOfFameViewModel(this);
+
     /// <summary>Shows the credits screen.</summary>
     public void ShowCredits() => CurrentScreen = new CreditsViewModel(this);
 
@@ -188,10 +194,36 @@ public sealed partial class MainViewModel : ViewModelBase
     public void ShowLoad() => CurrentScreen = new SaveLoadViewModel(this, saving: false, onClose: ShowTitle);
 
     /// <summary>Shows the victory screen.</summary>
-    public void ShowVictory() => CurrentScreen = new EndingViewModel(this, victory: true);
+    public void ShowVictory()
+    {
+        Game?.CountPlayTime();
+        Services.RecordRun("Victory");
+        if (Services.Session.State.Ironman)
+        {
+            Game?.AutoSave(null);
+        }
+        CurrentScreen = new EndingViewModel(this, victory: true);
+    }
 
     /// <summary>Shows the game over screen.</summary>
-    public void ShowGameOver() => CurrentScreen = new EndingViewModel(this, victory: false);
+    public void ShowGameOver()
+    {
+        var state = Services.Session.State;
+        if (state.Ironman)
+        {
+            Game?.CountPlayTime();
+            Services.RecordRun("Fell in " + Services.Session.CurrentMap.Def.Name);
+            try
+            {
+                Services.Saves.Delete(SaveGameService.IronmanSlot); // the run is over
+            }
+            catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
+            {
+                // A save that cannot be deleted will simply load the party as it was.
+            }
+        }
+        CurrentScreen = new EndingViewModel(this, victory: false);
+    }
 
     /// <summary>Applies the fullscreen setting.</summary>
     public void ApplyFullscreen() => FullscreenChanged?.Invoke(this, EventArgs.Empty);

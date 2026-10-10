@@ -6,6 +6,13 @@ All notable changes to this project are documented here. The format follows
 ## [Unreleased]
 
 ### Added
+- Hall of Fame (title screen): every victory, and every ironman party that falls, is recorded with
+  its party, difficulty, days, play time, monsters slain and achievements; achievements earned in any
+  game are collected there too. It lives beside the settings, not in a save.
+- Ironman mode (a checkbox when creating the party): the game keeps a single save itself - written as
+  you go, after every battle and when you quit - quick load is disabled, and if the whole party falls
+  the save is deleted and the run goes into the Hall of Fame. A new achievement, Iron Will, is for
+  finishing the main quest in ironman mode.
 - Smithing: the smithies of Brindlemoor, Saltreach, Thornwick, Port Ashkar and Wintermere improve
   weapons (+1 to hit and damage per step) and armor, shields, helmets, gloves and boots (+1 AC per
   step), up to +5. Each step costs gold - (price + 200) x step squared - and as many gems as the step,
