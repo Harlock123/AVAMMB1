@@ -66,6 +66,7 @@ public sealed partial class GameSession
             .SelectMany(m => m.AllEvents.Select(ev => (Map: m, Ev: ev)))
             .Where(x => match(x.Ev) && !IsCompleted(x.Map, x.Ev))
             .OrderByDescending(x => RequirementsMet(x.Ev))
+            .ThenByDescending(x => CanReach(x.Map, x.Ev.X, x.Ev.Y))
             .ThenByDescending(x => x.Ev.Type == MapEventKind.Quest)
             .ThenByDescending(x => x.Map.Id == State.MapId)
             .ThenByDescending(x => State.Explored.ContainsKey(x.Map.Id))
@@ -76,6 +77,20 @@ public sealed partial class GameSession
             return null;
         }
         var best = hits[0];
+        if (RequirementsMet(best.Ev) && !CanReach(best.Map, best.Ev.X, best.Ev.Y) && depth < 3)
+        {
+            // Behind a locked door: the key (or whatever opens the map's locks) comes first.
+            var def = best.Map.Def;
+            if (def.LockedDoorKey is { } key && !Inventory_AnyoneHas(key)
+                && FindGoal(ev => ev.Items.Contains(key) || ev.Monsters.Any(m => Content.Monsters.TryGetValue(m.Monster, out var md) && md.Drops.Any(d => d.Item == key)), depth + 1) is { } keyGoal)
+            {
+                return keyGoal;
+            }
+            if (def.LockedDoorFlag is { } doorFlag && !State.Flags.Contains(doorFlag) && FindGoal(ev => ev.SetFlag == doorFlag, depth + 1) is { } flagGoal)
+            {
+                return flagGoal;
+            }
+        }
         if (RequirementsMet(best.Ev))
         {
             return best;
@@ -83,5 +98,55 @@ public sealed partial class GameSession
         return depth < 3 && best.Ev.RequiresFlag is { } flag && !State.Flags.Contains(flag)
             ? FindGoal(ev => ev.SetFlag == flag, depth + 1)
             : null;
+    }
+
+    /// <summary>
+    /// Whether a square can be reached on a map from where its passages arrive - through doors the party
+    /// can open (its key, a pick-lock, a lock already picked) and secret doors (which can be searched for),
+    /// but not past squares barred by unmet requirements.
+    /// </summary>
+    private bool CanReach(GameMap map, int tx, int ty)
+    {
+        var starts = Content.Maps.Values.SelectMany(m => m.AllEvents)
+            .Where(e => e.Type == MapEventKind.Teleport && e.Map == map.Id).Select(e => (e.ToX, e.ToY))
+            .Concat(map.AllEvents.Where(e => e.Type == MapEventKind.Teleport).Select(e => (e.X, e.Y)))
+            .Where(c => map.InBounds(c.Item1, c.Item2))
+            .ToHashSet();
+        if (map.Id == State.MapId)
+        {
+            starts.Add((State.X, State.Y));
+        }
+        var picker = !map.Def.MasterLocks && State.Party.Any(c => c.IsAlive && Rules.HasAbility(c, ClassAbility.PickLocks));
+        var seen = new HashSet<(int, int)>(starts);
+        var q = new Queue<(int X, int Y)>(starts);
+        while (q.Count > 0)
+        {
+            var (x, y) = q.Dequeue();
+            if ((x, y) == (tx, ty))
+            {
+                return true;
+            }
+            foreach (var d in Enum.GetValues<Direction>())
+            {
+                var (wall, solid) = map.Probe(x, y, d);
+                var n = (X: x + d.Dx(), Y: y + d.Dy());
+                var open = !solid && wall switch
+                {
+                    WallKind.Wall => false,
+                    WallKind.LockedDoor => picker || CanOpenLocks(map) || State.PickedLocks.Contains(GameState.SecretKey(map.Id, x, y, d)),
+                    _ => true,
+                };
+                if (!open || !map.InBounds(n.X, n.Y) || !seen.Add(n))
+                {
+                    continue;
+                }
+                if (n != (tx, ty) && map.EventsAt(n.X, n.Y).Any(e => e.Blocking && !IsCompleted(map, e) && !RequirementsMet(e)))
+                {
+                    continue;
+                }
+                q.Enqueue(n);
+            }
+        }
+        return false;
     }
 }

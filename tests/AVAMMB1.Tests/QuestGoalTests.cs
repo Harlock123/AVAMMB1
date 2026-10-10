@@ -54,6 +54,7 @@ public class QuestGoalTests
     [InlineData("bounty_ogre", 0, "wilds", "Ogre's Den")]               // the hoard is locked: the guardian first
     [InlineData("rimefang", 1, "wintermere", "The Jarl's Hall")]        // carrying the heart: hand it in
     [InlineData("main", 0, "cellars", "Chieftain's Hall")]
+    [InlineData("bounty_crown", 0, "catacombs", "Ossuary of the Barrow-Folk")] // the throne is locked: its key first
     public void Goals_LeadToTheRightPlace(string quest, int stage, string map, string place)
     {
         var goal = AtStage(quest, stage).QuestGoals().Single(g => g.QuestId == quest);

@@ -5,6 +5,15 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+### Added
+- An automated playthrough test: following only the journal's "Where next?" goals, with real movement
+  through the map connections, a party finishes every quest - main and side - in one run. It guards the
+  whole game against content that can no longer be completed.
+
+### Fixed
+- "Where next?" could point at a place behind a locked door the party had no key for (the Barrow
+  Throne for the Barrow-King's bounty); it now leads to whatever gives the key first.
+
 ## [1.11.0] - 2026-10-10
 
 ### Added
