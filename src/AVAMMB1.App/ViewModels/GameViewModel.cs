@@ -243,6 +243,7 @@ public sealed partial class GameViewModel : ViewModelBase
             Dark = Session.IsDarkHere,
             WarmLight = (map.Def.Dark || (map.Def.Kind == MapKind.Outdoor && state.IsNight)) && Session.LanternLit,
             Night = map.Def.Kind is MapKind.Outdoor or MapKind.Town ? state.Darkness : 0,
+            Weather = Services.Settings.Weather && map.Def.Kind is MapKind.Outdoor or MapKind.Town ? map.Def.Weather : null,
             SecretFound = (x, y, d) => state.IsSecretFound(map.Id, x, y, d),
             Sprites = sprites,
         };

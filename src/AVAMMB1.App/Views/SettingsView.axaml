@@ -62,6 +62,7 @@
                   <CheckBox Content="Show minimap" IsChecked="{Binding ShowMinimap}" />
                   <CheckBox Content="Smooth movement (animated steps and turns)" IsChecked="{Binding SmoothMovement}" />
                   <CheckBox Content="Animated monsters in combat" IsChecked="{Binding AnimateMonsters}" />
+                  <CheckBox Content="Weather (snow and rain in the open)" IsChecked="{Binding Weather}" />
                   <TextBlock Classes="h2" Text="3D view" />
                   <Grid ColumnDefinitions="120,*">
                     <TextBlock Text="Resolution" VerticalAlignment="Center" />

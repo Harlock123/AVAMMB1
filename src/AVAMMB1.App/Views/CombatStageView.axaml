@@ -5,6 +5,17 @@
              x:Class="AVAMMB1.App.Views.CombatStageView" x:DataType="vm:CombatViewModel">
   <UserControl.Styles>
     <Style Selector="TextBlock.elite"><Setter Property="Foreground" Value="{DynamicResource Loot}" /></Style>
+    <!-- Spell and breath effects: a brief wash of colour over the scene. -->
+    <Style Selector="Border.spellflash"><Setter Property="Opacity" Value="0" /></Style>
+    <Style Selector="Border.spellflash.on">
+      <Style.Animations>
+        <Animation Duration="0:0:0.5" Easing="CubicEaseOut">
+          <KeyFrame Cue="0%"><Setter Property="Opacity" Value="0" /></KeyFrame>
+          <KeyFrame Cue="20%"><Setter Property="Opacity" Value="0.45" /></KeyFrame>
+          <KeyFrame Cue="100%"><Setter Property="Opacity" Value="0" /></KeyFrame>
+        </Animation>
+      </Style.Animations>
+    </Style>
     <!-- Idle "breathing": two tempos so a group doesn't move in lock-step. -->
     <Style Selector="c|PixelImage.idleA">
       <Style.Animations>
@@ -110,5 +121,6 @@
           </DataTemplate>
       </ItemsControl.ItemTemplate>
     </ItemsControl>
+    <Border Classes="spellflash" Classes.on="{Binding IsFlashing}" Background="{Binding FlashBrush}" IsHitTestVisible="False" Grid.RowSpan="9" Grid.ColumnSpan="9" />
   </Grid>
 </UserControl>

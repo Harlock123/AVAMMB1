@@ -259,5 +259,6 @@
   }
  ],
  "music": "town",
- "ambience": "wind"
+ "ambience": "wind",
+ "weather": "snow"
 }

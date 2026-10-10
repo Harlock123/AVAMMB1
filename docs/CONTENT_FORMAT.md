@@ -227,7 +227,7 @@ for monsters; potions still work). Both show their `mapColor` on the automap onc
 
 Several events can share a cell; they fire in order. `once` events are remembered in the save game.
 `blocking` events stop the party from entering until their requirements are met (showing
-`failText`). `feature` draws a billboard from `Graphics/Features`; with `openWhenMet` it is drawn only
+`failText`). A map's optional `weather` ("snow" or "rain") falls over its outdoor view. `feature` draws a billboard from `Graphics/Features`; with `openWhenMet` it is drawn only
 while the requirements are unmet - a portcullis that disappears once its lever (a `message` event with
 `setFlag`, e.g. `"feature": "lever"` or `"pressure_plate"`) has been pulled.
 

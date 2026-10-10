@@ -263,5 +263,6 @@
    "name": "A Quiet Hut"
   }
  ],
- "ambience": "river"
+ "ambience": "river",
+ "weather": "rain"
 }

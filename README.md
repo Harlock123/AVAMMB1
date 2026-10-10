@@ -79,6 +79,8 @@ Code identifiers, the solution and executables use the name **`AVAMMB1`** (`AVAM
   where found, how many slain) and every item you have seen.
 - **Autosave and save pictures**: three rotating autosaves (new areas, before bosses); every save
   shows a picture of the view and the time played.
+- **Weather and spell effects**: snow and rain in the open country, and colour flashes for spells
+  and breath attacks in battle.
 - **Controller-only play**: an on-screen keyboard for names, riddles and notes (A on a text box), and
   random names to suit each race.
 - **Hall of Fame and ironman**: finished runs and achievements across all your games; an optional

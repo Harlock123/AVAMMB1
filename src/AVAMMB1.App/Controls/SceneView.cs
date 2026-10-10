@@ -138,7 +138,7 @@ public sealed class SceneView : Control
         EnsureLoop();
     }
 
-    private bool HasBobbing => AnimateSprites && _shown is { } s && s.Sprites.Any(sp => sp.Bob > 0);
+    private bool HasBobbing => AnimateSprites && _shown is { } s && (s.Weather is not null || s.Sprites.Any(sp => sp.Bob > 0));
 
     /// <summary>Keeps one animation-frame loop running while something moves.</summary>
     private void EnsureLoop()

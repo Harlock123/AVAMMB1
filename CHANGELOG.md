@@ -6,6 +6,10 @@ All notable changes to this project are documented here. The format follows
 ## [Unreleased]
 
 ### Added
+- Weather and spell effects: snow falls over the Frostmark and Wintermere and rain over the Duskmere
+  marsh (drawn by the 3D view; Settings > Display turns it off), and in battle every spell and breath
+  attack washes the scene with its colour - fire orange, cold blue, magic violet, healing green. Maps
+  set `weather` ("snow" or "rain") in their data.
 - Controller-only play: pressing A on any text box (character names, renaming at the inn, riddle
   answers, automap notes) opens an on-screen keyboard - the D-pad moves between keys, A types, B
   cancels, Done finishes. Character creation and the inn also have a Random name button (names to

@@ -21,4 +21,8 @@ public enum MessageKind
 /// <param name="Text">Message text.</param>
 /// <param name="Kind">Category.</param>
 /// <param name="Sound">Sound effect key to play, if any.</param>
-public sealed record GameMessage(string Text, MessageKind Kind = MessageKind.Info, string? Sound = null);
+public sealed record GameMessage(string Text, MessageKind Kind = MessageKind.Info, string? Sound = null)
+{
+    /// <summary>A visual effect for battle ("fire", "cold", "electric", "acid", "magic", "holy", "heal"), if any.</summary>
+    public string? Effect { get; init; }
+}

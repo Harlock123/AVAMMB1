@@ -55,6 +55,8 @@ public sealed class SceneDescription
     public bool WarmLight { get; init; }
     /// <summary>How dark the sky is (0 day - 1 night), for outdoor maps and towns.</summary>
     public double Night { get; init; }
+    /// <summary>Falling weather to draw: "snow", "rain" or null.</summary>
+    public string? Weather { get; init; }
     /// <summary>Whether the secret door on a side of a cell has been discovered (undiscovered ones draw as walls).</summary>
     public Func<int, int, Direction, bool> SecretFound { get; init; } = (_, _, _) => false;
     /// <summary>Feature billboards.</summary>
@@ -267,6 +269,74 @@ public sealed class SceneRenderer
         {
             WarmTint();
         }
+        if (scene.Weather is { } weather)
+        {
+            DrawWeather(weather);
+        }
+    }
+
+    /// <summary>Snowflakes drifting down, or rain streaking past, animated by <see cref="Time"/>.</summary>
+    private void DrawWeather(string weather)
+    {
+        var snow = weather == "snow";
+        var count = snow ? Width * Height / 600 : Width * Height / 900;
+        for (var i = 0; i < count; i++)
+        {
+            // Each particle has a fixed pseudo-random lane, speed and phase.
+            var lane = Hash((uint)i) / 4294967296.0;
+            var phase = Hash((uint)i ^ 0x9E3779B9u) / 4294967296.0;
+            var near = (i % 3) == 0; // a third are closer: bigger and faster
+            var speed = snow ? (near ? 0.22 : 0.12) : (near ? 1.6 : 1.1);
+            var fall = (phase + Time * speed) % 1.0;
+            var y = (int)(fall * Height);
+            var drift = snow ? Math.Sin(Time * 1.3 + phase * 6.28) * 6 : fall * 18;
+            var x = (int)(lane * Width + drift) % Width;
+            if (x < 0)
+            {
+                x += Width;
+            }
+            if (snow)
+            {
+                var size = near ? 2 : 1;
+                for (var dy = 0; dy < size; dy++)
+                {
+                    for (var dx = 0; dx < size; dx++)
+                    {
+                        Blend(x + dx, y + dy, 0xFFF4F7FF, near ? 0.9 : 0.6);
+                    }
+                }
+            }
+            else
+            {
+                var len = near ? 9 : 6;
+                for (var k = 0; k < len; k++)
+                {
+                    Blend(x + k / 3, y + k, 0xFFAFC4DD, near ? 0.45 : 0.3);
+                }
+            }
+        }
+    }
+
+    /// <summary>A well-mixed 32-bit hash (so particles don't line up).</summary>
+    private static uint Hash(uint x)
+    {
+        x ^= x >> 16;
+        x *= 0x7FEB352Du;
+        x ^= x >> 15;
+        x *= 0x846CA68Bu;
+        x ^= x >> 16;
+        return x;
+    }
+
+    private void Blend(int x, int y, uint color, double alpha)
+    {
+        if (x < 0 || y < 0 || x >= Width || y >= Height)
+        {
+            return;
+        }
+        var c = Pixels[y * Width + x];
+        uint Mix(int shift) => (uint)Math.Clamp(((c >> shift) & 0xFF) * (1 - alpha) + ((color >> shift) & 0xFF) * alpha, 0, 255);
+        Pixels[y * Width + x] = 0xFF000000u | (Mix(16) << 16) | (Mix(8) << 8) | Mix(0);
     }
 
     /// <summary>Darkens the whole view (night under the open sky).</summary>

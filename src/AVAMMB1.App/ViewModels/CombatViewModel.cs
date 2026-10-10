@@ -265,8 +265,36 @@ public sealed partial class CombatViewModel : ViewModelBase
         }
     }
 
+    /// <summary>Whether a spell flash is playing.</summary>
+    [ObservableProperty]
+    private bool _isFlashing;
+
+    /// <summary>The colour of the current spell flash.</summary>
+    [ObservableProperty]
+    private Avalonia.Media.IBrush _flashBrush = Avalonia.Media.Brushes.Transparent;
+
+    private static readonly Dictionary<string, string> FlashColors = new()
+    {
+        ["fire"] = "#FF7A1A", ["cold"] = "#7FC8FF", ["electric"] = "#F4F08A", ["acid"] = "#8FE05A",
+        ["magic"] = "#B46CFF", ["holy"] = "#FFF2B0", ["heal"] = "#6CF0A0", ["poison"] = "#7CC24A",
+    };
+
+    private void Flash(string effect)
+    {
+        if (!AnimationsOn || !FlashColors.TryGetValue(effect, out var hex))
+        {
+            return;
+        }
+        FlashBrush = new Avalonia.Media.SolidColorBrush(Avalonia.Media.Color.Parse(hex));
+        Pulse(v => IsFlashing = v, 500);
+    }
+
     private void ShowLine(GameMessage m)
     {
+        if (m.Effect is { } effect)
+        {
+            Flash(effect);
+        }
         Log.Add(new MessageViewModel(m));
         while (Log.Count > 60)
         {

@@ -77,7 +77,13 @@ public sealed class SpellCaster(Rulebook rules, IRandomSource rng)
         {
             return new SpellResult(false, [new GameMessage(reason)]);
         }
-        var log = new List<GameMessage> { new($"{caster.Name} casts {spell.Name}.", MessageKind.Combat, spell.Element == Element.Fire ? "fire" : "spell") };
+        var log = new List<GameMessage>
+        {
+            new($"{caster.Name} casts {spell.Name}.", MessageKind.Combat, spell.Element == Element.Fire ? "fire" : "spell")
+            {
+                Effect = spell.Effect == EffectKind.Heal ? "heal" : spell.Element == Element.Physical ? "magic" : spell.Element.ToString().ToLowerInvariant(),
+            },
+        };
         var result = Apply(spell, Math.Max(1, rules.CasterLevel(caster)), state, combat, ally, enemy, log);
         if (result.Success)
         {

@@ -693,7 +693,10 @@ public sealed class CombatEngine
         {
             return false;
         }
-        log.Add(new($"{m.Label} uses {a.Name}!", MessageKind.Bad, a.Element == Element.Fire ? "fire" : "spell"));
+        log.Add(new($"{m.Label} uses {a.Name}!", MessageKind.Bad, a.Element == Element.Fire ? "fire" : "spell")
+        {
+            Effect = a.Element == Element.Physical ? null : a.Element.ToString().ToLowerInvariant(),
+        });
         foreach (var t in targets)
         {
             if (a.Damage.Max > 0)
