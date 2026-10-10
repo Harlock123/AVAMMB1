@@ -217,6 +217,47 @@
    "once": true,
    "damage": "2d6",
    "text": "Rocks crash down from the ceiling!"
+  },
+  {
+   "x": 2,
+   "y": 4,
+   "type": "message",
+   "id": "mines1_lever",
+   "once": true,
+   "feature": "lever",
+   "name": "Rusted Lever",
+   "setFlag": "mines1_gate_open",
+   "text": "An iron lever is set into the rock, its handle cast like a sword hilt. You heave on it. Far off, chains rattle and something heavy rises."
+  },
+  {
+   "x": 15,
+   "y": 14,
+   "type": "message",
+   "id": "mines1_gate",
+   "name": "Portcullis",
+   "feature": "portcullis",
+   "requiresFlag": "mines1_gate_open",
+   "blocking": true,
+   "openWhenMet": true,
+   "failText": "A rusted portcullis bars this side tunnel. Its chain runs up into the rock - there must be a lever somewhere in the mine.",
+   "text": "The portcullis hangs raised in its slot."
+  },
+  {
+   "x": 15,
+   "y": 14,
+   "type": "treasure",
+   "id": "mines1_gate_cache",
+   "once": true,
+   "feature": "chest",
+   "name": "Foreman's Cache",
+   "requiresFlag": "mines1_gate_open",
+   "gold": "15d10+40",
+   "gems": 1,
+   "items": [
+    "potion_healing",
+    "potion_cure"
+   ],
+   "text": "The old foreman's strongbox, locked away behind the gate."
   }
  ],
  "ambience": "drips"

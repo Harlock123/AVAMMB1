@@ -752,6 +752,29 @@ public static class HeadlessRunner
         settings.ViewResolution = 300;
         game.Refresh();
 
+        // A riddle door in the Hollow Belfry, and Sister Veyl's choice in Duskmere.
+        var beforePuzzles = (s.State.MapId, s.State.X, s.State.Y, s.State.Facing);
+        (s.State.MapId, s.State.X, s.State.Y, s.State.Facing) = ("belfry1", 13, 3, Direction.South);
+        s.State.LightSteps = Math.Max(s.State.LightSteps, 50);
+        game.Refresh();
+        var riddleStep = s.Interact();
+        game.Overlay = riddleStep.Interaction is { } riddleEv ? new RiddleViewModel(game, riddleEv) : throw new InvalidOperationException("No riddle at the Silent Door.");
+        ((RiddleViewModel)game.Overlay).Answer = "an echo";
+        ((RiddleViewModel)game.Overlay).SubmitCommand.Execute(null);
+        Capture(dir, "37-riddle");
+        game.CloseOverlay();
+        s.State.Flags.Add("choir_saltreach");
+        (s.State.MapId, s.State.X, s.State.Y, s.State.Facing) = ("duskmere", 4, 4, Direction.North);
+        Daylight(game, s);
+        game.Refresh();
+        (s.State.X, s.State.Y) = (4, 3);
+        game.Overlay = s.Interact().Interaction is { } veyl ? new DecisionViewModel(game, veyl) : throw new InvalidOperationException("No choice at Veyl's hut.");
+        Capture(dir, "38-choice");
+        game.CloseOverlay();
+        s.State.Flags.Remove("choir_saltreach");
+        (s.State.MapId, s.State.X, s.State.Y, s.State.Facing) = beforePuzzles;
+        game.Refresh();
+
         // The bestiary, after the battles of the screenshot tour.
         game.JournalCommand.Execute(null);
         ((JournalViewModel)game.Overlay!).Tab = 1;

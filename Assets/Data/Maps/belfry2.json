@@ -129,7 +129,7 @@
   {
    "x": 13,
    "y": 2,
-   "type": "treasure",
+   "type": "choice",
    "id": "choirmaster_hoard",
    "once": true,
    "feature": "altar",
@@ -137,13 +137,31 @@
    "requiresFlag": "choirmaster_slain",
    "blocking": true,
    "failText": "Offerings are heaped beneath the Bell - but the Choirmaster stands between you and them.",
-   "gold": "35d20+1000",
-   "gems": 6,
-   "items": [
-    "potion_vigor",
-    "potion_vigor"
-   ],
-   "text": "A century of tithes from the six towns. They can have it back - some of it."
+   "text": "A century of tithes from the six towns lies heaped beneath the silent Bell: coin, rings, candlesticks, a child's toy whistle. Each offering is tagged with the name of the town that gave it.",
+   "options": [
+    {
+     "label": "Keep the tithe - you earned it",
+     "gold": "35d20+1000",
+     "gems": 6,
+     "items": [
+      "potion_vigor",
+      "potion_vigor"
+     ],
+     "text": "You fill your packs. The towns will never know."
+    },
+    {
+     "label": "Send it home to the six towns",
+     "setFlags": [
+      "tithe_returned"
+     ],
+     "xp": 8000,
+     "items": [
+      "potion_vigor",
+      "potion_vigor"
+     ],
+     "text": "You seal the tithe into crates marked for each town. It will take a week of carts to send it all home - and every town will hear who sent it."
+    }
+   ]
   },
   {
    "x": 8,

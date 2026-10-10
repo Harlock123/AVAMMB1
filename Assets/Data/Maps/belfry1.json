@@ -258,6 +258,30 @@
      "count": "1"
     }
    ]
+  },
+  {
+   "x": 13,
+   "y": 3,
+   "type": "riddle",
+   "id": "belfry1_riddle",
+   "once": true,
+   "feature": "riddle_door",
+   "name": "The Silent Door",
+   "text": "A bronze door is carved with a choir, every mouth closed. Words are written above it: \"The more of me there is, the less you hear. Speak my name, and I am broken. What am I?\"",
+   "answers": [
+    "silence"
+   ],
+   "penalty": "3d6",
+   "successText": "You say it, and in saying it, break it. The door swings open on a little chapel, the one room in the Belfry the Choir never found.",
+   "failText": "The bronze mouths open and shriek at you.",
+   "gold": "25d20+200",
+   "gems": 3,
+   "items": [
+    "potion_vigor",
+    "potion_mana",
+    "scroll_fire"
+   ],
+   "xp": 4000
   }
  ],
  "music": "dungeon",

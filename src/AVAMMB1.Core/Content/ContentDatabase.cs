@@ -285,6 +285,15 @@ public sealed class ContentDatabase
                     Check(Monsters.ContainsKey(fm.Monster), $"{where}: unknown monster {fm.Monster}");
                 }
                 Check(!map.IsSolid(ev.X, ev.Y), $"{where}: event placed in a solid cell");
+                Check(ev.Type != MapEventKind.Riddle || ev.Answers.Count > 0, $"{where}: a riddle needs answers");
+                if (ev.Type == MapEventKind.Choice)
+                {
+                    Check(ev.Options.Count is >= 2 and <= 4 && ev.Options.All(o => o.Label.Length > 0), $"{where}: a choice needs two to four labelled options");
+                    foreach (var i in ev.Options.SelectMany(o => o.Items))
+                    {
+                        Check(Items.ContainsKey(i), $"{where}: unknown item {i}");
+                    }
+                }
             }
         }
         return problems;

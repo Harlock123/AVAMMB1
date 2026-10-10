@@ -64,8 +64,12 @@ public class SilentChoirTests
 
         Visit(s, "saltreach", 6, 7);
         Assert.Contains("choir_saltreach", s.State.Flags);
-        Visit(s, "duskmere", 4, 3);
+        var veyl = Visit(s, "duskmere", 4, 3).Interaction;
+        Assert.Equal(MapEventKind.Choice, veyl?.Type);
+        s.Choose(veyl!, 0); // keep her secret
         Assert.Contains("choir_veyl", s.State.Flags);
+        Assert.Contains("veyl_spared", s.State.Flags);
+        Assert.Contains("Port Ashkar", Said(Visit(s, "duskmere", 4, 3)), StringComparison.Ordinal);
         Visit(s, "ashkar", 7, 10);
         Assert.Contains("choir_ashkar", s.State.Flags);
 
@@ -85,6 +89,10 @@ public class SilentChoirTests
         Assert.Contains("choirmaster_slain", s.State.Flags);
         Assert.Contains(s.State.Party, c => c.Backpack.Any(i => i.ItemId == "bell_clapper"));
         Assert.Contains(s.State.Party, c => c.Backpack.Any(i => i.ItemId == "bellbreaker"));
+        var tithe = walker.Go(13, 2).Interaction;
+        Assert.Equal(MapEventKind.Choice, tithe?.Type);
+        s.Choose(tithe!, 1); // send it home
+        Assert.Contains("tithe_returned", s.State.Flags);
 
         Visit(s, "wintermere", 11, 14);
         Assert.Contains("choir_unmade", s.State.Flags);
@@ -92,6 +100,9 @@ public class SilentChoirTests
 
         Visit(s, "brindlemoor", 10, 13);
         Assert.Contains("choir_done", s.State.Flags);
+        var gems = s.State.Gems;
+        Visit(s, "brindlemoor", 10, 13); // the towns' thanks for the returned tithe
+        Assert.Equal(gems + 10, s.State.Gems);
         Assert.Contains(s.State.Party, c => c.Backpack.Any(i => i.ItemId == "concord_signet"));
         var said = Said(Visit(s, "brindlemoor", 10, 13));
         Assert.Contains("singing again", said, StringComparison.Ordinal);

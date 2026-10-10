@@ -1,0 +1,20 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:AVAMMB1.App.ViewModels"
+             x:Class="AVAMMB1.App.Views.DecisionView" x:DataType="vm:DecisionViewModel">
+  <Border Classes="dialog" MaxWidth="660" MinWidth="460">
+    <StackPanel Spacing="12">
+      <TextBlock Classes="title" Text="{Binding Title}" />
+      <TextBlock Text="{Binding Text}" TextWrapping="Wrap" FontSize="{DynamicResource Font16}" LineHeight="24" />
+      <ItemsControl ItemsSource="{Binding Options}">
+        <ItemsControl.ItemTemplate>
+          <DataTemplate x:DataType="vm:DecisionOption">
+            <Button Content="{Binding Label}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" Margin="0,2"
+                    Command="{Binding $parent[UserControl].((vm:DecisionViewModel)DataContext).ChooseCommand}" CommandParameter="{Binding}" />
+          </DataTemplate>
+        </ItemsControl.ItemTemplate>
+      </ItemsControl>
+      <Button Content="Decide later (Esc)" Command="{Binding LaterCommand}" HorizontalAlignment="Right" />
+    </StackPanel>
+  </Border>
+</UserControl>

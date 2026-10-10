@@ -193,7 +193,8 @@ public sealed partial class GameViewModel : ViewModelBase
         foreach (var ev in map.AllEvents)
         {
             var key = ev.Id ?? $"{map.Id}:{ev.X}:{ev.Y}:{map.Def.Events.IndexOf(ev)}";
-            if (ev.Feature is not null && !(ev.Once && state.CompletedEvents.Contains(key)))
+            // Nothing is drawn on the party's own square: they are standing at it (or in it).
+            if (ev.Feature is not null && (ev.X, ev.Y) != (state.X, state.Y) && !(ev.Once && state.CompletedEvents.Contains(key)) && !(ev.OpenWhenMet && Session.RequirementsMet(ev)))
             {
                 sprites.Add(new SceneSprite(ev.X, ev.Y, Services.Textures.Get("Features/" + ev.Feature)));
             }
@@ -374,6 +375,16 @@ public sealed partial class GameViewModel : ViewModelBase
 
     private void OpenBuilding(MapEventDef ev)
     {
+        if (ev.Type == MapEventKind.Riddle)
+        {
+            Overlay = new RiddleViewModel(this, ev);
+            return;
+        }
+        if (ev.Type == MapEventKind.Choice)
+        {
+            Overlay = new DecisionViewModel(this, ev);
+            return;
+        }
         Services.Audio.PlaySfx("door");
         Overlay = ev.Type switch
         {

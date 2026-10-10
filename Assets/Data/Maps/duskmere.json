@@ -202,15 +202,38 @@
    "text": "Wren poles his ferry slowly through the reeds, humming."
   },
   {
-   "type": "quest",
+   "type": "choice",
    "id": "choir_veyl_meet",
    "once": true,
    "feature": "shop_books",
-   "text": "A woman with a shaved head lets you in and bars the door. \"I am Veyl. I sang with the Choir until I understood what the Bell does. They are recasting the Hollow Bell in a sunken belfry in the east of the Ashen Hills. When it rings, every voice in the six towns goes into it. The door opens only to the Belfry Key - the Archivist in Port Ashkar will know who carries it.\"",
    "requiresFlag": "choir_saltreach",
    "requiresNotFlag": "choir_veyl",
-   "setFlag": "choir_veyl",
-   "xp": 2000,
+   "text": "A woman with a shaved head lets you in and bars the door. \"I am Veyl. I sang with the Choir until I understood what the Bell does. They are recasting the Hollow Bell in a sunken belfry in the east of the Ashen Hills. When it rings, every voice in the six towns goes into it. The door opens only to the Belfry Key - the Archivist in Port Ashkar will know who carries it.\" She looks at you. \"And now you know what I was. The Watch hangs Choir singers. Will you tell them?\"",
+   "options": [
+    {
+     "label": "Keep her secret",
+     "setFlags": [
+      "choir_veyl",
+      "veyl_spared"
+     ],
+     "xp": 2000,
+     "items": [
+      "potion_mana",
+      "potion_mana"
+     ],
+     "text": "Veyl presses two vials into your hands. \"For the Belfry. You will need your voices there.\""
+    },
+    {
+     "label": "Hand her over to the Duskmere Watch",
+     "setFlags": [
+      "choir_veyl",
+      "veyl_reported"
+     ],
+     "xp": 2000,
+     "gold": "600",
+     "text": "The Watch takes Veyl away in irons. Their captain pays you the bounty on Choir singers without meeting your eyes."
+    }
+   ],
    "x": 4,
    "y": 3,
    "name": "A Quiet Hut"
@@ -218,7 +241,15 @@
   {
    "type": "message",
    "text": "Veyl whispers through the door: \"Port Ashkar. The Archivist. Hurry.\"",
-   "requiresFlag": "choir_veyl",
+   "requiresFlag": "veyl_spared",
+   "x": 4,
+   "y": 3,
+   "name": "A Quiet Hut"
+  },
+  {
+   "type": "message",
+   "text": "The hut is shuttered and empty. Someone has scratched a closed mouth on the door.",
+   "requiresFlag": "veyl_reported",
    "x": 4,
    "y": 3,
    "name": "A Quiet Hut"

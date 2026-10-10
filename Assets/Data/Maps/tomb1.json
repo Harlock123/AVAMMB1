@@ -234,6 +234,31 @@
      "count": "2"
     }
    ]
+  },
+  {
+   "x": 1,
+   "y": 12,
+   "type": "riddle",
+   "id": "tomb1_riddle",
+   "once": true,
+   "feature": "riddle_door",
+   "name": "The Door of the Scribe",
+   "text": "A stone door is carved with a scribe's face. Its lips move: \"I have cities, but no houses; forests, but no trees; water, but no fish. What am I?\"",
+   "answers": [
+    "map",
+    "a map",
+    "chart",
+    "atlas"
+   ],
+   "penalty": "2d6",
+   "successText": "\"A map,\" you say. The scribe smiles, and the door sinks into the floor. Behind it lies the scribe's own tomb - and his treasures.",
+   "failText": "The scribe's face frowns, and the door crackles with heat.",
+   "gold": "30d20+300",
+   "gems": 4,
+   "items": [
+    "scarab_amulet"
+   ],
+   "xp": 3000
   }
  ],
  "ambience": "deep"

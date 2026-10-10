@@ -1,0 +1,21 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:AVAMMB1.App.ViewModels"
+             x:Class="AVAMMB1.App.Views.RiddleView" x:DataType="vm:RiddleViewModel">
+  <Border Classes="dialog" MaxWidth="640" MinWidth="460">
+    <StackPanel Spacing="12">
+      <TextBlock Classes="title" Text="{Binding Title}" />
+      <TextBlock Text="{Binding Question}" TextWrapping="Wrap" FontSize="{DynamicResource Font16}" LineHeight="24" FontStyle="Italic" />
+      <TextBox x:Name="AnswerBox" Text="{Binding Answer}" Watermark="Your answer" MaxLength="40">
+        <TextBox.KeyBindings>
+          <KeyBinding Gesture="Enter" Command="{Binding SubmitCommand}" />
+        </TextBox.KeyBindings>
+      </TextBox>
+      <TextBlock Text="{Binding Feedback}" TextWrapping="Wrap" Foreground="{DynamicResource Info}" />
+      <StackPanel Orientation="Horizontal" Spacing="8" HorizontalAlignment="Right">
+        <Button Content="Leave it (Esc)" Command="{Binding LeaveCommand}" />
+        <Button Content="Answer (Enter)" Command="{Binding SubmitCommand}" FontWeight="Bold" />
+      </StackPanel>
+    </StackPanel>
+  </Border>
+</UserControl>

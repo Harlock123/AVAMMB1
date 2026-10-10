@@ -59,6 +59,29 @@ public enum MapEventKind
     Victory,
     /// <summary>Silently turns the party to a random facing.</summary>
     Spinner,
+    /// <summary>A question to answer (<see cref="MapEventDef.Answers"/>); the right answer sets its flag and grants its rewards.</summary>
+    Riddle,
+    /// <summary>A decision between <see cref="MapEventDef.Options"/>, each with its own flags and rewards.</summary>
+    Choice,
+}
+
+/// <summary>One option of a <see cref="MapEventKind.Choice"/> event.</summary>
+public sealed class ChoiceOptionDef
+{
+    /// <summary>Button label.</summary>
+    public string Label { get; set; } = "";
+    /// <summary>What happens (shown when chosen).</summary>
+    public string Text { get; set; } = "";
+    /// <summary>Story flags set.</summary>
+    public List<string> SetFlags { get; set; } = new();
+    /// <summary>Gold granted.</summary>
+    public DiceExpression Gold { get; set; }
+    /// <summary>Gems granted.</summary>
+    public int Gems { get; set; }
+    /// <summary>Items granted.</summary>
+    public List<string> Items { get; set; } = new();
+    /// <summary>Experience shared by the party.</summary>
+    public int Xp { get; set; }
 }
 
 /// <summary>What a <see cref="MapEventKind.Trap"/> does when it is not disarmed.</summary>
@@ -142,6 +165,16 @@ public sealed class MapEventDef
     public bool Once { get; set; }
     /// <summary>If true, the event blocks movement into the cell when requirements fail.</summary>
     public bool Blocking { get; set; }
+    /// <summary>A gate: its feature (e.g. a portcullis) is drawn only while its requirements are unmet.</summary>
+    public bool OpenWhenMet { get; set; }
+    /// <summary>Riddle: shown when answered correctly.</summary>
+    public string? SuccessText { get; set; }
+    /// <summary>Riddle: accepted answers (case, punctuation and a leading "a"/"an"/"the" are ignored).</summary>
+    public List<string> Answers { get; set; } = new();
+    /// <summary>Riddle: damage to the party for a wrong answer (none by default).</summary>
+    public DiceExpression Penalty { get; set; }
+    /// <summary>Choice: the options (two to four).</summary>
+    public List<ChoiceOptionDef> Options { get; set; } = new();
     /// <summary>Billboard sprite drawn in the 3D view (Graphics/Features).</summary>
     public string? Feature { get; set; }
     /// <summary>Price multiplier for services.</summary>

@@ -222,10 +222,14 @@ for monsters; potions still work). Both show their `mapColor` on the automap onc
 | `spinner` | No fields: silently turns the party to a random facing (optional `text`) |
 | `fountain` | `heal`, `restoreSp`, `conditions` cured |
 | `victory` | Ends the game after showing `text` |
+| `riddle` | Asks `text`; the party types an answer. Any of `answers` (case, punctuation and a leading "a"/"an"/"the" ignored) shows `successText`, sets `setFlag` and grants the rewards (`gold`, `gems`, `items`, `xp`); a wrong answer shows `failText` and deals `penalty` dice to everyone (optional). |
+| `choice` | Shows `text` and two to four `options`: `{ "label": "...", "text": "...", "setFlags": [...], "gold": "...", "gems": 0, "items": [...], "xp": 0 }`. The party may decide later; once chosen, only that option happens. |
 
 Several events can share a cell; they fire in order. `once` events are remembered in the save game.
 `blocking` events stop the party from entering until their requirements are met (showing
-`failText`). `feature` draws a billboard from `Graphics/Features`.
+`failText`). `feature` draws a billboard from `Graphics/Features`; with `openWhenMet` it is drawn only
+while the requirements are unmet - a portcullis that disappears once its lever (a `message` event with
+`setFlag`, e.g. `"feature": "lever"` or `"pressure_plate"`) has been pulled.
 
 ## Adding art or audio
 

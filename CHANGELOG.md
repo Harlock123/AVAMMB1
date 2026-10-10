@@ -6,6 +6,12 @@ All notable changes to this project are documented here. The format follows
 ## [Unreleased]
 
 ### Added
+- Puzzles and choices. Riddle doors (type the answer: the Door of the Scribe in the Tomb of the Sun
+  Kings, the Silent Door in the Hollow Belfry; wrong answers hurt), a pressure plate that opens a hidden
+  alcove in the Brindlemoor cellars, and a lever that raises a portcullis in the upper mines. Choices
+  with consequences: Sister Veyl asks you to keep her secret or hand her to the Watch, and the Choir's
+  tithe can be kept or sent home to the six towns (who thank you for it). New event types `riddle` and
+  `choice`, and `openWhenMet` gates, for mod packs (see CONTENT_FORMAT.md).
 - The Chronicle (a new Journal tab): the story so far in numbers - days in the field, time played,
   steps, monsters slain, unique monsters defeated, battles won and fled, companions fallen, gold found
   and the most held, chests opened, secret doors found, locks picked, spells cast, nights at inns - and

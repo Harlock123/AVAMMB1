@@ -156,11 +156,15 @@ The game code is licensed separately under the MIT license (see [LICENSE](LICENS
 | `Graphics/Features/entrance.png` | Dungeon Crawl 32x32 tiles | `dungeon/gateways/enter.png` |
 | `Graphics/Features/fountain.png` | Dungeon Crawl 32x32 tiles | `dungeon/blue_fountain.png` |
 | `Graphics/Features/ice_cave.png` | Dungeon Crawl 32x32 tiles | `dungeon/gateways/ice_cave_gone.png` |
+| `Graphics/Features/lever.png` | Dungeon Crawl 32x32 tiles | `dungeon/statues/statue_sword.png` |
 | `Graphics/Features/mangrove.png` | Dungeon Crawl 32x32 tiles | `dungeon/trees/mangrove_1.png` |
 | `Graphics/Features/mine_stairs_down.png` | Dungeon Crawl 32x32 tiles | `dungeon/gateways/rock_stairs_down.png` |
 | `Graphics/Features/mine_stairs_up.png` | Dungeon Crawl 32x32 tiles | `dungeon/gateways/rock_stairs_up.png` |
 | `Graphics/Features/oasis.png` | Dungeon Crawl 32x32 tiles | `dungeon/sparkling_fountain.png` |
 | `Graphics/Features/portal.png` | Dungeon Crawl 32x32 tiles | `dungeon/gateways/portal.png` |
+| `Graphics/Features/portcullis.png` | Dungeon Crawl 32x32 tiles | `dungeon/doors/gate_closed_middle.png` |
+| `Graphics/Features/pressure_plate.png` | Dungeon Crawl 32x32 tiles | `dungeon/traps/pressure_plate.png` |
+| `Graphics/Features/riddle_door.png` | Dungeon Crawl 32x32 tiles | `dungeon/doors/runed_door.png` |
 | `Graphics/Features/shop_armor.png` | Dungeon Crawl 32x32 tiles | `dungeon/shops/shop_armor.png` |
 | `Graphics/Features/shop_books.png` | Dungeon Crawl 32x32 tiles | `dungeon/shops/shop_books.png` |
 | `Graphics/Features/shop_food.png` | Dungeon Crawl 32x32 tiles | `dungeon/shops/shop_food.png` |

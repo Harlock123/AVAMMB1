@@ -265,6 +265,35 @@
     "potion_healing"
    ],
    "text": "Behind the hidden door, a smuggler's cache lies forgotten beneath a dusty tarp."
+  },
+  {
+   "x": 3,
+   "y": 13,
+   "type": "message",
+   "id": "cellar_plate",
+   "once": true,
+   "feature": "pressure_plate",
+   "name": "Loose Flagstone",
+   "setFlag": "cellar_alcove_open",
+   "text": "A flagstone sinks under your boot with a heavy click. Somewhere to the north-east, stone grinds against stone."
+  },
+  {
+   "x": 14,
+   "y": 4,
+   "type": "treasure",
+   "id": "cellar_alcove",
+   "once": true,
+   "feature": "chest",
+   "name": "Smugglers' Alcove",
+   "requiresFlag": "cellar_alcove_open",
+   "blocking": true,
+   "failText": "The passage ends in a wall of fitted stones. One of them sits a little proud of the rest, as if it could slide back.",
+   "gold": "8d10+20",
+   "items": [
+    "potion_healing",
+    "torch"
+   ],
+   "text": "A wall-stone has slid back into a hidden alcove. Someone kept their savings here."
   }
  ],
  "ambience": "drips"

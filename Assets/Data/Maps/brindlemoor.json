@@ -261,6 +261,24 @@
    "name": "Brindlemoor Town Hall"
   },
   {
+   "type": "quest",
+   "id": "choir_tithe_thanks",
+   "once": true,
+   "feature": "shop_books",
+   "text": "Holloway shows you a letter from each of the six towns. \"Carts of coin came home from the Belfry, with your name on every crate. The towns took up a collection of their own. Here.\"",
+   "requiresFlag": "tithe_returned",
+   "gems": 10,
+   "xp": 5000,
+   "items": [
+    "potion_vigor",
+    "potion_vigor",
+    "potion_mana"
+   ],
+   "x": 10,
+   "y": 13,
+   "name": "Brindlemoor Town Hall"
+  },
+  {
    "type": "message",
    "text": "Magistrate Holloway nods to you. \"The towns are singing again. Badly, mostly - but singing.\"",
    "requiresFlag": "choir_done",
