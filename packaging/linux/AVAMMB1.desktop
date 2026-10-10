@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=AVAM&M
+GenericName=Fantasy role-playing game
+Comment=Book One - a first-person, turn-based fantasy role-playing adventure
+Exec=AVAMMB1
+Icon=avammb1
+Terminal=false
+Categories=Game;RolePlaying;
