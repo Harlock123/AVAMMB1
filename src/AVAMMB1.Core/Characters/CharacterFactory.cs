@@ -38,6 +38,17 @@ public sealed class CharacterFactory(Rulebook rules)
     public IEnumerable<ClassDef> EligibleClasses(IReadOnlyDictionary<Stat, int> stats, Alignment alignment) =>
         rules.Content.Classes.Values.Where(c => MeetsRequirements(stats, alignment, c));
 
+    /// <summary>Longest allowed character name.</summary>
+    public const int MaxNameLength = 16;
+
+    /// <summary>A name trimmed and cut to <see cref="MaxNameLength"/> characters.</summary>
+    /// <param name="name">Name as typed.</param>
+    public static string CleanName(string name)
+    {
+        var n = name.Trim();
+        return n.Length > MaxNameLength ? n[..MaxNameLength] : n;
+    }
+
     /// <summary>Creates a level 1 character.</summary>
     /// <param name="name">Name.</param>
     /// <param name="raceId">Race id.</param>
@@ -61,7 +72,7 @@ public sealed class CharacterFactory(Rulebook rules)
         }
         var c = new Character
         {
-            Name = name.Trim().Length > 16 ? name.Trim()[..16] : name.Trim(),
+            Name = CleanName(name),
             Race = raceId,
             Class = classId,
             Sex = sex,

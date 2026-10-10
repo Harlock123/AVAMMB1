@@ -93,6 +93,14 @@ The game code is licensed separately under the MIT license (see [LICENSE](LICENS
 | `Audio/Sfx/swing.ogg` | RPG Sound Pack | `battle/swing.wav` |
 | `Audio/Sfx/torch.ogg` | 80 CC0 RPG SFX | `spell_fire_03.ogg` |
 | `Audio/Sfx/ui.ogg` | RPG Sound Pack | `interface/interface1.wav` |
+| `Graphics/Doll/beard_long_black.png` | Dungeon Crawl 32x32 tiles | `player/beard/long_black.png` |
+| `Graphics/Doll/beard_long_red.png` | Dungeon Crawl 32x32 tiles | `player/beard/long_red.png` |
+| `Graphics/Doll/beard_long_white.png` | Dungeon Crawl 32x32 tiles | `player/beard/long_white.png` |
+| `Graphics/Doll/beard_long_yellow.png` | Dungeon Crawl 32x32 tiles | `player/beard/long_yellow.png` |
+| `Graphics/Doll/beard_short_black.png` | Dungeon Crawl 32x32 tiles | `player/beard/short_black.png` |
+| `Graphics/Doll/beard_short_red.png` | Dungeon Crawl 32x32 tiles | `player/beard/short_red.png` |
+| `Graphics/Doll/beard_short_white.png` | Dungeon Crawl 32x32 tiles | `player/beard/short_white.png` |
+| `Graphics/Doll/beard_short_yellow.png` | Dungeon Crawl 32x32 tiles | `player/beard/short_yellow.png` |
 | `Graphics/Doll/body_chain.png` | Dungeon Crawl 32x32 tiles | `player/body/chainmail.png` |
 | `Graphics/Doll/body_leather_green.png` | Dungeon Crawl 32x32 tiles | `player/body/leather_green.png` |
 | `Graphics/Doll/body_leather_jacket.png` | Dungeon Crawl 32x32 tiles | `player/body/leather_jacket.png` |
@@ -103,8 +111,26 @@ The game code is licensed separately under the MIT license (see [LICENSE](LICENS
 | `Graphics/Doll/boots_brown2.png` | Dungeon Crawl 32x32 tiles | `player/boots/short_brown_2.png` |
 | `Graphics/Doll/boots_gold.png` | Dungeon Crawl 32x32 tiles | `player/boots/middle_gold.png` |
 | `Graphics/Doll/boots_gray.png` | Dungeon Crawl 32x32 tiles | `player/boots/middle_gray.png` |
+| `Graphics/Doll/hair_brown_1.png` | Dungeon Crawl 32x32 tiles | `player/hair/brown_1.png` |
+| `Graphics/Doll/hair_brown_2.png` | Dungeon Crawl 32x32 tiles | `player/hair/brown_2.png` |
+| `Graphics/Doll/hair_fem_black.png` | Dungeon Crawl 32x32 tiles | `player/hair/fem_black.png` |
+| `Graphics/Doll/hair_fem_red.png` | Dungeon Crawl 32x32 tiles | `player/hair/fem_red.png` |
+| `Graphics/Doll/hair_fem_white.png` | Dungeon Crawl 32x32 tiles | `player/hair/fem_white.png` |
+| `Graphics/Doll/hair_fem_yellow.png` | Dungeon Crawl 32x32 tiles | `player/hair/fem_yellow.png` |
 | `Graphics/Doll/hair_female.png` | Dungeon Crawl 32x32 tiles | `player/hair/fem_red.png` |
+| `Graphics/Doll/hair_knot_red.png` | Dungeon Crawl 32x32 tiles | `player/hair/knot_red.png` |
+| `Graphics/Doll/hair_long_black.png` | Dungeon Crawl 32x32 tiles | `player/hair/long_black.png` |
+| `Graphics/Doll/hair_long_red.png` | Dungeon Crawl 32x32 tiles | `player/hair/long_red.png` |
+| `Graphics/Doll/hair_long_white.png` | Dungeon Crawl 32x32 tiles | `player/hair/long_white.png` |
+| `Graphics/Doll/hair_long_yellow.png` | Dungeon Crawl 32x32 tiles | `player/hair/long_yellow.png` |
 | `Graphics/Doll/hair_male.png` | Dungeon Crawl 32x32 tiles | `player/hair/short_black.png` |
+| `Graphics/Doll/hair_pigtails_brown.png` | Dungeon Crawl 32x32 tiles | `player/hair/pigtails_brown.png` |
+| `Graphics/Doll/hair_pigtails_yellow.png` | Dungeon Crawl 32x32 tiles | `player/hair/pigtails_yellow.png` |
+| `Graphics/Doll/hair_ponytail_yellow.png` | Dungeon Crawl 32x32 tiles | `player/hair/ponytail_yellow.png` |
+| `Graphics/Doll/hair_short_black.png` | Dungeon Crawl 32x32 tiles | `player/hair/short_black.png` |
+| `Graphics/Doll/hair_short_red.png` | Dungeon Crawl 32x32 tiles | `player/hair/short_red.png` |
+| `Graphics/Doll/hair_short_white.png` | Dungeon Crawl 32x32 tiles | `player/hair/short_white.png` |
+| `Graphics/Doll/hair_short_yellow.png` | Dungeon Crawl 32x32 tiles | `player/hair/short_yellow.png` |
 | `Graphics/Doll/head_helm_plume.png` | Dungeon Crawl 32x32 tiles | `player/head/helm_plume.png` |
 | `Graphics/Doll/head_helm_red.png` | Dungeon Crawl 32x32 tiles | `player/head/helm_red.png` |
 | `Graphics/Doll/head_hood_black.png` | Dungeon Crawl 32x32 tiles | `player/head/hood_black_2.png` |

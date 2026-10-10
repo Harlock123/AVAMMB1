@@ -55,7 +55,7 @@ public sealed partial class PartyMemberViewModel : ObservableObject
     /// <summary>Whether the character may train.</summary>
     public bool CanLevel => _services.Session.Rules.CanLevelUp(Character);
     /// <summary>Portrait.</summary>
-    public Bitmap? Portrait => _services.Portrait(Character.Race, Character.Sex, Character.Class);
+    public Bitmap? Portrait => _services.Portrait(Character.Race, Character.Sex, Character.Class, Character.Hair, Character.Beard);
 
     /// <summary>Highlighted as the acting combatant.</summary>
     [ObservableProperty]

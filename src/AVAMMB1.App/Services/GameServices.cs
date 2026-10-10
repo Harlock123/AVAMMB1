@@ -42,14 +42,14 @@ public sealed class GameServices(
     /// <param name="raceId">Race id.</param>
     /// <param name="sex">Sex.</param>
     /// <param name="classId">Class id (may be null for an unclothed preview).</param>
-    public Avalonia.Media.Imaging.Bitmap? Portrait(string raceId, AVAMMB1.Core.Rules.Sex sex, string? classId)
+    /// <param name="hair">Hairstyle (see <see cref="AVAMMB1.Core.Characters.PortraitStyles"/>), or null for the class look.</param>
+    /// <param name="beard">Beard, or null.</param>
+    public Avalonia.Media.Imaging.Bitmap? Portrait(string raceId, AVAMMB1.Core.Rules.Sex sex, string? classId, string? hair = null, string? beard = null)
     {
         var sexKey = sex.ToString().ToLowerInvariant();
         var basePath = $"Portraits/{Content.Race(raceId).Portrait}_{sexKey}";
-        var layers = classId is not null && Content.Classes.TryGetValue(classId, out var cls)
-            ? cls.PortraitLayers.Select(l => l.Replace("{sex}", sexKey, StringComparison.Ordinal)).ToList()
-            : new List<string>();
-        return Textures.Composite(basePath, layers);
+        var classLayers = classId is not null && Content.Classes.TryGetValue(classId, out var cls) ? cls.PortraitLayers : [];
+        return Textures.Composite(basePath, AVAMMB1.Core.Characters.PortraitStyles.Layers(classLayers, sexKey, hair, beard));
     }
 
     /// <summary>Persists settings and applies volumes.</summary>

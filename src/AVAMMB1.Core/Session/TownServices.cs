@@ -389,6 +389,29 @@ public sealed class TownServices(GameSession session)
         return log;
     }
 
+    /// <summary>Renames a character (at an inn). Names are trimmed, at most 16 letters, and unique among the party and roster.</summary>
+    /// <param name="c">Character.</param>
+    /// <param name="newName">New name.</param>
+    public List<GameMessage> Rename(Character c, string newName)
+    {
+        var log = new List<GameMessage>();
+        var name = CharacterFactory.CleanName(newName);
+        if (name.Length == 0)
+        {
+            log.Add(new("A name cannot be blank.", MessageKind.Bad));
+            return log;
+        }
+        if (State.Party.Concat(State.Roster).Any(o => !ReferenceEquals(o, c) && string.Equals(o.Name, name, StringComparison.OrdinalIgnoreCase)))
+        {
+            log.Add(new($"There is already someone called {name}.", MessageKind.Bad));
+            return log;
+        }
+        var old = c.Name;
+        c.Name = name;
+        log.Add(new(old == name ? $"{name} keeps their name." : $"{old} will be known as {name} from now on.", MessageKind.Good));
+        return log;
+    }
+
     /// <summary>The party's junk: backpack gear nobody could use as an upgrade (see <see cref="ItemCompare.IsJunk"/>).</summary>
     public List<(Character Owner, ItemInstance Item, ItemDef Def)> Junk() =>
         State.Party.SelectMany(c => c.Backpack.Select(i => (Owner: c, Item: i, Def: session.Rules.Def(i))))

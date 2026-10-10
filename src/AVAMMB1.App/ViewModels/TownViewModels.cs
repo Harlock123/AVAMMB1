@@ -371,6 +371,7 @@ public sealed partial class InnViewModel : BuildingViewModel
     [RelayCommand]
     private void LeaveMember(PartyMemberViewModel m)
     {
+        Editing = null;
         TakeGold = 0;
         Leaving = m;
         OnPropertyChanged(nameof(PurseGold));
@@ -406,6 +407,81 @@ public sealed partial class InnViewModel : BuildingViewModel
 
     [RelayCommand]
     private void Recruit() => Game.Main.ShowRecruit();
+
+    /// <summary>Member whose name and looks are being changed.</summary>
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(IsEditing), nameof(EditPortrait))]
+    private PartyMemberViewModel? _editing;
+
+    /// <summary>Name being typed.</summary>
+    [ObservableProperty]
+    private string _editName = "";
+
+    /// <summary>Hairstyle being chosen.</summary>
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(EditPortrait), nameof(EditHairLabel))]
+    private string? _editHair;
+
+    /// <summary>Beard being chosen.</summary>
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(EditPortrait), nameof(EditBeardLabel))]
+    private string? _editBeard;
+
+    /// <summary>Whether the name-and-looks panel is open.</summary>
+    public bool IsEditing => Editing is not null;
+
+    /// <summary>Preview of the new look.</summary>
+    public Avalonia.Media.Imaging.Bitmap? EditPortrait => Editing?.Character is { } c
+        ? Game.Services.Portrait(c.Race, c.Sex, c.Class, EditHair, EditBeard) : null;
+
+    /// <summary>Hair choice shown.</summary>
+    public string EditHairLabel => EditHair is null ? "class headgear" : PortraitStyles.Describe(EditHair);
+
+    /// <summary>Beard choice shown.</summary>
+    public string EditBeardLabel => EditBeard is null ? "none" : PortraitStyles.Describe(EditBeard);
+
+    [RelayCommand]
+    private void Edit(PartyMemberViewModel m)
+    {
+        Leaving = null;
+        Editing = m;
+        EditName = m.Character.Name;
+        EditHair = m.Character.Hair;
+        EditBeard = m.Character.Beard;
+    }
+
+    [RelayCommand]
+    private void NextEditHair() => EditHair = PortraitStyles.Cycle(PortraitStyles.Hair, EditHair, 1);
+
+    [RelayCommand]
+    private void PreviousEditHair() => EditHair = PortraitStyles.Cycle(PortraitStyles.Hair, EditHair, -1);
+
+    [RelayCommand]
+    private void NextEditBeard() => EditBeard = PortraitStyles.Cycle(PortraitStyles.Beards, EditBeard, 1);
+
+    [RelayCommand]
+    private void PreviousEditBeard() => EditBeard = PortraitStyles.Cycle(PortraitStyles.Beards, EditBeard, -1);
+
+    [RelayCommand]
+    private void SaveEdit()
+    {
+        if (Editing?.Character is not { } c)
+        {
+            return;
+        }
+        var log = Session.Town.Rename(c, EditName);
+        if (log.All(m => m.Kind != MessageKind.Bad))
+        {
+            c.Hair = EditHair;
+            c.Beard = EditBeard;
+            Editing = null;
+        }
+        Report(log);
+        Game.Refresh();
+    }
+
+    [RelayCommand]
+    private void CancelEdit() => Editing = null;
 
     /// <inheritdoc />
     protected override void RefreshRows()

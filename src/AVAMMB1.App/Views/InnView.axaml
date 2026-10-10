@@ -2,8 +2,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:AVAMMB1.App.ViewModels"
              xmlns:ch="using:AVAMMB1.Core.Characters"
+             xmlns:c="using:AVAMMB1.App.Controls"
              x:Class="AVAMMB1.App.Views.InnView" x:DataType="vm:InnViewModel">
-  <Border Classes="dialog" Width="820">
+  <Border Classes="dialog" Width="940">
     <StackPanel Spacing="8">
       <TextBlock Classes="title" Text="{Binding Title}" />
       <TextBlock Text="{Binding GoldText}" Foreground="{DynamicResource Gold}" />
@@ -12,14 +13,16 @@
         <Button Content="Save Game" Command="{Binding SaveGameCommand}" />
         <Button Content="Create a New Adventurer" Command="{Binding RecruitCommand}" />
       </StackPanel>
-      <Grid ColumnDefinitions="*,16,*">
+      <Grid ColumnDefinitions="3*,16,2*">
         <StackPanel>
           <TextBlock Classes="h2" Text="Party (marching order)" />
           <ItemsControl ItemsSource="{Binding Members}">
             <ItemsControl.ItemTemplate>
               <DataTemplate x:DataType="vm:PartyMemberViewModel">
-                <Grid ColumnDefinitions="*,Auto,Auto" Margin="0,1">
+                <Grid ColumnDefinitions="*,Auto,Auto,Auto" Margin="0,1">
                   <TextBlock VerticalAlignment="Center"><Run Text="{Binding Slot}" /><Run Text=". " /><Run Text="{Binding Name}" FontWeight="SemiBold" /><Run Text="  " /><Run Text="{Binding ClassLevel}" Foreground="{DynamicResource Dim}" /></TextBlock>
+                  <Button Grid.Column="3" Classes="chip" Content="Name &amp; looks" ToolTip.Tip="Rename this character or change their hair and beard"
+                          Command="{Binding $parent[UserControl].((vm:InnViewModel)DataContext).EditCommand}" CommandParameter="{Binding}" />
                   <Button Grid.Column="1" Classes="chip" Content="Up" Command="{Binding $parent[UserControl].((vm:InnViewModel)DataContext).MoveUpCommand}" CommandParameter="{Binding}" />
                   <Button Grid.Column="2" Classes="chip" Content="Stay here" Command="{Binding $parent[UserControl].((vm:InnViewModel)DataContext).LeaveMemberCommand}" CommandParameter="{Binding}" />
                 </Grid>
@@ -48,6 +51,32 @@
             <NumericUpDown Value="{Binding TakeGold}" Minimum="0" Maximum="{Binding PurseGold}" Increment="10" FormatString="0" Width="150" />
             <Button Content="Leave them here" Command="{Binding ConfirmLeaveCommand}" FontWeight="Bold" />
             <Button Content="Cancel" Command="{Binding CancelLeaveCommand}" />
+          </StackPanel>
+        </StackPanel>
+      </Border>
+      <Border IsVisible="{Binding IsEditing}" Background="{DynamicResource ButtonBg}" CornerRadius="4" Padding="10">
+        <StackPanel Orientation="Horizontal" Spacing="12">
+          <Border BorderBrush="{DynamicResource PanelBorder}" BorderThickness="1" Background="{DynamicResource ScreenBg}" Padding="4" VerticalAlignment="Top">
+            <c:PixelImage Source="{Binding EditPortrait}" Width="64" Height="64" />
+          </Border>
+          <StackPanel Spacing="6">
+            <TextBox Text="{Binding EditName}" Width="200" MaxLength="16" Watermark="Name" HorizontalAlignment="Left" />
+            <Grid ColumnDefinitions="44,Auto,170,Auto">
+              <TextBlock Text="Hair" Classes="dim" VerticalAlignment="Center" />
+              <Button Grid.Column="1" Classes="chip" Content="&lt;" Command="{Binding PreviousEditHairCommand}" />
+              <TextBlock Grid.Column="2" Text="{Binding EditHairLabel}" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="{DynamicResource Font12}" />
+              <Button Grid.Column="3" Classes="chip" Content="&gt;" Command="{Binding NextEditHairCommand}" />
+            </Grid>
+            <Grid ColumnDefinitions="44,Auto,170,Auto">
+              <TextBlock Text="Beard" Classes="dim" VerticalAlignment="Center" />
+              <Button Grid.Column="1" Classes="chip" Content="&lt;" Command="{Binding PreviousEditBeardCommand}" />
+              <TextBlock Grid.Column="2" Text="{Binding EditBeardLabel}" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="{DynamicResource Font12}" />
+              <Button Grid.Column="3" Classes="chip" Content="&gt;" Command="{Binding NextEditBeardCommand}" />
+            </Grid>
+            <StackPanel Orientation="Horizontal" Spacing="6">
+              <Button Content="Save" Command="{Binding SaveEditCommand}" FontWeight="Bold" />
+              <Button Content="Cancel" Command="{Binding CancelEditCommand}" />
+            </StackPanel>
           </StackPanel>
         </StackPanel>
       </Border>

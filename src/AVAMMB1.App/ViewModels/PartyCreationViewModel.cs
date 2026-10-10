@@ -121,7 +121,35 @@ public sealed partial class PartyCreationViewModel : ViewModelBase
     private string _status = "";
 
     /// <summary>Portrait preview.</summary>
-    public Bitmap? Portrait => _main.Services.Portrait(SelectedRace.Id, Enum.Parse<Sex>(SelectedSex.Id), SelectedClass?.Id);
+    public Bitmap? Portrait => _main.Services.Portrait(SelectedRace.Id, Enum.Parse<Sex>(SelectedSex.Id), SelectedClass?.Id, Hair, Beard);
+
+    /// <summary>Chosen hairstyle (null: the class's helmet or hood).</summary>
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(Portrait), nameof(HairLabel))]
+    private string? _hair;
+
+    /// <summary>Chosen beard (null: none).</summary>
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(Portrait), nameof(BeardLabel))]
+    private string? _beard;
+
+    /// <summary>Hair choice shown.</summary>
+    public string HairLabel => Hair is null ? "class headgear" : PortraitStyles.Describe(Hair);
+
+    /// <summary>Beard choice shown.</summary>
+    public string BeardLabel => Beard is null ? "none" : PortraitStyles.Describe(Beard);
+
+    [RelayCommand]
+    private void NextHair() => Hair = PortraitStyles.Cycle(PortraitStyles.Hair, Hair, 1);
+
+    [RelayCommand]
+    private void PreviousHair() => Hair = PortraitStyles.Cycle(PortraitStyles.Hair, Hair, -1);
+
+    [RelayCommand]
+    private void NextBeard() => Beard = PortraitStyles.Cycle(PortraitStyles.Beards, Beard, 1);
+
+    [RelayCommand]
+    private void PreviousBeard() => Beard = PortraitStyles.Cycle(PortraitStyles.Beards, Beard, -1);
 
     /// <summary>Starting hit points preview.</summary>
     public string Preview
@@ -210,10 +238,14 @@ public sealed partial class PartyCreationViewModel : ViewModelBase
         {
             var c = _main.Services.Session.Factory.Create(Name, SelectedRace.Id, SelectedClass!.Id,
                 Enum.Parse<Sex>(SelectedSex.Id), Enum.Parse<Alignment>(SelectedAlignment.Id), FinalStats());
+            c.Hair = Hair;
+            c.Beard = Beard;
             Created.Add(c);
             Status = $"{c.Name} the {_main.Services.Content.Class(c.Class).Name} is ready.";
             _main.Services.Audio.PlaySfx("levelup");
             Name = "";
+            Hair = null;
+            Beard = null;
             Roll();
             OnPropertyChanged(nameof(PartySummary));
             BeginCommand.NotifyCanExecuteChanged();

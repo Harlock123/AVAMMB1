@@ -13,6 +13,10 @@ public sealed class Character
     public string Id { get; set; } = Guid.NewGuid().ToString("N");
     /// <summary>Name.</summary>
     public string Name { get; set; } = "";
+    /// <summary>Portrait hairstyle (see <see cref="PortraitStyles.Hair"/>), or null for the class's own look.</summary>
+    public string? Hair { get; set; }
+    /// <summary>Portrait beard (see <see cref="PortraitStyles.Beards"/>), or null for none.</summary>
+    public string? Beard { get; set; }
     /// <summary>Race id.</summary>
     public string Race { get; set; } = "";
     /// <summary>Class id.</summary>

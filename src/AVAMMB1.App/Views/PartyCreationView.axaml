@@ -41,6 +41,20 @@
               <TextBox Text="{Binding Name}" Width="170" MaxLength="16" Watermark="Enter a name" />
             </StackPanel>
           </StackPanel>
+          <StackPanel Spacing="4" Margin="0,8,0,0" Width="290" HorizontalAlignment="Left">
+            <Grid ColumnDefinitions="50,Auto,*,Auto">
+                <TextBlock Text="Hair" Classes="dim" VerticalAlignment="Center" />
+                <Button Grid.Column="1" Classes="chip" Content="&lt;" Command="{Binding PreviousHairCommand}" ToolTip.Tip="Previous hairstyle" />
+                <TextBlock Grid.Column="2" Text="{Binding HairLabel}" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="{DynamicResource Font12}" />
+                <Button Grid.Column="3" Classes="chip" Content="&gt;" Command="{Binding NextHairCommand}" ToolTip.Tip="Next hairstyle (a hairstyle leaves the helmet or hood off)" />
+              </Grid>
+            <Grid ColumnDefinitions="50,Auto,*,Auto">
+                <TextBlock Text="Beard" Classes="dim" VerticalAlignment="Center" />
+                <Button Grid.Column="1" Classes="chip" Content="&lt;" Command="{Binding PreviousBeardCommand}" ToolTip.Tip="Previous beard" />
+                <TextBlock Grid.Column="2" Text="{Binding BeardLabel}" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="{DynamicResource Font12}" />
+                <Button Grid.Column="3" Classes="chip" Content="&gt;" Command="{Binding NextBeardCommand}" ToolTip.Tip="Next beard" />
+              </Grid>
+          </StackPanel>
         </StackPanel>
 
         <!-- Choices -->

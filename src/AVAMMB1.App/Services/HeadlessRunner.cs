@@ -386,7 +386,11 @@ public static class HeadlessRunner
         vm.ShowNewGame();
         var creation = (PartyCreationViewModel)vm.CurrentScreen;
         creation.Name = "Aldric";
+        creation.NextHairCommand.Execute(null);
+        creation.Hair = "long_red";
+        creation.NextBeardCommand.Execute(null);
         Capture(dir, "02-character-creation");
+        creation.Hair = creation.Beard = null;
 
         creation.QuickPartyCommand.Execute(null);
         creation.BeginCommand.Execute(null);
@@ -398,6 +402,19 @@ public static class HeadlessRunner
         Daylight(game, s);
         Capture(dir, "04-town");
         CheckPartyDrag(game, s);
+
+        // The inn: rename a character and change their looks.
+        var innEvent = s.CurrentMap.AllEvents.First(e => e.Type == MapEventKind.Inn);
+        var inn = new InnViewModel(game, innEvent);
+        game.Overlay = inn;
+        inn.EditCommand.Execute(game.Party[1]);
+        inn.EditName = "Dorgun Stonefist";
+        inn.EditHair = "short_red";
+        inn.EditBeard = "long_red";
+        Pump();
+        Capture(dir, "33-inn-looks");
+        inn.CancelEditCommand.Execute(null);
+        game.CloseOverlay();
 
         // Walk around town (real moves) so the automap has something to show, then visit the smithy.
         foreach (var (x, y) in new[] { (1, 13), (1, 1), (6, 1), (8, 3), (14, 1), (14, 13), (9, 10), (7, 13) })

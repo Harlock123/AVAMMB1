@@ -6,6 +6,10 @@ All notable changes to this project are documented here. The format follows
 ## [Unreleased]
 
 ### Added
+- Character looks: choose a hairstyle (18, which leaves the helmet or hood off) and a beard (8) for
+  each portrait when creating a character, and change name and looks later at any inn ("Name &
+  looks"). Names stay unique, trimmed and at most 16 letters. The hair and beard tiles are CC0 Dungeon
+  Crawl paper-doll layers.
 - Accessibility: an interface zoom (100-150%) for big or high-resolution screens when the interface
   is not fitted to the window; a battle text speed (Instant, Fast, Normal, Slow) that shows battle
   messages one line at a time (acting, or Continue, shows the rest; auto-fight waits for the text);
