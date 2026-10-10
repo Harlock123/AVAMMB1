@@ -71,6 +71,8 @@ Code identifiers, the solution and executables use the name **`AVAMMB1`** (`AVAM
 - **Character looks**: pick a hairstyle and beard for each portrait at creation; rename characters
   and restyle them at any inn.
 - **Where next?**: the journal, automap and minimap show where each open quest leads.
+- **Bestiary and compendium**: Journal tabs for every creature you have defeated (attacks, defences,
+  where found, how many slain) and every item you have seen.
 - **Autosave and save pictures**: three rotating autosaves (new areas, before bosses); every save
   shows a picture of the view and the time played.
 - **Shopping help**: gear for sale is compared with what the shopper wears, and "Sell junk" sells
@@ -163,7 +165,8 @@ All screenshots are real frames rendered by the game itself (Avalonia headless +
 | ![Detailed textures](docs/screenshots/27-detailed-textures.png) Detailed textures at 800 x 600 (the Hollow Crypt) | ![Lantern](docs/screenshots/28-lantern.png) Lantern light in the cellars |
 | ![Night](docs/screenshots/29-night.png) The Ashen Hills road at night | ![Battle spells](docs/screenshots/30-combat-spells.png) Battle spells with their keys |
 | ![Load game](docs/screenshots/31-load-game.png) Saves with pictures, play time and autosaves | ![Choirmaster](docs/screenshots/32-choirmaster.png) The Choirmaster in the Bell Chamber |
-| ![Inn looks](docs/screenshots/33-inn-looks.png) Renaming and restyling at the inn | |
+| ![Inn looks](docs/screenshots/33-inn-looks.png) Renaming and restyling at the inn | ![Bestiary](docs/screenshots/34-bestiary.png) The bestiary |
+| ![Items](docs/screenshots/35-items.png) The item compendium | |
 
 ## Download and install
 

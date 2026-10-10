@@ -172,6 +172,10 @@ public static class HeadlessRunner
     private static void Capture(string dir, string name)
     {
         Pump();
+        if (_window.DataContext is MainViewModel { CurrentScreen: EndingViewModel } && !name.Contains("ending", StringComparison.Ordinal))
+        {
+            throw new InvalidOperationException($"Screenshot {name} would show the game-over screen: the party died earlier in the tour.");
+        }
         Directory.CreateDirectory(dir);
         var path = Path.Combine(dir, name + ".png");
         // Render into a bitmap we own (the headless renderer's own frame buffer can be recycled
@@ -675,7 +679,8 @@ public static class HeadlessRunner
         game.Refresh();
         Capture(dir, "26-rime-halls");
 
-        // The Silent Choir: the Choirmaster beneath the Hollow Bell.
+        // The Silent Choir: the Choirmaster beneath the Hollow Bell (then back to the Rime Halls).
+        var beforeChoir = (s.State.MapId, s.State.X, s.State.Y, s.State.Facing);
         (s.State.MapId, s.State.X, s.State.Y, s.State.Facing) = ("belfry2", 12, 5, Direction.North);
         s.State.LightSteps = Math.Max(s.State.LightSteps, 50);
         var choir = new StepResult();
@@ -685,6 +690,10 @@ public static class HeadlessRunner
         game.BeginCombat();
         Pump();
         Capture(dir, "32-choirmaster");
+        foreach (var m in s.Combat!.Monsters)
+        {
+            m.Hp = 1; // the tour only needs the picture: the next blows end the fight in the party's favour
+        }
         // Slow battle text: lines are revealed one at a time; acting (or Continue) shows the rest.
         vm.Services.Settings.BattleTextSpeed = 3;
         game.Combat!.FightCommand.Execute(null);
@@ -711,6 +720,8 @@ public static class HeadlessRunner
         }
         game.CombatFinished();
         game.CloseOverlay();
+        (s.State.MapId, s.State.X, s.State.Y, s.State.Facing) = beforeChoir;
+        game.Refresh();
 
         // Accessibility: the high-contrast theme with larger text, and the sharper 3D view.
         var settings = vm.Services.Settings;
@@ -740,6 +751,16 @@ public static class HeadlessRunner
         vm.Services.Textures.Detailed = false;
         settings.ViewResolution = 300;
         game.Refresh();
+
+        // The bestiary, after the battles of the screenshot tour.
+        game.JournalCommand.Execute(null);
+        ((JournalViewModel)game.Overlay!).Tab = 1;
+        Pump();
+        Capture(dir, "34-bestiary");
+        ((JournalViewModel)game.Overlay!).Tab = 2;
+        Pump();
+        Capture(dir, "35-items");
+        game.CloseOverlay();
 
         // The load screen: autosaves (some written on the way here, one now) and a quick save, with pictures.
         game.AutoSave("screenshot");

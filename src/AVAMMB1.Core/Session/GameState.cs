@@ -41,6 +41,12 @@ public sealed class GameState
 
     /// <summary>Monster kinds the party has defeated; the combat screen shows their statistics.</summary>
     public HashSet<string> KnownMonsters { get; set; } = new(StringComparer.Ordinal);
+
+    /// <summary>Monsters slain, by monster id (the bestiary and the chronicle).</summary>
+    public Dictionary<string, int> Kills { get; set; } = new(StringComparer.Ordinal);
+
+    /// <summary>Items the party has carried or seen for sale (the item compendium).</summary>
+    public HashSet<string> SeenItems { get; set; } = new(StringComparer.Ordinal);
     /// <summary>Player notes on automap squares, keyed by <see cref="NoteKey"/>.</summary>
     public Dictionary<string, string> MapNotes { get; set; } = new(StringComparer.Ordinal);
 

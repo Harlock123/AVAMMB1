@@ -607,6 +607,7 @@ public sealed partial class ShopViewModel : BuildingViewModel
     public ShopViewModel(GameViewModel game, ShopDef shop) : base(game, shop.Name)
     {
         _shop = shop;
+        Session.NoteSeenItems(shop.Stock);
         Feedback = shop.Greeting;
         _selectedMember = game.Party.FirstOrDefault();
         RefreshRows();

@@ -2,6 +2,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:AVAMMB1.App.ViewModels"
              xmlns:s="using:AVAMMB1.Core.Session"
+             xmlns:c="using:AVAMMB1.App.Controls"
              x:Class="AVAMMB1.App.Views.JournalView" x:DataType="vm:JournalViewModel">
   <Border Classes="dialog" Width="900" Height="600">
     <DockPanel>
@@ -9,7 +10,7 @@
         <TextBlock Classes="title" Text="Journal" />
         <Button Grid.Column="1" Content="Close (J)" Command="{Binding CloseCommand}" />
       </Grid>
-      <TabControl>
+      <TabControl SelectedIndex="{Binding Tab}">
         <TabItem Header="Quests">
           <ScrollViewer>
             <StackPanel Spacing="12" Margin="0,6">
@@ -35,6 +36,54 @@
               </ItemsControl>
             </StackPanel>
           </ScrollViewer>
+        </TabItem>
+        <TabItem Header="Bestiary">
+          <DockPanel>
+            <TextBlock DockPanel.Dock="Top" Text="{Binding BestiaryCount}" Classes="dim" Margin="0,6,0,6" />
+            <ScrollViewer>
+              <ItemsControl ItemsSource="{Binding Bestiary}" Margin="0,0,12,0">
+                <ItemsControl.ItemTemplate>
+                  <DataTemplate x:DataType="vm:BestiaryEntry">
+                    <Grid ColumnDefinitions="72,*" Margin="0,0,0,12">
+                      <Border Width="64" Height="64" Background="{DynamicResource ScreenBg}" CornerRadius="3" VerticalAlignment="Top">
+                        <c:PixelImage Source="{Binding Sprite}" Width="64" Height="64" />
+                      </Border>
+                      <StackPanel Grid.Column="1" Spacing="1">
+                        <TextBlock><Run Text="{Binding Name}" FontWeight="Bold" Foreground="{DynamicResource Gold}" /><Run Text="   " /><Run Text="{Binding KillText}" Foreground="{DynamicResource Dim}" /></TextBlock>
+                        <TextBlock Text="{Binding Stats}" FontSize="{DynamicResource Font12}" />
+                        <TextBlock Text="{Binding Attacks}" FontSize="{DynamicResource Font12}" TextWrapping="Wrap" />
+                        <TextBlock Text="{Binding Defenses}" FontSize="{DynamicResource Font12}" Foreground="{DynamicResource Info}" TextWrapping="Wrap" />
+                        <TextBlock Text="{Binding Found}" IsVisible="{Binding HasFound}" FontSize="{DynamicResource Font12}" Classes="dim" TextWrapping="Wrap" />
+                        <TextBlock Text="{Binding Description}" FontSize="{DynamicResource Font12}" FontStyle="Italic" Classes="dim" TextWrapping="Wrap" />
+                      </StackPanel>
+                    </Grid>
+                  </DataTemplate>
+                </ItemsControl.ItemTemplate>
+              </ItemsControl>
+            </ScrollViewer>
+          </DockPanel>
+        </TabItem>
+        <TabItem Header="Items">
+          <DockPanel>
+            <TextBlock DockPanel.Dock="Top" Text="{Binding ItemsCount}" Classes="dim" Margin="0,6,0,6" />
+            <ScrollViewer>
+              <ItemsControl ItemsSource="{Binding Items}" Margin="0,0,12,0">
+                <ItemsControl.ItemTemplate>
+                  <DataTemplate x:DataType="vm:ItemEntry">
+                    <Grid ColumnDefinitions="44,*" Margin="0,0,0,8">
+                      <c:PixelImage Source="{Binding Icon}" Width="32" Height="32" VerticalAlignment="Top" />
+                      <StackPanel Grid.Column="1" Spacing="1">
+                        <TextBlock Text="{Binding Name}" FontWeight="Bold" />
+                        <TextBlock Text="{Binding Summary}" FontSize="{DynamicResource Font12}" TextWrapping="Wrap" />
+                        <TextBlock Text="{Binding Classes}" IsVisible="{Binding HasClasses}" FontSize="{DynamicResource Font12}" Classes="dim" />
+                        <TextBlock Text="{Binding Description}" FontSize="{DynamicResource Font12}" FontStyle="Italic" Classes="dim" TextWrapping="Wrap" />
+                      </StackPanel>
+                    </Grid>
+                  </DataTemplate>
+                </ItemsControl.ItemTemplate>
+              </ItemsControl>
+            </ScrollViewer>
+          </DockPanel>
         </TabItem>
         <TabItem Header="Clues">
           <ScrollViewer>

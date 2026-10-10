@@ -89,6 +89,40 @@ public sealed class GameSession
     /// <summary>The current map.</summary>
     public GameMap CurrentMap => Content.Map(State.MapId);
 
+    /// <summary>Adds everything the party and the inn roster carry to the item compendium.</summary>
+    public void NoteCarriedItems()
+    {
+        foreach (var c in State.Party.Concat(State.Roster))
+        {
+            foreach (var i in c.Backpack.Concat(c.Equipment.Values))
+            {
+                State.SeenItems.Add(i.ItemId);
+            }
+        }
+    }
+
+    /// <summary>Adds items to the item compendium (e.g. a shop's stock).</summary>
+    /// <param name="itemIds">Item ids.</param>
+    public void NoteSeenItems(IEnumerable<string> itemIds)
+    {
+        foreach (var id in itemIds.Where(Content.Items.ContainsKey))
+        {
+            State.SeenItems.Add(id);
+        }
+    }
+
+    /// <summary>Explored maps where a monster can be met (wandering, at night, or standing guard).</summary>
+    /// <param name="monsterId">Monster id.</param>
+    public IReadOnlyList<string> WhereFound(string monsterId) =>
+        Content.Maps.Values
+            .Where(m => State.Explored.ContainsKey(m.Id)
+                && (m.Def.Encounters.Concat(m.Def.NightEncounters).Any(e => e.Monster == monsterId)
+                    || m.AllEvents.Any(ev => ev.Monsters.Any(fm => fm.Monster == monsterId))))
+            .Select(m => m.Def.Name)
+            .Distinct()
+            .Order(StringComparer.Ordinal)
+            .ToList();
+
     /// <summary>Moves a party member to another place in the marching order (not during a battle).</summary>
     /// <param name="from">Current index.</param>
     /// <param name="to">New index; the members in between shift along.</param>
@@ -599,6 +633,7 @@ public sealed class GameSession
     /// <summary>Marks the cells around the party as explored on the automap.</summary>
     public void Explore()
     {
+        NoteCarriedItems();
         var map = CurrentMap;
         void Mark(int x, int y) => State.MarkExplored(map.Id, map.Width, map.Height, x, y);
         Mark(State.X, State.Y);
@@ -1167,6 +1202,7 @@ public sealed class GameSession
         foreach (var m in combat.Monsters.Where(m => m.IsDead))
         {
             State.KnownMonsters.Add(m.Def.Id);
+            State.Kills[m.Def.Id] = State.Kills.GetValueOrDefault(m.Def.Id) + 1;
         }
         if (combat.Outcome == CombatOutcome.Victory && combat.Rewards is { } r)
         {

@@ -2,6 +2,7 @@ using System.Collections.ObjectModel;
 using Avalonia.Input;
 using Avalonia.Media.Imaging;
 using AVAMMB1.Core.Characters;
+using AVAMMB1.Core.Combat;
 using AVAMMB1.Core.Content;
 using AVAMMB1.Core.Items;
 using AVAMMB1.Core.Rules;
@@ -536,7 +537,43 @@ public sealed partial class JournalViewModel : ViewModelBase
         var goals = game.Services.Settings.QuestMarkers ? game.Services.Session.QuestGoals() : [];
         Quests = QuestJournal.Quests(state, content).Select(q => new JournalQuest(q, goals.FirstOrDefault(g => g.QuestId == q.Id))).ToList();
         Discoveries = QuestJournal.Discoveries(state, content);
+        var session = game.Services.Session;
+        var tex = game.Services.Textures;
+        Bestiary = state.KnownMonsters.Where(content.Monsters.ContainsKey).Select(id => content.Monsters[id])
+            .OrderBy(m => m.Level).ThenBy(m => m.Name, StringComparer.Ordinal)
+            .Select(m => new BestiaryEntry(tex.Bitmap("Monsters/" + m.Sprite), m.Name, MonsterLore.Stats(m), MonsterLore.Attacks(m),
+                MonsterLore.Defenses(m), session.WhereFound(m.Id) is { Count: > 0 } where ? "Found in " + string.Join(", ", where) : "",
+                state.Kills.GetValueOrDefault(m.Id), m.Description))
+            .ToList();
+        BestiaryCount = $"{Bestiary.Count} of {content.Monsters.Count} creatures known. Defeat a creature to add it.";
+        Items = state.SeenItems.Where(content.Items.ContainsKey).Select(id => content.Items[id])
+            .OrderBy(i => i.Kind).ThenBy(i => i.Price).ThenBy(i => i.Name, StringComparer.Ordinal)
+            .Select(i => new ItemEntry(tex.Bitmap("Items/" + i.Icon), i.Name, KindName(i.Kind), ItemText.Describe(i),
+                i.Description, i.Kind == ItemKind.Quest ? "" : $"worth {Rulebook.SellPrice(i)} gold",
+                i.Classes.Count == 0 ? "" : "Classes: " + string.Join(", ", i.Classes.Select(c => content.Classes.TryGetValue(c, out var cd) ? cd.Name : c))))
+            .ToList();
+        ItemsCount = $"{Items.Count} of {content.Items.Count} items seen. Items you carry or see in shops are added.";
     }
+
+    private static string KindName(ItemKind k) => k switch
+    {
+        ItemKind.Missile => "missile weapon",
+        ItemKind.Quest => "quest item",
+        _ => k.ToString().ToLowerInvariant(),
+    };
+
+    /// <summary>Selected tab (0 quests, 1 bestiary, 2 items, 3 clues...).</summary>
+    [ObservableProperty]
+    private int _tab;
+
+    /// <summary>Monsters the party has defeated.</summary>
+    public IReadOnlyList<BestiaryEntry> Bestiary { get; }
+    /// <summary>"12 of 103 creatures known".</summary>
+    public string BestiaryCount { get; }
+    /// <summary>Items the party has carried or seen.</summary>
+    public IReadOnlyList<ItemEntry> Items { get; }
+    /// <summary>"40 of 106 items seen".</summary>
+    public string ItemsCount { get; }
 
     /// <summary>Known quests.</summary>
     public IReadOnlyList<JournalQuest> Quests { get; }
@@ -587,6 +624,39 @@ public sealed record JournalQuest(QuestEntry Quest, QuestGoal? Goal = null)
     public bool HasEarlier => Quest.Entries.Count > 1;
     /// <summary>Whether the quest is complete.</summary>
     public bool Done => Quest.Done;
+}
+
+/// <summary>A bestiary page.</summary>
+/// <param name="Sprite">Picture.</param>
+/// <param name="Name">Name.</param>
+/// <param name="Stats">Level, HP, AC...</param>
+/// <param name="Attacks">How it fights.</param>
+/// <param name="Defenses">Resistances.</param>
+/// <param name="Found">Explored maps where it lives.</param>
+/// <param name="Kills">How many the party has slain.</param>
+/// <param name="Description">Flavour text.</param>
+public sealed record BestiaryEntry(Bitmap? Sprite, string Name, string Stats, string Attacks, string Defenses, string Found, int Kills, string Description)
+{
+    /// <summary>"Slain: 14".</summary>
+    public string KillText => Kills > 0 ? $"Slain: {Kills}" : "Slain: before records were kept";
+    /// <summary>Whether to show where it is found.</summary>
+    public bool HasFound => Found.Length > 0;
+}
+
+/// <summary>An item compendium page.</summary>
+/// <param name="Icon">Picture.</param>
+/// <param name="Name">Name.</param>
+/// <param name="Kind">"weapon", "ring"...</param>
+/// <param name="Stats">Damage, AC, bonuses.</param>
+/// <param name="Description">Flavour text.</param>
+/// <param name="Value">Sale value.</param>
+/// <param name="Classes">Who can use it.</param>
+public sealed record ItemEntry(Bitmap? Icon, string Name, string Kind, string Stats, string Description, string Value, string Classes)
+{
+    /// <summary>"weapon · Dmg 1d8 · worth 25 gold".</summary>
+    public string Summary => string.Join(" · ", new[] { Kind, Stats, Value }.Where(s => s.Length > 0));
+    /// <summary>Whether a class list is shown.</summary>
+    public bool HasClasses => Classes.Length > 0;
 }
 
 /// <summary>In-game menu.</summary>

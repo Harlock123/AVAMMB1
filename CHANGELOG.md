@@ -6,16 +6,16 @@ All notable changes to this project are documented here. The format follows
 ## [Unreleased]
 
 ### Added
+- A bestiary and an item compendium (new Journal tabs). The bestiary has every creature the party has
+  defeated, with its picture, level, hit points, armour, attacks and special abilities, defences
+  (immunities, resistances, weaknesses), how many you have slain and the explored places where it is
+  found. The compendium has every item the party has carried or seen in a shop, with its stats, value
+  and who can use it.
 - "Where next?": the journal shows where each open quest leads ("Next: Loremaster's Hall, Thornwick
   (7,9)"), and the automap and minimap mark it with a diamond and list every quest's next place. The
   game works it out from the map events (and follows a locked hoard back to its guardian); quest stages
   can also name a `goal` (see CONTENT_FORMAT.md), and the content check validates it. Settings > Game
   turns the markers off.
-
-### Fixed
-- The Run and Bribe buttons in battle now show their keys, like Fight: "Run 50% (R)", "Bribe 120 gold (B)".
-
-### Added
 - Character looks: choose a hairstyle (18, which leaves the helmet or hood off) and a beard (8) for
   each portrait when creating a character, and change name and looks later at any inn ("Name &
   looks"). Names stay unique, trimmed and at most 16 letters. The hair and beard tiles are CC0 Dungeon
@@ -53,6 +53,11 @@ All notable changes to this project are documented here. The format follows
 
 ### Changed
 - macOS Intel (osx-x64) builds are now verified (play-tested on an Intel Mac).
+
+### Fixed
+- Several README screenshots taken after the Choirmaster fight showed the game-over screen (the
+  screenshot tour now wins that fight and refuses to capture a game-over screen by mistake).
+- The Run and Bribe buttons in battle now show their keys, like Fight: "Run 50% (R)", "Bribe 120 gold (B)".
 
 ## [1.9.1] - 2026-10-09
 
