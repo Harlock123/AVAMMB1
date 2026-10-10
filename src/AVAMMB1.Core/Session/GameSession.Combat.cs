@@ -67,6 +67,15 @@ public sealed partial class GameSession
     public void StartCombat(IEnumerable<MonsterInstance> monsters, StepResult result)
     {
         Combat = new CombatEngine(Rules, Random, State, monsters) { MagicSuppressed = () => IsAntiMagicHere };
+        if (State.MapId == World.Depths.MapId && World.Depths.ScalePercent(State.Depth) is var pct and > 100)
+        {
+            foreach (var m in Combat.Monsters)
+            {
+                m.ScaleHp(pct);
+                m.DamagePercent = m.DamagePercent * pct / 100;
+            }
+            Combat.RewardPercent = pct;
+        }
         _deadBeforeCombat = State.Party.Where(c => c.Has(Condition.Dead)).ToHashSet();
         _combatFlag = null;
         result.CombatStarted = true;

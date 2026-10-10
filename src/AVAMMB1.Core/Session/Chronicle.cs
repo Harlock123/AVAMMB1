@@ -72,6 +72,7 @@ public static class Chronicle
         new("lodestone", "Keeper of the Lodestone", "Complete the main quest.", s => s.State.Won),
         new("hard_won", "Hard Won", "Complete the main quest on Hard.", s => s.State.Won && s.State.Difficulty == Difficulty.Hard),
         new("survivor", "Survivor", "Reach day 30 in survival mode.", s => s.State.Survival && s.State.Day >= 30),
+        new("deep_delver", "Deep Delver", "Reach level 10 of the Depths Below.", s => s.State.DeepestDepth >= 10),
         new("iron_will", "Iron Will", "Complete the main quest in ironman mode.", s => s.State.Won && s.State.Ironman),
     ];
 

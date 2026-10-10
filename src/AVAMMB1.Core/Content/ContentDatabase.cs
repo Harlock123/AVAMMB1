@@ -51,7 +51,11 @@ public sealed class ContentDatabase
     /// <param name="id">Spell id.</param>
     public SpellDef Spell(string id) => Spells.TryGetValue(id, out var d) ? d : throw new KeyNotFoundException($"Unknown spell '{id}'.");
 
-    /// <summary>Gets a map or throws.</summary>
+    /// <summary>Puts a generated map in place (the current level of the Depths Below).</summary>
+    /// <param name="def">The generated map.</param>
+    internal void SetGeneratedMap(MapDef def) => _maps[def.Id] = GameMap.Parse(def);
+
+    /// <summary>Gets a map.</summary>
     /// <param name="id">Map id.</param>
     public GameMap Map(string id) => _maps.TryGetValue(id, out var d) ? d : throw new KeyNotFoundException($"Unknown map '{id}'.");
 
@@ -157,6 +161,11 @@ public sealed class ContentDatabase
         foreach (var def in maps.Values.OrderBy(d => d.Id, StringComparer.Ordinal))
         {
             db._maps[def.Id] = GameMap.Parse(def);
+        }
+        // The Depths Below are generated as the party descends; a first level stands in until then.
+        if (!db._maps.ContainsKey(World.Depths.MapId))
+        {
+            db._maps[World.Depths.MapId] = GameMap.Parse(World.Depths.Generate(db, 1, 1));
         }
         try
         {

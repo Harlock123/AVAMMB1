@@ -123,6 +123,31 @@ public sealed partial class GameSession
             .Order(StringComparer.Ordinal)
             .ToList();
 
+    /// <summary>Generates and enters a level of the Depths Below (a fresh level each descent).</summary>
+    /// <param name="depth">Depth (1 and up).</param>
+    /// <param name="log">Messages.</param>
+    private void EnterDepth(int depth, List<GameMessage> log)
+    {
+        State.Depth = depth;
+        State.DepthSeed = Random.Next(1, int.MaxValue);
+        Content.SetGeneratedMap(World.Depths.Generate(Content, depth, State.DepthSeed));
+        State.Explored.Remove(World.Depths.MapId); // a new level: nothing mapped yet
+        foreach (var key in State.MapNotes.Keys.Where(k => k.StartsWith(World.Depths.MapId + ":", StringComparison.Ordinal)).ToList())
+        {
+            State.MapNotes.Remove(key);
+        }
+        (State.X, State.Y) = World.Depths.Start;
+        State.Facing = Direction.North;
+        if (depth > State.DeepestDepth)
+        {
+            State.DeepestDepth = depth;
+            if (depth > 1)
+            {
+                log.Add(new($"The deepest the party has ever been: level {depth} of the Depths Below.", MessageKind.Good));
+            }
+        }
+    }
+
     /// <summary>Moves a party member to another place in the marching order (not during a battle).</summary>
     /// <param name="from">Current index.</param>
     /// <param name="to">New index; the members in between shift along.</param>
@@ -211,6 +236,10 @@ public sealed partial class GameSession
     /// <exception cref="InvalidDataException">Thrown when the state references unknown content.</exception>
     public void Load(GameState state)
     {
+        if (state.MapId == World.Depths.MapId && state.Depth > 0)
+        {
+            Content.SetGeneratedMap(World.Depths.Generate(Content, state.Depth, state.DepthSeed)); // the saved level, exactly
+        }
         if (!Content.Maps.TryGetValue(state.MapId, out var map) || !map.InBounds(state.X, state.Y))
         {
             throw new InvalidDataException($"Saved location '{state.MapId}' ({state.X},{state.Y}) is not valid for this content.");

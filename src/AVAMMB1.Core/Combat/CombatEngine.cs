@@ -29,6 +29,9 @@ public sealed class CombatEngine
     private readonly Dictionary<Character, int> _aimedInRound = new();
     private int _turn;
 
+    /// <summary>Experience and gold in percent of normal (the deeper levels of the Depths Below pay more).</summary>
+    public int RewardPercent { get; set; } = 100;
+
     /// <summary>Creates a battle.</summary>
     /// <param name="rules">Rulebook.</param>
     /// <param name="rng">Random source.</param>
@@ -315,8 +318,8 @@ public sealed class CombatEngine
     private CombatRewards ComputeRewards()
     {
         var killed = Monsters.Where(m => m.IsDead).ToList();
-        var xp = killed.Sum(m => m.Def.Xp * (m.Elite ? 3 : 1)) * DifficultyRules.Experience(_state.Difficulty) / 100;
-        var gold = killed.Sum(m => Math.Max(0, m.Def.Gold.Roll(_rng)) * (m.Elite ? 3 : 1)) * DifficultyRules.Gold(_state.Difficulty) / 100;
+        var xp = killed.Sum(m => m.Def.Xp * (m.Elite ? 3 : 1)) * DifficultyRules.Experience(_state.Difficulty) / 100 * RewardPercent / 100;
+        var gold = killed.Sum(m => Math.Max(0, m.Def.Gold.Roll(_rng)) * (m.Elite ? 3 : 1)) * DifficultyRules.Gold(_state.Difficulty) / 100 * RewardPercent / 100;
         var gems = killed.Count(m => m.Def.Level >= 3 && _rng.Chance(10));
         var items = new List<ItemInstance>();
         foreach (var m in killed.Where(m => m.Elite && _rng.Chance(50)))

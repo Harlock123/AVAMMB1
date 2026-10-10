@@ -711,6 +711,34 @@ public static class HeadlessRunner
         game.Refresh();
         Capture(dir, "26-rime-halls");
 
+        // The Depths Below: down the stair under the Umbral Wyrm's lair (then back to the Rime Halls).
+        var beforeDepths = (s.State.MapId, s.State.X, s.State.Y, s.State.Facing);
+        s.State.Flags.Add(AVAMMB1.Core.World.Depths.OpenFlag);
+        (s.State.MapId, s.State.X, s.State.Y, s.State.Facing) = ("deep", AVAMMB1.Core.World.Depths.ReturnSquare.X, AVAMMB1.Core.World.Depths.ReturnSquare.Y, Direction.East);
+        game.Refresh();
+        game.ForwardCommand.Execute(null);
+        if (s.State.MapId != AVAMMB1.Core.World.Depths.MapId)
+        {
+            throw new InvalidOperationException("The stair to the Depths Below did not lead down.");
+        }
+        if (s.Combat is not null)
+        {
+            AutoBattle(s);
+            game.CombatFinished();
+        }
+        game.CloseOverlay();
+        for (var i = 0; i < 4 && s.CurrentMap.Probe(s.State.X, s.State.Y, s.State.Facing).Wall != AVAMMB1.Core.World.WallKind.None; i++)
+        {
+            game.TurnRightCommand.Execute(null); // face down a corridor
+        }
+        s.State.LightSteps = Math.Max(s.State.LightSteps, 50);
+        game.Refresh();
+        Capture(dir, "42-depths");
+        s.State.Flags.Remove(AVAMMB1.Core.World.Depths.OpenFlag);
+        (s.State.MapId, s.State.X, s.State.Y, s.State.Facing) = beforeDepths;
+        game.Refresh();
+        Console.WriteLine("depths ok");
+
         // The Silent Choir: the Choirmaster beneath the Hollow Bell (then back to the Rime Halls).
         var beforeChoir = (s.State.MapId, s.State.X, s.State.Y, s.State.Facing);
         (s.State.MapId, s.State.X, s.State.Y, s.State.Facing) = ("belfry2", 12, 5, Direction.North);

@@ -113,10 +113,14 @@ public sealed partial class GameSession
                 Story(result, ev);
                 Complete(map, ev);
                 var destMap = ev.Map ?? map.Id;
-                result.MapChanged = destMap != map.Id;
+                result.MapChanged = destMap != map.Id || destMap == World.Depths.MapId;
                 State.MapId = destMap;
                 State.X = ev.ToX;
                 State.Y = ev.ToY;
+                if (destMap == World.Depths.MapId)
+                {
+                    EnterDepth(map.Id == World.Depths.MapId ? State.Depth + 1 : 1, result.Messages);
+                }
                 if (ev.Facing is { } f)
                 {
                     State.Facing = f;

@@ -719,7 +719,8 @@ public sealed partial class HallOfFameViewModel : ViewModelBase
         {
             var mode = string.Join(", ", new[] { e.Difficulty.ToString(), e.Survival ? "survival" : null, e.Ironman ? "ironman" : null }.Where(x => x is not null));
             return new HallEntryRow($"{e.Outcome} - {mode}", string.Join("; ", e.Party),
-                $"Day {e.Day} - played {SlotRow.PlayTimeText(TimeSpan.FromSeconds(e.PlaySeconds))} - {e.MonstersSlain:N0} monsters slain - {e.Achievements.Count} achievements - {e.FinishedUtc.ToLocalTime().ToString("d", CultureInfo.CurrentCulture)}",
+                $"Day {e.Day} - played {SlotRow.PlayTimeText(TimeSpan.FromSeconds(e.PlaySeconds))} - {e.MonstersSlain:N0} monsters slain - {e.Achievements.Count} achievements"
+                + (e.DeepestDepth > 0 ? $" - Depths level {e.DeepestDepth}" : "") + $" - {e.FinishedUtc.ToLocalTime().ToString("d", CultureInfo.CurrentCulture)}",
                 e.Won);
         }).ToList();
         Achievements = AVAMMB1.Core.Session.Chronicle.Achievements.Select(a => new AchievementRow(a.Title, a.Description, hof.Achievements.Contains(a.Id))).ToList();

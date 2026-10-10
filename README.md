@@ -79,6 +79,8 @@ Code identifiers, the solution and executables use the name **`AVAMMB1`** (`AVAM
   where found, how many slain) and every item you have seen.
 - **Autosave and save pictures**: three rotating autosaves (new areas, before bosses); every save
   shows a picture of the view and the time played.
+- **The Depths Below**: an endless post-game dungeon of generated levels, harder and richer each
+  level down.
 - **Weather and spell effects**: snow and rain in the open country, and colour flashes for spells
   and breath attacks in battle.
 - **Controller-only play**: an on-screen keyboard for names, riddles and notes (A on a text box), and
@@ -180,7 +182,7 @@ All screenshots are real frames rendered by the game itself (Avalonia headless +
 | ![Items](docs/screenshots/35-items.png) The item compendium | ![Chronicle](docs/screenshots/36-chronicle.png) The Chronicle: statistics and achievements |
 | ![Riddle](docs/screenshots/37-riddle.png) A riddle door in the Hollow Belfry | ![Choice](docs/screenshots/38-choice.png) A choice: Sister Veyl's secret |
 | ![Smithing](docs/screenshots/39-smithing.png) Smithing: improving gear up to +5 | ![Hall of Fame](docs/screenshots/40-hall-of-fame.png) The Hall of Fame |
-| ![Keyboard](docs/screenshots/41-keyboard.png) The on-screen keyboard for controller players | |
+| ![Keyboard](docs/screenshots/41-keyboard.png) The on-screen keyboard for controller players | ![Depths](docs/screenshots/42-depths.png) The Depths Below, level 1 |
 
 ## Download and install
 

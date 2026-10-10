@@ -282,6 +282,20 @@
      "count": "1"
     }
    ]
+  },
+  {
+   "x": 15,
+   "y": 0,
+   "type": "teleport",
+   "name": "The Depths Below",
+   "feature": "stairs_down",
+   "map": "depths",
+   "toX": 0,
+   "toY": 15,
+   "facing": "North",
+   "requiresFlag": "umbral_wyrm_slain",
+   "failText": "A stair spirals down into a darkness deeper than the Deep. Something vast lies across it - the wyrm's coils.",
+   "text": "With the Umbral Wyrm dead, the stair beneath its lair lies open. It goes down further than any map. Each level is new; each is worse."
   }
  ],
  "music": "dungeon",

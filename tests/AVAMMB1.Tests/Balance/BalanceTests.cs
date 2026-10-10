@@ -106,4 +106,24 @@ public class BalanceTests(ITestOutputHelper output)
             Assert.True(wipes < 0.03, $"{zone.Map}: wipes {wipes:P1} of battles at L{level}");
         }
     }
+
+    /// <summary>The Depths Below start about as hard as the Sunless Deep and get harder - and richer - every level.</summary>
+    [Fact]
+    public void Depths_GetHarderAndPayMoreAsTheyGoDown()
+    {
+        (double Xp, double Gold, double Wipes) At(int depth)
+        {
+            var sim = new BalanceSimulator(7);
+            sim.Session.Content.SetGeneratedMap(AVAMMB1.Core.World.Depths.Generate(sim.Session.Content, depth, 5));
+            sim.Session.State.Depth = depth;
+            var (xp, gold, _, _, wipes) = sim.Profile(new Zone(AVAMMB1.Core.World.Depths.MapId, "ashkar", 16), 15, 60);
+            output.WriteLine($"depth {depth,2}: xp/battle {xp,6:F0}  gold/battle {gold,5:F0}  wipes/battle {wipes:F3}");
+            return (xp, gold, wipes);
+        }
+        var deep = new BalanceSimulator(7).Profile(new Zone("deep", "ashkar", 16), 15, 60);
+        var (one, five, ten) = (At(1), At(5), At(10));
+        Assert.True(one.Xp >= deep.Xp * 0.8, "the first level should be at least as rewarding as the Sunless Deep");
+        Assert.True(five.Xp > one.Xp && ten.Xp > five.Xp && ten.Gold > five.Gold, "deeper levels should pay more");
+        Assert.True(ten.Wipes < 0.05, $"depth 10 wipes a level-15 party too often: {ten.Wipes:P1}");
+    }
 }

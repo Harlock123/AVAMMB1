@@ -28,6 +28,8 @@ public sealed class HallOfFameEntry
     public int MonstersSlain { get; set; }
     /// <summary>"Brannoc, Human Knight 14".</summary>
     public List<string> Party { get; set; } = new();
+    /// <summary>Deepest level of the Depths Below reached.</summary>
+    public int DeepestDepth { get; set; }
     /// <summary>Achievement ids earned in the run.</summary>
     public List<string> Achievements { get; set; } = new();
 
@@ -46,6 +48,7 @@ public sealed class HallOfFameEntry
         Day = state.Day,
         PlaySeconds = state.PlaySeconds,
         MonstersSlain = state.Kills.Values.Sum(),
+        DeepestDepth = state.DeepestDepth,
         Party = state.Party.Select(c => $"{c.Name}, {(content.Races.TryGetValue(c.Race, out var r) ? r.Name : c.Race)} {(content.Classes.TryGetValue(c.Class, out var k) ? k.Name : c.Class)} {c.Level}").ToList(),
         Achievements = state.Achievements.Order(StringComparer.Ordinal).ToList(),
     };

@@ -226,6 +226,15 @@ public sealed class GameState
     /// <summary>Difficulty of this game.</summary>
     public Difficulty Difficulty { get; set; } = Difficulty.Normal;
 
+    /// <summary>The current level of the Depths Below (when the party is there).</summary>
+    public int Depth { get; set; }
+
+    /// <summary>The seed of the current Depths level (so a saved level is regenerated exactly).</summary>
+    public int DepthSeed { get; set; }
+
+    /// <summary>The deepest level of the Depths Below reached.</summary>
+    public int DeepestDepth { get; set; }
+
     /// <summary>Ironman: the game keeps a single save itself, and a party wipe ends the run.</summary>
     public bool Ironman { get; set; }
 

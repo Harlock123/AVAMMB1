@@ -6,6 +6,13 @@ All notable changes to this project are documented here. The format follows
 ## [Unreleased]
 
 ### Added
+- The Depths Below, an endless post-game dungeon: once the Umbral Wyrm is dead, a stair beneath its
+  lair in the Sunless Deep leads down into generated levels - a new 16x16 maze each descent, with a
+  stair down at its far end, hoards, a guarded lair, traps, patches of magical darkness and, every
+  third level, a healing spring. The first level is about as hard as the Sunless Deep; from the fourth,
+  monsters gain 10% hit points and damage a level, and pay 10% more experience and gold. A save made
+  down there brings back the very same level. The deepest level reached is kept in the Chronicle and
+  the Hall of Fame, and reaching level 10 earns Deep Delver.
 - Weather and spell effects: snow falls over the Frostmark and Wintermere and rain over the Duskmere
   marsh (drawn by the 3D view; Settings > Display turns it off), and in battle every spell and breath
   attack washes the scene with its colour - fire orange, cold blue, magic violet, healing green. Maps

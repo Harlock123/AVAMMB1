@@ -574,6 +574,7 @@ public sealed partial class JournalViewModel : ViewModelBase
             new("Locks picked", Stat(Chronicle.Keys.Locks).ToString(System.Globalization.CultureInfo.InvariantCulture)),
             new("Spells cast", Stat(Chronicle.Keys.Spells).ToString(System.Globalization.CultureInfo.InvariantCulture)),
             new("Nights at inns", Stat(Chronicle.Keys.InnNights).ToString(System.Globalization.CultureInfo.InvariantCulture)),
+            new("Deepest level of the Depths Below", state.DeepestDepth == 0 ? "-" : state.DeepestDepth.ToString(System.Globalization.CultureInfo.InvariantCulture)),
         ];
         Achievements = Chronicle.Achievements.Select(a => new AchievementRow(a.Title, a.Description, state.Achievements.Contains(a.Id))).ToList();
         AchievementCount = $"Achievements: {Achievements.Count(a => a.Earned)} of {Achievements.Count}";
