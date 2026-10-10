@@ -112,6 +112,7 @@ public partial class App : Application
             window.AttachGamepad(Gamepad);
             vm.QuitRequested += (_, _) => desktop.Shutdown();
             desktop.MainWindow = window;
+            _ = vm.CheckForUpdatesAsync(UpdateService.FetchLatestAsync);
             desktop.Exit += (_, _) =>
             {
                 Gamepad?.Dispose();

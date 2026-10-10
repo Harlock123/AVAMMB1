@@ -98,6 +98,29 @@ public sealed partial class MainViewModel : ViewModelBase
         Services.SaveSettings();
     }
 
+    /// <summary>
+    /// Asks GitHub whether a newer release exists (if the player allows it and the last check is a day old),
+    /// remembers the answer and shows it on the title screen. Failures (offline, rate limits) are silent.
+    /// </summary>
+    /// <param name="fetchLatest">Fetches the newest release version, or null.</param>
+    public async Task CheckForUpdatesAsync(Func<CancellationToken, Task<Version?>> fetchLatest)
+    {
+        var s = Services.Settings;
+        if (!s.CheckForUpdates || !AVAMMB1.Core.Info.UpdateCheck.IsDue(s.LastUpdateCheck, DateTime.UtcNow))
+        {
+            return;
+        }
+        using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(10));
+        if (await fetchLatest(cts.Token) is not { } latest)
+        {
+            return;
+        }
+        s.LatestRelease = latest.ToString();
+        s.LastUpdateCheck = DateTime.UtcNow.ToString("o", System.Globalization.CultureInfo.InvariantCulture);
+        Services.SaveSettings();
+        (CurrentScreen as TitleViewModel)?.RefreshUpdate();
+    }
+
     /// <summary>Shows the release notes for all versions.</summary>
     public void ShowAllNotes() => CurrentScreen = new WhatsNewViewModel(AllReleaseNotes(), ShowTitle);
 

@@ -6,6 +6,9 @@ All notable changes to this project are documented here. The format follows
 ## [Unreleased]
 
 ### Added
+- Update check: at start the game asks GitHub, about once a day, for the newest release; if it is newer,
+  the title screen says so with a button to the download page. Nothing is downloaded or installed and
+  nothing is sent but the request itself; offline it stays quiet. Settings > Game can switch it off.
 - Save compatibility: genuine saves written by every release from 1.0.0 to 1.12.0 are tested to load,
   keep playing and save again in the current game; `tools/make-save-fixture.sh` writes the save for a
   release with that release's own code, and a test fails if a release has no saved game to check.

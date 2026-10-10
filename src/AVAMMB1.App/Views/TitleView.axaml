@@ -47,6 +47,13 @@
       <Button Classes="big" HorizontalAlignment="Center" Content="Quit" Command="{Binding QuitCommand}" />
       <TextBlock Text="{Binding Error}" Foreground="{DynamicResource Bad}" HorizontalAlignment="Center" />
     </StackPanel>
+    <Border VerticalAlignment="Top" HorizontalAlignment="Right" Margin="12" Padding="10,6" CornerRadius="4"
+            BorderBrush="{DynamicResource Gold}" BorderThickness="1" Background="#cc14101c" IsVisible="{Binding HasUpdate}">
+      <StackPanel Orientation="Horizontal" Spacing="10">
+        <TextBlock Text="{Binding UpdateText}" Foreground="{DynamicResource Gold}" VerticalAlignment="Center" />
+        <Button x:Name="GetUpdate" Content="Download page" ToolTip.Tip="Opens the release page in your browser" />
+      </StackPanel>
+    </Border>
     <StackPanel VerticalAlignment="Bottom" Margin="12" Spacing="2">
       <TextBlock Text="{Binding Version}" Classes="dim" FontSize="{DynamicResource Font12}" />
       <TextBlock Classes="dim" FontSize="{DynamicResource Font12}" TextWrapping="Wrap"

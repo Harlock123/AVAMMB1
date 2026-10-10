@@ -223,6 +223,10 @@ notarization note as below) and a Linux AppImage `AVAMMB1-<version>-<rid>.AppIma
 (`chmod +x AVAMMB1-*.AppImage && ./AVAMMB1-*.AppImage`; needs FUSE 2/3, or add
 `--appimage-extract-and-run`). Saves and settings are the same as with the archives.
 
+**Updates:** the game asks GitHub about once a day whether a newer release exists and, if so, says so
+on the title screen with a link to the download page. It never downloads or installs anything, and
+sends nothing but that request; switch it off in *Settings* ("Check for a new version at start").
+
 **Gatekeeper / notarization:** release builds made on the macOS CI runner are ad-hoc signed
 (`codesign -s -`), which Apple Silicon requires, but they are not signed with a Developer ID or
 notarized (that needs a paid Apple developer account). To notarize your own build:

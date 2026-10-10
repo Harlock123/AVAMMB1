@@ -62,6 +62,12 @@ public sealed class GameSettings
     public List<string> DisabledMods { get; set; } = new();
     /// <summary>The game version whose release notes the player has seen ("" before 1.7).</summary>
     public string LastSeenVersion { get; set; } = "";
+    /// <summary>Ask GitHub (at most about once a day) whether a newer release exists, and say so on the title screen.</summary>
+    public bool CheckForUpdates { get; set; } = true;
+    /// <summary>When the last update check happened (UTC, round-trip format), or "".</summary>
+    public string LastUpdateCheck { get; set; } = "";
+    /// <summary>The newest release version the last check found, or "".</summary>
+    public string LatestRelease { get; set; } = "";
     /// <summary>Height of the 3D view's internal image: 300 (400x300, classic), 480 (640x480) or 600 (800x600).</summary>
     public int ViewResolution { get; set; } = 300;
     /// <summary>Save automatically on entering a new area and before boss fights (three rotating slots).</summary>

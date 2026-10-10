@@ -1,5 +1,6 @@
 using Avalonia.Input;
 using Avalonia.Media.Imaging;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
 namespace AVAMMB1.App.ViewModels;
@@ -20,6 +21,7 @@ public sealed partial class TitleViewModel : ViewModelBase
         CanContinue = recent is not null;
         _continueSlot = recent ?? 0;
         var t = main.Services.Textures;
+        RefreshUpdate();
         Showcase = new[] { "Monsters/vault_warden", "Monsters/crypt_lich", "Monsters/minotaur", "Monsters/troll", "Monsters/kobold_chief" }
             .Select(t.Bitmap).Where(b => b is not null).Cast<Bitmap>().ToList();
     }
@@ -34,6 +36,27 @@ public sealed partial class TitleViewModel : ViewModelBase
 
     /// <summary>Version string.</summary>
     public string Version => "v" + (typeof(TitleViewModel).Assembly.GetName().Version?.ToString(3) ?? "1.0.0");
+
+    /// <summary>"Version X is available", when the last check found a newer release.</summary>
+    [ObservableProperty]
+    private string? _updateText;
+
+    /// <summary>Whether a newer release is known.</summary>
+    public bool HasUpdate => UpdateText is not null;
+
+    partial void OnUpdateTextChanged(string? value) => OnPropertyChanged(nameof(HasUpdate));
+
+    /// <summary>Re-reads what the last update check found.</summary>
+    public void RefreshUpdate()
+    {
+        var s = _main.Services.Settings;
+        UpdateText = s.CheckForUpdates && AVAMMB1.Core.Info.UpdateCheck.Offer(MainViewModel.GameVersion, s.LatestRelease) is { } v
+            ? $"Version {v} is out (you have {MainViewModel.GameVersion})"
+            : null;
+    }
+
+    /// <summary>The release download page.</summary>
+    public static string ReleasesPage => AVAMMB1.Core.Info.UpdateCheck.ReleasesPage;
 
     /// <summary>Last error.</summary>
     public string? Error { get; private set; }

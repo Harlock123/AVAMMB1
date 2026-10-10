@@ -53,6 +53,7 @@
                              Text="{Binding GameNote}" />
                   <CheckBox Content="Autosave (entering a new area and before boss fights; 3 rotating slots)" IsChecked="{Binding Autosave}" />
                   <CheckBox Content="Quest markers (show where open quests lead on the maps and in the journal)" IsChecked="{Binding QuestMarkers}" />
+                  <CheckBox Content="Check for a new version at start (asks GitHub about once a day; never downloads)" IsChecked="{Binding CheckForUpdates}" />
                   <TextBlock Classes="h2" Text="Data" />
                   <TextBlock Text="{Binding DataLocation}" Classes="dim" FontSize="{DynamicResource Font12}" TextWrapping="Wrap" />
                 </StackPanel>

@@ -251,6 +251,7 @@ public sealed partial class SettingsViewModel : ViewModelBase
         _questMarkers = s.QuestMarkers;
         _weather = s.Weather;
         _describeSteps = s.DescribeSteps;
+        _checkForUpdates = s.CheckForUpdates;
         _pad = new Dictionary<InputAction, AVAMMB1.Core.Input.GamepadButton>(s.GamepadBindings);
         LoadPadRows();
         LoadBindings();
@@ -375,6 +376,10 @@ public sealed partial class SettingsViewModel : ViewModelBase
     /// <summary>Autosave on entering new areas and before boss fights.</summary>
     [ObservableProperty]
     private bool _autosave;
+
+    /// <summary>Look for a newer version when the game starts.</summary>
+    [ObservableProperty]
+    private bool _checkForUpdates;
 
     /// <summary>Selected text size.</summary>
     [ObservableProperty]
@@ -545,6 +550,7 @@ public sealed partial class SettingsViewModel : ViewModelBase
         s.QuestMarkers = QuestMarkers;
         s.Weather = Weather;
         s.DescribeSteps = DescribeSteps;
+        s.CheckForUpdates = CheckForUpdates;
         if (InGame)
         {
             var state = _main.Services.Session.State;
