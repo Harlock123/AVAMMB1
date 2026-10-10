@@ -22,7 +22,8 @@ public sealed partial class GameSession
     public bool RequirementsMet(MapEventDef ev) =>
         (ev.RequiresFlag is null || State.Flags.Contains(ev.RequiresFlag)) &&
         (ev.RequiresNotFlag is null || !State.Flags.Contains(ev.RequiresNotFlag)) &&
-        (ev.RequiresItem is null || Inventory_AnyoneHas(ev.RequiresItem));
+        (ev.RequiresItem is null || Inventory_AnyoneHas(ev.RequiresItem)) &&
+        (ev.OpenAt is null || (ev.OpenAt == "night") == State.IsNight);
 
     private void TriggerEvents(StepResult result, bool entering)
     {
@@ -84,7 +85,7 @@ public sealed partial class GameSession
                 Story(result, ev);
                 Complete(map, ev);
                 break;
-            case MapEventKind.Shop or MapEventKind.Training or MapEventKind.Academy when State.IsNight && map.Def.Kind == MapKind.Town:
+            case MapEventKind.Shop or MapEventKind.Training or MapEventKind.Academy when State.IsNight && map.Def.Kind == MapKind.Town && ev.OpenAt != "night":
                 result.Messages.Add(new($"{ev.Name ?? "The shop"} is closed for the night. It opens at dawn (5:00). The inn, temple and tavern stay open.", MessageKind.Info));
                 break;
             case MapEventKind.Shop:

@@ -22,16 +22,16 @@ public sealed partial class GameSession
         {
             chance = chance * DifficultyRules.Encounters(State.Difficulty) / 100;
         }
-        if (map.Def.Encounters.Count == 0 || !Random.Chance(chance))
+        var night = IsNightOutside;
+        if ((map.Def.Encounters.Count == 0 && !(night && map.Def.NightEncounters.Count > 0)) || !Random.Chance(chance))
         {
             return;
         }
         var monsters = new List<MonsterInstance>();
         var groups = Random.Chance(30) ? 2 : 1;
-        var night = IsNightOutside;
         for (var g = 0; g < groups; g++)
         {
-            var table = night && map.Def.NightEncounters.Count > 0 && Random.Chance(50) ? map.Def.NightEncounters : map.Def.Encounters;
+            var table = night && map.Def.NightEncounters.Count > 0 && (map.Def.Encounters.Count == 0 || Random.Chance(50)) ? map.Def.NightEncounters : map.Def.Encounters;
             var entry = PickWeighted(table);
             monsters.AddRange(CombatEngine.Spawn(Content.Monster(entry.Monster), entry.Count.Roll(Random), Random));
         }

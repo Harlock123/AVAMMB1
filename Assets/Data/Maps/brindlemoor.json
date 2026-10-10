@@ -304,5 +304,13 @@
    "name": "Brindlemoor Town Hall"
   }
  ],
- "ambience": "birds"
+ "ambience": "birds",
+ "nightEncounters": [
+  {
+   "monster": "cutpurse",
+   "count": "1d2",
+   "weight": 10
+  }
+ ],
+ "nightEncounterChance": 4
 }

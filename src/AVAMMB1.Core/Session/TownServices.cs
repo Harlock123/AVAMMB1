@@ -181,8 +181,11 @@ public sealed class TownServices(GameSession session)
         {
             cost += 5 + 2 * c.Level;
         }
-        return cost == 0 ? 0 : Price(cost, ev.PriceFactor);
+        return cost == 0 ? 0 : Price(DawnPrayers ? cost * 3 / 4 : cost, ev.PriceFactor);
     }
+
+    /// <summary>Dawn prayers (05:00-08:00): temple healing costs a quarter less.</summary>
+    public bool DawnPrayers => State.MinuteOfDay is >= 5 * 60 and < 8 * 60;
 
     /// <summary>Heals, cures and resurrects a character for gold.</summary>
     /// <param name="c">Character.</param>
@@ -276,7 +279,9 @@ public sealed class TownServices(GameSession session)
         {
             return log;
         }
-        var rumor = ev.Rumors.Count == 0 ? "The barkeep has nothing interesting to say." : session.Random.Pick(ev.Rumors);
+        // Each tavern has a rumour of the day: the talk changes overnight, not with every round.
+        var rumor = ev.Rumors.Count == 0 ? "The barkeep has nothing interesting to say."
+            : ev.Rumors[(int)((State.Day * 7 + ev.X * 3 + ev.Y) % ev.Rumors.Count)];
         log.Add(new($"Over a round of ale you hear: \"{rumor}\"", MessageKind.Story, "drink"));
         return log;
     }

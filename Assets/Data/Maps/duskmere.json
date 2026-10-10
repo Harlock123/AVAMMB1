@@ -264,5 +264,13 @@
   }
  ],
  "ambience": "river",
- "weather": "rain"
+ "weather": "rain",
+ "nightEncounters": [
+  {
+   "monster": "footpad",
+   "count": "1d2",
+   "weight": 10
+  }
+ ],
+ "nightEncounterChance": 4
 }

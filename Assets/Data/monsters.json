@@ -2783,5 +2783,74 @@
    }
   ],
   "description": "Dead for a century and still conducting. He means to ring the Hollow Bell once more, and silence the world."
+ },
+ {
+  "id": "cutpurse",
+  "name": "Cutpurse",
+  "sprite": "cutpurse",
+  "level": 2,
+  "hitPoints": "2d8",
+  "armorClass": 3,
+  "speed": 14,
+  "xp": 20,
+  "gold": "6d10",
+  "bribable": true,
+  "cowardly": true,
+  "attacks": [
+   {
+    "verb": "stabs",
+    "damage": "1d4"
+   }
+  ],
+  "description": "A quick hand and a quicker knife, working the streets after dark."
+ },
+ {
+  "id": "footpad",
+  "name": "Footpad",
+  "sprite": "footpad",
+  "level": 6,
+  "hitPoints": "6d8",
+  "armorClass": 6,
+  "speed": 13,
+  "xp": 240,
+  "gold": "15d10+30",
+  "bribable": true,
+  "cowardly": true,
+  "attacks": [
+   {
+    "verb": "cudgels",
+    "damage": "1d8+2"
+   },
+   {
+    "verb": "stabs",
+    "damage": "1d6"
+   }
+  ],
+  "description": "Waits in doorways for travellers who stay out too late."
+ },
+ {
+  "id": "guild_blade",
+  "name": "Guild Blade",
+  "sprite": "guild_blade",
+  "level": 10,
+  "hitPoints": "9d8",
+  "armorClass": 9,
+  "speed": 16,
+  "xp": 1500,
+  "gold": "25d10+80",
+  "bribable": true,
+  "attacks": [
+   {
+    "verb": "slashes",
+    "damage": "2d6",
+    "inflicts": "poisoned",
+    "inflictChance": 20
+   },
+   {
+    "verb": "slashes",
+    "damage": "2d6"
+   }
+  ],
+  "description": "A killer of the Thieves' Guild, working the harbour at night."
  }
 ]

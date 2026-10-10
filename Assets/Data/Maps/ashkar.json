@@ -262,7 +262,30 @@
    "x": 7,
    "y": 10,
    "name": "The Sealed Archive"
+  },
+  {
+   "x": 10,
+   "y": 13,
+   "type": "shop",
+   "name": "The Night Market",
+   "shop": "ashkar_night_market",
+   "feature": "shop_general",
+   "openAt": "night",
+   "failText": "Empty stalls and furled awnings. The traders of the Night Market only come out after dark (20:00)."
   }
  ],
- "ambience": "wind"
+ "ambience": "wind",
+ "nightEncounters": [
+  {
+   "monster": "footpad",
+   "count": "1d2",
+   "weight": 5
+  },
+  {
+   "monster": "guild_blade",
+   "count": "1",
+   "weight": 5
+  }
+ ],
+ "nightEncounterChance": 4
 }

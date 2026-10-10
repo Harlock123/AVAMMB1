@@ -165,6 +165,8 @@ public sealed class MapEventDef
     public bool Once { get; set; }
     /// <summary>If true, the event blocks movement into the cell when requirements fail.</summary>
     public bool Blocking { get; set; }
+    /// <summary>Open only at "night" (20:00-05:00) or by "day"; otherwise <see cref="FailText"/> is shown.</summary>
+    public string? OpenAt { get; set; }
     /// <summary>A gate: its feature (e.g. a portcullis) is drawn only while its requirements are unmet.</summary>
     public bool OpenWhenMet { get; set; }
     /// <summary>Riddle: shown when answered correctly.</summary>
@@ -243,6 +245,8 @@ public sealed class MapDef
     public string Music { get; set; } = "dungeon";
     /// <summary>Looping ambient sound key (Assets/Audio/Ambience), or null for none.</summary>
     public string? Ambience { get; set; }
+    /// <summary>Towns: chance per step of a street encounter at night, from <see cref="NightEncounters"/>.</summary>
+    public int NightEncounterChance { get; set; }
     /// <summary>Weather drawn over the view outdoors: "snow", "rain" or none.</summary>
     public string? Weather { get; set; }
     /// <summary>Chance per step of a random encounter (percent).</summary>

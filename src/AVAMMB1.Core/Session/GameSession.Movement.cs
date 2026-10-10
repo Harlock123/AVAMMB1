@@ -103,7 +103,9 @@ public sealed partial class GameSession
         TriggerEvents(result, entering: true);
         if (!result.CombatStarted && result.Interaction is null && !result.MapChanged && !result.Victory)
         {
-            TryRandomEncounter(result, CurrentMap.Def.EncounterChance);
+            var here = CurrentMap.Def;
+            // Towns are safe by day; after dark, thieves work the streets.
+            TryRandomEncounter(result, here.Kind == MapKind.Town && State.IsNight && here.NightEncounters.Count > 0 ? here.NightEncounterChance : here.EncounterChance);
         }
         return result;
     }

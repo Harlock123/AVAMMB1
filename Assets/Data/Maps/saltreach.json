@@ -266,5 +266,13 @@
    "name": "Customs House"
   }
  ],
- "ambience": "river"
+ "ambience": "river",
+ "nightEncounters": [
+  {
+   "monster": "cutpurse",
+   "count": "1d3",
+   "weight": 10
+  }
+ ],
+ "nightEncounterChance": 4
 }

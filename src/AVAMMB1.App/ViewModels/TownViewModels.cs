@@ -153,7 +153,9 @@ public sealed partial class TempleViewModel : BuildingViewModel
         _ev = ev;
         Rows = new ObservableCollection<ServiceRowViewModel>(game.Party.Select(m => new ServiceRowViewModel(m)));
         RefreshRows();
-        Feedback = "Priests in white robes offer healing - for a donation.";
+        Feedback = Session.Town.DawnPrayers
+            ? "Dawn prayers: the priests ask a quarter less for healing until eight o'clock."
+            : "Priests in white robes offer healing - for a donation. (At dawn, from five to eight, they ask a quarter less.)";
     }
 
     /// <summary>Rows.</summary>

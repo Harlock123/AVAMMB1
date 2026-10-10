@@ -81,6 +81,8 @@ Code identifiers, the solution and executables use the name **`AVAMMB1`** (`AVAM
   where found, how many slain) and every item you have seen.
 - **Autosave and save pictures**: three rotating autosaves (new areas, before bosses); every save
   shows a picture of the view and the time played.
+- **Towns by day and night**: a night market, thieves in the streets after dark, dawn prayers at the
+  temples and a rumour of the day in every tavern.
 - **Travel map**: travel to any town you have visited - time passes, fares are paid, and the open
   country may ambush you on the way.
 - **The Depths Below**: an endless post-game dungeon of generated levels, harder and richer each

@@ -199,5 +199,23 @@
    "tome_divine"
   ],
   "smithy": true
+ },
+ {
+  "id": "ashkar_night_market",
+  "name": "The Night Market",
+  "priceFactor": 1.4,
+  "greeting": "\"Lamps, lanterns and things that fell off a ship, friend. Nothing here was here this afternoon.\"",
+  "stock": [
+   "potion_vigor",
+   "potion_mana",
+   "potion_cure",
+   "ring_protection",
+   "amulet_warding",
+   "lantern",
+   "oil_flask",
+   "scroll_recall",
+   "scroll_fire",
+   "tome_chain"
+  ]
  }
 ]

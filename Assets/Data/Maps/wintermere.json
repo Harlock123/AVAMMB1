@@ -260,5 +260,13 @@
  ],
  "music": "town",
  "ambience": "wind",
- "weather": "snow"
+ "weather": "snow",
+ "nightEncounters": [
+  {
+   "monster": "guild_blade",
+   "count": "1d2",
+   "weight": 10
+  }
+ ],
+ "nightEncounterChance": 4
 }

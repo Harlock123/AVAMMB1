@@ -276,6 +276,7 @@ The game code is licensed separately under the MIT license (see [LICENSE](LICENS
 | `Graphics/Monsters/crocodile.png` | Dungeon Crawl 32x32 tiles | `monster/animals/crocodile.png` |
 | `Graphics/Monsters/crypt_lich.png` | Dungeon Crawl 32x32 tiles | `monster/undead/lich.png` |
 | `Graphics/Monsters/curse_skull.png` | Dungeon Crawl 32x32 tiles | `monster/undead/curse_skull.png` |
+| `Graphics/Monsters/cutpurse.png` | Dungeon Crawl 32x32 tiles | `monster/unique/maurice_new.png` |
 | `Graphics/Monsters/deep_troll.png` | Dungeon Crawl 32x32 tiles | `monster/deep_troll.png` |
 | `Graphics/Monsters/dire_wolf.png` | Dungeon Crawl 32x32 tiles | `monster/animals/wolf.png` |
 | `Graphics/Monsters/draining_eye.png` | Dungeon Crawl 32x32 tiles | `monster/eyes/eye_of_draining.png` |
@@ -284,6 +285,7 @@ The game code is licensed separately under the MIT license (see [LICENSE](LICENS
 | `Graphics/Monsters/efreet.png` | Dungeon Crawl 32x32 tiles | `monster/demons/efreet.png` |
 | `Graphics/Monsters/emperor_scorpion.png` | Dungeon Crawl 32x32 tiles | `monster/animals/emperor_scorpion.png` |
 | `Graphics/Monsters/flayed_ghost.png` | Dungeon Crawl 32x32 tiles | `monster/undead/flayed_ghost_new.png` |
+| `Graphics/Monsters/footpad.png` | Dungeon Crawl 32x32 tiles | `monster/unique/terence_new.png` |
 | `Graphics/Monsters/frost_giant.png` | Dungeon Crawl 32x32 tiles | `monster/frost_giant_new.png` |
 | `Graphics/Monsters/frost_warg.png` | Dungeon Crawl 32x32 tiles | `monster/animals/warg.png` |
 | `Graphics/Monsters/ghoul.png` | Dungeon Crawl 32x32 tiles | `monster/undead/ghoul.png` |
@@ -295,6 +297,7 @@ The game code is licensed separately under the MIT license (see [LICENSE](LICENS
 | `Graphics/Monsters/goblin.png` | Dungeon Crawl 32x32 tiles | `monster/goblin_new.png` |
 | `Graphics/Monsters/green_slime.png` | Dungeon Crawl 32x32 tiles | `monster/amorphous/acid_blob.png` |
 | `Graphics/Monsters/guardian_mummy.png` | Dungeon Crawl 32x32 tiles | `monster/undead/guardian_mummy.png` |
+| `Graphics/Monsters/guild_blade.png` | Dungeon Crawl 32x32 tiles | `monster/unique/sonja_new.png` |
 | `Graphics/Monsters/harpy.png` | Dungeon Crawl 32x32 tiles | `monster/harpy.png` |
 | `Graphics/Monsters/hill_giant.png` | Dungeon Crawl 32x32 tiles | `monster/stone_giant_new.png` |
 | `Graphics/Monsters/hill_wyvern.png` | Dungeon Crawl 32x32 tiles | `monster/dragons/wyvern_new.png` |

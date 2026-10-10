@@ -6,6 +6,12 @@ All notable changes to this project are documented here. The format follows
 ## [Unreleased]
 
 ### Added
+- Towns by time of day: Port Ashkar's Night Market opens only after dark (rare goods, at a price);
+  thieves work the streets of every town at night - cutpurses in Brindlemoor and Saltreach, footpads
+  in Thornwick and Duskmere, Guild Blades in Port Ashkar and Wintermere; temples ask a quarter less for
+  healing at dawn (05:00-08:00); and each tavern has a rumour of the day instead of a new one every
+  round. Map events can be `openAt` "night" or "day", and towns can have `nightEncounters` with a
+  `nightEncounterChance`.
 - A travel map (T, or Travel map in the menu): from any town or the open country, travel to a town
   you have visited. The road is planned through towns and open country, time passes as if it were
   walked (rations, lantern oil and poison included; a sea voyage takes a day or so), ship fares are paid, and each stretch of open
