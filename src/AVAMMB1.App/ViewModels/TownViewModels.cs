@@ -3,6 +3,7 @@ using Avalonia.Input;
 using Avalonia.Media.Imaging;
 using AVAMMB1.Core.Characters;
 using AVAMMB1.Core.Content;
+using AVAMMB1.Core.Items;
 using AVAMMB1.Core.Rules;
 using AVAMMB1.Core.Session;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -427,14 +428,29 @@ public sealed class ShopItemViewModel
     /// <param name="icon">Icon.</param>
     /// <param name="usable">Whether the selected character can use it.</param>
     /// <param name="index">Backpack index (sell rows).</param>
-    public ShopItemViewModel(ItemDef def, int price, Bitmap? icon, bool usable, int index = -1)
+    /// <param name="compare">How it compares with what the shopper wears ("" for non-gear).</param>
+    /// <param name="upgrade">Whether it would be an upgrade for the shopper.</param>
+    /// <param name="junk">Whether nobody in the party needs it (sell rows).</param>
+    public ShopItemViewModel(ItemDef def, int price, Bitmap? icon, bool usable, int index = -1, string compare = "", bool upgrade = false, bool junk = false)
     {
         Def = def;
         Price = price;
         Icon = icon;
         Usable = usable;
         Index = index;
+        Compare = compare;
+        IsUpgrade = upgrade;
+        IsJunk = junk;
     }
+
+    /// <summary>Comparison with the shopper's gear.</summary>
+    public string Compare { get; }
+    /// <summary>Whether there is a comparison to show.</summary>
+    public bool HasCompare => Compare.Length > 0;
+    /// <summary>Better than what the shopper has.</summary>
+    public bool IsUpgrade { get; }
+    /// <summary>Nobody in the party needs it.</summary>
+    public bool IsJunk { get; }
 
     /// <summary>Item.</summary>
     public ItemDef Def { get; }
@@ -548,16 +564,27 @@ public sealed partial class ShopViewModel : BuildingViewModel
         {
             var d = Session.Content.Item(id);
             Stock.Add(new ShopItemViewModel(d, AVAMMB1.Core.Session.TownServices.BuyPrice(_shop, d), tex.Bitmap("Items/" + d.Icon),
-                c is null || d.Slot is null || Rulebook.CanUse(c, d)));
+                c is null || d.Slot is null || Rulebook.CanUse(c, d), -1,
+                c is null ? "" : ItemCompare.Describe(Session.Rules, c, d), c is not null && ItemCompare.IsUpgradeFor(Session.Rules, c, d)));
         }
         if (c is not null)
         {
             for (var i = 0; i < c.Backpack.Count; i++)
             {
                 var d = Session.Rules.Def(c.Backpack[i]);
-                Sellable.Add(new ShopItemViewModel(d, Rulebook.SellPrice(d), tex.Bitmap("Items/" + d.Icon), true, i));
+                Sellable.Add(new ShopItemViewModel(d, Rulebook.SellPrice(d), tex.Bitmap("Items/" + d.Icon), true, i,
+                    junk: ItemCompare.IsJunk(Session.Rules, Session.State.Party, d)));
             }
         }
+        var junk = Session.Town.Junk();
+        JunkText = junk.Count == 0 ? "Sell junk" : $"Sell junk ({junk.Count}, {junk.Sum(j => Rulebook.SellPrice(j.Def))} gp)";
+        JunkTip = junk.Count == 0
+            ? "Nobody in the party carries gear they could not use as an upgrade."
+            : "Sells every backpack weapon, armour, ring or amulet that nobody in the party could use as an upgrade: " + string.Join(", ", junk.Select(j => $"{j.Def.Name} ({j.Owner.Name})"));
+        HasJunk = junk.Count > 0;
+        OnPropertyChanged(nameof(JunkText));
+        OnPropertyChanged(nameof(JunkTip));
+        OnPropertyChanged(nameof(HasJunk));
         OnPropertyChanged(nameof(SpendText));
     }
 
@@ -569,6 +596,16 @@ public sealed partial class ShopViewModel : BuildingViewModel
             Report(Session.Town.Buy(_shop, item.Def.Id, m.Character));
         }
     }
+
+    /// <summary>Label for the sell-junk button (count and gold).</summary>
+    public string JunkText { get; private set; } = "Sell junk";
+    /// <summary>What sell-junk would sell.</summary>
+    public string JunkTip { get; private set; } = "";
+    /// <summary>Whether there is junk to sell.</summary>
+    public bool HasJunk { get; private set; }
+
+    [RelayCommand]
+    private void SellJunk() => Report(Session.Town.SellJunk());
 
     [RelayCommand]
     private void Sell(ShopItemViewModel item)

@@ -389,6 +389,33 @@ public sealed class TownServices(GameSession session)
         return log;
     }
 
+    /// <summary>The party's junk: backpack gear nobody could use as an upgrade (see <see cref="ItemCompare.IsJunk"/>).</summary>
+    public List<(Character Owner, ItemInstance Item, ItemDef Def)> Junk() =>
+        State.Party.SelectMany(c => c.Backpack.Select(i => (Owner: c, Item: i, Def: session.Rules.Def(i))))
+            .Where(x => ItemCompare.IsJunk(session.Rules, State.Party, x.Def))
+            .ToList();
+
+    /// <summary>Sells all of the party's junk into the purse.</summary>
+    public List<GameMessage> SellJunk()
+    {
+        var log = new List<GameMessage>();
+        var junk = Junk();
+        if (junk.Count == 0)
+        {
+            log.Add(new("Nobody is carrying anything the party does not need.", MessageKind.Info));
+            return log;
+        }
+        var total = 0;
+        foreach (var (owner, item, def) in junk)
+        {
+            owner.Backpack.Remove(item);
+            total += Rulebook.SellPrice(def);
+        }
+        State.Gold += total;
+        log.Add(new($"The party sells {junk.Count} unneeded item{(junk.Count == 1 ? "" : "s")} for {total} gold: {string.Join(", ", junk.Select(j => j.Def.Name))}.", MessageKind.Good, "coins"));
+        return log;
+    }
+
     /// <summary>Sells an item from a character's backpack.</summary>
     /// <param name="seller">Character.</param>
     /// <param name="backpackIndex">Backpack index.</param>

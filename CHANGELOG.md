@@ -6,6 +6,15 @@ All notable changes to this project are documented here. The format follows
 ## [Unreleased]
 
 ### Added
+- Autosave: entering a new area and facing a boss saves into three rotating autosave slots (Auto 1-3,
+  kept apart from the quick and manual slots; Settings > Game turns it off). Continue picks up the
+  newest save, autosaves included.
+- Saved games show a picture of the view and the time played; the Load screen lists only real
+  saves, newest first.
+- Shops compare gear with what the shopper wears ("Better than Brannoc's Long Sword (Dmg 1d8 ->
+  2d4+1)", upgrades in green), and "Sell junk" sells every backpack weapon, armour, ring or amulet
+  nobody in the party could use as an upgrade (its tooltip lists them; lanterns, consumables and
+  quest items are never junk). Such items are marked "not needed by anyone".
 - Difficulty: Easy (monsters -25% HP and damage, +25% gold, fewer encounters), Normal, or Hard
   (+30% HP, +25% damage, -15% gold, more encounters). Chosen next to "Begin the Adventure" and
   changeable any time in Settings > Game; saved with each game.

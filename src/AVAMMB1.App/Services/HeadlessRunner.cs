@@ -406,8 +406,16 @@ public static class HeadlessRunner
         }
         WalkTo(game, s, 10, 7);
         Face(game, s, Direction.East);
+        // Some loot to sell: a club and padded armour nobody needs, and a spare long sword.
+        var seller = s.State.Party[0];
+        seller.Backpack.AddRange([new AVAMMB1.Core.Items.ItemInstance("club"), new AVAMMB1.Core.Items.ItemInstance("padded_armor"), new AVAMMB1.Core.Items.ItemInstance("dagger")]);
         game.ForwardCommand.Execute(null); // steps into the smithy doorway
         Capture(dir, "05-shop");
+        if (game.Overlay is ShopViewModel shop)
+        {
+            shop.SellJunkCommand.Execute(null);
+        }
+        seller.Backpack.RemoveAll(i => i.ItemId is "club" or "padded_armor" or "dagger");
         game.CloseOverlay();
         Face(game, s, Direction.West);
         game.ForwardCommand.Execute(null);

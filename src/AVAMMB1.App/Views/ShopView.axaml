@@ -28,6 +28,13 @@
                   <StackPanel Grid.Column="1" VerticalAlignment="Center">
                     <TextBlock Text="{Binding Name}" FontWeight="SemiBold" />
                     <TextBlock Text="{Binding Summary}" FontSize="{DynamicResource Font11}" Classes="dim" />
+                    <TextBlock Text="{Binding Compare}" FontSize="{DynamicResource Font11}" IsVisible="{Binding HasCompare}" TextWrapping="Wrap"
+                               Classes.up="{Binding IsUpgrade}">
+                      <TextBlock.Styles>
+                        <Style Selector="TextBlock"><Setter Property="Foreground" Value="{DynamicResource Info}" /></Style>
+                        <Style Selector="TextBlock.up"><Setter Property="Foreground" Value="{DynamicResource Good}" /></Style>
+                      </TextBlock.Styles>
+                    </TextBlock>
                   </StackPanel>
                   <TextBlock Grid.Column="2" Text="{Binding Price, StringFormat='{}{0} gp'}" VerticalAlignment="Center" Foreground="{DynamicResource Gold}" />
                   <Button Grid.Column="3" Classes="chip" Content="Buy" Command="{Binding $parent[UserControl].((vm:ShopViewModel)DataContext).BuyCommand}" CommandParameter="{Binding}" />
@@ -38,14 +45,20 @@
         </ScrollViewer>
       </DockPanel>
       <DockPanel Grid.Row="2" Grid.Column="2">
-        <TextBlock DockPanel.Dock="Top" Classes="h2" Text="Sell from backpack (half price)" />
+        <Grid DockPanel.Dock="Top" ColumnDefinitions="*,Auto" Margin="0,0,16,0">
+          <TextBlock Classes="h2" Text="Sell from backpack (half price)" />
+          <Button Grid.Column="1" Classes="chip" Content="{Binding JunkText}" Command="{Binding SellJunkCommand}" IsEnabled="{Binding HasJunk}" ToolTip.Tip="{Binding JunkTip}" VerticalAlignment="Center" />
+        </Grid>
         <ScrollViewer>
           <ItemsControl ItemsSource="{Binding Sellable}" Margin="0,0,16,0">
             <ItemsControl.ItemTemplate>
               <DataTemplate x:DataType="vm:ShopItemViewModel">
                 <Grid ColumnDefinitions="40,*,70,Auto" Margin="0,1">
                   <c:PixelImage Source="{Binding Icon}" Width="32" Height="32" />
-                  <TextBlock Grid.Column="1" Text="{Binding Name}" VerticalAlignment="Center" />
+                  <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                    <TextBlock Text="{Binding Name}" />
+                    <TextBlock Text="not needed by anyone" IsVisible="{Binding IsJunk}" FontSize="{DynamicResource Font11}" Classes="dim" />
+                  </StackPanel>
                   <TextBlock Grid.Column="2" Text="{Binding Price, StringFormat='{}{0} gp'}" VerticalAlignment="Center" Foreground="{DynamicResource Gold}" />
                   <Button Grid.Column="3" Classes="chip" Content="Sell" Command="{Binding $parent[UserControl].((vm:ShopViewModel)DataContext).SellCommand}" CommandParameter="{Binding}" />
                 </Grid>
