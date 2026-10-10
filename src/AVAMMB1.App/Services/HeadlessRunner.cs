@@ -396,6 +396,35 @@ public static class HeadlessRunner
         Capture(dir, "02-character-creation");
         creation.Hair = creation.Beard = null;
 
+        // Controller-only typing: the on-screen keyboard over the name box.
+        creation.Name = "";
+        var nameBox = _window.GetVisualDescendants().OfType<TextBox>().First(t => t.Watermark == "Enter a name");
+        _window.OpenKeyboard(nameBox);
+        Pump();
+        var keyboard = _window.GetVisualDescendants().OfType<AVAMMB1.App.Controls.OnScreenKeyboard>().FirstOrDefault()
+            ?? (Avalonia.Controls.Primitives.OverlayLayer.GetOverlayLayer(_window)?.GetVisualDescendants().OfType<AVAMMB1.App.Controls.OnScreenKeyboard>().FirstOrDefault())
+            ?? throw new InvalidOperationException("The on-screen keyboard did not open.");
+        Button KeyFor(string label) => keyboard.GetVisualDescendants().OfType<Button>().First(b => string.Equals(b.Content as string, label, StringComparison.OrdinalIgnoreCase));
+        foreach (var ch in "Wren")
+        {
+            KeyFor(ch.ToString()).RaiseEvent(new Avalonia.Interactivity.RoutedEventArgs(Button.ClickEvent));
+        }
+        Pump();
+        Capture(dir, "41-keyboard");
+        KeyFor("Done").RaiseEvent(new Avalonia.Interactivity.RoutedEventArgs(Button.ClickEvent));
+        Pump();
+        if (creation.Name != "Wren" || _window.KeyboardOpen)
+        {
+            throw new InvalidOperationException($"The on-screen keyboard typed '{creation.Name}'.");
+        }
+        creation.RandomNameCommand.Execute(null);
+        if (string.IsNullOrWhiteSpace(creation.Name))
+        {
+            throw new InvalidOperationException("No random name.");
+        }
+        creation.Name = "Aldric";
+        Console.WriteLine("keyboard ok");
+
         creation.QuickPartyCommand.Execute(null);
         creation.BeginCommand.Execute(null);
         var game = vm.Game!;

@@ -451,6 +451,15 @@ public sealed partial class InnViewModel : BuildingViewModel
     }
 
     [RelayCommand]
+    private void RandomEditName()
+    {
+        if (Editing?.Character is { } c)
+        {
+            EditName = NameGenerator.Generate(c.Race, c.Sex, Session.Random);
+        }
+    }
+
+    [RelayCommand]
     private void NextEditHair() => EditHair = PortraitStyles.Cycle(PortraitStyles.Hair, EditHair, 1);
 
     [RelayCommand]

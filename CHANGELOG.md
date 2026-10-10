@@ -6,6 +6,10 @@ All notable changes to this project are documented here. The format follows
 ## [Unreleased]
 
 ### Added
+- Controller-only play: pressing A on any text box (character names, renaming at the inn, riddle
+  answers, automap notes) opens an on-screen keyboard - the D-pad moves between keys, A types, B
+  cancels, Done finishes. Character creation and the inn also have a Random name button (names to
+  suit each race).
 - Hall of Fame (title screen): every victory, and every ironman party that falls, is recorded with
   its party, difficulty, days, play time, monsters slain and achievements; achievements earned in any
   game are collected there too. It lives beside the settings, not in a save.

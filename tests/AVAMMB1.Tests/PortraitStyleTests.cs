@@ -86,4 +86,20 @@ public class PortraitStyleTests
         var back = AVAMMB1.Core.Persistence.SaveGameService.Deserialize(json).State.Party[0];
         Assert.Equal(("knot_red", "long_white"), (back.Hair, back.Beard));
     }
+
+    [Fact]
+    public void RandomNames_SuitTheRaceAndFitTheLimit()
+    {
+        var rng = new AVAMMB1.Core.Dice.DefaultRandomSource(4);
+        foreach (var race in TestContent.Content.Races.Keys)
+        {
+            foreach (var sex in Enum.GetValues<Sex>())
+            {
+                var names = Enumerable.Range(0, 20).Select(_ => NameGenerator.Generate(race, sex, rng)).ToList();
+                Assert.All(names, n => Assert.InRange(n.Length, 3, CharacterFactory.MaxNameLength));
+                Assert.All(names, n => Assert.True(char.IsUpper(n[0]), n));
+                Assert.True(names.Distinct().Count() > 5, $"{race} {sex}: too little variety");
+            }
+        }
+    }
 }

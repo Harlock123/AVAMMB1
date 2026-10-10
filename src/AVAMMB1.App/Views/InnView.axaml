@@ -60,7 +60,10 @@
             <c:PixelImage Source="{Binding EditPortrait}" Width="64" Height="64" />
           </Border>
           <StackPanel Spacing="6">
-            <TextBox Text="{Binding EditName}" Width="200" MaxLength="16" Watermark="Name" HorizontalAlignment="Left" />
+            <StackPanel Orientation="Horizontal" Spacing="4">
+              <TextBox Text="{Binding EditName}" Width="200" MaxLength="16" Watermark="Name" ToolTip.Tip="With a controller, press A here for the on-screen keyboard" />
+              <Button Classes="chip" Content="Random" Command="{Binding RandomEditNameCommand}" VerticalAlignment="Center" />
+            </StackPanel>
             <Grid ColumnDefinitions="44,Auto,170,Auto">
               <TextBlock Text="Hair" Classes="dim" VerticalAlignment="Center" />
               <Button Grid.Column="1" Classes="chip" Content="&lt;" Command="{Binding PreviousEditHairCommand}" />

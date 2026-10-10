@@ -37,8 +37,11 @@
               <c:PixelImage Source="{Binding Portrait}" Width="96" Height="96" />
             </Border>
             <StackPanel VerticalAlignment="Center" Spacing="6">
-              <TextBlock Text="Name" Classes="dim" />
-              <TextBox Text="{Binding Name}" Width="170" MaxLength="16" Watermark="Enter a name" />
+              <Grid ColumnDefinitions="*,Auto" Width="170">
+                <TextBlock Text="Name" Classes="dim" VerticalAlignment="Center" />
+                <Button Grid.Column="1" Classes="chip" Content="Random" Command="{Binding RandomNameCommand}" ToolTip.Tip="A random name for this race" />
+              </Grid>
+              <TextBox Text="{Binding Name}" Width="170" MaxLength="16" Watermark="Enter a name" ToolTip.Tip="Type a name - with a controller, press A here for the on-screen keyboard" />
             </StackPanel>
           </StackPanel>
           <StackPanel Spacing="4" Margin="0,8,0,0" Width="290" HorizontalAlignment="Left">

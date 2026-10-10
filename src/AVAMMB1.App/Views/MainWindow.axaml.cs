@@ -104,6 +104,12 @@ public partial class MainWindow : Window
             e.Handled = true;
             return;
         }
+        if (_keyboard is { } keyboard && e.Key == Key.Escape)
+        {
+            keyboard.Cancel();
+            e.Handled = true;
+            return;
+        }
         // Let text boxes receive typing (names), except for Escape.
         if (e.Source is TextBox && e.Key != Key.Escape)
         {
@@ -144,9 +150,57 @@ public partial class MainWindow : Window
         }
     }
 
+    private Controls.OnScreenKeyboard? _keyboard;
+    private Canvas? _keyboardLayer;
+
+    /// <summary>Whether the on-screen keyboard is open.</summary>
+    public bool KeyboardOpen => _keyboard is not null;
+
+    /// <summary>Opens the on-screen keyboard for a text box (A on a focused text box with a controller).</summary>
+    /// <param name="box">The text box.</param>
+    public void OpenKeyboard(TextBox box)
+    {
+        CloseKeyboard();
+        if (Avalonia.Controls.Primitives.OverlayLayer.GetOverlayLayer(this) is not { } layer)
+        {
+            return;
+        }
+        var keyboard = new Controls.OnScreenKeyboard(box);
+        _keyboardLayer = new Canvas();
+        _keyboardLayer.Children.Add(keyboard);
+        layer.Children.Add(_keyboardLayer);
+        keyboard.Measure(Size.Infinity);
+        var below = box.TranslatePoint(new Point(0, box.Bounds.Height + 6), this) ?? new Point(20, 20);
+        var x = Math.Clamp(below.X, 8, Math.Max(8, Bounds.Width - keyboard.DesiredSize.Width - 8));
+        var y = below.Y + keyboard.DesiredSize.Height > Bounds.Height - 8
+            ? Math.Max(8, (box.TranslatePoint(new Point(0, 0), this)?.Y ?? 0) - keyboard.DesiredSize.Height - 6)
+            : below.Y;
+        Canvas.SetLeft(keyboard, x);
+        Canvas.SetTop(keyboard, y);
+        keyboard.Closed += (_, _) => CloseKeyboard();
+        _keyboard = keyboard;
+        // Focus the first key once the keyboard has been laid out where it belongs (not at the corner).
+        Avalonia.Threading.Dispatcher.UIThread.Post(() => keyboard.FirstKey.Focus(NavigationMethod.Directional), Avalonia.Threading.DispatcherPriority.Background);
+    }
+
+    /// <summary>Closes the on-screen keyboard, if open.</summary>
+    public void CloseKeyboard()
+    {
+        if (_keyboardLayer is not null && Avalonia.Controls.Primitives.OverlayLayer.GetOverlayLayer(this) is { } layer)
+        {
+            layer.Children.Remove(_keyboardLayer);
+        }
+        _keyboard = null;
+        _keyboardLayer = null;
+    }
+
     /// <summary>The part of the window the D-pad should move around in: the top dialog, the combat panel, or the whole screen.</summary>
     private Visual ActiveRoot(MainViewModel vm)
     {
+        if (_keyboard is not null)
+        {
+            return _keyboard;
+        }
         if (vm.CurrentScreen is GameViewModel game)
         {
             var view = this.GetVisualDescendants().OfType<GameView>().FirstOrDefault();
@@ -176,6 +230,16 @@ public partial class MainWindow : Window
             focused = null;
         }
 
+        if (_keyboard is { } keyboard && command == MenuCommand.Back)
+        {
+            keyboard.Cancel();
+            return;
+        }
+        if (focused is TextBox box && command == MenuCommand.Activate && _keyboard is null)
+        {
+            OpenKeyboard(box);
+            return;
+        }
         switch (command)
         {
             case MenuCommand.Back:

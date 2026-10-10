@@ -79,6 +79,7 @@ public sealed partial class HelpViewModel : ViewModelBase
             .Select(a => new HelpRow(PadRow.LabelOf(a), PadRow.Name(settings.GamepadBindings[a])))
             .Append(new HelpRow("Menu (always)", "Start"))
             .Append(new HelpRow("Change places", "Party sheet: Move left / Move right buttons"))
+            .Append(new HelpRow("Type text (names, riddles, notes)", "A on a text box: on-screen keyboard"))
             .Concat(CombatPad)
             .ToList();
     }

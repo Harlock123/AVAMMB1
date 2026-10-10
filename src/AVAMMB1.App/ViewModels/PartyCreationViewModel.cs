@@ -140,6 +140,9 @@ public sealed partial class PartyCreationViewModel : ViewModelBase
     public string BeardLabel => Beard is null ? "none" : PortraitStyles.Describe(Beard);
 
     [RelayCommand]
+    private void RandomName() => Name = NameGenerator.Generate(SelectedRace.Id, Enum.Parse<Sex>(SelectedSex.Id), _main.Services.Session.Random);
+
+    [RelayCommand]
     private void NextHair() => Hair = PortraitStyles.Cycle(PortraitStyles.Hair, Hair, 1);
 
     [RelayCommand]
