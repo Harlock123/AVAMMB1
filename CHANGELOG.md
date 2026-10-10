@@ -5,6 +5,11 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+### Added
+- Save compatibility: genuine saves written by every release from 1.0.0 to 1.12.0 are tested to load,
+  keep playing and save again in the current game; `tools/make-save-fixture.sh` writes the save for a
+  release with that release's own code, and a test fails if a release has no saved game to check.
+
 ## [1.12.0] - 2026-10-10
 
 ### Added

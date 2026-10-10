@@ -38,3 +38,20 @@ internal static class TestContent
         return s;
     }
 }
+
+internal static class TestPaths
+{
+    /// <summary>The repository root (the folder holding AVAMMB1.sln).</summary>
+    public static string RepoRoot
+    {
+        get
+        {
+            var dir = new DirectoryInfo(AppContext.BaseDirectory);
+            while (dir is not null && !File.Exists(Path.Combine(dir.FullName, "AVAMMB1.sln")))
+            {
+                dir = dir.Parent;
+            }
+            return dir?.FullName ?? throw new DirectoryNotFoundException("AVAMMB1.sln not found above the test folder");
+        }
+    }
+}

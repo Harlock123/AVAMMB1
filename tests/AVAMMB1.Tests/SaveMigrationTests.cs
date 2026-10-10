@@ -6,14 +6,55 @@ namespace AVAMMB1.Tests;
 
 /// <summary>
 /// Saves written by every released version must keep loading. The fixtures are genuine save files
-/// produced by building each release tag and playing the same few steps.
+/// written by the game code of each release tag (<c>tools/make-save-fixture.sh</c>), all with the same
+/// party and progress.
 /// </summary>
 public class SaveMigrationTests
 {
-    public static TheoryData<string> Releases => new() { "v1.0.0", "v1.1.0", "v1.2.0", "v1.3.0", "v1.4.0" };
+    private static string FixtureDir => Path.Combine(AppContext.BaseDirectory, "Fixtures", "Saves");
 
-    private static string Fixture(string release) =>
-        File.ReadAllText(Path.Combine(AppContext.BaseDirectory, "Fixtures", "Saves", release + ".json"));
+    /// <summary>Every release with a fixture.</summary>
+    public static TheoryData<string> Releases => new(Directory.GetFiles(FixtureDir, "v*.json").Select(Path.GetFileNameWithoutExtension).OfType<string>().Order());
+
+    /// <summary>Releases 1.0-1.4, which wrote the first save format.</summary>
+    public static TheoryData<string> FirstFormatReleases => new() { "v1.0.0", "v1.1.0", "v1.2.0", "v1.3.0", "v1.4.0" };
+
+    private static string Fixture(string release) => File.ReadAllText(Path.Combine(FixtureDir, release + ".json"));
+
+    [Fact]
+    public void EveryReleaseInTheChangelog_HasASaveFixture()
+    {
+        var changelog = File.ReadAllText(Path.Combine(TestPaths.RepoRoot, "CHANGELOG.md"));
+        var released = System.Text.RegularExpressions.Regex.Matches(changelog, @"^## \[(\d+\.\d+\.\d+)\]", System.Text.RegularExpressions.RegexOptions.Multiline)
+            .Select(m => "v" + m.Groups[1].Value).ToList();
+        Assert.True(released.Count >= 15);
+        var missing = released.Where(r => !File.Exists(Path.Combine(FixtureDir, r + ".json"))).ToList();
+        Assert.True(missing.Count == 0, $"No save fixture for {string.Join(", ", missing)} - run tools/make-save-fixture.sh <tag>");
+    }
+
+    [Theory]
+    [MemberData(nameof(Releases))]
+    public void ReleasedSaves_SayWhichGameWroteThem(string release)
+    {
+        var node = JsonNode.Parse(Fixture(release))!;
+        if (SaveMigrations.VersionOf((JsonObject)node) >= 2)
+        {
+            Assert.Equal(release[1..], node["gameVersion"]!.GetValue<string>());
+        }
+    }
+
+    [Theory]
+    [MemberData(nameof(Releases))]
+    public void ReleasedSaves_SurviveARoundTripInTheCurrentGame(string release)
+    {
+        var s = TestContent.NewSession();
+        s.Load(SaveGameService.Deserialize(Fixture(release)).State);
+        s.Rest();
+        var json = SaveGameService.Serialize(new SaveFile { State = s.State });
+        var again = SaveGameService.Deserialize(json).State;
+        Assert.Equal(json, SaveGameService.Serialize(new SaveFile { State = again }));
+        Assert.Equal(s.State.Party.Select(c => c.Hp), again.Party.Select(c => c.Hp));
+    }
 
     [Theory]
     [MemberData(nameof(Releases))]
@@ -40,7 +81,7 @@ public class SaveMigrationTests
     }
 
     [Theory]
-    [MemberData(nameof(Releases))]
+    [MemberData(nameof(FirstFormatReleases))]
     public void Upgrading_DropsComputedValues_AndAddsNewFields(string release)
     {
         var node = (JsonObject)JsonNode.Parse(Fixture(release))!;

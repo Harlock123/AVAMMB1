@@ -106,8 +106,10 @@ Randomness always flows through `IRandomSource`, so tests can script dice rolls
   summary and the full `GameState`). On load the raw JSON is upgraded step by step by
   `SaveMigrations` (format 1 = releases 1.0-1.4, format 2 = 1.5+); corrupt files and saves from a
   newer game are rejected with a message instead of crashing. Overwriting an older-format save keeps a
-  `.v<N>.bak` copy. Real saves from every release live in `tests/AVAMMB1.Tests/Fixtures/Saves` -
-  add one whenever the format changes.
+  `.v<N>.bak` copy. Real saves from every release live in `tests/AVAMMB1.Tests/Fixtures/Saves`,
+  written by that release's own game code (`tools/make-save-fixture.sh <tag>`, or no argument for the
+  working copy after a version bump); a test fails if a release in the changelog has none. Each one
+  must load, keep playing, and survive a save/load round trip.
 * Settings: `settings.json` (`GameSettings`), normalized on load (missing bindings restored).
 
 ## Build & release
