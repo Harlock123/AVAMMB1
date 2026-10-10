@@ -18,6 +18,21 @@
         <Border VerticalAlignment="Bottom" HorizontalAlignment="Center" Background="#aa000000" CornerRadius="6,6,0,0" Padding="12,3">
           <TextBlock Text="{Binding CompassText}" FontSize="{DynamicResource Font14}" />
         </Border>
+        <Panel IsVisible="{Binding HasTip}">
+        <Border VerticalAlignment="Top" HorizontalAlignment="Center" Margin="24,44,24,0" MaxWidth="620" Padding="14,10" CornerRadius="6"
+                Background="#e6141019" BorderBrush="{DynamicResource Gold}" BorderThickness="1"
+                DataContext="{Binding Tip}" x:DataType="vm:TipViewModel">
+          <StackPanel Spacing="6">
+            <Grid ColumnDefinitions="*,Auto">
+              <TextBlock Text="{Binding Title, StringFormat='Tip: {0}'}" Foreground="{DynamicResource Gold}" FontWeight="Bold" FontSize="{DynamicResource Font15}" />
+              <Button Grid.Column="1" Classes="chip" Content="Got it" Command="{Binding DismissCommand}" Focusable="False" />
+            </Grid>
+            <TextBlock Text="{Binding Text}" TextWrapping="Wrap" FontSize="{DynamicResource Font14}" />
+            <Button Classes="chip" HorizontalAlignment="Right" Content="No more tips" Command="{Binding TurnOffCommand}" Focusable="False"
+                    ToolTip.Tip="Settings > Game can switch tips back on" />
+          </StackPanel>
+        </Border>
+        </Panel>
       </Grid>
     </Border>
 

@@ -62,6 +62,10 @@ public sealed class GameSettings
     public List<string> DisabledMods { get; set; } = new();
     /// <summary>The game version whose release notes the player has seen ("" before 1.7).</summary>
     public string LastSeenVersion { get; set; } = "";
+    /// <summary>Show tips the first time things come up (null until decided: on for new players, off for players updating).</summary>
+    public bool? ShowTips { get; set; }
+    /// <summary>Ids of the tips already shown.</summary>
+    public List<string> SeenTips { get; set; } = new();
     /// <summary>Ask GitHub (at most about once a day) whether a newer release exists, and say so on the title screen.</summary>
     public bool CheckForUpdates { get; set; } = true;
     /// <summary>When the last update check happened (UTC, round-trip format), or "".</summary>

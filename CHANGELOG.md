@@ -6,6 +6,11 @@ All notable changes to this project are documented here. The format follows
 ## [Unreleased]
 
 ### Added
+- Tips for new players: the first time something comes up - the first steps, a battle, a shop, the inn,
+  the temple, a quest, a dungeon, a locked door, treasure, wounds, a level earned, nightfall, saving - a
+  short tip appears over the view, using the player's own keys. It fades after a while or with Got it;
+  No more tips (or Settings > Game) switches them off, and Show all again brings them back. On for new
+  players; players updating from an earlier version can switch them on in Settings.
 - Daily Challenge results to share: when a run ends (climbed out or fallen), a result card sums it
   up - date, depth, who still stands, foes, battles, chests, steps, time and the party - and Copy result
   puts it on the clipboard to paste anywhere. The title screen shows today's, yesterday's and the best

@@ -252,6 +252,7 @@ public sealed partial class SettingsViewModel : ViewModelBase
         _weather = s.Weather;
         _describeSteps = s.DescribeSteps;
         _checkForUpdates = s.CheckForUpdates;
+        _showTips = s.ShowTips == true;
         _pad = new Dictionary<InputAction, AVAMMB1.Core.Input.GamepadButton>(s.GamepadBindings);
         LoadPadRows();
         LoadBindings();
@@ -376,6 +377,18 @@ public sealed partial class SettingsViewModel : ViewModelBase
     /// <summary>Autosave on entering new areas and before boss fights.</summary>
     [ObservableProperty]
     private bool _autosave;
+
+    /// <summary>Show tips for new players.</summary>
+    [ObservableProperty]
+    private bool _showTips;
+
+    /// <summary>Shows every tip again, from the start.</summary>
+    [RelayCommand]
+    private void ResetTips()
+    {
+        _main.Services.Settings.SeenTips.Clear();
+        ShowTips = true;
+    }
 
     /// <summary>Look for a newer version when the game starts.</summary>
     [ObservableProperty]
@@ -551,6 +564,7 @@ public sealed partial class SettingsViewModel : ViewModelBase
         s.Weather = Weather;
         s.DescribeSteps = DescribeSteps;
         s.CheckForUpdates = CheckForUpdates;
+        s.ShowTips = ShowTips;
         if (InGame)
         {
             var state = _main.Services.Session.State;

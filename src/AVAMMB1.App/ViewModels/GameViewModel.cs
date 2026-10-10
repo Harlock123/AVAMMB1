@@ -146,6 +146,7 @@ public sealed partial class GameViewModel : ViewModelBase
         {
             Combat = new CombatViewModel(this, engine);
             Refresh();
+            CheckTip(TipMoment.Battle, null);
         }
     }
 
@@ -328,6 +329,49 @@ public sealed partial class GameViewModel : ViewModelBase
         }
     }
 
+    /// <summary>The tip on show over the 3D view, or null.</summary>
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(HasTip))]
+    private TipViewModel? _tip;
+
+    /// <summary>Whether a tip is on show.</summary>
+    public bool HasTip => Tip is not null;
+
+    private int _tipActions;
+
+    /// <summary>Shows the next tip for this moment, if tips are on and one applies; a tip on show fades after a while.</summary>
+    /// <param name="moment">The moment.</param>
+    /// <param name="r">What just happened, if anything.</param>
+    private void CheckTip(TipMoment moment, StepResult? r)
+    {
+        var settings = Services.Settings;
+        if (Tip is not null && ++_tipActions > 25)
+        {
+            Tip = null; // read or not, it has had its time
+        }
+        if (settings.ShowTips != true || (Tip is not null && _tipActions < 3))
+        {
+            return;
+        }
+        if (Tips.Next(Session, r, moment, settings.SeenTips) is not { } tip)
+        {
+            return;
+        }
+        settings.SeenTips.Add(tip.Id);
+        Services.SaveSettings();
+        Tip = new TipViewModel(tip.Title, Tips.WithKeys(tip.Text, settings.KeyBindings), DismissTip, TurnOffTips);
+        _tipActions = 0;
+    }
+
+    private void DismissTip() => Tip = null;
+
+    private void TurnOffTips()
+    {
+        Services.Settings.ShowTips = false;
+        Services.SaveSettings();
+        Tip = null;
+    }
+
     /// <summary>Shows a story dialog.</summary>
     /// <param name="title">Title.</param>
     /// <param name="text">Body.</param>
@@ -338,6 +382,10 @@ public sealed partial class GameViewModel : ViewModelBase
     {
         Overlay = null;
         Refresh();
+        if (Combat is null)
+        {
+            CheckTip(TipMoment.Exploring, null);
+        }
     }
 
     private void Apply(StepResult r)
@@ -387,12 +435,15 @@ public sealed partial class GameViewModel : ViewModelBase
         if (r.Interaction is { } ev)
         {
             OpenBuilding(ev);
+            CheckTip(TipMoment.Building, r);
             return;
         }
         if (r.StoryText is not null)
         {
             ShowStory(r.StoryTitle, r.StoryText);
+            return;
         }
+        CheckTip(TipMoment.Exploring, r);
     }
 
     private void OpenBuilding(MapEventDef ev)
@@ -439,6 +490,7 @@ public sealed partial class GameViewModel : ViewModelBase
         {
             AutoSave(null); // ironman keeps its one save up to date after every battle
         }
+        CheckTip(TipMoment.Exploring, null);
     }
 
     [RelayCommand] private void Forward() => Apply(Session.Move(MoveKind.Forward));

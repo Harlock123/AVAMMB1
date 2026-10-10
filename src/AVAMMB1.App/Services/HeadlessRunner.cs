@@ -46,6 +46,7 @@ public static class HeadlessRunner
             // Screenshots must show settled frames, not the middle of a step or a monster lunge.
             vm.Services.Settings.SmoothMovement = false;
             vm.Services.Settings.AnimateMonsters = false;
+            vm.Services.Settings.ShowTips = false; // the tour shows one tip on purpose (46-tip)
             _window = new MainWindow { DataContext = vm, Width = 1280, Height = 800 };
             _window.Show();
             Pump();
@@ -434,6 +435,19 @@ public static class HeadlessRunner
         // Town: look up the main street from the gate.
         Daylight(game, s);
         Capture(dir, "04-town");
+
+        // A tip for new players, as the first steps in town bring it up.
+        vm.Services.Settings.ShowTips = true;
+        vm.Services.Settings.SeenTips.Clear();
+        game.CloseOverlay();
+        if (game.Tip is not { Title: "Getting around" } tip)
+        {
+            throw new InvalidOperationException("The first tip did not appear.");
+        }
+        Capture(dir, "46-tip");
+        tip.DismissCommand.Execute(null);
+        vm.Services.Settings.ShowTips = false;
+        Console.WriteLine("tips ok");
         CheckPartyDrag(game, s);
 
         // The inn: rename a character and change their looks.

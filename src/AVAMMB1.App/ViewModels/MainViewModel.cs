@@ -17,6 +17,11 @@ public sealed partial class MainViewModel : ViewModelBase
         services.Audio.SetVolumes(services.Settings.MusicVolume, services.Settings.SfxVolume, services.Settings.AmbienceVolume);
         ApplyTheme(services.Settings);
         services.Textures.Detailed = services.Settings.DetailedTextures;
+        if (services.Settings.ShowTips is null)
+        {
+            services.Settings.ShowTips = services.FreshInstall; // tips are for new players; those updating can switch them on
+            services.SaveSettings();
+        }
         _currentScreen = new TitleViewModel(this);
         ShowWhatsNewIfUpdated();
     }
