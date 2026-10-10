@@ -6,6 +6,11 @@ All notable changes to this project are documented here. The format follows
 ## [Unreleased]
 
 ### Added
+- The Chronicle (a new Journal tab): the story so far in numbers - days in the field, time played,
+  steps, monsters slain, unique monsters defeated, battles won and fled, companions fallen, gold found
+  and the most held, chests opened, secret doors found, locks picked, spells cast, nights at inns - and
+  22 achievements (First Blood, Wayfarer, Keeper of Secrets, Bounty Hunter, Hard Won...), announced
+  in the log as they are earned and kept with each saved game.
 - A bestiary and an item compendium (new Journal tabs). The bestiary has every creature the party has
   defeated, with its picture, level, hit points, armour, attacks and special abilities, defences
   (immunities, resistances, weaknesses), how many you have slain and the explored places where it is

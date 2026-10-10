@@ -82,6 +82,7 @@ public sealed class SpellCaster(Rulebook rules, IRandomSource rng)
         if (result.Success)
         {
             caster.Sp -= spell.Cost;
+            state.Count(Session.Chronicle.Keys.Spells);
         }
         return result;
     }

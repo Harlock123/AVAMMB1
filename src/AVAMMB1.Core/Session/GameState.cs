@@ -45,6 +45,17 @@ public sealed class GameState
     /// <summary>Monsters slain, by monster id (the bestiary and the chronicle).</summary>
     public Dictionary<string, int> Kills { get; set; } = new(StringComparer.Ordinal);
 
+    /// <summary>Statistics for the Chronicle (see <see cref="Chronicle.Keys"/>).</summary>
+    public Dictionary<string, long> Stats { get; set; } = new(StringComparer.Ordinal);
+
+    /// <summary>Achievements earned in this game.</summary>
+    public HashSet<string> Achievements { get; set; } = new(StringComparer.Ordinal);
+
+    /// <summary>Adds to a statistic.</summary>
+    /// <param name="key">Statistic (see <see cref="Chronicle.Keys"/>).</param>
+    /// <param name="by">Amount.</param>
+    public void Count(string key, long by = 1) => Stats[key] = Stats.GetValueOrDefault(key) + by;
+
     /// <summary>Items the party has carried or seen for sale (the item compendium).</summary>
     public HashSet<string> SeenItems { get; set; } = new(StringComparer.Ordinal);
     /// <summary>Player notes on automap squares, keyed by <see cref="NoteKey"/>.</summary>

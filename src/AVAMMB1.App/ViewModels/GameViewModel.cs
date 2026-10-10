@@ -247,6 +247,10 @@ public sealed partial class GameViewModel : ViewModelBase
         {
             p.Refresh();
         }
+        if (Chronicle.Check(Session) is { Count: > 0 } earned)
+        {
+            AddMessages(earned);
+        }
         OnPropertyChanged(nameof(LocationText));
         OnPropertyChanged(nameof(CompassText));
         OnPropertyChanged(nameof(GoldText));

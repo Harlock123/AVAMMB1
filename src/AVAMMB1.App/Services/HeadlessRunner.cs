@@ -760,6 +760,9 @@ public static class HeadlessRunner
         ((JournalViewModel)game.Overlay!).Tab = 2;
         Pump();
         Capture(dir, "35-items");
+        ((JournalViewModel)game.Overlay!).Tab = 3;
+        Pump();
+        Capture(dir, "36-chronicle");
         game.CloseOverlay();
 
         // The load screen: autosaves (some written on the way here, one now) and a quick save, with pictures.

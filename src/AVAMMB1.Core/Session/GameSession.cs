@@ -232,6 +232,7 @@ public sealed class GameSession
         {
             State.LastMealMinutes = State.Minutes; // saves from before survival mode: start the day fed
         }
+        Chronicle.Check(this); // achievements already met by an older save are recorded quietly
         Combat = null;
         Explore();
     }
@@ -478,6 +479,7 @@ public sealed class GameSession
             {
                 State.FoundSecrets.Add(GameState.SecretKey(map.Id, State.X, State.Y, d));
                 result.Messages.Add(new($"{searcher.Name} discovers a secret door to the {DescribeSide(d)}!", MessageKind.Good, "door"));
+                State.Count(Chronicle.Keys.Secrets);
                 found++;
             }
         }
@@ -529,6 +531,7 @@ public sealed class GameSession
         if (Random.Chance(chance))
         {
             State.PickedLocks.Add(GameState.SecretKey(map.Id, State.X, State.Y, dir));
+            State.Count(Chronicle.Keys.Locks);
             result.Messages.Add(new($"{picker.Name} works the lock - click! The door is open.", MessageKind.Good, "door"));
         }
         else
@@ -937,6 +940,7 @@ public sealed class GameSession
     }
 
     private string? _combatFlag;
+    private HashSet<Characters.Character> _deadBeforeCombat = [];
 
     private void RunTrap(GameMap map, MapEventDef ev, StepResult result)
     {
@@ -1074,8 +1078,13 @@ public sealed class GameSession
     private void GrantRewards(MapEventDef ev, List<GameMessage> log)
     {
         var gold = ev.Gold.Roll(Random);
+        if (ev.Type == MapEventKind.Treasure)
+        {
+            State.Count(Chronicle.Keys.Chests);
+        }
         if (gold > 0)
         {
+            State.Count(Chronicle.Keys.GoldFound, gold);
             State.Gold += gold;
             log.Add(new($"The party finds {gold} gold.", MessageKind.Loot, "coins"));
         }
@@ -1183,6 +1192,7 @@ public sealed class GameSession
     public void StartCombat(IEnumerable<MonsterInstance> monsters, StepResult result)
     {
         Combat = new CombatEngine(Rules, Random, State, monsters) { MagicSuppressed = () => IsAntiMagicHere };
+        _deadBeforeCombat = State.Party.Where(c => c.Has(Condition.Dead)).ToHashSet();
         _combatFlag = null;
         result.CombatStarted = true;
         var names = Combat.Monsters.GroupBy(m => m.Def).Select(g => g.Count() == 1 ? g.Key.NameWithArticle : $"{g.Count()} {g.Key.PluralName}");
@@ -1204,8 +1214,22 @@ public sealed class GameSession
             State.KnownMonsters.Add(m.Def.Id);
             State.Kills[m.Def.Id] = State.Kills.GetValueOrDefault(m.Def.Id) + 1;
         }
+        State.Count(Chronicle.Keys.Deaths, State.Party.Count(c => c.Has(Condition.Dead) && !_deadBeforeCombat.Contains(c)));
+        if (combat.Outcome == CombatOutcome.Victory)
+        {
+            State.Count(Chronicle.Keys.BattlesWon);
+            if (IsNightOutside)
+            {
+                State.Count(Chronicle.Keys.NightWins);
+            }
+        }
+        else if (combat.Outcome == CombatOutcome.Fled)
+        {
+            State.Count(Chronicle.Keys.BattlesFled);
+        }
         if (combat.Outcome == CombatOutcome.Victory && combat.Rewards is { } r)
         {
+            State.Count(Chronicle.Keys.GoldFound, r.Gold);
             if (r.Gold > 0)
             {
                 State.Gold += r.Gold;

@@ -71,6 +71,8 @@ Code identifiers, the solution and executables use the name **`AVAMMB1`** (`AVAM
 - **Character looks**: pick a hairstyle and beard for each portrait at creation; rename characters
   and restyle them at any inn.
 - **Where next?**: the journal, automap and minimap show where each open quest leads.
+- **The Chronicle**: statistics for your game (monsters slain, gold found, secrets, spells...) and 22
+  achievements.
 - **Bestiary and compendium**: Journal tabs for every creature you have defeated (attacks, defences,
   where found, how many slain) and every item you have seen.
 - **Autosave and save pictures**: three rotating autosaves (new areas, before bosses); every save
@@ -166,7 +168,7 @@ All screenshots are real frames rendered by the game itself (Avalonia headless +
 | ![Night](docs/screenshots/29-night.png) The Ashen Hills road at night | ![Battle spells](docs/screenshots/30-combat-spells.png) Battle spells with their keys |
 | ![Load game](docs/screenshots/31-load-game.png) Saves with pictures, play time and autosaves | ![Choirmaster](docs/screenshots/32-choirmaster.png) The Choirmaster in the Bell Chamber |
 | ![Inn looks](docs/screenshots/33-inn-looks.png) Renaming and restyling at the inn | ![Bestiary](docs/screenshots/34-bestiary.png) The bestiary |
-| ![Items](docs/screenshots/35-items.png) The item compendium | |
+| ![Items](docs/screenshots/35-items.png) The item compendium | ![Chronicle](docs/screenshots/36-chronicle.png) The Chronicle: statistics and achievements |
 
 ## Download and install
 

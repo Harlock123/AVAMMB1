@@ -553,6 +553,30 @@ public sealed partial class JournalViewModel : ViewModelBase
                 i.Classes.Count == 0 ? "" : "Classes: " + string.Join(", ", i.Classes.Select(c => content.Classes.TryGetValue(c, out var cd) ? cd.Name : c))))
             .ToList();
         ItemsCount = $"{Items.Count} of {content.Items.Count} items seen. Items you carry or see in shops are added.";
+        game.CountPlayTime();
+        long Stat(string k) => state.Stats.GetValueOrDefault(k);
+        var played = TimeSpan.FromSeconds(state.PlaySeconds);
+        var bosses = content.Monsters.Values.Where(m => m.Boss).ToList();
+        Statistics =
+        [
+            new("Difficulty", state.Difficulty + (state.Survival ? ", survival mode" : "")),
+            new("Days in the field", state.Day.ToString(System.Globalization.CultureInfo.InvariantCulture)),
+            new("Time played", SlotRow.PlayTimeText(played)),
+            new("Steps taken", state.Steps.ToString("N0", System.Globalization.CultureInfo.CurrentCulture)),
+            new("Monsters slain", state.Kills.Values.Sum().ToString("N0", System.Globalization.CultureInfo.CurrentCulture)),
+            new("Unique monsters defeated", $"{bosses.Count(b => state.Kills.GetValueOrDefault(b.Id) > 0)} of {bosses.Count}"),
+            new("Battles won / fled", $"{Stat(Chronicle.Keys.BattlesWon)} / {Stat(Chronicle.Keys.BattlesFled)}"),
+            new("Companions fallen in battle", Stat(Chronicle.Keys.Deaths).ToString(System.Globalization.CultureInfo.InvariantCulture)),
+            new("Gold found", Stat(Chronicle.Keys.GoldFound).ToString("N0", System.Globalization.CultureInfo.CurrentCulture)),
+            new("Most gold held", Stat(Chronicle.Keys.MostGold).ToString("N0", System.Globalization.CultureInfo.CurrentCulture)),
+            new("Chests opened", Stat(Chronicle.Keys.Chests).ToString(System.Globalization.CultureInfo.InvariantCulture)),
+            new("Secret doors found", Stat(Chronicle.Keys.Secrets).ToString(System.Globalization.CultureInfo.InvariantCulture)),
+            new("Locks picked", Stat(Chronicle.Keys.Locks).ToString(System.Globalization.CultureInfo.InvariantCulture)),
+            new("Spells cast", Stat(Chronicle.Keys.Spells).ToString(System.Globalization.CultureInfo.InvariantCulture)),
+            new("Nights at inns", Stat(Chronicle.Keys.InnNights).ToString(System.Globalization.CultureInfo.InvariantCulture)),
+        ];
+        Achievements = Chronicle.Achievements.Select(a => new AchievementRow(a.Title, a.Description, state.Achievements.Contains(a.Id))).ToList();
+        AchievementCount = $"Achievements: {Achievements.Count(a => a.Earned)} of {Achievements.Count}";
     }
 
     private static string KindName(ItemKind k) => k switch
@@ -568,6 +592,12 @@ public sealed partial class JournalViewModel : ViewModelBase
 
     /// <summary>Monsters the party has defeated.</summary>
     public IReadOnlyList<BestiaryEntry> Bestiary { get; }
+    /// <summary>The Chronicle's statistics.</summary>
+    public IReadOnlyList<StatisticRow> Statistics { get; }
+    /// <summary>Every achievement, earned or not.</summary>
+    public IReadOnlyList<AchievementRow> Achievements { get; }
+    /// <summary>"Achievements: 5 of 22".</summary>
+    public string AchievementCount { get; }
     /// <summary>"12 of 103 creatures known".</summary>
     public string BestiaryCount { get; }
     /// <summary>Items the party has carried or seen.</summary>
@@ -624,6 +654,21 @@ public sealed record JournalQuest(QuestEntry Quest, QuestGoal? Goal = null)
     public bool HasEarlier => Quest.Entries.Count > 1;
     /// <summary>Whether the quest is complete.</summary>
     public bool Done => Quest.Done;
+}
+
+/// <summary>A Chronicle statistic.</summary>
+/// <param name="Label">What is counted.</param>
+/// <param name="Value">Count.</param>
+public sealed record StatisticRow(string Label, string Value);
+
+/// <summary>A Chronicle achievement.</summary>
+/// <param name="Title">Title.</param>
+/// <param name="Description">How to earn it.</param>
+/// <param name="Earned">Whether it is earned.</param>
+public sealed record AchievementRow(string Title, string Description, bool Earned)
+{
+    /// <summary>Tick or empty box.</summary>
+    public string Mark => Earned ? "\u2714" : "\u25A1";
 }
 
 /// <summary>A bestiary page.</summary>
