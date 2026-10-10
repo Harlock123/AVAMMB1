@@ -668,7 +668,26 @@ public static class HeadlessRunner
         game.BeginCombat();
         Pump();
         Capture(dir, "32-choirmaster");
+        // Slow battle text: lines are revealed one at a time; acting (or Continue) shows the rest.
+        vm.Services.Settings.BattleTextSpeed = 3;
         game.Combat!.FightCommand.Execute(null);
+        var held = false;
+        for (var i = 0; i < 12 && !held && s.Combat is not null && game.Combat.IsAction; i++)
+        {
+            game.Combat.BlockCommand.Execute(null); // the monsters answer with several lines
+            held = game.Combat.IsRevealing;
+        }
+        if (!held)
+        {
+            throw new InvalidOperationException("Slow battle text never held lines back.");
+        }
+        game.Combat.FlushLog();
+        if (game.Combat.IsRevealing)
+        {
+            throw new InvalidOperationException("Flushing the battle text left lines waiting.");
+        }
+        vm.Services.Settings.BattleTextSpeed = 0;
+        Console.WriteLine("battle text ok");
         if (s.Combat is not null)
         {
             AutoBattle(s);

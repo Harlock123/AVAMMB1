@@ -235,6 +235,8 @@ public sealed partial class SettingsViewModel : ViewModelBase
         _themeIndex = Math.Max(0, Array.IndexOf(ThemeKeys, s.ColorTheme));
         _textScaleIndex = Math.Max(0, Array.IndexOf(TextScales, s.TextScale) is var i and >= 0 ? i : 1);
         _resolutionIndex = Math.Max(0, Array.IndexOf(Resolutions, s.ViewResolution));
+        _zoomIndex = Math.Max(0, Array.IndexOf(Zooms, s.InterfaceZoom));
+        _battleTextIndex = Math.Clamp(s.BattleTextSpeed, 0, 3);
         _smoothView = s.SmoothView;
         _detailedTextures = s.DetailedTextures;
         InGame = returnTo is GameViewModel && main.Services.Session.IsActive;
@@ -300,6 +302,22 @@ public sealed partial class SettingsViewModel : ViewModelBase
     private static readonly int[] Resolutions = [300, 480, 600];
     private readonly Dictionary<InputAction, AVAMMB1.Core.Input.GamepadButton> _pad;
     private PadRow? _capturingPad;
+
+    private static readonly int[] Zooms = [100, 115, 130, 150];
+
+    /// <summary>Interface zoom choices.</summary>
+    public string[] ZoomOptions { get; } = ["100%", "115%", "130%", "150%"];
+
+    /// <summary>Selected interface zoom.</summary>
+    [ObservableProperty]
+    private int _zoomIndex;
+
+    /// <summary>Battle text speed choices.</summary>
+    public string[] BattleTextOptions { get; } = ["Instant", "Fast", "Normal", "Slow"];
+
+    /// <summary>Selected battle text speed.</summary>
+    [ObservableProperty]
+    private int _battleTextIndex;
 
     /// <summary>Theme choices.</summary>
     public string[] ThemeOptions { get; } = ["Standard", "High contrast", "Colour-blind friendly"];
@@ -491,7 +509,10 @@ public sealed partial class SettingsViewModel : ViewModelBase
         s.Fullscreen = Fullscreen;
         s.ShowMinimap = ShowMinimap;
         s.SmoothMovement = SmoothMovement;
-        var layoutChanged = s.FitToWindow != FitToWindow;
+        var zoom = Zooms[Math.Clamp(ZoomIndex, 0, Zooms.Length - 1)];
+        var layoutChanged = s.FitToWindow != FitToWindow || s.InterfaceZoom != zoom;
+        s.InterfaceZoom = zoom;
+        s.BattleTextSpeed = Math.Clamp(BattleTextIndex, 0, 3);
         s.FitToWindow = FitToWindow;
         s.GamepadEnabled = GamepadEnabled;
         s.AnimateMonsters = AnimateMonsters;

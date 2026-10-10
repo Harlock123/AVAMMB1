@@ -185,14 +185,89 @@ public sealed partial class CombatViewModel : ViewModelBase
     /// <summary>Whether the active character knows spells.</summary>
     public bool CanCast => _combat.ActiveCharacter is { } c && _game.Services.Session.Rules.KnownSpells(c).Any();
 
-    private void AddLog(IEnumerable<GameMessage> messages)
+    private readonly Queue<GameMessage> _logQueue = new();
+    private Avalonia.Threading.DispatcherTimer? _logTimer;
+
+    /// <summary>Milliseconds between battle log lines (the Battle text setting); 0 shows them all at once.</summary>
+    private int LineDelay => _game.Services.Settings.BattleTextSpeed switch { 1 => 150, 2 => 350, 3 => 700, _ => 0 };
+
+    /// <summary>Whether battle lines are still being revealed.</summary>
+    public bool IsRevealing => _logQueue.Count > 0;
+
+    private void AddLog(IEnumerable<GameMessage> messages, bool flush = true)
     {
-        var list = messages.ToList();
-        _game.Services.PlayCues(list);
-        foreach (var m in list.Where(m => m.Text.Length > 0))
+        if (flush)
         {
-            Log.Add(new MessageViewModel(m));
+            FlushLog(); // acting shows whatever was still waiting at once
         }
+        var list = messages.ToList();
+        if (LineDelay == 0)
+        {
+            _game.Services.PlayCues(list);
+            foreach (var m in list.Where(m => m.Text.Length > 0))
+            {
+                ShowLine(m);
+            }
+            return;
+        }
+        var idle = _logQueue.Count == 0;
+        foreach (var m in list)
+        {
+            _logQueue.Enqueue(m);
+        }
+        if (idle)
+        {
+            RevealNext();
+        }
+        if (_logQueue.Count > 0)
+        {
+            _logTimer ??= new Avalonia.Threading.DispatcherTimer();
+            _logTimer.Interval = TimeSpan.FromMilliseconds(LineDelay);
+            _logTimer.Tick -= OnLogTick;
+            _logTimer.Tick += OnLogTick;
+            _logTimer.Start();
+        }
+    }
+
+    private void OnLogTick(object? sender, EventArgs e)
+    {
+        RevealNext();
+        if (_logQueue.Count == 0)
+        {
+            _logTimer?.Stop();
+        }
+    }
+
+    /// <summary>Shows the next queued line (with its sound), skipping silent sound-only entries.</summary>
+    private void RevealNext()
+    {
+        while (_logQueue.TryDequeue(out var m))
+        {
+            _game.Services.PlayCues([m]);
+            if (m.Text.Length > 0)
+            {
+                ShowLine(m);
+                return;
+            }
+        }
+    }
+
+    /// <summary>Shows every queued line at once.</summary>
+    public void FlushLog()
+    {
+        _logTimer?.Stop();
+        while (_logQueue.TryDequeue(out var m))
+        {
+            if (m.Text.Length > 0)
+            {
+                ShowLine(m);
+            }
+        }
+    }
+
+    private void ShowLine(GameMessage m)
+    {
+        Log.Add(new MessageViewModel(m));
         while (Log.Count > 60)
         {
             Log.RemoveAt(0);
@@ -330,7 +405,7 @@ public sealed partial class CombatViewModel : ViewModelBase
     {
         var outcome = _combat.Outcome;
         var (_, rewards) = _game.Services.Session.EndCombat();
-        AddLog(rewards);
+        AddLog(rewards, flush: false); // after the last blows have been read
         _game.AddMessages(rewards.Select(r => r with { Sound = null }));
         Phase = CombatPhase.Finished;
         Prompt = outcome switch
@@ -527,9 +602,9 @@ public sealed partial class CombatViewModel : ViewModelBase
 
     private void AutoStep()
     {
-        if (!IsAutoFighting)
+        if (!IsAutoFighting || IsRevealing)
         {
-            return;
+            return; // let the battle text catch up first
         }
         if (Phase == CombatPhase.Opening)
         {
@@ -689,7 +764,11 @@ public sealed partial class CombatViewModel : ViewModelBase
     }
 
     [RelayCommand]
-    private void Continue() => _game.CombatFinished();
+    private void Continue()
+    {
+        FlushLog();
+        _game.CombatFinished();
+    }
 
     /// <summary>True while a list (spells, items, allies) is open, where the D-pad should move between buttons.</summary>
     public bool WantsMenuNavigation => Phase is CombatPhase.Spell or CombatPhase.Item or CombatPhase.Ally;

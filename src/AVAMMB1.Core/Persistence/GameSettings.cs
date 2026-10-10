@@ -72,6 +72,10 @@ public sealed class GameSettings
     public bool SmoothView { get; set; }
     /// <summary>Colour theme: Standard, HighContrast or ColorblindFriendly.</summary>
     public string ColorTheme { get; set; } = "Standard";
+    /// <summary>Interface zoom in percent (100-150) when the interface is not fitted to the window.</summary>
+    public int InterfaceZoom { get; set; } = 100;
+    /// <summary>Delay between battle log lines: 0 instant, 1 fast, 2 normal, 3 slow.</summary>
+    public int BattleTextSpeed { get; set; }
     /// <summary>Text size in percent (90-130).</summary>
     public int TextScale { get; set; } = 100;
     /// <summary>Scale the whole interface to fit the window (off = fixed 100% size).</summary>

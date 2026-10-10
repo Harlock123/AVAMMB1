@@ -27,14 +27,20 @@
                   </Grid>
                   <TextBlock Text="{Binding AudioStatus}" Classes="dim" FontSize="{DynamicResource Font12}" />
                   <TextBlock Classes="h2" Text="Accessibility" />
-                  <Grid ColumnDefinitions="120,*" RowDefinitions="Auto,Auto" >
+                  <Grid ColumnDefinitions="120,*" RowDefinitions="Auto,Auto,Auto,Auto" >
                     <TextBlock Text="Colours" VerticalAlignment="Center" />
                     <ComboBox Grid.Column="1" ItemsSource="{Binding ThemeOptions}" SelectedIndex="{Binding ThemeIndex}" HorizontalAlignment="Stretch" Margin="0,2" />
                     <TextBlock Grid.Row="1" Text="Text size" VerticalAlignment="Center" />
                     <ComboBox Grid.Row="1" Grid.Column="1" ItemsSource="{Binding TextScaleOptions}" SelectedIndex="{Binding TextScaleIndex}" HorizontalAlignment="Stretch" Margin="0,2" />
+                    <TextBlock Grid.Row="2" Text="Interface zoom" VerticalAlignment="Center" />
+                    <ComboBox Grid.Row="2" Grid.Column="1" ItemsSource="{Binding ZoomOptions}" SelectedIndex="{Binding ZoomIndex}" HorizontalAlignment="Stretch" Margin="0,2"
+                              IsEnabled="{Binding !FitToWindow}" ToolTip.Tip="Enlarges the whole interface on big or high-resolution screens (when it is not fitted to the window)." />
+                    <TextBlock Grid.Row="3" Text="Battle text" VerticalAlignment="Center" />
+                    <ComboBox Grid.Row="3" Grid.Column="1" ItemsSource="{Binding BattleTextOptions}" SelectedIndex="{Binding BattleTextIndex}" HorizontalAlignment="Stretch" Margin="0,2"
+                              ToolTip.Tip="How quickly battle messages appear, one line at a time. Acting shows the rest at once." />
                   </Grid>
                   <TextBlock Classes="dim" FontSize="{DynamicResource Font12}" TextWrapping="Wrap"
-                             Text="High contrast uses black backgrounds and bright colours. Colour-blind friendly shows good news in blue and bad news in orange instead of green and red." />
+                             Text="High contrast uses black backgrounds and bright colours. Colour-blind friendly shows good news in blue and bad news in orange instead of green and red. Interface zoom applies when the interface is not fitted to the window." />
                   <TextBlock Classes="h2" Text="Game" />
                   <Grid ColumnDefinitions="120,*">
                     <TextBlock Text="Difficulty" VerticalAlignment="Center" />

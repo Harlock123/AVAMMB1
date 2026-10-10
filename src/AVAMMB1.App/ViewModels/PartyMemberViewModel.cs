@@ -43,6 +43,10 @@ public sealed partial class PartyMemberViewModel : ObservableObject
     /// <summary>Whether healthy.</summary>
     public bool IsOk => Character.Conditions == Condition.None;
     /// <summary>HP fraction 0..1.</summary>
+    /// <summary>Badly hurt (a quarter of HP or less, still standing): shown as text too, not only colour.</summary>
+    public bool LowHp => Character.IsAlive && Character.Hp > 0 && Character.Hp * 4 <= Character.MaxHp;
+
+    /// <summary>Hit point fraction.</summary>
     public double HpFraction => Character.MaxHp == 0 ? 0 : Math.Clamp((double)Character.Hp / Character.MaxHp, 0, 1);
     /// <summary>SP fraction 0..1.</summary>
     public double SpFraction => Character.MaxSp == 0 ? 0 : Math.Clamp((double)Character.Sp / Character.MaxSp, 0, 1);

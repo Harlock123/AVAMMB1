@@ -6,6 +6,11 @@ All notable changes to this project are documented here. The format follows
 ## [Unreleased]
 
 ### Added
+- Accessibility: an interface zoom (100-150%) for big or high-resolution screens when the interface
+  is not fitted to the window; a battle text speed (Instant, Fast, Normal, Slow) that shows battle
+  messages one line at a time (acting, or Continue, shows the rest; auto-fight waits for the text);
+  and a LOW badge with bold hit points on the card of a badly hurt character, so it does not depend
+  on colour.
 - The Silent Choir, a mid-game quest chain (levels 8-12) through all six towns. Magistrate Holloway
   in Brindlemoor, Loremaster Durin in Thornwick (a ledger to take from the Choir's bursar in the Deep
   Mines), the Saltreach Customs House, Sister Veyl in Duskmere, the Sealed Archive in Port Ashkar (a

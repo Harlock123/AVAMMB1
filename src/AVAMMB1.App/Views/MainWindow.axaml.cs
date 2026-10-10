@@ -21,6 +21,7 @@ public partial class MainWindow : Window
     public static readonly Size DesignSize = new(1280, 800);
 
     private readonly Viewbox _scaler = new() { Stretch = Stretch.Uniform };
+    private readonly LayoutTransformControl _zoomer = new();
     private GamepadService? _gamepad;
 
     /// <summary>Creates the window.</summary>
@@ -52,29 +53,41 @@ public partial class MainWindow : Window
     private void ApplyFullscreen(MainViewModel vm) =>
         WindowState = vm.Services.Settings.Fullscreen ? WindowState.FullScreen : WindowState.Normal;
 
-    /// <summary>Fit-to-window renders the 1280x800 layout scaled uniformly; otherwise it fills the window at 100%.</summary>
+    /// <summary>
+    /// Fit-to-window renders the 1280x800 layout scaled uniformly; otherwise it fills the window, enlarged
+    /// by the interface zoom (for big or high-resolution screens).
+    /// </summary>
     private void ApplyLayout(MainViewModel vm)
     {
-        var fit = vm.Services.Settings.FitToWindow;
-        if (fit && ReferenceEquals(Content, Screen))
+        var settings = vm.Services.Settings;
+        var zoom = Math.Clamp(settings.InterfaceZoom, 100, 150) / 100.0;
+        Content = null;
+        _scaler.Child = null;
+        _zoomer.Child = null;
+        if (settings.FitToWindow)
         {
-            Content = null;
             Screen.Width = DesignSize.Width;
             Screen.Height = DesignSize.Height;
             _scaler.Child = Screen;
             Content = _scaler;
             MinWidth = 640;
             MinHeight = 400;
+            return;
         }
-        else if (!fit && ReferenceEquals(Content, _scaler))
+        Screen.Width = double.NaN;
+        Screen.Height = double.NaN;
+        if (zoom > 1.001)
         {
-            _scaler.Child = null;
-            Screen.Width = double.NaN;
-            Screen.Height = double.NaN;
-            Content = Screen;
-            MinWidth = 1024;
-            MinHeight = 700;
+            _zoomer.LayoutTransform = new ScaleTransform(zoom, zoom);
+            _zoomer.Child = Screen;
+            Content = _zoomer;
         }
+        else
+        {
+            Content = Screen;
+        }
+        MinWidth = 1024 * zoom;
+        MinHeight = 700 * zoom;
     }
 
     private void OnKeyDownTunnel(object? sender, KeyEventArgs e)

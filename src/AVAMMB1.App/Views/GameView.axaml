@@ -131,7 +131,13 @@
                 <Grid Grid.Row="3" Grid.ColumnSpan="2" ColumnDefinitions="26,*,60" Margin="0,4,0,0">
                   <TextBlock Text="HP" FontSize="{DynamicResource Font11}" Classes="dim" />
                   <ProgressBar Grid.Column="1" Minimum="0" Maximum="1" Value="{Binding HpFraction}" Foreground="{DynamicResource HpBrush}" VerticalAlignment="Center" />
-                  <TextBlock Grid.Column="2" Text="{Binding HpText}" FontSize="{DynamicResource Font11}" HorizontalAlignment="Right" />
+                  <Border Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center" Background="{DynamicResource BadgeBg}" CornerRadius="2" Padding="3,0"
+                          IsVisible="{Binding LowHp}" ToolTip.Tip="Badly hurt">
+                    <TextBlock Text="LOW" FontSize="{DynamicResource Font11}" FontWeight="Bold" />
+                  </Border>
+                  <TextBlock Grid.Column="2" Text="{Binding HpText}" FontSize="{DynamicResource Font11}" HorizontalAlignment="Right" Classes.low="{Binding LowHp}">
+                    <TextBlock.Styles><Style Selector="TextBlock.low"><Setter Property="FontWeight" Value="Bold" /></Style></TextBlock.Styles>
+                  </TextBlock>
                 </Grid>
                 <Grid Grid.Row="4" Grid.ColumnSpan="2" ColumnDefinitions="26,*,60">
                   <TextBlock Text="SP" FontSize="{DynamicResource Font11}" Classes="dim" />

@@ -68,6 +68,8 @@ Code identifiers, the solution and executables use the name **`AVAMMB1`** (`AVAM
 - **Towns** with inns (rest, save, roster of up to 18 characters), temples (heal, cure, raise dead,
   donate), taverns (food, rumors), smithies and magic shops, training grounds, and **academies**
   where gold buys permanent statistic points (each lesson dearer than the last - a late-game gold sink).
+- **Accessibility**: high-contrast and colour-blind friendly themes, larger text, an interface zoom,
+  adjustable battle text speed, and text cues (LOW) that don't depend on colour.
 - **Autosave and save pictures**: three rotating autosaves (new areas, before bosses); every save
   shows a picture of the view and the time played.
 - **Shopping help**: gear for sale is compared with what the shopper wears, and "Sell junk" sells
