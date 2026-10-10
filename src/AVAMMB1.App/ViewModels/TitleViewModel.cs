@@ -22,6 +22,7 @@ public sealed partial class TitleViewModel : ViewModelBase
         _continueSlot = recent ?? 0;
         var t = main.Services.Textures;
         RefreshUpdate();
+        DailyRecords = AVAMMB1.Core.Session.DailyCard.Records(main.Services.HallOfFameStore.Load(), MainViewModel.Today);
         Showcase = new[] { "Monsters/vault_warden", "Monsters/crypt_lich", "Monsters/minotaur", "Monsters/troll", "Monsters/kobold_chief" }
             .Select(t.Bitmap).Where(b => b is not null).Cast<Bitmap>().ToList();
     }
@@ -57,6 +58,9 @@ public sealed partial class TitleViewModel : ViewModelBase
 
     /// <summary>The release download page.</summary>
     public static string ReleasesPage => AVAMMB1.Core.Info.UpdateCheck.ReleasesPage;
+
+    /// <summary>Daily challenge records (today, yesterday, best), or null before the first.</summary>
+    public string? DailyRecords { get; }
 
     /// <summary>Last error.</summary>
     public string? Error { get; private set; }

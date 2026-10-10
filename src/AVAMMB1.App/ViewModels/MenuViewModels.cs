@@ -694,7 +694,21 @@ public sealed partial class EndingViewModel : ViewModelBase
         {
             Text = $"The daily challenge party fell on level {state.Depth} of the Depths Below. The deepest it reached was level {state.DeepestDepth} - it is in the Hall of Fame.";
         }
+        if (state.DailyChallenge is not null)
+        {
+            ShareText = AVAMMB1.Core.Session.DailyCard.Text(state, main.Services.Content, climbedOut: victory);
+        }
     }
+
+    /// <summary>The daily challenge result card to copy and share, if this was a daily challenge.</summary>
+    public string? ShareText { get; }
+
+    /// <summary>Whether there is a result card.</summary>
+    public bool CanShare => ShareText is not null;
+
+    /// <summary>"Copied!" after the card was copied.</summary>
+    [ObservableProperty]
+    private string _shareNote = "";
 
     /// <summary>Whether this is a victory.</summary>
     public bool Victory { get; }

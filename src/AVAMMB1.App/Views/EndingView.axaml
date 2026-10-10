@@ -6,7 +6,15 @@
     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="14" MaxWidth="760">
       <TextBlock Classes="title" Text="{Binding Title}" FontSize="{DynamicResource Font48}" HorizontalAlignment="Center" />
       <TextBlock Text="{Binding Text}" TextWrapping="Wrap" FontSize="{DynamicResource Font18}" TextAlignment="Center" />
-      <TextBlock Text="{Binding Stats}" Classes="dim" TextWrapping="Wrap" TextAlignment="Center" />
+      <TextBlock Text="{Binding Stats}" Classes="dim" TextWrapping="Wrap" TextAlignment="Center" IsVisible="{Binding !CanShare}" />
+      <Border IsVisible="{Binding CanShare}" HorizontalAlignment="Center" Padding="16,10" CornerRadius="4"
+              BorderBrush="{DynamicResource Gold}" BorderThickness="1" Background="#40000000">
+        <SelectableTextBlock Text="{Binding ShareText}" FontSize="{DynamicResource Font16}" TextWrapping="Wrap" />
+      </Border>
+      <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="10" IsVisible="{Binding CanShare}">
+        <Button x:Name="CopyCard" Content="Copy result (to share)" />
+        <TextBlock Text="{Binding ShareNote}" Classes="dim" VerticalAlignment="Center" />
+      </StackPanel>
       <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
         <Button Content="Load last save" Command="{Binding LoadLastCommand}" IsVisible="{Binding CanLoad}" />
         <Button Content="Return to title" Command="{Binding ToTitleCommand}" FontWeight="Bold" />

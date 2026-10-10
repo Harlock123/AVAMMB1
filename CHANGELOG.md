@@ -6,6 +6,10 @@ All notable changes to this project are documented here. The format follows
 ## [Unreleased]
 
 ### Added
+- Daily Challenge results to share: when a run ends (climbed out or fallen), a result card sums it
+  up - date, depth, who still stands, foes, battles, chests, steps, time and the party - and Copy result
+  puts it on the clipboard to paste anywhere. The title screen shows today's, yesterday's and the best
+  daily depth under the Daily Challenge button.
 - Update check: at start the game asks GitHub, about once a day, for the newest release; if it is newer,
   the title screen says so with a button to the download page. Nothing is downloaded or installed and
   nothing is sent but the request itself; offline it stays quiet. Settings > Game can switch it off.

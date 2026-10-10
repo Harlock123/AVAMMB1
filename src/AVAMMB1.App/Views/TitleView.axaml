@@ -37,6 +37,8 @@
       <Button Classes="big" HorizontalAlignment="Center" Content="Settings  (S)" Command="{Binding SettingsCommand}" />
       <Button Classes="big" HorizontalAlignment="Center" Content="Daily Challenge" Command="{Binding DailyChallengeCommand}"
               ToolTip.Tip="Today's Depths Below - the same levels for everyone, a ready party at level 15. How deep can you go?" />
+      <TextBlock Text="{Binding DailyRecords}" IsVisible="{Binding DailyRecords, Converter={x:Static ObjectConverters.IsNotNull}}"
+                 Classes="dim" FontSize="{DynamicResource Font12}" HorizontalAlignment="Center" Margin="0,-3,0,0" />
       <Button Classes="big" HorizontalAlignment="Center" Content="Hall of Fame" Command="{Binding HallOfFameCommand}" />
       <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="6">
         <Button Content="Help  (F1)" Command="{Binding HelpCommand}" />

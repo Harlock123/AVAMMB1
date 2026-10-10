@@ -172,7 +172,7 @@ public static class HeadlessRunner
     private static void Capture(string dir, string name)
     {
         Pump();
-        if (_window.DataContext is MainViewModel { CurrentScreen: EndingViewModel } && !name.Contains("ending", StringComparison.Ordinal))
+        if (_window.DataContext is MainViewModel { CurrentScreen: EndingViewModel { CanShare: false } } && !name.Contains("ending", StringComparison.Ordinal))
         {
             throw new InvalidOperationException($"Screenshot {name} would show the game-over screen: the party died earlier in the tour.");
         }
@@ -911,6 +911,16 @@ public static class HeadlessRunner
         if (vm.Services.HallOfFameStore.Load().DailyBest.Count == 0)
         {
             throw new InvalidOperationException("The daily challenge was not recorded.");
+        }
+        if (vm.CurrentScreen is not EndingViewModel { CanShare: true })
+        {
+            throw new InvalidOperationException("The daily challenge has no result card.");
+        }
+        Capture(dir, "45-daily-result");
+        vm.ShowTitle();
+        if (((TitleViewModel)vm.CurrentScreen).DailyRecords is null)
+        {
+            throw new InvalidOperationException("The title screen does not show the daily records.");
         }
         vm.ShowHallOfFame();
         Capture(dir, "40-hall-of-fame");

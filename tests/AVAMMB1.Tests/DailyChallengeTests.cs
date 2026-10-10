@@ -60,4 +60,40 @@ public class DailyChallengeTests
         Assert.True(hof.RecordDaily("2026-10-10", 6));
         Assert.Equal(6, hof.DailyBest["2026-10-10"]);
     }
+
+    [Fact]
+    public void TheResultCard_SumsUpTheRun()
+    {
+        var s = Start("2026-10-10", 1);
+        s.State.DeepestDepth = 7;
+        s.State.Depth = 5;
+        s.State.Kills["ghoul"] = 12;
+        s.State.Kills["wight"] = 3;
+        s.State.Count(Chronicle.Keys.BattlesWon, 6);
+        s.State.Steps = 412;
+        s.State.PlaySeconds = 42 * 60;
+        s.State.Party[1].Hp = 0;
+        s.State.Party[1].Conditions |= AVAMMB1.Core.Rules.Condition.Dead;
+
+        var fell = DailyCard.Text(s.State, s.Content, climbedOut: false);
+        Assert.StartsWith("AVAM&M Daily Challenge 2026-10-10\nFell on level 5 (deepest 7)\n▼▼▼▼▼▼▼\n", fell, StringComparison.Ordinal);
+        Assert.Contains("♥✝♥♥♥♥ 5 of 6 standing", fell, StringComparison.Ordinal);
+        Assert.Contains("Foes beaten 15 · battles 6 · chests 0 · steps 412 · 0:42", fell, StringComparison.Ordinal);
+        Assert.Contains(s.State.Party[0].Name + " (Knight 15)", fell, StringComparison.Ordinal);
+
+        Assert.Contains("Climbed out from level 7", DailyCard.Text(s.State, s.Content, climbedOut: true), StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public void TheTitleScreen_ShowsToday_Yesterday_AndTheBest()
+    {
+        var hof = new HallOfFame();
+        Assert.Null(DailyCard.Records(hof, "2026-10-10"));
+        hof.RecordDaily("2026-10-01", 12);
+        hof.RecordDaily("2026-10-09", 9);
+        Assert.Equal("Today: not tried yet · yesterday: level 9 · best: level 12 (2026-10-01)", DailyCard.Records(hof, "2026-10-10"));
+        hof.RecordDaily("2026-10-10", 4);
+        Assert.Equal("Today: level 4 · yesterday: level 9 · best: level 12 (2026-10-01)", DailyCard.Records(hof, "2026-10-10"));
+        Assert.Equal("Today: not tried yet · best: level 12 (2026-10-01)", DailyCard.Records(hof, "2026-10-20"));
+    }
 }
