@@ -5,6 +5,8 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+## [1.11.0] - 2026-10-10
+
 ### Added
 - The Depths Below, an endless post-game dungeon: once the Umbral Wyrm is dead, a stair beneath its
   lair in the Sunless Deep leads down into generated levels - a new 16x16 maze each descent, with a
