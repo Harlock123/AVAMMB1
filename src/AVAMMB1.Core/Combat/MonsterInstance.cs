@@ -30,8 +30,17 @@ public sealed class MonsterInstance(MonsterDef def, int hp)
     /// </summary>
     public bool Elite { get; private set; }
 
+    /// <summary>Levels added in New Game+ (the world's monsters grow with the party).</summary>
+    public int LevelBoost { get; set; }
+
+    /// <summary>The level it fights at (its own, plus any New Game+ boost).</summary>
+    public int Level => Def.Level + LevelBoost;
+
+    /// <summary>Experience and gold for beating it, in percent of its own (New Game+).</summary>
+    public int RewardPercent { get; set; } = 100;
+
     /// <summary>Current armor class including penalties.</summary>
-    public int ArmorClass => Def.ArmorClass + (Elite ? 2 : 0) - ArmorPenalty;
+    public int ArmorClass => Def.ArmorClass + (Elite ? 2 : 0) + LevelBoost / 3 - ArmorPenalty;
 
     /// <summary>Turns this monster into an elite (see <see cref="Elite"/>).</summary>
     public void MakeElite()

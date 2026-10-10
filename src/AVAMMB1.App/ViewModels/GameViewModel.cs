@@ -160,7 +160,7 @@ public sealed partial class GameViewModel : ViewModelBase
     /// <summary>Party gold and gems.</summary>
     public string GoldText => $"Purse {Session.State.Gold}  (party {Session.State.TotalGold})   {Session.State.Gems} gems";
     /// <summary>Day counter and light.</summary>
-    public string TimeText => $"Day {Session.State.Day}, {Session.State.ClockText} ({Session.State.PartOfDay})"
+    public string TimeText => (Session.State.Cycle > 0 ? $"NG+{Session.State.Cycle}  " : "") + $"Day {Session.State.Day}, {Session.State.ClockText} ({Session.State.PartOfDay})"
         + (Session.CurrentMap.IsDarkness(Session.State.X, Session.State.Y) ? "   Magical darkness" : LightText)
         + (Session.IsAntiMagicHere ? "   Anti-magic" : "");
     /// <summary>The party's light: lantern oil and torch/spell steps, or "(dark)" in an unlit dark place.</summary>

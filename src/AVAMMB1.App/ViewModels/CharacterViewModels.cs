@@ -754,4 +754,10 @@ public sealed partial class GameMenuViewModel(GameViewModel game) : ViewModelBas
         game.AutoSave(null); // an ironman run is saved as it is left (autosave rules apply otherwise)
         game.Main.ShowTitle();
     }
+
+    /// <summary>Whether New Game+ can begin (the game has been won).</summary>
+    public bool CanNewGamePlus => game.Services.Session.CanStartNewGamePlus;
+
+    [RelayCommand]
+    private void NewGamePlus() => game.Main.StartNewGamePlus();
 }

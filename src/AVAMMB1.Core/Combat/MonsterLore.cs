@@ -17,7 +17,7 @@ public static class MonsterLore
         {
             return $"{m.Label}: not yet studied - defeat one to learn its strengths and weaknesses.";
         }
-        var parts = new List<string> { $"level {m.Def.Level}", $"HP {Math.Max(0, m.Hp)}/{m.MaxHp}", $"AC {m.ArmorClass}" };
+        var parts = new List<string> { $"level {m.Level}", $"HP {Math.Max(0, m.Hp)}/{m.MaxHp}", $"AC {m.ArmorClass}" };
         if (m.Def.Undead)
         {
             parts.Add("undead");

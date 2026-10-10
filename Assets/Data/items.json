@@ -1170,5 +1170,140 @@
   "price": 12000,
   "teachSpell": "c_divine",
   "description": "The prayers of a saint. Teaches a cleric of the seventh circle Divine Intervention."
+ },
+ {
+  "id": "dawnbringer",
+  "name": "Dawnbringer",
+  "kind": "weapon",
+  "icon": "dawnbringer",
+  "price": 40000,
+  "damage": "4d6+5",
+  "hitBonus": 5,
+  "element": "holy",
+  "classes": [
+   "knight",
+   "paladin",
+   "archer",
+   "robber"
+  ],
+  "description": "A golden blade that hums before battle. Only heroes who have saved the world once can find it."
+ },
+ {
+  "id": "sceptre_order",
+  "name": "Sceptre of Order",
+  "kind": "weapon",
+  "icon": "sceptre_order",
+  "price": 34000,
+  "damage": "3d6+6",
+  "hitBonus": 4,
+  "element": "holy",
+  "classes": [
+   "knight",
+   "paladin",
+   "cleric"
+  ],
+  "statBonuses": {
+   "personality": 2
+  },
+  "description": "A spiked rod of white steel that makes the unquiet dead remember their graves."
+ },
+ {
+  "id": "staff_ages",
+  "name": "Staff of Ages",
+  "kind": "weapon",
+  "icon": "staff_ages",
+  "price": 30000,
+  "damage": "2d8+5",
+  "hitBonus": 4,
+  "element": "magic",
+  "twoHanded": true,
+  "statBonuses": {
+   "intellect": 3
+  },
+  "description": "Living wood that has grown through a hundred winters. Two-handed."
+ },
+ {
+  "id": "stormstring",
+  "name": "Stormstring",
+  "kind": "missile",
+  "icon": "stormstring",
+  "price": 36000,
+  "damage": "3d8+5",
+  "hitBonus": 5,
+  "element": "electric",
+  "classes": [
+   "knight",
+   "paladin",
+   "archer"
+  ],
+  "description": "Its arrows leave the string with a crack of thunder."
+ },
+ {
+  "id": "dragonking_plate",
+  "name": "Dragonking Plate",
+  "kind": "armor",
+  "icon": "dragonking_plate",
+  "price": 45000,
+  "armorClass": 11,
+  "statBonuses": {
+   "endurance": 2
+  },
+  "classes": [
+   "knight",
+   "paladin"
+  ],
+  "description": "Gilded plate worked from the scales of a dragon king."
+ },
+ {
+  "id": "starweave_cloak",
+  "name": "Starweave Cloak",
+  "kind": "armor",
+  "icon": "starweave_cloak",
+  "price": 38000,
+  "armorClass": 7,
+  "statBonuses": {
+   "intellect": 2,
+   "speed": 2
+  },
+  "description": "Woven of night sky; it turns blades like plate and weighs nothing at all."
+ },
+ {
+  "id": "archmage_hat",
+  "name": "Archmage's Hat",
+  "kind": "helmet",
+  "icon": "archmage_hat",
+  "price": 30000,
+  "armorClass": 4,
+  "statBonuses": {
+   "intellect": 3,
+   "personality": 3
+  },
+  "description": "Worn by the high council of a forgotten age. It still remembers their spells."
+ },
+ {
+  "id": "ring_ascension",
+  "name": "Ring of Ascension",
+  "kind": "ring",
+  "icon": "ring_ascension",
+  "price": 32000,
+  "armorClass": 3,
+  "statBonuses": {
+   "might": 3,
+   "speed": 3
+  },
+  "description": "A band of blue-veined gold, warm to the touch."
+ },
+ {
+  "id": "amulet_ages",
+  "name": "Amulet of Ages",
+  "kind": "amulet",
+  "icon": "amulet_ages",
+  "price": 32000,
+  "armorClass": 4,
+  "statBonuses": {
+   "luck": 3,
+   "endurance": 3
+  },
+  "description": "A violet stone that has watched the seasons turn since the world was young."
  }
 ]

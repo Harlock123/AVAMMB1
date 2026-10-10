@@ -178,7 +178,9 @@ The game code is licensed separately under the MIT license (see [LICENSE](LICENS
 | `Graphics/Features/tree.png` | Dungeon Crawl 32x32 tiles | `dungeon/trees/tree_2_yellow.png` |
 | `Graphics/Features/tree_autumn.png` | Dungeon Crawl 32x32 tiles | `dungeon/trees/tree_1_red.png` |
 | `Graphics/Items/amulet.png` | Dungeon Crawl 32x32 tiles | `item/amulet/celtic_blue.png` |
+| `Graphics/Items/amulet_ages.png` | Dungeon Crawl 32x32 tiles | `item/amulet/stone_3_magenta.png` |
 | `Graphics/Items/ancient_sword.png` | Dungeon Crawl 32x32 tiles | `item/weapon/ancient_sword.png` |
+| `Graphics/Items/archmage_hat.png` | Dungeon Crawl 32x32 tiles | `item/armor/artefact/urand_high_council.png` |
 | `Graphics/Items/banded_mail.png` | Dungeon Crawl 32x32 tiles | `item/armor/torso/banded_mail_1.png` |
 | `Graphics/Items/battle_axe.png` | Dungeon Crawl 32x32 tiles | `item/weapon/battle_axe_1.png` |
 | `Graphics/Items/belfry_key.png` | Dungeon Crawl 32x32 tiles | `item/misc/misc_rune.png` |
@@ -201,7 +203,9 @@ The game code is licensed separately under the MIT license (see [LICENSE](LICENS
 | `Graphics/Items/crystal_heart.png` | Dungeon Crawl 32x32 tiles | `item/misc/misc_crystal_new.png` |
 | `Graphics/Items/crystal_plate.png` | Dungeon Crawl 32x32 tiles | `item/armor/torso/crystal_plate_mail.png` |
 | `Graphics/Items/dagger.png` | Dungeon Crawl 32x32 tiles | `item/weapon/dagger_new.png` |
+| `Graphics/Items/dawnbringer.png` | Dungeon Crawl 32x32 tiles | `item/weapon/artefact/spwpn_singing_sword.png` |
 | `Graphics/Items/dragon_scale.png` | Dungeon Crawl 32x32 tiles | `item/armor/torso/green_dragon_scale_mail.png` |
+| `Graphics/Items/dragonking_plate.png` | Dungeon Crawl 32x32 tiles | `item/armor/artefact/urand_dragon_king.png` |
 | `Graphics/Items/dwarven_mail.png` | Dungeon Crawl 32x32 tiles | `item/armor/torso/dwarven_ringmail.png` |
 | `Graphics/Items/egg.png` | Dungeon Crawl 32x32 tiles | `item/misc/misc_stone_new.png` |
 | `Graphics/Items/evening_star.png` | Dungeon Crawl 32x32 tiles | `item/weapon/eveningstar_1_new.png` |
@@ -235,10 +239,12 @@ The game code is licensed separately under the MIT license (see [LICENSE](LICENS
 | `Graphics/Items/rimescale.png` | Dungeon Crawl 32x32 tiles | `item/armor/torso/ice_dragon_armor_new.png` |
 | `Graphics/Items/ring.png` | Dungeon Crawl 32x32 tiles | `item/ring/silver.png` |
 | `Graphics/Items/ring_agate.png` | Dungeon Crawl 32x32 tiles | `item/ring/agate.png` |
+| `Graphics/Items/ring_ascension.png` | Dungeon Crawl 32x32 tiles | `item/ring/gold_blue.png` |
 | `Graphics/Items/ring_gold.png` | Dungeon Crawl 32x32 tiles | `item/ring/gold.png` |
 | `Graphics/Items/ring_mail.png` | Dungeon Crawl 32x32 tiles | `item/armor/torso/elven_ringmail.png` |
 | `Graphics/Items/runeblade.png` | Dungeon Crawl 32x32 tiles | `item/weapon/triple_sword_new.png` |
 | `Graphics/Items/scarab_amulet.png` | Dungeon Crawl 32x32 tiles | `item/amulet/face_1_gold.png` |
+| `Graphics/Items/sceptre_order.png` | Dungeon Crawl 32x32 tiles | `item/weapon/artefact/urand_order.png` |
 | `Graphics/Items/scimitar.png` | Dungeon Crawl 32x32 tiles | `item/weapon/scimitar_1_new.png` |
 | `Graphics/Items/scroll.png` | Dungeon Crawl 32x32 tiles | `item/scroll/scroll-red.png` |
 | `Graphics/Items/scroll_blue.png` | Dungeon Crawl 32x32 tiles | `item/scroll/scroll-blue.png` |
@@ -248,6 +254,9 @@ The game code is licensed separately under the MIT license (see [LICENSE](LICENS
 | `Graphics/Items/small_shield.png` | Dungeon Crawl 32x32 tiles | `item/armor/shields/buckler_1_new.png` |
 | `Graphics/Items/spear.png` | Dungeon Crawl 32x32 tiles | `item/weapon/spear_1.png` |
 | `Graphics/Items/staff.png` | Dungeon Crawl 32x32 tiles | `item/weapon/quarterstaff_new.png` |
+| `Graphics/Items/staff_ages.png` | Dungeon Crawl 32x32 tiles | `item/weapon/artefact/spwpn_staff_of_olgreb.png` |
+| `Graphics/Items/starweave_cloak.png` | Dungeon Crawl 32x32 tiles | `item/armor/artefact/urand_starlight.png` |
+| `Graphics/Items/stormstring.png` | Dungeon Crawl 32x32 tiles | `item/weapon/artefact/urand_piercer_new.png` |
 | `Graphics/Items/sun_crown.png` | Dungeon Crawl 32x32 tiles | `item/armor/headgear/helmet_ego_1.png` |
 | `Graphics/Items/torch.png` | Dungeon Crawl 32x32 tiles | `item/misc/misc_lantern.png` |
 | `Graphics/Items/umbral_blade.png` | Dungeon Crawl 32x32 tiles | `item/weapon/demon_blade.png` |

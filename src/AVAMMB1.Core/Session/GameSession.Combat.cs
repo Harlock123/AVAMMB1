@@ -37,7 +37,7 @@ public sealed partial class GameSession
         }
         var ordered = monsters.Take(8).ToList();
         // Now and then a group is led by an elite: tougher, but worth far more.
-        var elite = DifficultyRules.EliteChance(State.Difficulty);
+        var elite = DifficultyRules.EliteChance(State.Difficulty) + NewGamePlus.EliteBonus(State.Cycle);
         if (Random.Chance(night ? elite * 2 : elite) && ordered.FirstOrDefault(m => !m.Def.Boss) is { } leader)
         {
             leader.MakeElite();
@@ -75,6 +75,16 @@ public sealed partial class GameSession
                 m.DamagePercent = m.DamagePercent * pct / 100;
             }
             Combat.RewardPercent = pct;
+        }
+        if (NewGamePlus.LevelBoost(State.Cycle, State.CyclePartyLevel) is var boost and > 0)
+        {
+            foreach (var m in Combat.Monsters)
+            {
+                m.LevelBoost = boost;
+                m.ScaleHp(NewGamePlus.HpPercent(m.Def.Level, boost));
+                m.DamagePercent = m.DamagePercent * NewGamePlus.DamagePercent(m.Def.Level, boost) / 100;
+                m.RewardPercent = NewGamePlus.HpPercent(m.Def.Level, boost);
+            }
         }
         _deadBeforeCombat = State.Party.Where(c => c.Has(Condition.Dead)).ToHashSet();
         _combatFlag = null;

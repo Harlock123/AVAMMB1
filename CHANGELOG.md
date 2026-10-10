@@ -6,6 +6,15 @@ All notable changes to this project are documented here. The format follows
 ## [Unreleased]
 
 ### Added
+- New Game+: after the victory, the same party can start again from Brindlemoor - levels, gear,
+  spells, gold, hirelings and the heroes at the inn are kept; quest relics are left behind and the
+  world (quests, treasure, maps, story) begins anew. Every monster fights as if as many levels higher
+  as the party was (three more each further cycle), with hit points, damage, armour, saving throws and
+  rewards to match; elites are more common. Bosses often, and strong elites sometimes, leave
+  Ascendant treasures - nine pieces found nowhere else (Dawnbringer, Sceptre of Order, Staff of Ages,
+  Stormstring, Dragonking Plate, Starweave Cloak, Archmage's Hat, Ring of Ascension, Amulet of Ages).
+  The status line shows the cycle and the Hall of Fame records each New Game+ victory. Balance tests
+  check that the first cycle is a real challenge for a party that has just won, but not a wall.
 - Hirelings: eight adventurers wait for work at the inns - Tobin the locksmith in Brindlemoor up to
   Ragna the shieldmaiden in Wintermere, levels 2 to 13. Up to two travel with the six heroes (the party
   bar makes room) for a daily wage paid each morning; they take no share of experience and never

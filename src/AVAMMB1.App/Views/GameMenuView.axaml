@@ -13,6 +13,8 @@
       <Button Classes="big" Content="Save Game" Command="{Binding SaveCommand}" />
       <Button Classes="big" Content="Load Game" Command="{Binding LoadCommand}" />
       <Button Classes="big" Content="Settings" Command="{Binding SettingsCommand}" />
+      <Button Classes="big" Content="Begin New Game+" Command="{Binding NewGamePlusCommand}" IsVisible="{Binding CanNewGamePlus}"
+              ToolTip.Tip="Start again from Brindlemoor with this party - a stronger world, and Ascendant treasures" />
       <Button Classes="big" Content="Quit to Title" Command="{Binding QuitToTitleCommand}" />
     </StackPanel>
   </Border>

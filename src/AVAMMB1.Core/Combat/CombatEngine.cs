@@ -120,7 +120,7 @@ public sealed class CombatEngine
 
     /// <summary>Total gold demanded as a bribe, or <c>null</c> if the monsters cannot be bribed.</summary>
     public int? BribeCost =>
-        ActiveMonsters.All(m => m.Def.Bribable) ? ActiveMonsters.Sum(m => m.Def.Level * 15 + 10) : null;
+        ActiveMonsters.All(m => m.Def.Bribable) ? ActiveMonsters.Sum(m => m.Level * 15 + 10) : null;
 
     /// <summary>Chance (percent) that the party escapes when running.</summary>
     public int RunChance
@@ -319,15 +319,25 @@ public sealed class CombatEngine
     private CombatRewards ComputeRewards()
     {
         var killed = Monsters.Where(m => m.IsDead || m.Turned).ToList(); // turned undead count as beaten
-        var xp = killed.Sum(m => m.Def.Xp * (m.Elite ? 3 : 1)) * DifficultyRules.Experience(_state.Difficulty) / 100 * RewardPercent / 100;
-        var gold = killed.Sum(m => Math.Max(0, m.Def.Gold.Roll(_rng)) * (m.Elite ? 3 : 1)) * DifficultyRules.Gold(_state.Difficulty) / 100 * RewardPercent / 100;
-        var gems = killed.Count(m => m.Def.Level >= 3 && _rng.Chance(10));
+        var xp = killed.Sum(m => m.Def.Xp * (m.Elite ? 3 : 1) * m.RewardPercent / 100) * DifficultyRules.Experience(_state.Difficulty) / 100 * RewardPercent / 100;
+        var gold = killed.Sum(m => Math.Max(0, m.Def.Gold.Roll(_rng)) * (m.Elite ? 3 : 1) * m.RewardPercent / 100) * DifficultyRules.Gold(_state.Difficulty) / 100 * RewardPercent / 100;
+        var gems = killed.Count(m => m.Level >= 3 && _rng.Chance(10));
         var items = new List<ItemInstance>();
         foreach (var m in killed.Where(m => m.Elite && _rng.Chance(50)))
         {
-            var pool = EliteLoot(m.Def.Level).Where(_rules.Content.Items.ContainsKey).ToList();
+            var pool = EliteLoot(m.Level).Where(_rules.Content.Items.ContainsKey).ToList();
             if (pool.Count > 0)
             {
+                var id = pool[_rng.Next(0, pool.Count)];
+                items.Add(new ItemInstance(id, _rules.Content.Item(id).Charges));
+            }
+        }
+        // New Game+: bosses (often) and strong elites (now and then) leave Ascendant treasures.
+        foreach (var m in killed.Where(m => _state.Cycle > 0 && (m.Def.Boss || (m.Elite && m.Level >= 15))))
+        {
+            if (_rng.Chance(m.Def.Boss ? NewGamePlus.BossDropChance : NewGamePlus.EliteDropChance))
+            {
+                var pool = NewGamePlus.AscendantItems.Where(_rules.Content.Items.ContainsKey).ToList();
                 var id = pool[_rng.Next(0, pool.Count)];
                 items.Add(new ItemInstance(id, _rules.Content.Item(id).Charges));
             }
@@ -503,12 +513,12 @@ public sealed class CombatEngine
             {
                 log.Add(new($"{m.Label} laughs at the holy symbol.", MessageKind.Bad));
             }
-            else if (level >= m.Def.Level + 5)
+            else if (level >= m.Level + 5)
             {
                 m.Hp = 0;
                 log.Add(new($"{m.Label} crumbles to dust!", MessageKind.Good));
             }
-            else if (_rng.Chance(Math.Clamp(40 + 8 * (level - m.Def.Level), 5, 90)))
+            else if (_rng.Chance(Math.Clamp(40 + 8 * (level - m.Level), 5, 90)))
             {
                 m.Fled = true;
                 m.Turned = true;
@@ -601,7 +611,7 @@ public sealed class CombatEngine
             log.Add(new($"{m.Label} never sleeps.", MessageKind.Combat));
             return false;
         }
-        var chance = Math.Clamp(60 + (casterLevel - m.Def.Level) * 8, 10, 95);
+        var chance = Math.Clamp(60 + (casterLevel - m.Level) * 8, 10, 95);
         if (_rng.Chance(chance))
         {
             m.Conditions |= condition;
@@ -709,7 +719,7 @@ public sealed class CombatEngine
             {
                 return;
             }
-            if (!Rulebook.IsHit(_rng.Die(20), m.Def.Level + 1, PartyArmor(target)))
+            if (!Rulebook.IsHit(_rng.Die(20), m.Level + 1, PartyArmor(target)))
             {
                 log.Add(new($"{m.Label} {attack.Verb} at {target.Name} but misses.", MessageKind.Combat, "miss"));
                 continue;
@@ -719,7 +729,7 @@ public sealed class CombatEngine
             log.Add(new($"{m.Label} {attack.Verb} {target.Name} for {dmg} damage.", MessageKind.Bad, "party_hurt"));
             HurtCharacter(target, dmg, log);
             if (attack.Inflicts != Condition.None && target.IsAlive && _rng.Chance(attack.InflictChance) &&
-                !_rules.SavingThrow(target, m.Def.Level, _rng))
+                !_rules.SavingThrow(target, m.Level, _rng))
             {
                 target.Conditions |= attack.Inflicts;
                 log.Add(new($"{target.Name} is {attack.Inflicts.ToString().ToLowerInvariant()}!", MessageKind.Bad));
@@ -756,7 +766,7 @@ public sealed class CombatEngine
             if (a.Damage.Max > 0)
             {
                 var dmg = m.ScaleDamage(a.Damage.Roll(_rng));
-                if (_rules.SavingThrow(t, m.Def.Level, _rng))
+                if (_rules.SavingThrow(t, m.Level, _rng))
                 {
                     dmg /= 2;
                 }
@@ -764,7 +774,7 @@ public sealed class CombatEngine
                 log.Add(new($"{t.Name} takes {dmg} damage.", MessageKind.Bad));
                 HurtCharacter(t, dmg, log);
             }
-            if (a.Inflicts != Condition.None && t.IsAlive && !_rules.SavingThrow(t, m.Def.Level, _rng))
+            if (a.Inflicts != Condition.None && t.IsAlive && !_rules.SavingThrow(t, m.Level, _rng))
             {
                 t.Conditions |= a.Inflicts;
                 log.Add(new($"{t.Name} is {a.Inflicts.ToString().ToLowerInvariant()}!", MessageKind.Bad));

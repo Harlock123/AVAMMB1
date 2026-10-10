@@ -906,9 +906,23 @@ public static class HeadlessRunner
         vm.ReturnToGame();
 
         // Hall of Fame: one victory, then an ironman run that falls (its save is deleted, its deeds kept).
+        // The victory leads on into New Game+.
         s.State.Won = true;
-        vm.Services.RecordRun("Victory");
-        s.State.Won = false;
+        vm.ShowVictory();
+        if (vm.CurrentScreen is not EndingViewModel { CanNewGamePlus: true } ending)
+        {
+            throw new InvalidOperationException("The victory screen does not offer New Game+.");
+        }
+        Capture(dir, "48-ending-victory");
+        ending.NewGamePlusCommand.Execute(null);
+        game = vm.Game ?? throw new InvalidOperationException("New Game+ did not start.");
+        if (s.State.Cycle != 1 || s.State.Won || s.State.MapId != s.Content.Config.StartMap)
+        {
+            throw new InvalidOperationException("New Game+ did not reset the world.");
+        }
+        Capture(dir, "49-new-game-plus");
+        game.CloseOverlay();
+        Console.WriteLine("new game+ ok");
         s.State.Ironman = true;
         game.AutoSave(null);
         if (!vm.Services.Saves.Exists(SaveGameService.IronmanSlot))

@@ -738,6 +738,12 @@ public sealed partial class EndingViewModel : ViewModelBase
     [RelayCommand]
     private void ToTitle() => _main.ShowTitle();
 
+    /// <summary>Whether the party can go on into New Game+.</summary>
+    public bool CanNewGamePlus => Victory && _main.Services.Session.CanStartNewGamePlus;
+
+    [RelayCommand]
+    private void NewGamePlus() => _main.StartNewGamePlus();
+
     [RelayCommand]
     private void LoadLast()
     {

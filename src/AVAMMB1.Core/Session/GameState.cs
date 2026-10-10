@@ -22,6 +22,12 @@ public sealed class GameState
     [System.Text.Json.Serialization.JsonIgnore]
     public IEnumerable<Characters.Character> Hirelings => Party.Where(c => c.Hireling is not null);
 
+    /// <summary>New Game+ cycle: 0 in the first game, 1 after the first victory, and so on.</summary>
+    public int Cycle { get; set; }
+
+    /// <summary>The heroes' average level when the current New Game+ cycle began (sets how much monsters grow).</summary>
+    public int CyclePartyLevel { get; set; }
+
     /// <summary>The last day whose wages the hirelings have been paid.</summary>
     public long WagesPaidDay { get; set; }
 

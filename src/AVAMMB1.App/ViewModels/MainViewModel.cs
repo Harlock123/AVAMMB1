@@ -255,6 +255,25 @@ public sealed partial class MainViewModel : ViewModelBase
         CurrentScreen = new EndingViewModel(this, victory: true, "Challenge complete", text);
     }
 
+    /// <summary>Begins New Game+ with the party that has just won.</summary>
+    public void StartNewGamePlus()
+    {
+        var log = Services.Session.StartNewGamePlus();
+        if (log.Count == 0)
+        {
+            return;
+        }
+        Game = new GameViewModel(this);
+        CurrentScreen = Game;
+        Game.AddMessages(log);
+        Game.ShowStory($"New Game+ {Services.Session.State.Cycle}",
+            "The Lodestone beats again - but the seasons remember. The world has turned back to the day your party first came to Brindlemoor, "
+            + "and everything in it has grown stronger: monsters fight as if many levels higher, elites are more common, and treasures "
+            + "of a forgotten age - the Ascendant - lie with the greatest foes. Your heroes keep their levels, gear, spells and gold. "
+            + "The quests begin again.");
+        Game.AutoSave(null);
+    }
+
     /// <summary>Shows the Hall of Fame.</summary>
     public void ShowHallOfFame() => CurrentScreen = new HallOfFameViewModel(this);
 
@@ -268,7 +287,7 @@ public sealed partial class MainViewModel : ViewModelBase
     public void ShowVictory()
     {
         Game?.CountPlayTime();
-        Services.RecordRun("Victory");
+        Services.RecordRun(Services.Session.State.Cycle > 0 ? $"Victory in New Game+ {Services.Session.State.Cycle}" : "Victory");
         if (Services.Session.State.Ironman)
         {
             Game?.AutoSave(null);

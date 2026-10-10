@@ -17,6 +17,8 @@
       </StackPanel>
       <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
         <Button Content="Load last save" Command="{Binding LoadLastCommand}" IsVisible="{Binding CanLoad}" />
+        <Button Content="New Game+ (keep the party)" Command="{Binding NewGamePlusCommand}" IsVisible="{Binding CanNewGamePlus}" FontWeight="Bold"
+                ToolTip.Tip="Start again from the beginning with this party: every monster stronger, quests and treasure renewed, and Ascendant treasures to win" />
         <Button Content="Return to title" Command="{Binding ToTitleCommand}" FontWeight="Bold" />
       </StackPanel>
     </StackPanel>
