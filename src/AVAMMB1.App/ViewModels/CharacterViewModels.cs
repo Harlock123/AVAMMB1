@@ -755,6 +755,15 @@ public sealed partial class GameMenuViewModel(GameViewModel game) : ViewModelBas
         game.Main.ShowTitle();
     }
 
+    /// <summary>Whether this is a map editor test play.</summary>
+    public bool TestPlaying => game.Main.TestPlaying;
+
+    /// <summary>Whether saving, loading and quitting are offered (not in a test play).</summary>
+    public bool NotTestPlaying => !TestPlaying;
+
+    [RelayCommand]
+    private void BackToEditor() => game.Main.EndMapTest();
+
     /// <summary>Whether New Game+ can begin (the game has been won).</summary>
     public bool CanNewGamePlus => game.Services.Session.CanStartNewGamePlus;
 

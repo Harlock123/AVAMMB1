@@ -141,6 +141,8 @@ Code identifiers, the solution and executables use the name **`AVAMMB1`** (`AVAM
   monsters, items, spells, quests and whole dungeons, or link new maps into the world with map
   patches - no rebuilding. A Mods screen switches packs on and off, and `--check-content` reports
   problems. See [docs/modding/MODDING.md](docs/modding/MODDING.md) and the example pack.
+- **Map editor** (Mods > Map editor): draw walls, doors and squares, place events, set encounters,
+  test-play the map with a party, and save it as a mod pack with a way in from the world.
 - **Data-driven content**: monsters, items, spells, races, classes, shops and maps are JSON files you
   can edit (see [docs/CONTENT_FORMAT.md](docs/CONTENT_FORMAT.md)); put a `Content` folder next to the
   executable or pass `--content DIR` to mod the game without rebuilding.
@@ -200,7 +202,8 @@ All screenshots are real frames rendered by the game itself (Avalonia headless +
 | ![Travel](docs/screenshots/43-travel.png) The travel map | ![Daily](docs/screenshots/44-daily-challenge.png) The Daily Challenge |
 | ![Daily result](docs/screenshots/45-daily-result.png) A daily challenge result card, ready to share | ![Tip](docs/screenshots/46-tip.png) A tip for new players |
 | ![Hireling](docs/screenshots/47-hireling.png) A hireling joins at the inn | ![Victory](docs/screenshots/48-ending-victory.png) Victory - and New Game+ |
-| ![New Game+](docs/screenshots/49-new-game-plus.png) New Game+ begins | |
+| ![New Game+](docs/screenshots/49-new-game-plus.png) New Game+ begins | ![Map editor](docs/screenshots/50-map-editor.png) The map editor |
+| ![Test play](docs/screenshots/51-map-test-play.png) Test-playing an edited map | |
 
 ## Download and install
 

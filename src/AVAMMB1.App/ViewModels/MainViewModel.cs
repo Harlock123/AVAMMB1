@@ -130,6 +130,57 @@ public sealed partial class MainViewModel : ViewModelBase
     /// <summary>Shows the release notes for all versions.</summary>
     public void ShowAllNotes() => CurrentScreen = new WhatsNewViewModel(AllReleaseNotes(), ShowTitle);
 
+    private MapEditorViewModel? _testEditor;
+    private (string Id, AVAMMB1.Core.World.GameMap? Old)? _testMap;
+
+    /// <summary>Opens the map editor.</summary>
+    public void ShowMapEditor() => CurrentScreen = new MapEditorViewModel(this);
+
+    /// <summary>Test-plays a map from the editor with the premade party.</summary>
+    /// <param name="editor">The editor to come back to.</param>
+    /// <param name="map">The edited map.</param>
+    /// <param name="x">Start X.</param>
+    /// <param name="y">Start Y.</param>
+    /// <param name="level">Party level.</param>
+    /// <exception cref="InvalidDataException">The map is malformed.</exception>
+    public void StartMapTest(MapEditorViewModel editor, AVAMMB1.Core.Content.MapDef map, int x, int y, int level)
+    {
+        var old = Services.Content.UseEditedMap(map);
+        _testMap = (map.Id, old);
+        _testEditor = editor;
+        var party = Services.Content.Config.Premades.Select(Services.Session.Factory.CreatePremade).ToList();
+        Services.Session.StartTestPlay(map.Id, party, x, y, level);
+        Game = new GameViewModel(this);
+        CurrentScreen = Game;
+        Game.ShowStory(AVAMMB1.Core.Info.Loc.T("Test play"),
+            AVAMMB1.Core.Info.Loc.T("The premade party walks your map. Nothing is saved. Open the game menu (Esc) and choose Back to editor when you are done."));
+    }
+
+    /// <summary>Whether a map editor test play is running.</summary>
+    public bool TestPlaying => _testEditor is not null && Services.Session.TestPlaying;
+
+    /// <summary>Ends a test play and returns to the editor.</summary>
+    /// <param name="how">What happened, for the editor's status line.</param>
+    public void EndMapTest(string? how = null)
+    {
+        Services.Session.EndTestPlay();
+        if (_testMap is { } t)
+        {
+            Services.Content.RestoreMap(t.Id, t.Old);
+        }
+        _testMap = null;
+        Game = null;
+        var editor = _testEditor;
+        _testEditor = null;
+        if (editor is null)
+        {
+            ShowTitle();
+            return;
+        }
+        editor.TestPlayEnded(how ?? AVAMMB1.Core.Info.Loc.T("Back from the test play."));
+        CurrentScreen = editor;
+    }
+
     /// <summary>Shows the Mods screen.</summary>
     public void ShowMods() => CurrentScreen = new ModsViewModel(this);
 
@@ -287,6 +338,11 @@ public sealed partial class MainViewModel : ViewModelBase
     /// <summary>Shows the victory screen.</summary>
     public void ShowVictory()
     {
+        if (TestPlaying)
+        {
+            EndMapTest(AVAMMB1.Core.Info.Loc.T("The test play reached a victory event."));
+            return;
+        }
         Game?.CountPlayTime();
         Services.RecordRun(Services.Session.State.Cycle > 0 ? $"Victory in New Game+ {Services.Session.State.Cycle}" : "Victory");
         if (Services.Session.State.Ironman)
@@ -299,6 +355,11 @@ public sealed partial class MainViewModel : ViewModelBase
     /// <summary>Shows the game over screen.</summary>
     public void ShowGameOver()
     {
+        if (TestPlaying)
+        {
+            EndMapTest(AVAMMB1.Core.Info.Loc.T("The party fell in the test play."));
+            return;
+        }
         var state = Services.Session.State;
         if (state.Ironman)
         {

@@ -11,12 +11,13 @@
       <Button Classes="big" Content="{l:T 'Travel map'}" Command="{Binding TravelCommand}" ToolTip.Tip="{l:T 'Travel to a town you have visited (also the T key)'}" />
       <Button Classes="big" Content="{l:T 'Describe surroundings'}" Command="{Binding DescribeCommand}" ToolTip.Tip="{l:T 'Tells you in the log what is around the party (also the L key)'}" />
       <Button Classes="big" Content="{l:T 'Help'}" Command="{Binding HelpCommand}" />
-      <Button Classes="big" Content="{l:T 'Save Game'}" Command="{Binding SaveCommand}" />
-      <Button Classes="big" Content="{l:T 'Load Game'}" Command="{Binding LoadCommand}" />
+      <Button Classes="big" Content="{l:T 'Back to editor'}" Command="{Binding BackToEditorCommand}" IsVisible="{Binding TestPlaying}" />
+      <Button Classes="big" Content="{l:T 'Save Game'}" Command="{Binding SaveCommand}" IsVisible="{Binding NotTestPlaying}" />
+      <Button Classes="big" Content="{l:T 'Load Game'}" Command="{Binding LoadCommand}" IsVisible="{Binding NotTestPlaying}" />
       <Button Classes="big" Content="{l:T 'Settings'}" Command="{Binding SettingsCommand}" />
       <Button Classes="big" Content="{l:T 'Begin New Game+'}" Command="{Binding NewGamePlusCommand}" IsVisible="{Binding CanNewGamePlus}"
               ToolTip.Tip="{l:T 'Start again from Brindlemoor with this party - a stronger world, and Ascendant treasures'}" />
-      <Button Classes="big" Content="{l:T 'Quit to Title'}" Command="{Binding QuitToTitleCommand}" />
+      <Button Classes="big" Content="{l:T 'Quit to Title'}" Command="{Binding QuitToTitleCommand}" IsVisible="{Binding NotTestPlaying}" />
     </StackPanel>
   </Border>
 </UserControl>

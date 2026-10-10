@@ -31,6 +31,26 @@ screen) and restart.
 
 `game.json` (start position, starting party, intro) cannot be changed by a pack.
 
+## The map editor
+
+*Mods > Map editor* draws maps without writing JSON by hand:
+
+* **Tools** - Wall, Door, Locked, Secret and Open work on a square's sides (click near the side; drag
+  to draw a line); Rock, Floor, Darkness and Anti-magic paint squares; Event places a new event of the
+  chosen type; Start marks where test plays (and the way in) arrive.
+* **Square tab** - the events on the selected square, each editable as JSON (every field is in
+  [CONTENT_FORMAT.md](../CONTENT_FORMAT.md)); change `x`/`y` to move one.
+* **Map tab** - id, name, kind, size, textures, music, darkness and random encounters
+  (`monster count weight` per line).
+* **File tab** - open a copy of any map, start a new one, save into a pack folder in the Mods folder
+  (it writes `pack.json`, `Maps/<id>.json` and, if asked, a way in from another map in
+  `mapPatches.json`), and **Test play**: the premade party, at the level you choose and with a lantern,
+  walks the map; nothing is saved, and the game menu's *Back to editor* returns.
+
+The editor lists what is wrong as you work (unknown monsters, shops, items or maps, events on solid
+squares or out of reach of the start). Saved maps are ordinary pack files - edit them further by hand
+if you like. Switch the pack on in Mods and restart to play it in the game.
+
 ## Checking a pack
 
 Run the game with `--check-content` (optionally `--mods <folder>`): it lists the packs it found,

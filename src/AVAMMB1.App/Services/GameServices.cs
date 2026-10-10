@@ -44,6 +44,10 @@ public sealed class GameServices(
     /// <param name="outcome">"Victory" or "Fell in ...".</param>
     public void RecordRun(string outcome)
     {
+        if (Session.TestPlaying)
+        {
+            return;
+        }
         var hof = HallOfFameStore.Load();
         hof.Add(HallOfFameEntry.From(Session.State, Content, outcome));
         if (Session.State.DailyChallenge is { } date)

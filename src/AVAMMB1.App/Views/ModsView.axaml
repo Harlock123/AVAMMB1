@@ -13,6 +13,7 @@
           <StackPanel Orientation="Horizontal" Spacing="8" Margin="0,4">
             <TextBlock Text="{Binding Folder}" Foreground="{DynamicResource Gold}" VerticalAlignment="Center" TextWrapping="Wrap" />
             <Button x:Name="OpenFolder" Content="{l:T 'Open folder'}" />
+            <Button Content="{l:T 'Map editor'}" Command="{Binding MapEditorCommand}" ToolTip.Tip="{l:T 'Make your own maps and test-play them; they are saved as a mod pack'}" />
           </StackPanel>
           <TextBlock Text="{Binding Active}" Classes="dim" />
           <TextBlock Text="{Binding Problems}" IsVisible="{Binding HasProblems}" Foreground="{DynamicResource Bad}" TextWrapping="Wrap" />

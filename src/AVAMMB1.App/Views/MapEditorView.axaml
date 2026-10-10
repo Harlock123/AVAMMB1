@@ -1,0 +1,143 @@
+<UserControl xmlns:l="using:AVAMMB1.App.Localization"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:AVAMMB1.App.ViewModels"
+             xmlns:c="using:AVAMMB1.App.Controls"
+             x:Class="AVAMMB1.App.Views.MapEditorView" x:DataType="vm:MapEditorViewModel">
+  <Grid Background="{DynamicResource ScreenBg}" ColumnDefinitions="*,440" RowDefinitions="Auto,*,Auto" Margin="10">
+    <StackPanel Orientation="Horizontal" Spacing="10" Margin="0,0,0,6">
+      <TextBlock Classes="title" Text="{l:T 'Map Editor'}" VerticalAlignment="Center" />
+      <TextBlock Text="{Binding ToolText, StringFormat='({0})'}" Classes="dim" VerticalAlignment="Center" />
+    </StackPanel>
+    <DockPanel Grid.Row="1" Margin="0,0,10,0">
+      <ItemsControl DockPanel.Dock="Top" ItemsSource="{Binding Tools}" Margin="0,0,0,6">
+        <ItemsControl.ItemsPanel>
+          <ItemsPanelTemplate><WrapPanel /></ItemsPanelTemplate>
+        </ItemsControl.ItemsPanel>
+        <ItemsControl.ItemTemplate>
+          <DataTemplate x:DataType="vm:ToolRow">
+            <Button Classes="chip" Content="{Binding Label}" ToolTip.Tip="{Binding Tip}" Margin="0,0,4,4"
+                    Command="{Binding $parent[UserControl].((vm:MapEditorViewModel)DataContext).UseToolCommand}" CommandParameter="{Binding Tool}" />
+          </DataTemplate>
+        </ItemsControl.ItemTemplate>
+      </ItemsControl>
+      <Border Classes="panel" Padding="4">
+        <c:MapEditorCanvas x:Name="Canvas" Draft="{Binding Draft}" Version="{Binding Version}" Selected="{Binding Selected}" Start="{Binding Start}" />
+      </Border>
+    </DockPanel>
+    <Border Grid.Row="1" Grid.Column="1" Classes="panel" Padding="8">
+      <TabControl>
+        <TabItem Header="{l:T 'Square'}">
+          <ScrollViewer>
+            <StackPanel Spacing="6">
+              <TextBlock Text="{Binding SelectedText}" TextWrapping="Wrap" />
+              <Grid ColumnDefinitions="Auto,*">
+                <TextBlock Text="{l:T 'New events:'}" VerticalAlignment="Center" Margin="0,0,6,0" />
+                <ComboBox Grid.Column="1" ItemsSource="{Binding EventTypes}" SelectedIndex="{Binding NewEventTypeIndex}" HorizontalAlignment="Stretch"
+                          ToolTip.Tip="{l:T 'The type the Event tool places'}" />
+              </Grid>
+              <ListBox ItemsSource="{Binding CellEvents}" SelectedItem="{Binding SelectedEvent}" MaxHeight="120">
+                <ListBox.ItemTemplate>
+                  <DataTemplate x:DataType="vm:EventRow">
+                    <TextBlock Text="{Binding Label}" />
+                  </DataTemplate>
+                </ListBox.ItemTemplate>
+              </ListBox>
+              <StackPanel Spacing="6" IsVisible="{Binding HasEvent}">
+                <TextBlock Classes="dim" FontSize="{DynamicResource Font12}" TextWrapping="Wrap"
+                           Text="{l:T 'The event as JSON - every field is described in docs/CONTENT_FORMAT.md. Change x and y to move it.'}" />
+                <TextBox Text="{Binding EventJson}" AcceptsReturn="True" TextWrapping="NoWrap" FontFamily="monospace" FontSize="{DynamicResource Font12}" MinHeight="220" MaxHeight="300" />
+                <StackPanel Orientation="Horizontal" Spacing="6">
+                  <Button Content="{l:T 'Apply'}" Command="{Binding ApplyEventCommand}" FontWeight="Bold" />
+                  <Button Content="{l:T 'Delete event'}" Command="{Binding DeleteEventCommand}" />
+                </StackPanel>
+              </StackPanel>
+            </StackPanel>
+          </ScrollViewer>
+        </TabItem>
+        <TabItem Header="{l:T 'Map'}">
+          <ScrollViewer>
+            <Grid ColumnDefinitions="110,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
+              <TextBlock Text="{l:T 'Id'}" VerticalAlignment="Center" />
+              <TextBox Grid.Column="1" Text="{Binding MapId}" Margin="0,2" />
+              <TextBlock Grid.Row="1" Text="{l:T 'Name'}" VerticalAlignment="Center" />
+              <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding MapName}" Margin="0,2" />
+              <TextBlock Grid.Row="2" Text="{l:T 'Kind'}" VerticalAlignment="Center" />
+              <ComboBox Grid.Row="2" Grid.Column="1" ItemsSource="{Binding Kinds}" SelectedIndex="{Binding KindIndex}" HorizontalAlignment="Stretch" Margin="0,2" />
+              <TextBlock Grid.Row="3" Text="{l:T 'Size'}" VerticalAlignment="Center" />
+              <StackPanel Grid.Row="3" Grid.Column="1" Orientation="Horizontal" Spacing="6" Margin="0,2">
+                <NumericUpDown Value="{Binding MapWidth}" Minimum="2" Maximum="64" Increment="1" FormatString="0" Width="120" />
+                <TextBlock Text="x" VerticalAlignment="Center" />
+                <NumericUpDown Value="{Binding MapHeight}" Minimum="2" Maximum="64" Increment="1" FormatString="0" Width="120" />
+              </StackPanel>
+              <TextBlock Grid.Row="4" Text="{l:T 'Walls'}" VerticalAlignment="Center" />
+              <ComboBox Grid.Row="4" Grid.Column="1" ItemsSource="{Binding WallTextures}" SelectedItem="{Binding WallTexture}" HorizontalAlignment="Stretch" Margin="0,2" />
+              <TextBlock Grid.Row="5" Text="{l:T 'Floor'}" VerticalAlignment="Center" />
+              <ComboBox Grid.Row="5" Grid.Column="1" ItemsSource="{Binding FloorTextures}" SelectedItem="{Binding FloorTexture}" HorizontalAlignment="Stretch" Margin="0,2" />
+              <TextBlock Grid.Row="6" Text="{l:T 'Ceiling'}" VerticalAlignment="Center" />
+              <ComboBox Grid.Row="6" Grid.Column="1" ItemsSource="{Binding CeilingTextures}" SelectedItem="{Binding CeilingTexture}" HorizontalAlignment="Stretch" Margin="0,2" />
+              <TextBlock Grid.Row="7" Text="{l:T 'Music'}" VerticalAlignment="Center" />
+              <ComboBox Grid.Row="7" Grid.Column="1" ItemsSource="{Binding MusicKeys}" SelectedItem="{Binding Music}" HorizontalAlignment="Stretch" Margin="0,2" />
+              <CheckBox Grid.Row="8" Grid.Column="1" Content="{l:T 'Dark (needs light to see far)'}" IsChecked="{Binding Dark}" />
+              <TextBlock Grid.Row="9" Text="{l:T 'Encounters %'}" VerticalAlignment="Center" ToolTip.Tip="{l:T 'Chance of a random battle per step'}" />
+              <NumericUpDown Grid.Row="9" Grid.Column="1" Value="{Binding EncounterChance}" Minimum="0" Maximum="50" Increment="1" FormatString="0" Width="120" HorizontalAlignment="Left" Margin="0,2" />
+              <TextBlock Grid.Row="10" Grid.ColumnSpan="2" Classes="dim" FontSize="{DynamicResource Font12}" TextWrapping="Wrap" Margin="0,4,0,2"
+                         Text="{l:T 'Random encounters, one per line: monster count weight (e.g. kobold 1d4 3). Monster ids are in the Bestiary and in monsters.json.'}" />
+              <TextBox Grid.Row="11" Grid.ColumnSpan="2" Text="{Binding EncountersText}" AcceptsReturn="True" FontFamily="monospace" MinHeight="80" />
+              <Button Grid.Row="12" Grid.Column="1" Content="{l:T 'Apply map settings'}" Command="{Binding ApplySettingsCommand}" FontWeight="Bold" Margin="0,6,0,0" />
+            </Grid>
+          </ScrollViewer>
+        </TabItem>
+        <TabItem Header="{l:T 'File'}">
+          <ScrollViewer>
+            <StackPanel Spacing="6">
+              <StackPanel Orientation="Horizontal" Spacing="6">
+                <Button Content="{l:T 'New map'}" Command="{Binding NewMapCommand}" ToolTip.Tip="{l:T 'An empty map of the kind chosen on the Map tab'}" />
+                <ComboBox ItemsSource="{Binding OpenableMaps}" SelectedItem="{Binding OpenMapId}" Width="170" />
+                <Button Content="{l:T 'Open'}" Command="{Binding OpenMapCommand}" ToolTip.Tip="{l:T 'Opens a copy of a map (from the pack folder if it is there)'}" />
+              </StackPanel>
+              <TextBlock Classes="h2" Text="{l:T 'Save into a mod pack'}" />
+              <Grid ColumnDefinitions="110,*">
+                <TextBlock Text="{l:T 'Pack folder'}" VerticalAlignment="Center" />
+                <TextBox Grid.Column="1" Text="{Binding PackId}" />
+              </Grid>
+              <TextBlock Text="{Binding PackFolder}" Classes="dim" FontSize="{DynamicResource Font12}" TextWrapping="Wrap" />
+              <CheckBox Content="{l:T 'Add a way in from another map'}" IsChecked="{Binding LinkEntrance}" />
+              <StackPanel Orientation="Horizontal" Spacing="6" IsVisible="{Binding LinkEntrance}">
+                <ComboBox ItemsSource="{Binding OpenableMaps}" SelectedItem="{Binding EntranceMap}" Width="160" />
+                <TextBlock Text="x" VerticalAlignment="Center" />
+                <NumericUpDown Value="{Binding EntranceX}" Minimum="0" Maximum="63" FormatString="0" Width="100" />
+                <TextBlock Text="y" VerticalAlignment="Center" />
+                <NumericUpDown Value="{Binding EntranceY}" Minimum="0" Maximum="63" FormatString="0" Width="100" />
+              </StackPanel>
+              <TextBlock Classes="dim" FontSize="{DynamicResource Font12}" TextWrapping="Wrap"
+                         Text="{l:T 'The way in leads to the test-play start. Put a teleport on your map (an event) to lead back out.'}" />
+              <Button Content="{l:T 'Save'}" Command="{Binding SaveCommand}" FontWeight="Bold" />
+              <TextBlock Classes="h2" Text="{l:T 'Test play'}" />
+              <StackPanel Orientation="Horizontal" Spacing="6">
+                <TextBlock Text="{l:T 'Party level'}" VerticalAlignment="Center" />
+                <NumericUpDown Value="{Binding TestLevel}" Minimum="1" Maximum="30" FormatString="0" Width="110" />
+                <Button Content="{l:T 'Test play'}" Command="{Binding TestPlayCommand}" FontWeight="Bold"
+                        ToolTip.Tip="{l:T 'The premade party walks the map from the Start square; nothing is saved'}" />
+              </StackPanel>
+            </StackPanel>
+          </ScrollViewer>
+        </TabItem>
+      </TabControl>
+    </Border>
+    <Grid Grid.Row="2" Grid.ColumnSpan="2" ColumnDefinitions="*,Auto" Margin="0,6,0,0">
+      <StackPanel Spacing="2">
+        <TextBlock Text="{Binding Status}" Foreground="{DynamicResource Info}" TextWrapping="Wrap" />
+        <TextBlock Text="{Binding CheckText}" Classes="dim" FontSize="{DynamicResource Font12}" />
+        <ItemsControl ItemsSource="{Binding Problems}" MaxHeight="60">
+          <ItemsControl.ItemTemplate>
+            <DataTemplate x:DataType="x:String">
+              <TextBlock Text="{Binding}" Foreground="{DynamicResource Bad}" FontSize="{DynamicResource Font12}" />
+            </DataTemplate>
+          </ItemsControl.ItemTemplate>
+        </ItemsControl>
+      </StackPanel>
+      <Button Grid.Column="1" Content="{l:T 'Back (Esc)'}" Command="{Binding BackCommand}" VerticalAlignment="Bottom" />
+    </Grid>
+  </Grid>
+</UserControl>

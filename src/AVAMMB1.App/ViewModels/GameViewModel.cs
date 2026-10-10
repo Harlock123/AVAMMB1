@@ -68,7 +68,7 @@ public sealed partial class GameViewModel : ViewModelBase
     public void AutoSave(string? why)
     {
         var ironman = Session.State.Ironman;
-        if (!Session.IsActive || (!ironman && !Services.Settings.Autosave))
+        if (!Session.IsActive || Session.TestPlaying || (!ironman && !Services.Settings.Autosave))
         {
             return;
         }
@@ -265,7 +265,7 @@ public sealed partial class GameViewModel : ViewModelBase
         {
             p.Refresh();
         }
-        if (Chronicle.Check(Session) is { Count: > 0 } earned)
+        if (!Session.TestPlaying && Chronicle.Check(Session) is { Count: > 0 } earned)
         {
             AddMessages(earned);
             Services.RecordAchievements(Session.State.Achievements);
@@ -576,6 +576,11 @@ public sealed partial class GameViewModel : ViewModelBase
     [RelayCommand]
     private void QuickSave()
     {
+        if (Session.TestPlaying)
+        {
+            AddMessages([new GameMessage("A test play is never saved.", MessageKind.Info)]);
+            return;
+        }
         try
         {
             CountPlayTime();
@@ -596,6 +601,11 @@ public sealed partial class GameViewModel : ViewModelBase
     [RelayCommand]
     private void QuickLoad()
     {
+        if (Session.TestPlaying)
+        {
+            AddMessages([new GameMessage("A test play has no saves to load.", MessageKind.Info)]);
+            return;
+        }
         if (Session.State.Ironman)
         {
             AddMessage("Ironman: there is no going back.");

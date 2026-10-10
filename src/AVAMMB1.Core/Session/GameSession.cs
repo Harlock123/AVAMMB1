@@ -256,11 +256,49 @@ public sealed partial class GameSession
             RecallY = cfg.StartY,
         };
         State.PoolAll(); // a new party starts by pooling its gold into the purse
+        TestPlaying = false;
         State.Difficulty = Difficulty;
         State.Survival = Survival;
         State.Ironman = Ironman;
         Combat = null;
         Explore();
+    }
+
+    /// <summary>Whether the running game is a map editor test play (nothing is saved or recorded).</summary>
+    public bool TestPlaying { get; private set; }
+
+    /// <summary>
+    /// Starts a map editor test play: the given party (at the given level) on an edited map, placed at a
+    /// square. Nothing is saved; call <see cref="EndTestPlay"/> afterwards.
+    /// </summary>
+    /// <param name="map">The edited map (already put in place with <see cref="ContentDatabase.UseEditedMap"/>).</param>
+    /// <param name="party">The party.</param>
+    /// <param name="x">Start X.</param>
+    /// <param name="y">Start Y.</param>
+    /// <param name="level">Party level.</param>
+    public void StartTestPlay(string map, IEnumerable<Character> party, int x, int y, int level = 1)
+    {
+        NewGame(party);
+        foreach (var c in State.Party.Where(_ => level > 1))
+        {
+            c.Experience = Rulebook.XpForLevel(Content.Class(c.Class), level);
+            while (Rules.LevelUp(c, Random) is not null)
+            {
+            }
+            c.Hp = c.MaxHp;
+            c.Sp = c.MaxSp;
+        }
+        State.Party[0].Equipment[EquipSlot.Light] = new ItemInstance("lantern_everburning"); // to see dark maps
+        (State.MapId, State.X, State.Y, State.Facing) = (map, x, y, Direction.North);
+        TestPlaying = true;
+        Explore();
+    }
+
+    /// <summary>Ends a test play.</summary>
+    public void EndTestPlay()
+    {
+        TestPlaying = false;
+        Combat = null;
     }
 
     /// <summary>Difficulty for the next new game.</summary>
@@ -308,6 +346,7 @@ public sealed partial class GameSession
         }
         Chronicle.Check(this); // achievements already met by an older save are recorded quietly
         Combat = null;
+        TestPlaying = false;
         Explore();
     }
 

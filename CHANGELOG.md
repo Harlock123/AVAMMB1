@@ -6,6 +6,12 @@ All notable changes to this project are documented here. The format follows
 ## [Unreleased]
 
 ### Added
+- A map editor (Mods > Map editor): draw walls, doors, locked and secret doors on the sides of
+  squares, paint rock, darkness and anti-magic squares, place and edit events (as JSON, with sensible
+  starting values for every type), set the map's look, music and random encounters, and see problems
+  as you go (unknown monsters or shops, unreachable events). Test play walks the premade party through
+  the map at a chosen level without saving anything; Save writes an ordinary mod pack - the map, a
+  pack.json and, if wanted, a way in from an existing map. Any game map can be opened as a copy.
 - Translations: the interface can be shown in other languages (Settings > Language; Automatic follows
   the system). Every label, button and tooltip on the screens, the tips and a few messages are looked
   up by their English text in a language file, so anything untranslated stays English. German is

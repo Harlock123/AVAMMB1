@@ -974,5 +974,77 @@ public static class HeadlessRunner
         vm.ShowHallOfFame();
         Capture(dir, "40-hall-of-fame");
         Console.WriteLine("daily ok");
+
+        MapEditorTour(vm, dir);
+    }
+
+    /// <summary>The map editor: draw a small dungeon, test-play it, come back and save it as a mod pack.</summary>
+    private static void MapEditorTour(MainViewModel vm, string dir)
+    {
+        vm.ShowMods();
+        ((ModsViewModel)vm.CurrentScreen).MapEditorCommand.Execute(null);
+        var editor = (MapEditorViewModel)vm.CurrentScreen;
+        void Edge(EditorTool tool, int x, int y, AVAMMB1.Core.World.CellSide side)
+        {
+            editor.Tool = tool;
+            editor.Click(x, y, side, drag: false);
+        }
+        void Square(EditorTool tool, int x, int y)
+        {
+            editor.Tool = tool;
+            editor.Click(x, y, null, drag: false);
+        }
+        for (var y = 0; y < 7; y++)
+        {
+            Edge(y == 3 ? EditorTool.Door : EditorTool.Wall, 4, y, AVAMMB1.Core.World.CellSide.East);
+        }
+        for (var x = 5; x < 12; x++)
+        {
+            Edge(x == 8 ? EditorTool.SecretDoor : EditorTool.Wall, x, 6, AVAMMB1.Core.World.CellSide.South);
+        }
+        Edge(EditorTool.LockedDoor, 1, 4, AVAMMB1.Core.World.CellSide.North);
+        foreach (var (x, y) in new[] { (2, 1), (2, 2), (6, 8), (7, 8) })
+        {
+            Square(EditorTool.Rock, x, y);
+        }
+        Square(EditorTool.Darkness, 10, 8);
+        editor.NewEventTypeIndex = (int)MapEventKind.Treasure;
+        Square(EditorTool.Event, 10, 2);
+        editor.NewEventTypeIndex = (int)MapEventKind.Fountain;
+        Square(EditorTool.Event, 1, 1);
+        editor.NewEventTypeIndex = (int)MapEventKind.Encounter;
+        Square(EditorTool.Event, 7, 4);
+        editor.EncountersText = "kobold 1d4 3\ncellar_rat 2d3 2";
+        editor.EncounterChance = 0; // no random battles in the test play below
+        editor.ApplySettingsCommand.Execute(null);
+        editor.Tool = EditorTool.Event;
+        Pump();
+        if (editor.Problems.Count > 0)
+        {
+            throw new InvalidOperationException("The editor's sample map has problems: " + string.Join("; ", editor.Problems));
+        }
+        Capture(dir, "50-map-editor");
+
+        editor.TestLevel = 5;
+        editor.TestPlayCommand.Execute(null);
+        if (vm.CurrentScreen is not GameViewModel test || !vm.Services.Session.TestPlaying || vm.Services.Session.State.MapId != editor.Draft.Meta.Id)
+        {
+            throw new InvalidOperationException("The test play did not start: " + editor.Status);
+        }
+        test.CloseOverlay();
+        test.Overlay = new GameMenuViewModel(test);
+        Capture(dir, "51-map-test-play");
+        ((GameMenuViewModel)test.Overlay).BackToEditorCommand.Execute(null);
+        if (vm.CurrentScreen != editor || vm.Services.Content.Maps.ContainsKey(editor.Draft.Meta.Id))
+        {
+            throw new InvalidOperationException("The test play did not return to the editor cleanly.");
+        }
+        editor.SaveCommand.Execute(null);
+        var saved = Path.Combine(AVAMMB1.Core.Persistence.UserDataPaths.ModsDirectory, "my-maps", "Maps", editor.Draft.Meta.Id + ".json");
+        if (!File.Exists(saved) || !File.Exists(Path.Combine(AVAMMB1.Core.Persistence.UserDataPaths.ModsDirectory, "my-maps", "mapPatches.json")))
+        {
+            throw new InvalidOperationException("The map was not saved: " + editor.Status);
+        }
+        Console.WriteLine("map editor ok");
     }
 }

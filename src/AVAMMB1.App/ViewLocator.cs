@@ -31,6 +31,7 @@ public sealed class ViewLocator : IDataTemplate
         WhatsNewViewModel => new WhatsNewView(),
         HelpViewModel => new HelpView(),
         ModsViewModel => new ModsView(),
+        MapEditorViewModel => new MapEditorView(),
         GameMenuViewModel => new GameMenuView(),
         SaveLoadViewModel => new SaveLoadView(),
         SettingsViewModel => new SettingsView(),

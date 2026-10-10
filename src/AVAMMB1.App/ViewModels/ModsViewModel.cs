@@ -72,6 +72,9 @@ public sealed partial class ModsViewModel : ViewModelBase
     [RelayCommand]
     private void Close() => _main.ShowTitle();
 
+    [RelayCommand]
+    private void MapEditor() => _main.ShowMapEditor();
+
     /// <inheritdoc />
     public override bool HandleKey(Key key)
     {

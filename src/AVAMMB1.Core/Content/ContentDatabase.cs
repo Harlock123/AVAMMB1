@@ -55,6 +55,33 @@ public sealed class ContentDatabase
     /// <param name="def">The generated map.</param>
     internal void SetGeneratedMap(MapDef def) => _maps[def.Id] = GameMap.Parse(def);
 
+    /// <summary>Puts a map from the map editor in place for a test play (validated first).</summary>
+    /// <param name="def">The map.</param>
+    /// <returns>The map it replaced, if any (to restore afterwards with <see cref="RestoreMap"/>).</returns>
+    /// <exception cref="InvalidDataException">The map is malformed.</exception>
+    public GameMap? UseEditedMap(MapDef def)
+    {
+        var map = GameMap.Parse(def);
+        _maps.TryGetValue(def.Id, out var old);
+        _maps[def.Id] = map;
+        return old;
+    }
+
+    /// <summary>Undoes <see cref="UseEditedMap"/>.</summary>
+    /// <param name="id">Map id.</param>
+    /// <param name="old">The map it replaced, or null to remove it.</param>
+    public void RestoreMap(string id, GameMap? old)
+    {
+        if (old is null)
+        {
+            _maps.Remove(id);
+        }
+        else
+        {
+            _maps[id] = old;
+        }
+    }
+
     /// <summary>Gets a map.</summary>
     /// <param name="id">Map id.</param>
     public GameMap Map(string id) => _maps.TryGetValue(id, out var d) ? d : throw new KeyNotFoundException($"Unknown map '{id}'.");
