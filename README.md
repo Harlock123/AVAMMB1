@@ -14,12 +14,12 @@ the Thornwick Mines and something with four heads nests in a drowned temple.
 > sounds. All trademarks belong to their owners. All game content is original; all art and audio is
 > openly licensed (CC0) - see [ASSETS_LICENSES.md](ASSETS_LICENSES.md).
 
-**[Download AVAM&M v1.12.0](https://github.com/Harlock123/AVAMMB1/releases/tag/v1.12.0)** - Windows, Linux and macOS, x64 and ARM64
+**[Download AVAM&M v1.13.0](https://github.com/Harlock123/AVAMMB1/releases/tag/v1.13.0)** - Windows, Linux and macOS, x64 and ARM64
 (always-current link: [latest release](https://github.com/Harlock123/AVAMMB1/releases/latest); direct file links are in
 [Download and install](#download-and-install)).
 
 Code identifiers, the solution and executables use the name **`AVAMMB1`** (`AVAMMB1.sln`,
-`AVAMMB1.exe`, `AVAMMB1-1.12.0-linux-x64.tar.gz`, ...), because `&` is unsafe in paths.
+`AVAMMB1.exe`, `AVAMMB1-1.13.0-linux-x64.tar.gz`, ...), because `&` is unsafe in paths.
 
 ## Features
 
@@ -208,29 +208,31 @@ All screenshots are real frames rendered by the game itself (Avalonia headless +
 ## Download and install
 
 Download the archive for your platform from the **[latest release](https://github.com/Harlock123/AVAMMB1/releases/latest)**
-(all releases: [https://github.com/Harlock123/AVAMMB1/releases](https://github.com/Harlock123/AVAMMB1/releases)), or build it yourself (below). Direct links for v1.12.0:
+(all releases: [https://github.com/Harlock123/AVAMMB1/releases](https://github.com/Harlock123/AVAMMB1/releases)), or build it yourself (below). Direct links for v1.13.0:
 
 | Platform | Download | How to run |
 |---|---|---|
-| Windows x64 | [AVAMMB1-1.12.0-win-x64.zip](https://github.com/Harlock123/AVAMMB1/releases/download/v1.12.0/AVAMMB1-1.12.0-win-x64.zip) | Unzip, run `AVAMMB1.exe`. SmartScreen may warn about an unsigned app: *More info -> Run anyway*. |
-| Windows ARM64 | [AVAMMB1-1.12.0-win-arm64.zip](https://github.com/Harlock123/AVAMMB1/releases/download/v1.12.0/AVAMMB1-1.12.0-win-arm64.zip) | Same as above. |
-| Linux x64 | [AVAMMB1-1.12.0-linux-x64.tar.gz](https://github.com/Harlock123/AVAMMB1/releases/download/v1.12.0/AVAMMB1-1.12.0-linux-x64.tar.gz) | `tar xzf AVAMMB1-*.tar.gz && ./AVAMMB1`. Needs an X11 session (XWayland works) and the usual desktop libraries (fontconfig, libX11/libICE/libSM). |
-| Linux ARM64 | [AVAMMB1-1.12.0-linux-arm64.tar.gz](https://github.com/Harlock123/AVAMMB1/releases/download/v1.12.0/AVAMMB1-1.12.0-linux-arm64.tar.gz) | Same as above. |
-| macOS Apple Silicon | [AVAMMB1-1.12.0-osx-arm64.tar.gz](https://github.com/Harlock123/AVAMMB1/releases/download/v1.12.0/AVAMMB1-1.12.0-osx-arm64.tar.gz) | Extract, then open `AVAMMB1.app`. The app is **not notarized**: right-click -> *Open* the first time, or run `xattr -dr com.apple.quarantine AVAMMB1.app`. |
-| macOS Intel | [AVAMMB1-1.12.0-osx-x64.tar.gz](https://github.com/Harlock123/AVAMMB1/releases/download/v1.12.0/AVAMMB1-1.12.0-osx-x64.tar.gz) | Same as above. |
-| Windows x64 (installer) | [AVAMMB1-1.12.0-win-x64-setup.exe](https://github.com/Harlock123/AVAMMB1/releases/download/v1.12.0/AVAMMB1-1.12.0-win-x64-setup.exe) | Run it; installs for you only (no admin), with a Start-menu shortcut and an uninstaller. Unsigned: *More info -> Run anyway*. |
-| Windows ARM64 (installer) | [AVAMMB1-1.12.0-win-arm64-setup.exe](https://github.com/Harlock123/AVAMMB1/releases/download/v1.12.0/AVAMMB1-1.12.0-win-arm64-setup.exe) | Same as above. |
-| Linux x64 (AppImage) | [AVAMMB1-1.12.0-linux-x64.AppImage](https://github.com/Harlock123/AVAMMB1/releases/download/v1.12.0/AVAMMB1-1.12.0-linux-x64.AppImage) | `chmod +x AVAMMB1-*.AppImage && ./AVAMMB1-*.AppImage` (needs FUSE; or add `--appimage-extract-and-run`). |
-| Linux ARM64 (AppImage) | [AVAMMB1-1.12.0-linux-arm64.AppImage](https://github.com/Harlock123/AVAMMB1/releases/download/v1.12.0/AVAMMB1-1.12.0-linux-arm64.AppImage) | Same as above. |
-| macOS Apple Silicon (disk image) | [AVAMMB1-1.12.0-osx-arm64.dmg](https://github.com/Harlock123/AVAMMB1/releases/download/v1.12.0/AVAMMB1-1.12.0-osx-arm64.dmg) | Open, drag `AVAMMB1.app` to Applications; not notarized (see below). |
-| macOS Intel (disk image) | [AVAMMB1-1.12.0-osx-x64.dmg](https://github.com/Harlock123/AVAMMB1/releases/download/v1.12.0/AVAMMB1-1.12.0-osx-x64.dmg) | Same as above. |
+| Windows x64 | [AVAMMB1-1.13.0-win-x64.zip](https://github.com/Harlock123/AVAMMB1/releases/download/v1.13.0/AVAMMB1-1.13.0-win-x64.zip) | Unzip, run `AVAMMB1.exe`. SmartScreen may warn about an unsigned app: *More info -> Run anyway*. |
+| Windows ARM64 | [AVAMMB1-1.13.0-win-arm64.zip](https://github.com/Harlock123/AVAMMB1/releases/download/v1.13.0/AVAMMB1-1.13.0-win-arm64.zip) | Same as above. |
+| Linux x64 | [AVAMMB1-1.13.0-linux-x64.tar.gz](https://github.com/Harlock123/AVAMMB1/releases/download/v1.13.0/AVAMMB1-1.13.0-linux-x64.tar.gz) | `tar xzf AVAMMB1-*.tar.gz && ./AVAMMB1`. Needs an X11 session (XWayland works) and the usual desktop libraries (fontconfig, libX11/libICE/libSM). |
+| Linux ARM64 | [AVAMMB1-1.13.0-linux-arm64.tar.gz](https://github.com/Harlock123/AVAMMB1/releases/download/v1.13.0/AVAMMB1-1.13.0-linux-arm64.tar.gz) | Same as above. |
+| macOS Apple Silicon | [AVAMMB1-1.13.0-osx-arm64.tar.gz](https://github.com/Harlock123/AVAMMB1/releases/download/v1.13.0/AVAMMB1-1.13.0-osx-arm64.tar.gz) | Extract, then open `AVAMMB1.app`. The app is **not notarized**: right-click -> *Open* the first time, or run `xattr -dr com.apple.quarantine AVAMMB1.app`. |
+| macOS Intel | [AVAMMB1-1.13.0-osx-x64.tar.gz](https://github.com/Harlock123/AVAMMB1/releases/download/v1.13.0/AVAMMB1-1.13.0-osx-x64.tar.gz) | Same as above. |
+| Windows x64 (installer) | [AVAMMB1-1.13.0-win-x64-setup.exe](https://github.com/Harlock123/AVAMMB1/releases/download/v1.13.0/AVAMMB1-1.13.0-win-x64-setup.exe) | Run it; installs for you only (no admin), with a Start-menu shortcut and an uninstaller. Unsigned: *More info -> Run anyway*. |
+| Windows ARM64 (installer) | [AVAMMB1-1.13.0-win-arm64-setup.exe](https://github.com/Harlock123/AVAMMB1/releases/download/v1.13.0/AVAMMB1-1.13.0-win-arm64-setup.exe) | Same as above. |
+| Linux x64 (AppImage) | [AVAMMB1-1.13.0-linux-x64.AppImage](https://github.com/Harlock123/AVAMMB1/releases/download/v1.13.0/AVAMMB1-1.13.0-linux-x64.AppImage) | `chmod +x AVAMMB1-*.AppImage && ./AVAMMB1-*.AppImage` (needs FUSE; or add `--appimage-extract-and-run`). |
+| Linux ARM64 (AppImage) | [AVAMMB1-1.13.0-linux-arm64.AppImage](https://github.com/Harlock123/AVAMMB1/releases/download/v1.13.0/AVAMMB1-1.13.0-linux-arm64.AppImage) | Same as above. |
+| macOS Apple Silicon (disk image) | [AVAMMB1-1.13.0-osx-arm64.dmg](https://github.com/Harlock123/AVAMMB1/releases/download/v1.13.0/AVAMMB1-1.13.0-osx-arm64.dmg) | Open, drag `AVAMMB1.app` to Applications; not notarized (see below). |
+| macOS Intel (disk image) | [AVAMMB1-1.13.0-osx-x64.dmg](https://github.com/Harlock123/AVAMMB1/releases/download/v1.13.0/AVAMMB1-1.13.0-osx-x64.dmg) | Same as above. |
+| Linux x64 (Flatpak) | [AVAMMB1-1.13.0-x86_64.flatpak](https://github.com/Harlock123/AVAMMB1/releases/download/v1.13.0/AVAMMB1-1.13.0-x86_64.flatpak) | `flatpak install --user AVAMMB1-*.flatpak`, then `flatpak run io.github.Harlock123.AVAMMB1` (needs the Flathub remote for the runtime). |
+| Linux ARM64 (Flatpak) | [AVAMMB1-1.13.0-aarch64.flatpak](https://github.com/Harlock123/AVAMMB1/releases/download/v1.13.0/AVAMMB1-1.13.0-aarch64.flatpak) | Same as above. |
 **Installers and packages** (from v1.12.0 on): a Windows installer
 `AVAMMB1-<version>-<rid>-setup.exe` (installs for the current user without admin rights, Start-menu
 and optional desktop shortcut, uninstall from *Settings > Apps*; unsigned, so SmartScreen may warn), a
 macOS disk image `AVAMMB1-<version>-<rid>.dmg` (drag `AVAMMB1.app` to Applications; same
 notarization note as below) and a Linux AppImage `AVAMMB1-<version>-<rid>.AppImage`
 (`chmod +x AVAMMB1-*.AppImage && ./AVAMMB1-*.AppImage`; needs FUSE 2/3, or add
-`--appimage-extract-and-run`). Releases after v1.12.0 also include a Flatpak bundle,
+`--appimage-extract-and-run`). From v1.13.0 on, releases also include a Flatpak bundle,
 `AVAMMB1-<version>-<x86_64|aarch64>.flatpak` (`flatpak install --user AVAMMB1-*.flatpak`, then start it
 from the menu or with `flatpak run io.github.Harlock123.AVAMMB1`) - it suits the Steam Deck's desktop
 mode; see [packaging/flatpak](packaging/flatpak/README.md), which also covers submitting to Flathub.
@@ -335,7 +337,7 @@ the disk image is mounted and its app run, and the AppImage is run.
 **Trimming is intentionally disabled**: Avalonia, the DI container and the toolkit rely on
 reflection that trimming can break; ReadyToRun is used instead for faster startup.
 
-### Build verification status (v1.12.0)
+### Build verification status (v1.13.0)
 
 Every release is built by [`.github/workflows/release.yml`](.github/workflows/release.yml) on
 GitHub's runners - each RID on its own operating system - after the test suite passes:
@@ -453,11 +455,13 @@ More detail: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
   Turn Undead and Overcharge; utility spells and a seventh circle from tomes; Describe surroundings;
   the travel map; town life by time of day (Night Market, street thieves, dawn prayers, daily
   rumours); the Daily Challenge; an automated playthrough of the whole game by its journal.
+- **v1.13.0** - Hirelings at the inns; New Game+ with Ascendant gear; tips for new players; a
+  shareable Daily Challenge result; an update check; save fixtures for every release; Flatpak bundles;
+  translations (German included); a map editor with test play.
 
 ### Planned
 
 - Proper Developer ID signing / notarization for macOS and code signing for Windows
-- Localization (translations)
 
 ## License
 

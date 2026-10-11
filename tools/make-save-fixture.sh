@@ -8,6 +8,8 @@ ref="${1:-HEAD}"
 work="$(mktemp -d)"
 trap 'git -C "$root" worktree remove --force "$work/src" >/dev/null 2>&1 || true; rm -rf "$work"' EXIT
 git -C "$root" worktree add -q --detach "$work/src" "$ref"
+# For HEAD, use the working copy's version number: the bump is made (uncommitted) just before a release.
+if [ "$ref" = HEAD ]; then cp "$root/Directory.Build.props" "$work/src/Directory.Build.props"; fi
 version="$(sed -n 's:.*<Version>\(.*\)</Version>.*:\1:p' "$work/src/Directory.Build.props" | head -1)"
 mkdir -p "$work/tool"
 cp "$root/tools/save-fixture/Program.cs" "$work/tool/"

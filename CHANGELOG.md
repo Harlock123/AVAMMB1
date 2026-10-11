@@ -5,6 +5,8 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+## [1.13.0] - 2026-10-10
+
 ### Added
 - A map editor (Mods > Map editor): draw walls, doors, locked and secret doors on the sides of
   squares, paint rock, darkness and anti-magic squares, place and edit events (as JSON, with sensible
