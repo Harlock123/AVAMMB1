@@ -5,7 +5,7 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
-## [1.13.0] - 2026-10-10
+## [1.13.0] - 2026-10-11
 
 ### Added
 - A map editor (Mods > Map editor): draw walls, doors, locked and secret doors on the sides of
